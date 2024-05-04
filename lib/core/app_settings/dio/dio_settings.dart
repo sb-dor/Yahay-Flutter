@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:yahay/core/utils/shared_preferences.dart';
+import 'package:yahay/core/utils/dotenv/dotenv.dart';
+import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/injections/injections.dart';
 
 class DioSettings {
-  final String _mainUrl = "192.168.100.244:8000/api";
+  final String _mainUrl = snoopy<DotEnvHelper>().dotEnv.get('MAIN_URL');
 
   late final Dio dio;
 

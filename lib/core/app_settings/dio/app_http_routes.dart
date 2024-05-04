@@ -1,1 +1,3 @@
-abstract class AppHttpRoutes {}
+abstract class AppHttpRoutes {
+  static const String authPrefix = '/auth';
+}
