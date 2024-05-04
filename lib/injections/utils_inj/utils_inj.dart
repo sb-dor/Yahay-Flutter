@@ -12,6 +12,8 @@ abstract class UtilsInj {
     snoopy.registerLazySingleton<SharedPreferHelper>(
       () => SharedPreferHelper(),
     );
+
+    await snoopy<SharedPreferHelper>().initSharedPrefer();
     //
     snoopy.registerLazySingleton<DotEnvHelper>(
       () => DotEnvHelper(),

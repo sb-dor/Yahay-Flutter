@@ -15,6 +15,8 @@ abstract class Injections {
       () => DioSettings(),
     );
 
+    await snoopy<DioSettings>().init();
+
     await AppThemeBlocInj.appThemeBlocInj();
 
     await AuthInj.authInj();

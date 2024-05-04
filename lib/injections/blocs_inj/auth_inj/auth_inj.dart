@@ -13,7 +13,7 @@ abstract class AuthInj {
       () => AuthorizationRepoImpl(snoopy<LaravelAuthDataSource>()),
     );
 
-    snoopy.registerSingleton(
+    snoopy.registerLazySingleton<AuthBloc>(
       () => AuthBloc(
         authorizationRepo: snoopy<AuthorizationRepo>(),
       ),

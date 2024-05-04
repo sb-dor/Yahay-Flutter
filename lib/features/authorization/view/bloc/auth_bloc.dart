@@ -21,7 +21,7 @@ class AuthBloc {
   final Sink<AuthEvents> events;
   final BehaviorSubject<AuthStates> _states;
 
-  Stream get states => _states.stream;
+  Stream<AuthStates> get states => _states.stream;
 
   const AuthBloc._({
     required this.events,
@@ -66,6 +66,8 @@ class AuthBloc {
   static Future<AuthStates> _checkAuthEvent(CheckAuthEvent event) async {
     try {
       final user = await _checkTokenUseCase.checkAuth();
+
+      debugPrint("working auth checktoken");
 
       if (user == null) return UnAuthorizedState(_currentState);
 
