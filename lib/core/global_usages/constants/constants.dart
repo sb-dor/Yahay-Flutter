@@ -11,4 +11,5 @@ abstract class Constants {
   static const String orSignInWith = "Or sing in with";
   static const String haveAnAccount = "Already have an account?";
   static const String doNotHaveAnAccount = "Don't have an account?";
+  static const String fieldCanNotBeEmpty = "Field cannot be empty";
 }

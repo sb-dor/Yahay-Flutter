@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "176015174248",
+    "project_id": "yahay-9f28f",
+    "storage_bucket": "yahay-9f28f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176015174248:android:7a79d11259b51ee91e69dd",
+        "android_client_info": {
+          "package_name": "com.bdaynabday.yahay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhcnBjEsmPPKkhAyPlX5Qdhhj0GgattM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

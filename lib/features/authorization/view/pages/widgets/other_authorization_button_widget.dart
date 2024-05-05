@@ -5,16 +5,19 @@ import 'package:yahay/core/global_usages/widgets/splash_button_clicker.dart';
 class OtherAuthorizationButtonWidget extends StatelessWidget {
   final Widget icon;
   final String text;
+  final VoidCallback onTap;
 
   const OtherAuthorizationButtonWidget({
     super.key,
     required this.icon,
     required this.text,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return SplashButtonClicker(
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
         child: Row(
@@ -30,7 +33,6 @@ class OtherAuthorizationButtonWidget extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => [],
     );
   }
 }

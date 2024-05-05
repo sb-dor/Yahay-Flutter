@@ -4,6 +4,12 @@ import 'package:flutter/foundation.dart';
 abstract class AuthEvents {}
 
 @immutable
+class GoogleAuth extends AuthEvents {}
+
+@immutable
+class FacebookAuth extends AuthEvents {}
+
+@immutable
 class RegisterEvent extends AuthEvents {
   final String email;
   final String password;

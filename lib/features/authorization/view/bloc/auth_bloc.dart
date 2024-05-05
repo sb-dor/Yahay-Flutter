@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:yahay/features/authorization/domain/repo/authorization_repo.dart';
+import 'package:yahay/features/authorization/domain/repo/other_authorization_repo.dart';
 import 'package:yahay/features/authorization/domain/usecases/check_token_usecase.dart';
+import 'package:yahay/features/authorization/domain/usecases/google_auth_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/login_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/register_usecase.dart';
 import 'package:yahay/features/authorization/view/bloc/state_model/auth_state_model.dart';
@@ -13,9 +15,11 @@ import 'auth_states.dart';
 class AuthBloc {
   static late final AuthStateModel _currentStateModel;
   static late final AuthorizationRepo _authorizationRepo;
+  static late final OtherAuthorizationRepo _otherAuthorizationRepo;
   static late final CheckTokenUseCase _checkTokenUseCase;
   static late final RegisterUsecase _registerUsecase;
   static late final LoginUsecase _loginUsecase;
+  static late final GoogleAuthUsecase _googleAuthUsecase;
   static late final BehaviorSubject<AuthStates> _currentState;
 
   // state data
@@ -31,11 +35,14 @@ class AuthBloc {
 
   factory AuthBloc({
     required AuthorizationRepo authorizationRepo,
+    required OtherAuthorizationRepo otherAuthorizationRepo,
   }) {
     _currentStateModel = AuthStateModel();
     _authorizationRepo = authorizationRepo;
+    _otherAuthorizationRepo = otherAuthorizationRepo;
     _checkTokenUseCase = CheckTokenUseCase(_authorizationRepo);
     _registerUsecase = RegisterUsecase(_authorizationRepo);
+    _googleAuthUsecase = GoogleAuthUsecase(_otherAuthorizationRepo);
     _loginUsecase = LoginUsecase(_authorizationRepo);
 
     final eventBehavior = BehaviorSubject<AuthEvents>();
@@ -64,6 +71,8 @@ class AuthBloc {
       state = await _loginEvent(event);
     } else if (event is ChangePasswordVisibility) {
       state = _changePasswordVisibility(event);
+    } else if (event is GoogleAuth) {
+      state = await _googleAuth(event);
     }
     return state;
   }
@@ -86,11 +95,21 @@ class AuthBloc {
 
   static Future<AuthStates> _registerEvent(RegisterEvent event) async {
     try {
+      if (!(_currentStateModel.registerForm.currentState?.validate() ?? false)) return _emitter();
+
+      _currentStateModel.changeRegisterLoading(true);
+
+      _emitter();
+
       final user = await _registerUsecase.register(
         email: event.email.trim(),
         password: event.password.trim(),
         userName: event.userName.trim(),
       );
+
+      debugPrint("even coming here $user");
+
+      _currentStateModel.changeRegisterLoading(false);
 
       if (user == null) return UnAuthorizedState(_currentStateModel);
 
@@ -104,10 +123,18 @@ class AuthBloc {
 
   static Future<AuthStates> _loginEvent(LoginEvent event) async {
     try {
+      if (!(_currentStateModel.loginForm.currentState?.validate() ?? false)) return _emitter();
+
+      _currentStateModel.changeLoginLoading(true);
+
+      _emitter();
+
       final user = await _loginUsecase.login(
         emailOrUserName: event.emailOrUserName.trim(),
         password: event.password.trim(),
       );
+
+      _currentStateModel.changeLoginLoading(false);
 
       if (user == null) return UnAuthorizedState(_currentStateModel);
 
@@ -120,6 +147,18 @@ class AuthBloc {
   static AuthStates _changePasswordVisibility(ChangePasswordVisibility event) {
     _currentStateModel.changePasswordVisibility();
     return _emitter();
+  }
+
+  static Future<AuthStates> _googleAuth(GoogleAuth event) async {
+    try {
+      final user = await _googleAuthUsecase.googleAuth();
+
+      if (user == null) return UnAuthorizedState(_currentStateModel);
+
+      return AuthorizedState(_currentStateModel);
+    } catch (e) {
+      return ErrorAuthState(_currentStateModel);
+    }
   }
 
   static AuthStates _emitter() {

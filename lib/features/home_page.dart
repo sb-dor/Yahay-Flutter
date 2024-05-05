@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +20,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final AuthBloc _authBloc;
+  late final StreamSubscription _streamSubscription;
 
   @override
   void initState() {
     super.initState();
     _authBloc = snoopy<AuthBloc>();
 
-    _authBloc.states.listen((state) {
+    _streamSubscription = _authBloc.states.listen((state) {
       if (state is AuthorizedState) {
         AutoRouter.of(context).replaceAll([const ChatsRoute()]);
       } else if (state is UnAuthorizedState) {
@@ -32,6 +35,12 @@ class _HomePageState extends State<HomePage> {
       } else if (state is ErrorAuthState) {
       } else {}
     });
+  }
+
+  @override
+  void dispose() {
+    _streamSubscription.cancel();
+    super.dispose();
   }
 
   @override

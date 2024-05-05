@@ -55,6 +55,10 @@ dependencies:
   fluttertoast: ^8.2.5
   google_fonts: ^4.0.4
   font_awesome_flutter: ^10.7.0
+  google_sign_in: ^6.2.1
+  flutter_facebook_auth: ^6.0.4
+  rename: ^3.0.2
+  firebase_core: ^2.30.1
 
 
 dev_dependencies:

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 
 class AuthorizationInputWidget extends StatefulWidget {
   final String title;
@@ -19,13 +21,7 @@ class AuthorizationInputWidget extends StatefulWidget {
 }
 
 class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
-  final _border = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(15),
-    borderSide: const BorderSide(
-      width: 0,
-      style: BorderStyle.none,
-    ),
-  );
+  final _border = InputBorder.none;
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +35,13 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
           ),
         ),
         const SizedBox(height: 5),
-        SizedBox(
-          // color: Colors.red,
-          height: 60,
-          child: TextField(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: TextFormField(
+            validator: (value) {
+              if ((value ?? '').isEmpty) return Constants.fieldCanNotBeEmpty;
+              return null;
+            },
             onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
             controller: widget.controller,
             style: GoogleFonts.aBeeZee(
@@ -51,6 +50,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
             decoration: InputDecoration(
               hintText: widget.hintText,
               // isDense: true,
+              // border: _border,
               focusedBorder: _border,
               enabledBorder: _border,
               errorBorder: _border,

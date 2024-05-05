@@ -25,13 +25,18 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       final response = await _dio.dio.get(url);
 
+      debugPrint("check auth response: ${response.data}");
+
       if (response.statusCode != HttpStatusCodes.success) return null;
 
-      Map<String, dynamic> json = jsonDecode(response.data);
+      Map<String, dynamic> json =
+          response.data is String ? jsonDecode(response.data) : response.data;
 
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) return null;
+      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+        return null;
+      }
 
-      return UserModel.fromJson(json['user']);
+      // return UserModel.fromJson(json['user']);
     } catch (e) {
       return null;
     }
@@ -52,13 +57,18 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       final response = await _dio.dio.post(url, data: body);
 
-      debugPrint("login response: ${response.data}");
+      debugPrint("login response: ${response.data} | ${response.data.runtimeType}");
 
       if (response.statusCode != HttpStatusCodes.success) return null;
 
-      Map<String, dynamic> json = jsonDecode(response.data);
+      Map<String, dynamic> json =
+          response.data is String ? jsonDecode(response.data) : response.data;
 
       if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+        return null;
+      }
+
+      if (json[HttpStatusCodes.serverSuccessResponse] == false) {
         _screenMessaging.toast(json['message'] ?? '');
         return null;
       }
@@ -67,6 +77,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       return UserModel.fromJson(json['user']);
     } catch (e) {
+      debugPrint("login error is $e");
       return null;
     }
   }
@@ -88,11 +99,18 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       final response = await _dio.dio.post(url, data: body);
 
+      debugPrint("register response: ${response.realUri.path} | ${response.data}");
+
       if (response.statusCode != HttpStatusCodes.success) return null;
 
-      Map<String, dynamic> json = jsonDecode(response.data);
+      Map<String, dynamic> json =
+          response.data is String ? jsonDecode(response.data) : response.data;
 
       if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+        return null;
+      }
+
+      if (json[HttpStatusCodes.serverSuccessResponse] == false) {
         _screenMessaging.toast(json['message'] ?? '');
         return null;
       }
@@ -101,6 +119,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       return UserModel.fromJson(json['user']);
     } catch (e) {
+      debugPrint("register error is $e");
       return null;
     }
   }

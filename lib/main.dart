@@ -1,16 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
-import 'package:yahay/features/authorization/view/bloc/auth_states.dart';
-import 'package:yahay/features/chats/view/chats_page.dart';
 import 'package:yahay/injections/injections.dart';
-import 'features/authorization/view/pages/login_page.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await Injections.init();
 
