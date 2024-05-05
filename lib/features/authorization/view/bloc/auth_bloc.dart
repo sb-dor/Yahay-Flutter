@@ -3,6 +3,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:yahay/features/authorization/domain/repo/authorization_repo.dart';
 import 'package:yahay/features/authorization/domain/repo/other_authorization_repo.dart';
 import 'package:yahay/features/authorization/domain/usecases/check_token_usecase.dart';
+import 'package:yahay/features/authorization/domain/usecases/facebook_auth_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/google_auth_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/login_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/register_usecase.dart';
@@ -20,6 +21,7 @@ class AuthBloc {
   static late final RegisterUsecase _registerUsecase;
   static late final LoginUsecase _loginUsecase;
   static late final GoogleAuthUsecase _googleAuthUsecase;
+  static late final FacebookAuthUsecase _facebookAuthUsecase;
   static late final BehaviorSubject<AuthStates> _currentState;
 
   // state data
@@ -43,6 +45,7 @@ class AuthBloc {
     _checkTokenUseCase = CheckTokenUseCase(_authorizationRepo);
     _registerUsecase = RegisterUsecase(_authorizationRepo);
     _googleAuthUsecase = GoogleAuthUsecase(_otherAuthorizationRepo);
+    _facebookAuthUsecase = FacebookAuthUsecase(_otherAuthorizationRepo);
     _loginUsecase = LoginUsecase(_authorizationRepo);
 
     final eventBehavior = BehaviorSubject<AuthEvents>();
@@ -73,6 +76,8 @@ class AuthBloc {
       state = _changePasswordVisibility(event);
     } else if (event is GoogleAuth) {
       state = await _googleAuth(event);
+    } else if (event is FacebookAuth) {
+      state = await _facebookAuth(event);
     }
     return state;
   }
@@ -152,6 +157,18 @@ class AuthBloc {
   static Future<AuthStates> _googleAuth(GoogleAuth event) async {
     try {
       final user = await _googleAuthUsecase.googleAuth();
+
+      if (user == null) return UnAuthorizedState(_currentStateModel);
+
+      return AuthorizedState(_currentStateModel);
+    } catch (e) {
+      return ErrorAuthState(_currentStateModel);
+    }
+  }
+
+  static Future<AuthStates> _facebookAuth(FacebookAuth event) async {
+    try {
+      final user = await _facebookAuthUsecase.facebookAuth();
 
       if (user == null) return UnAuthorizedState(_currentStateModel);
 

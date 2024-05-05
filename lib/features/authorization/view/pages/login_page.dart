@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.blue,
                               ),
                               text: 'Facebook',
-                              onTap: () {},
+                              onTap: () => _authBloc.events.add(FacebookAuth()),
                             ),
                           ),
                         ],

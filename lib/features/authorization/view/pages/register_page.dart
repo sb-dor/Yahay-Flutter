@@ -179,7 +179,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Colors.blue,
                               ),
                               text: 'Facebook',
-                              onTap: () {},
+                              onTap: () => _authBloc.events.add(FacebookAuth()),
                             ),
                           ),
                         ],
