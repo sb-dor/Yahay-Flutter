@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class GlobalContext {
-  final GlobalKey<NavigatorState> globalContext = GlobalKey<NavigatorState>();
+  final GlobalKey<ScaffoldMessengerState> globalContext = GlobalKey<ScaffoldMessengerState>();
 }

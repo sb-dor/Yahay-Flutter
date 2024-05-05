@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
@@ -50,6 +51,8 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       };
 
       final response = await _dio.dio.post(url, data: body);
+
+      debugPrint("login response: ${response.data}");
 
       if (response.statusCode != HttpStatusCodes.success) return null;
 

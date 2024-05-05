@@ -53,17 +53,13 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.9.0
   fluttertoast: ^8.2.5
+  google_fonts: ^4.0.4
+  font_awesome_flutter: ^10.7.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  package_info_plus: any
-  wakelock_windows: any
-  win32: any
-  build_runner: ^2.4.9
-
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -72,6 +68,11 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   json_serializable: ^6.8.0
   freezed: ^2.5.2
+  auto_route_generator: ^8.0.0
+  package_info_plus: any
+  wakelock_windows: any
+  win32: any
+  build_runner: ^2.4.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -99,12 +100,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+#  fonts:
+#    - family: BriemHand
+#      fonts:
+#        - asset: assets/fonts/BriemHand/BriemHand-Regular.ttf
+#        - asset: assets/fonts/BriemHand/BriemHand-Medium.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

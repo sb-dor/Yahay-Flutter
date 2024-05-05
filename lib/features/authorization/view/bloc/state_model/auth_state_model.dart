@@ -5,5 +5,11 @@ class AuthStateModel {
 
   User? get user => _user;
 
+  bool _showPassword = true;
+
+  bool get showPassword => _showPassword;
+
   void setUser(User? user) => _user = user;
+
+  void changePasswordVisibility() => _showPassword = !_showPassword;
 }

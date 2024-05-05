@@ -1,5 +1,7 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class ChatsPage extends StatefulWidget {
   const ChatsPage({super.key});
 
@@ -10,6 +12,10 @@ class ChatsPage extends StatefulWidget {
 class _ChatsPageState extends State<ChatsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Chats"),
+      ),
+    );
   }
 }
