@@ -6,6 +6,7 @@ import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
+import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/features/authorization/data/sources/other_authorization/other_authorization.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:yahay/injections/injections.dart';
@@ -13,6 +14,7 @@ import 'package:yahay/injections/injections.dart';
 class OtherAuthorizationImpl implements OtherAuthorization {
   final DioSettings _dioSettings = snoopy<DioSettings>();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final _sharedPreferences = snoopy<SharedPreferHelper>();
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
   final String _googleAuthPath = "/google-auth";
@@ -41,6 +43,8 @@ class OtherAuthorizationImpl implements OtherAuthorization {
         "google_id": googleAccount.id,
       };
 
+      debugPrint("sending body is: $body");
+
       final url = "${AppHttpRoutes.authPrefix}$_googleAuthPath";
 
       final response = await _dioSettings.dio.post(url, data: body);
@@ -55,6 +59,10 @@ class OtherAuthorizationImpl implements OtherAuthorization {
       if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
         return null;
       }
+
+      await _sharedPreferences.setStringByKey(key: "token", value: json['token']);
+
+      return UserModel.fromJson(json['user']);
     } catch (e) {
       debugPrint("google auth error is: $e");
       return null;
