@@ -1,0 +1,5 @@
+<resources>
+    <string name="facebook_app_id_example">value</string>
+    <string name="fb_login_protocol_scheme_example">value</string>
+    <string name="facebook_client_token_example">value</string>
+</resources>

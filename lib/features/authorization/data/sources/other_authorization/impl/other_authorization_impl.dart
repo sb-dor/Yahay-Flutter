@@ -24,6 +24,8 @@ class OtherAuthorizationImpl implements OtherAuthorization {
     try {
       final LoginResult loginResult = await _facebookAuth.login();
 
+      debugPrint("facebook login: ${loginResult.accessToken?.userId}");
+
       debugPrint("face book loginresult: ${loginResult.accessToken?.userId}");
     } catch (e) {
       debugPrint("faceBookAuth error is $e");

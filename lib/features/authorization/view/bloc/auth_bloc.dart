@@ -160,6 +160,8 @@ class AuthBloc {
 
       if (user == null) return UnAuthorizedState(_currentStateModel);
 
+      _currentStateModel.setUser(user);
+
       return AuthorizedState(_currentStateModel);
     } catch (e) {
       return ErrorAuthState(_currentStateModel);
@@ -171,6 +173,8 @@ class AuthBloc {
       final user = await _facebookAuthUsecase.facebookAuth();
 
       if (user == null) return UnAuthorizedState(_currentStateModel);
+
+      _currentStateModel.setUser(user);
 
       return AuthorizedState(_currentStateModel);
     } catch (e) {
