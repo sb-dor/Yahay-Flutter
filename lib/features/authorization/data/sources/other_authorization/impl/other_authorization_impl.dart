@@ -7,6 +7,7 @@ import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
+import 'package:yahay/core/utils/talker/talker_service.dart';
 import 'package:yahay/features/authorization/data/sources/other_authorization/other_authorization.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:yahay/injections/injections.dart';
@@ -24,9 +25,22 @@ class OtherAuthorizationImpl implements OtherAuthorization {
     try {
       final LoginResult loginResult = await _facebookAuth.login();
 
+      if (loginResult.status == LoginStatus.failed || loginResult.status == LoginStatus.cancelled) {
+        return null;
+      }
+
       debugPrint("facebook login: ${loginResult.accessToken?.userId}");
 
-      debugPrint("face book loginresult: ${loginResult.accessToken?.userId}");
+      final userData = await FacebookAuth.instance.getUserData();
+
+      TalkerService.instance.talker.debug(
+        """face book loginresult: 
+        ${loginResult.accessToken?.userId}
+        ${loginResult.accessToken?.token}
+        ${loginResult.accessToken?.applicationId}
+        ${userData}
+        """,
+      );
     } catch (e) {
       debugPrint("faceBookAuth error is $e");
       return null;
@@ -56,7 +70,7 @@ class OtherAuthorizationImpl implements OtherAuthorization {
       if (response.statusCode != HttpStatusCodes.success) return null;
 
       Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
+      response.data is String ? jsonDecode(response.data) : response.data;
 
       if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
         return null;

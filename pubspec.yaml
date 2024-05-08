@@ -59,6 +59,7 @@ dependencies:
   flutter_facebook_auth: ^6.0.4
   rename: ^3.0.2
   firebase_core: ^2.30.1
+  talker: ^4.2.0
 
 
 dev_dependencies:
