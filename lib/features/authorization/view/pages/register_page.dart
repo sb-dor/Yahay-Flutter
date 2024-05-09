@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
@@ -26,11 +28,17 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController(text: '');
   final TextEditingController _userNameController = TextEditingController(text: '');
   late final AuthBloc _authBloc;
+  late final StreamSubscription _streamSubscription;
 
   @override
   void initState() {
     super.initState();
     _authBloc = snoopy<AuthBloc>();
+    _streamSubscription = _authBloc.states.listen((event) {
+      if (event is AuthorizedState) {
+        AutoRouter.of(context).replaceAll([const HomeRoute()]);
+      }
+    });
   }
 
   @override
@@ -38,7 +46,14 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _userNameController.dispose();
+    _streamSubscription.cancel();
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    _streamSubscription.cancel();
+    super.deactivate();
   }
 
   @override

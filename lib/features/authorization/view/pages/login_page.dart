@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,19 +28,32 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailOrUserNameController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
+  late final StreamSubscription _streamSubscription;
   late final AuthBloc _authBloc;
 
   @override
   void initState() {
     super.initState();
     _authBloc = snoopy<AuthBloc>();
+    _streamSubscription = _authBloc.states.listen((event) {
+      if (event is AuthorizedState) {
+        AutoRouter.of(context).replaceAll([const HomeRoute()]);
+      }
+    });
   }
 
   @override
   void dispose() {
     _emailOrUserNameController.dispose();
     _passwordController.dispose();
+    _streamSubscription.cancel();
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    _streamSubscription.cancel();
+    super.deactivate();
   }
 
   @override

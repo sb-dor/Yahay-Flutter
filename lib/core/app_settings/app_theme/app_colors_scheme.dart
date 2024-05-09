@@ -16,6 +16,7 @@ abstract class AppColorsScheme {
       tertiaryContainer: Color(0xff95f0ff),
       appBarColor: Color(0xffffdbcf),
       error: Color(0xffb00020),
+      swapOnMaterial3: true
     ),
     usedColors: 1,
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
@@ -39,14 +40,15 @@ abstract class AppColorsScheme {
   );
   static final ThemeData dark = FlexThemeData.dark(
     colors: const FlexSchemeColor(
-      primary: Color(0xff004881),
-      primaryContainer: Color(0xffd0e4ff),
-      secondary: Color(0xffac3306),
+      primary: Color(0xff089fc4),
+      primaryContainer: Color(0xff063b67),
+      secondary: Color(0xffee6937),
       secondaryContainer: Color(0xffffdbcf),
       tertiary: Color(0xff006875),
       tertiaryContainer: Color(0xff95f0ff),
       appBarColor: Color(0xffffdbcf),
-      error: Color(0xffb00020),
+      error: Color(0xffff0331),
+      swapOnMaterial3: true,
     ).defaultError.toDark(0, false),
     usedColors: 1,
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,

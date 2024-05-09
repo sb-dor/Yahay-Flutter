@@ -9,7 +9,6 @@ import 'package:yahay/features/authorization/domain/usecases/google_auth_usecase
 import 'package:yahay/features/authorization/domain/usecases/login_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/register_usecase.dart';
 import 'package:yahay/features/authorization/view/bloc/state_model/auth_state_model.dart';
-
 import 'auth_events.dart';
 import 'auth_states.dart';
 
@@ -94,8 +93,6 @@ class AuthBloc {
         return;
       }
 
-      debugPrint("is any user there ${user?.email}");
-
       _currentStateModel.setUser(user);
 
       yield AuthorizedState(_currentStateModel);
@@ -120,8 +117,6 @@ class AuthBloc {
         password: event.password.trim(),
         userName: event.userName.trim(),
       );
-
-      debugPrint("even coming here $user");
 
       _currentStateModel.changeRegisterLoading(false);
 
@@ -185,6 +180,7 @@ class AuthBloc {
 
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
+      debugPrint("google auth error is: $e");
       yield ErrorAuthState(_currentStateModel);
     }
   }

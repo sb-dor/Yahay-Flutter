@@ -19,7 +19,7 @@ class SplashButtonClicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: backgroundColor ?? Colors.grey.shade200,
+      color: backgroundColor,
       borderRadius: borderRadius ?? BorderRadius.circular(10),
       child: InkWell(
         splashColor: splashColor ?? Colors.blueAccent.shade100,

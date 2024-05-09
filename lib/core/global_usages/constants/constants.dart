@@ -12,4 +12,7 @@ abstract class Constants {
   static const String haveAnAccount = "Already have an account?";
   static const String doNotHaveAnAccount = "Don't have an account?";
   static const String fieldCanNotBeEmpty = "Field cannot be empty";
+  static const String contacts = "Contacts";
+  static const String chats = "Chats";
+  static const String profile = "Profile";
 }
