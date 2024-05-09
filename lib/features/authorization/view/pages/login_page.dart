@@ -112,7 +112,14 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Center(
                             child: (authState?.authStateModel.loadingLogin ?? false)
-                                ? const CircularProgressIndicator()
+                                ? const SizedBox(
+                                    width: 15,
+                                    height: 15,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
                                 : Text(
                                     Constants.signIn,
                                     style: GoogleFonts.aBeeZee(

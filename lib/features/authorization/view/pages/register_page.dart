@@ -117,7 +117,14 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Center(
                             child: (authState?.authStateModel.loadingRegister ?? false)
-                                ? const CircularProgressIndicator()
+                                ? const SizedBox(
+                                    width: 15,
+                                    height: 15,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
                                 : Text(
                                     Constants.signUp,
                                     style: GoogleFonts.aBeeZee(

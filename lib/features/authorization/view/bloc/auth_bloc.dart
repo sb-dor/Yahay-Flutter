@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:yahay/features/authorization/domain/repo/authorization_repo.dart';
@@ -50,8 +51,8 @@ class AuthBloc {
 
     final eventBehavior = BehaviorSubject<AuthEvents>();
 
-    final stateFlow = eventBehavior.asyncMap<AuthStates>((authEvents) async {
-      return await _eventHandler(authEvents);
+    final stateFlow = eventBehavior.asyncExpand<AuthStates>((authEvents) async* {
+      yield* _eventHandler(authEvents);
     }).startWith(LoadingAuthState(_currentStateModel));
 
     final behaviorStateFlow = BehaviorSubject<AuthStates>()..addStream(stateFlow);
@@ -64,47 +65,55 @@ class AuthBloc {
     );
   }
 
-  static Future<AuthStates> _eventHandler(AuthEvents event) async {
-    AuthStates state = LoadingAuthState(_currentStateModel);
+  static Stream<AuthStates> _eventHandler(AuthEvents event) async* {
+    Stream<AuthStates> state = Stream.value(LoadingAuthState(_currentStateModel));
     if (event is CheckAuthEvent) {
-      state = await _checkAuthEvent(event);
+      state = _checkAuthEvent(event);
     } else if (event is RegisterEvent) {
-      state = await _registerEvent(event);
+      state = _registerEvent(event);
     } else if (event is LoginEvent) {
-      state = await _loginEvent(event);
+      state = _loginEvent(event);
     } else if (event is ChangePasswordVisibility) {
       state = _changePasswordVisibility(event);
     } else if (event is GoogleAuth) {
-      state = await _googleAuth(event);
+      state = _googleAuth(event);
     } else if (event is FacebookAuth) {
-      state = await _facebookAuth(event);
+      state = _facebookAuth(event);
     }
-    return state;
+    yield* state;
   }
 
-  static Future<AuthStates> _checkAuthEvent(CheckAuthEvent event) async {
+  static Stream<AuthStates> _checkAuthEvent(CheckAuthEvent event) async* {
     try {
       final user = await _checkTokenUseCase.checkAuth();
 
       debugPrint("working auth checktoken");
 
-      if (user == null) return UnAuthorizedState(_currentStateModel);
+      if (user == null) {
+        yield UnAuthorizedState(_currentStateModel);
+        return;
+      }
+
+      debugPrint("is any user there ${user?.email}");
 
       _currentStateModel.setUser(user);
 
-      return AuthorizedState(_currentStateModel);
+      yield AuthorizedState(_currentStateModel);
     } catch (e) {
-      return ErrorAuthState(_currentStateModel);
+      yield ErrorAuthState(_currentStateModel);
     }
   }
 
-  static Future<AuthStates> _registerEvent(RegisterEvent event) async {
+  static Stream<AuthStates> _registerEvent(RegisterEvent event) async* {
     try {
-      if (!(_currentStateModel.registerForm.currentState?.validate() ?? false)) return _emitter();
+      if (!(_currentStateModel.registerForm.currentState?.validate() ?? false)) {
+        yield _emitter();
+        return;
+      }
 
       _currentStateModel.changeRegisterLoading(true);
 
-      _emitter();
+      yield _emitter();
 
       final user = await _registerUsecase.register(
         email: event.email.trim(),
@@ -116,23 +125,29 @@ class AuthBloc {
 
       _currentStateModel.changeRegisterLoading(false);
 
-      if (user == null) return UnAuthorizedState(_currentStateModel);
+      if (user == null) {
+        yield UnAuthorizedState(_currentStateModel);
+        return;
+      }
 
       _currentStateModel.setUser(user);
 
-      return AuthorizedState(_currentStateModel);
+      yield AuthorizedState(_currentStateModel);
     } catch (e) {
-      return ErrorAuthState(_currentStateModel);
+      yield ErrorAuthState(_currentStateModel);
     }
   }
 
-  static Future<AuthStates> _loginEvent(LoginEvent event) async {
+  static Stream<AuthStates> _loginEvent(LoginEvent event) async* {
     try {
-      if (!(_currentStateModel.loginForm.currentState?.validate() ?? false)) return _emitter();
+      if (!(_currentStateModel.loginForm.currentState?.validate() ?? false)) {
+        yield _emitter();
+        return;
+      }
 
       _currentStateModel.changeLoginLoading(true);
 
-      _emitter();
+      yield _emitter();
 
       final user = await _loginUsecase.login(
         emailOrUserName: event.emailOrUserName.trim(),
@@ -141,44 +156,53 @@ class AuthBloc {
 
       _currentStateModel.changeLoginLoading(false);
 
-      if (user == null) return UnAuthorizedState(_currentStateModel);
+      if (user == null) {
+        yield UnAuthorizedState(_currentStateModel);
+        return;
+      }
 
-      return AuthorizedState(_currentStateModel);
+      yield AuthorizedState(_currentStateModel);
     } catch (e) {
-      return ErrorAuthState(_currentStateModel);
+      yield ErrorAuthState(_currentStateModel);
     }
   }
 
-  static AuthStates _changePasswordVisibility(ChangePasswordVisibility event) {
+  static Stream<AuthStates> _changePasswordVisibility(ChangePasswordVisibility event) async* {
     _currentStateModel.changePasswordVisibility();
-    return _emitter();
+    yield _emitter();
   }
 
-  static Future<AuthStates> _googleAuth(GoogleAuth event) async {
+  static Stream<AuthStates> _googleAuth(GoogleAuth event) async* {
     try {
       final user = await _googleAuthUsecase.googleAuth();
 
-      if (user == null) return UnAuthorizedState(_currentStateModel);
+      if (user == null) {
+        yield UnAuthorizedState(_currentStateModel);
+        return;
+      }
 
       _currentStateModel.setUser(user);
 
-      return AuthorizedState(_currentStateModel);
+      yield AuthorizedState(_currentStateModel);
     } catch (e) {
-      return ErrorAuthState(_currentStateModel);
+      yield ErrorAuthState(_currentStateModel);
     }
   }
 
-  static Future<AuthStates> _facebookAuth(FacebookAuth event) async {
+  static Stream<AuthStates> _facebookAuth(FacebookAuth event) async* {
     try {
       final user = await _facebookAuthUsecase.facebookAuth();
 
-      if (user == null) return UnAuthorizedState(_currentStateModel);
+      if (user == null) {
+        yield UnAuthorizedState(_currentStateModel);
+        return;
+      }
 
       _currentStateModel.setUser(user);
 
-      return AuthorizedState(_currentStateModel);
+      yield AuthorizedState(_currentStateModel);
     } catch (e) {
-      return ErrorAuthState(_currentStateModel);
+      yield ErrorAuthState(_currentStateModel);
     }
   }
 

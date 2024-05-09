@@ -1,6 +1,6 @@
 <resources>
     <!--    app name is facebook created project-->
-    <string name="app_name">value</string>
+    <string name="app_name_example">value</string>
     <string name="facebook_app_id_example">value</string>
     <string name="fb_login_protocol_scheme_example">value</string>
     <string name="facebook_client_token_example">value</string>
