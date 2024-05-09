@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:yahay/features/chats/view/chats_appbar/chats_appbar.dart';
 
 @RoutePage()
 class ChatsPage extends StatefulWidget {
@@ -13,8 +14,9 @@ class _ChatsPageState extends State<ChatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Chats"),
+      appBar: PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+        child: const ChatsAppbar(),
       ),
     );
   }

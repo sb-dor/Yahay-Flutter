@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/core/global_data/models/bottom_navbar_item/bottom_navbar_item.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/features/chats/view/chats_page.dart';
@@ -56,6 +57,8 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
         onTap: (int index) => setState(() => _index = index),
+        unselectedLabelStyle: GoogleFonts.aBeeZee(),
+        selectedLabelStyle: GoogleFonts.aBeeZee(),
         items: _screens
             .map((e) => BottomNavigationBarItem(
                   icon: e.icon,
