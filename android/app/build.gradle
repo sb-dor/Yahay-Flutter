@@ -5,6 +5,7 @@ plugins {
     // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.firebase.crashlytics" version '2.7.1' apply false
 }
 
 def localProperties = new Properties()
