@@ -1,5 +1,6 @@
 import 'package:yahay/core/utils/dotenv/dotenv.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
+import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/core/utils/screen_messaging/screen_messaging.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
@@ -26,5 +27,9 @@ abstract class UtilsInj {
     );
 
     snoopy.registerLazySingleton<ScreenMessaging>(() => ScreenMessaging());
+
+    snoopy.registerLazySingleton<ListPaginationChecker>(
+      () => ListPaginationChecker(),
+    );
   }
 }

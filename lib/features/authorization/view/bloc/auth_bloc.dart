@@ -51,6 +51,8 @@ class AuthBloc {
     final eventBehavior = BehaviorSubject<AuthEvents>();
 
     final stateFlow = eventBehavior.asyncExpand<AuthStates>((authEvents) async* {
+      // if yield has "*" it means that you will yield whole stream with value for returning stream
+      // if yield has not "*" it meant that you will yield only value for returning stream
       yield* _eventHandler(authEvents);
     }).startWith(LoadingAuthState(_currentStateModel));
 
@@ -95,6 +97,8 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
+      // if yield has "*" it means that you will yield whole stream with value for returning stream
+      // if yield has not "*" it meant that you will yield only value for returning stream
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
       yield ErrorAuthState(_currentStateModel);

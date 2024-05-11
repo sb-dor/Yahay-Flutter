@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/dotenv/dotenv.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/injections/injections.dart';
@@ -18,12 +19,14 @@ class DioSettings {
 
   Future<void> init() async {
     final baseOptions = BaseOptions(
-      baseUrl: _mainUrl,
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-      sendTimeout: const Duration(seconds: 10),
-      headers: await headers(),
-    );
+        baseUrl: _mainUrl,
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 10),
+        headers: await headers(),
+        queryParameters: {
+          "per_page": Constants.perPage,
+        });
     dio = Dio(baseOptions);
   }
 }

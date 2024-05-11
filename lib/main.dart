@@ -1,4 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
@@ -36,6 +38,14 @@ class _YahayState extends State<Yahay> {
     _appThemeBloc = snoopy<AppThemeBloc>();
     _authBloc = snoopy<AuthBloc>();
     _authBloc.events.add(CheckAuthEvent());
+
+    FlutterError.onError = (errorDetails) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    };
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
   }
 
   @override

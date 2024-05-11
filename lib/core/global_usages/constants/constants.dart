@@ -1,4 +1,9 @@
 abstract class Constants {
+  // integers
+  static const int perPage = 30;
+
+
+  // Strings
   static const String email = "Email";
   static const String enterEmail = "Enter Email";
   static const String enterEmailOrUserName = "Enter Email or @User-name";
@@ -15,4 +20,7 @@ abstract class Constants {
   static const String contacts = "Contacts";
   static const String chats = "Chats";
   static const String profile = "Profile";
+
+  // paths
+  static const String userErrorImage = "";
 }

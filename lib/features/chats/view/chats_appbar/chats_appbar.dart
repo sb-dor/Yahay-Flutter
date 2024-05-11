@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yahay/features/add_contact_feature/domain/usecases/open_search_contacts_popup.dart';
 
 class ChatsAppbar extends StatelessWidget {
   const ChatsAppbar({super.key});
@@ -15,7 +16,7 @@ class ChatsAppbar extends StatelessWidget {
       ),
       centerTitle: true,
       leading: IconButton(
-        onPressed: () {},
+        onPressed: () => OpenSearchContactsPopup.openSearchContactsPopup(context),
         icon: const Icon(Icons.person_add_alt),
       ),
       actions: [

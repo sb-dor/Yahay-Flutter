@@ -4,3 +4,9 @@ extension MapExtension on Map {
     return null;
   }
 }
+
+extension NumEx on num {
+  num? roundIt({int length = 2}) {
+    return num.parse(toStringAsFixed(2));
+  }
+}

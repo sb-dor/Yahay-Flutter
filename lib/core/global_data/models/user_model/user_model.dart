@@ -13,6 +13,7 @@ class UserModel extends User with _$UserModel {
     String? email,
     String? userName,
     String? birthDay,
+    String? imageUrl,
     String? createdAt,
   }) = _UserModel;
 
@@ -24,6 +25,7 @@ class UserModel extends User with _$UserModel {
         email: user.email,
         userName: user.userName,
         birthDay: user.birthDay,
+        imageUrl: user.imageUrl,
         createdAt: user.createdAt,
       );
 }

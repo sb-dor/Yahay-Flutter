@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/injections/add_contact_feature_inj/add_contact_feature_inj.dart';
 import 'package:yahay/injections/blocs_inj/app_theme_bloc_inj/app_theme_bloc_inj.dart';
 import 'package:yahay/injections/blocs_inj/auth_inj/auth_inj.dart';
 import 'package:yahay/injections/utils_inj/utils_inj.dart';
@@ -20,5 +21,7 @@ abstract class Injections {
     await AppThemeBlocInj.appThemeBlocInj();
 
     await AuthInj.authInj();
+
+    await AddContactFeatureInj.addContactFeatureInj();
   }
 }

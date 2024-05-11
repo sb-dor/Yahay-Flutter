@@ -2,6 +2,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        mavenCentral() // add second one to make work errors
+        mavenLocal()
     }
 }
 
@@ -16,3 +18,4 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+

@@ -7,6 +7,7 @@ class User {
   final String? email;
   final String? userName;
   final String? birthDay;
+  final String? imageUrl;
   final String? createdAt;
 
   const User({
@@ -15,6 +16,7 @@ class User {
     required this.email,
     required this.userName,
     required this.birthDay,
+    required this.imageUrl,
     required this.createdAt,
   });
 }

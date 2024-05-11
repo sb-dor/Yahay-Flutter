@@ -25,6 +25,7 @@ mixin _$UserModel {
   String? get email => throw _privateConstructorUsedError;
   String? get userName => throw _privateConstructorUsedError;
   String? get birthDay => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $UserModelCopyWith<$Res> {
       String? email,
       String? userName,
       String? birthDay,
+      String? imageUrl,
       String? createdAt});
 }
 
@@ -65,6 +67,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? email = freezed,
     Object? userName = freezed,
     Object? birthDay = freezed,
+    Object? imageUrl = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -88,6 +91,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.birthDay
           : birthDay // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -110,6 +117,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String? email,
       String? userName,
       String? birthDay,
+      String? imageUrl,
       String? createdAt});
 }
 
@@ -129,6 +137,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? userName = freezed,
     Object? birthDay = freezed,
+    Object? imageUrl = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_$UserModelImpl(
@@ -152,6 +161,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.birthDay
           : birthDay // ignore: cast_nullable_to_non_nullable
               as String?,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -169,6 +182,7 @@ class _$UserModelImpl implements _UserModel {
       this.email,
       this.userName,
       this.birthDay,
+      this.imageUrl,
       this.createdAt});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -185,11 +199,13 @@ class _$UserModelImpl implements _UserModel {
   @override
   final String? birthDay;
   @override
+  final String? imageUrl;
+  @override
   final String? createdAt;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, email: $email, userName: $userName, birthDay: $birthDay, createdAt: $createdAt)';
+    return 'UserModel(id: $id, name: $name, email: $email, userName: $userName, birthDay: $birthDay, imageUrl: $imageUrl, createdAt: $createdAt)';
   }
 
   @override
@@ -204,14 +220,16 @@ class _$UserModelImpl implements _UserModel {
                 other.userName == userName) &&
             (identical(other.birthDay, birthDay) ||
                 other.birthDay == birthDay) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, email, userName, birthDay, createdAt);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, email, userName, birthDay, imageUrl, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -234,6 +252,7 @@ abstract class _UserModel implements UserModel {
       final String? email,
       final String? userName,
       final String? birthDay,
+      final String? imageUrl,
       final String? createdAt}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -249,6 +268,8 @@ abstract class _UserModel implements UserModel {
   String? get userName;
   @override
   String? get birthDay;
+  @override
+  String? get imageUrl;
   @override
   String? get createdAt;
   @override
