@@ -64,6 +64,8 @@ class _AddContactsPageState extends State<AddContactsPage> {
                     child: TextField(
                       onChanged: (v) =>
                           _addContactBloc.onlySearchContactEvent.add(SearchContactEvent(v)),
+                      onSubmitted: (v) =>
+                          _addContactBloc.onlySearchContactEvent.add(SearchContactEvent(v)),
                       onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
                       style: GoogleFonts.aBeeZee(fontSize: 14),
                       decoration: const InputDecoration(

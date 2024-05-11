@@ -8,6 +8,7 @@ import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/features/add_contact_feature/data/sources/add_contact_source/add_contact_source.dart';
+import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/injections/injections.dart';
 
 class AddContactSourceImpl implements AddContactSource {
@@ -49,6 +50,24 @@ class AddContactSourceImpl implements AddContactSource {
   @override
   Future<bool> addContact(User? user) async {
     try {
+      final body = {
+        "contact_id": user?.id,
+      };
+
+      final response = await _dioSettings.dio.put(_addContactUrl, data: body);
+
+      if (response.statusCode != HttpStatusCodes.success) return false;
+
+      Map<String, dynamic> json =
+          response.data is String ? jsonDecode(response.data) : response.data;
+
+      if (!json.containsKey("success")) return false;
+
+      if (json['success'] == false) {
+        // show error message
+        return false;
+      }
+
       return true;
     } catch (e) {
       FirebaseCrashlytics.instance.log(e.toString());

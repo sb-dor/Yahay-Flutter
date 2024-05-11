@@ -8,8 +8,7 @@ class AddContactRepoImpl extends AddContactRepo {
   AddContactRepoImpl(this._addContactSource);
 
   @override
-  Future<List<User>?> searchContact(String value, int page) =>
-      _addContactSource.searchContact(value, page);
+  Future<List<User>?> searchContact(String value, int page) => _addContactSource.searchContact(value,page );
 
   @override
   Future<bool> addContact(User? user) => _addContactSource.addContact(user);

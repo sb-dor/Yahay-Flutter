@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/features/authorization/domain/repo/authorization_repo.dart';
 import 'package:yahay/features/authorization/domain/repo/other_authorization_repo.dart';
 import 'package:yahay/features/authorization/domain/usecases/check_token_usecase.dart';
@@ -9,6 +10,7 @@ import 'package:yahay/features/authorization/domain/usecases/google_auth_usecase
 import 'package:yahay/features/authorization/domain/usecases/login_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/register_usecase.dart';
 import 'package:yahay/features/authorization/view/bloc/state_model/auth_state_model.dart';
+import 'package:yahay/injections/injections.dart';
 import 'auth_events.dart';
 import 'auth_states.dart';
 
@@ -28,7 +30,7 @@ class AuthBloc {
   final Sink<AuthEvents> events;
   final BehaviorSubject<AuthStates> _states;
 
-  Stream<AuthStates> get states => _states.stream;
+  BehaviorSubject<AuthStates> get states => _states;
 
   const AuthBloc._({
     required this.events,
@@ -131,6 +133,8 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
+      await snoopy<DioSettings>().init();
+
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
       yield ErrorAuthState(_currentStateModel);
@@ -160,6 +164,10 @@ class AuthBloc {
         return;
       }
 
+      _currentStateModel.setUser(user);
+
+      await snoopy<DioSettings>().init();
+
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
       yield ErrorAuthState(_currentStateModel);
@@ -182,6 +190,8 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
+      await snoopy<DioSettings>().init();
+
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
       debugPrint("google auth error is: $e");
@@ -199,6 +209,8 @@ class AuthBloc {
       }
 
       _currentStateModel.setUser(user);
+
+      await snoopy<DioSettings>().init();
 
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
