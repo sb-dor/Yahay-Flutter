@@ -19,6 +19,13 @@ class AddContactStateModel {
 
   bool get hasMore => _hasMore;
 
+  void setChangedModel(User user) {
+    final foundIndex = _users.indexWhere((el) => el.id == user.id);
+    if (foundIndex != -1) {
+      _users[foundIndex] = user;
+    }
+  }
+
   void addAndPag(List<User> users, {bool paginate = false}) {
     if (paginate) {
       _users.addAll(users);

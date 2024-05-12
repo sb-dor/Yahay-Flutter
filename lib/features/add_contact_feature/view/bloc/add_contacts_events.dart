@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:yahay/core/global_data/entities/user.dart';
 
 @immutable
 class AddContactsEvents {}
@@ -11,7 +12,11 @@ class SearchContactEvent extends AddContactsEvents {
 }
 
 @immutable
-class AddContactEvent extends AddContactsEvents {}
+class AddContactEvent extends AddContactsEvents {
+  final User? user;
+
+  AddContactEvent(this.user);
+}
 
 @immutable
 class ClearDataEvent extends AddContactsEvents {}

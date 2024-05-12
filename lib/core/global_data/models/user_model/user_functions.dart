@@ -9,6 +9,8 @@ class UserFunctions extends User {
     super.birthDay,
     super.imageUrl,
     super.createdAt,
+    super.loadingForAddingToContacts,
+    super.contact,
   });
 
   factory UserFunctions.fromEntity(User user) => UserFunctions(
@@ -19,6 +21,7 @@ class UserFunctions extends User {
         birthDay: user.birthDay,
         imageUrl: user.imageUrl,
         createdAt: user.createdAt,
+        loadingForAddingToContacts: user.loadingForAddingToContacts,
       );
 
   String getFirstAndLastLetterOfName() {

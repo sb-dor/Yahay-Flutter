@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/features/add_contact_feature/domain/repo/add_contact_repo.dart';
 import 'package:yahay/features/add_contact_feature/domain/usecases/contacts_features_usecase.dart';
 import 'package:yahay/features/add_contact_feature/view/bloc/add_contacts_events.dart';
@@ -68,6 +69,7 @@ class AddContactBloc {
     Stream<AddContactsStates> tempStream = Stream.value(LoadedAddContactsState(_currentStateModel));
 
     if (event is AddContactEvent) {
+      tempStream = _addContactEvent(event);
     } else if (event is ClearDataEvent) {
       _currentStateModel.clearData();
       tempStream = _emitter();
@@ -96,6 +98,35 @@ class AddContactBloc {
       // if yield has "*" it means that you will yield whole stream with value for returning stream
       // if yield has not "*" it meant that you will yield only value for returning stream
       yield LoadedAddContactsState(_currentStateModel);
+    } catch (e) {
+      yield ErrorAddContactsState(_currentStateModel);
+    }
+  }
+
+  static Stream<AddContactsStates> _addContactEvent(AddContactEvent event) async* {
+    try {
+      if (event.user == null) return;
+
+      UserModel changingModel =
+          UserModel.fromEntity(event.user!).copyWith(loadingForAddingToContacts: true);
+
+      _currentStateModel.setChangedModel(changingModel);
+
+      yield* _emitter();
+
+      final responseValue = await _contactsFeaturesFunctions.addContact(event.user);
+
+      debugPrint("reponse value: $responseValue");
+
+      changingModel = changingModel.copyWith(loadingForAddingToContacts: false);
+
+      _currentStateModel.setChangedModel(changingModel);
+
+      yield* _emitter();
+
+      if (!responseValue) return;
+
+      yield* _emitter();
     } catch (e) {
       yield ErrorAddContactsState(_currentStateModel);
     }

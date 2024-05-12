@@ -27,6 +27,9 @@ mixin _$UserModel {
   String? get birthDay => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
+  bool? get loadingForAddingToContacts => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_contact")
+  UserModel? get contact => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,7 +49,11 @@ abstract class $UserModelCopyWith<$Res> {
       String? userName,
       String? birthDay,
       String? imageUrl,
-      String? createdAt});
+      String? createdAt,
+      bool? loadingForAddingToContacts,
+      @JsonKey(name: "user_contact") UserModel? contact});
+
+  $UserModelCopyWith<$Res>? get contact;
 }
 
 /// @nodoc
@@ -69,6 +76,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? birthDay = freezed,
     Object? imageUrl = freezed,
     Object? createdAt = freezed,
+    Object? loadingForAddingToContacts = freezed,
+    Object? contact = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -99,7 +108,27 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      loadingForAddingToContacts: freezed == loadingForAddingToContacts
+          ? _value.loadingForAddingToContacts
+          : loadingForAddingToContacts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      contact: freezed == contact
+          ? _value.contact
+          : contact // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res>? get contact {
+    if (_value.contact == null) {
+      return null;
+    }
+
+    return $UserModelCopyWith<$Res>(_value.contact!, (value) {
+      return _then(_value.copyWith(contact: value) as $Val);
+    });
   }
 }
 
@@ -118,7 +147,12 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String? userName,
       String? birthDay,
       String? imageUrl,
-      String? createdAt});
+      String? createdAt,
+      bool? loadingForAddingToContacts,
+      @JsonKey(name: "user_contact") UserModel? contact});
+
+  @override
+  $UserModelCopyWith<$Res>? get contact;
 }
 
 /// @nodoc
@@ -139,6 +173,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? birthDay = freezed,
     Object? imageUrl = freezed,
     Object? createdAt = freezed,
+    Object? loadingForAddingToContacts = freezed,
+    Object? contact = freezed,
   }) {
     return _then(_$UserModelImpl(
       id: freezed == id
@@ -169,6 +205,14 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      loadingForAddingToContacts: freezed == loadingForAddingToContacts
+          ? _value.loadingForAddingToContacts
+          : loadingForAddingToContacts // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      contact: freezed == contact
+          ? _value.contact
+          : contact // ignore: cast_nullable_to_non_nullable
+              as UserModel?,
     ));
   }
 }
@@ -183,7 +227,9 @@ class _$UserModelImpl implements _UserModel {
       this.userName,
       this.birthDay,
       this.imageUrl,
-      this.createdAt});
+      this.createdAt,
+      this.loadingForAddingToContacts = false,
+      @JsonKey(name: "user_contact") this.contact});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -202,10 +248,16 @@ class _$UserModelImpl implements _UserModel {
   final String? imageUrl;
   @override
   final String? createdAt;
+  @override
+  @JsonKey()
+  final bool? loadingForAddingToContacts;
+  @override
+  @JsonKey(name: "user_contact")
+  final UserModel? contact;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, email: $email, userName: $userName, birthDay: $birthDay, imageUrl: $imageUrl, createdAt: $createdAt)';
+    return 'UserModel(id: $id, name: $name, email: $email, userName: $userName, birthDay: $birthDay, imageUrl: $imageUrl, createdAt: $createdAt, loadingForAddingToContacts: $loadingForAddingToContacts, contact: $contact)';
   }
 
   @override
@@ -223,13 +275,18 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.loadingForAddingToContacts,
+                    loadingForAddingToContacts) ||
+                other.loadingForAddingToContacts ==
+                    loadingForAddingToContacts) &&
+            (identical(other.contact, contact) || other.contact == contact));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, email, userName, birthDay, imageUrl, createdAt);
+  int get hashCode => Object.hash(runtimeType, id, name, email, userName,
+      birthDay, imageUrl, createdAt, loadingForAddingToContacts, contact);
 
   @JsonKey(ignore: true)
   @override
@@ -247,13 +304,16 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   factory _UserModel(
-      {final int? id,
-      final String? name,
-      final String? email,
-      final String? userName,
-      final String? birthDay,
-      final String? imageUrl,
-      final String? createdAt}) = _$UserModelImpl;
+          {final int? id,
+          final String? name,
+          final String? email,
+          final String? userName,
+          final String? birthDay,
+          final String? imageUrl,
+          final String? createdAt,
+          final bool? loadingForAddingToContacts,
+          @JsonKey(name: "user_contact") final UserModel? contact}) =
+      _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -272,6 +332,11 @@ abstract class _UserModel implements UserModel {
   String? get imageUrl;
   @override
   String? get createdAt;
+  @override
+  bool? get loadingForAddingToContacts;
+  @override
+  @JsonKey(name: "user_contact")
+  UserModel? get contact;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
@@ -6,10 +7,12 @@ import 'package:yahay/core/global_usages/widgets/image_loader/image_loaded.dart'
 
 class AddContactUserWidget extends StatelessWidget {
   final User user;
+  final VoidCallback addUser;
 
   const AddContactUserWidget({
     super.key,
     required this.user,
+    required this.addUser,
   });
 
   @override
@@ -54,7 +57,20 @@ class AddContactUserWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(onPressed: () => [], icon: const Icon(Icons.person_add_alt))
+              if (user.contact != null)
+                IconButton(
+                  onPressed: () => [],
+                  icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
+                )
+              else if ((user.loadingForAddingToContacts ?? false))
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  width: 15,
+                  height: 15,
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                IconButton(onPressed: addUser, icon: const Icon(Icons.person_add_alt))
             ],
           ),
         ),

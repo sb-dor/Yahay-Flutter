@@ -15,6 +15,11 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       birthDay: json['birthDay'] as String?,
       imageUrl: json['imageUrl'] as String?,
       createdAt: json['createdAt'] as String?,
+      loadingForAddingToContacts:
+          json['loadingForAddingToContacts'] as bool? ?? false,
+      contact: json['user_contact'] == null
+          ? null
+          : UserModel.fromJson(json['user_contact'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -26,4 +31,6 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'birthDay': instance.birthDay,
       'imageUrl': instance.imageUrl,
       'createdAt': instance.createdAt,
+      'loadingForAddingToContacts': instance.loadingForAddingToContacts,
+      'user_contact': instance.contact,
     };

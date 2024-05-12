@@ -111,7 +111,10 @@ class _AddContactsPageState extends State<AddContactsPage> {
                         itemCount: currentState.addContactStateModel.users.length,
                         itemBuilder: (context, index) {
                           final user = currentState.addContactStateModel.users[index];
-                          return AddContactUserWidget(user: user);
+                          return AddContactUserWidget(
+                            user: user,
+                            addUser: () => _addContactBloc.event.add(AddContactEvent(user)),
+                          );
                         },
                       );
                     } else {

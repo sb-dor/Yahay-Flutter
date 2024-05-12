@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
@@ -8,7 +7,6 @@ import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/features/add_contact_feature/data/sources/add_contact_source/add_contact_source.dart';
-import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/injections/injections.dart';
 
 class AddContactSourceImpl implements AddContactSource {
@@ -39,7 +37,9 @@ class AddContactSourceImpl implements AddContactSource {
 
       List<dynamic> usersList = json['users']['data'];
 
-      return usersList.map((e) => UserModel.fromJson(e)).toList();
+      final userList = usersList.map((e) => UserModel.fromJson(e)).toList();
+
+      return userList;
     } catch (e) {
       debugPrint("getting value error is: $e");
       FirebaseCrashlytics.instance.log(e.toString());
@@ -56,6 +56,8 @@ class AddContactSourceImpl implements AddContactSource {
 
       final response = await _dioSettings.dio.put(_addContactUrl, data: body);
 
+      debugPrint("adding contact response is: ${response.data}");
+
       if (response.statusCode != HttpStatusCodes.success) return false;
 
       Map<String, dynamic> json =
@@ -70,6 +72,7 @@ class AddContactSourceImpl implements AddContactSource {
 
       return true;
     } catch (e) {
+      debugPrint("add contact error is: $e");
       FirebaseCrashlytics.instance.log(e.toString());
       return false;
     }

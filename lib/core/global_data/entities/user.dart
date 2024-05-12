@@ -10,6 +10,10 @@ class User {
   final String? imageUrl;
   final String? createdAt;
 
+  // other application data
+  final bool? loadingForAddingToContacts;
+  final User? contact;
+
   const User({
     required this.id,
     required this.name,
@@ -18,5 +22,7 @@ class User {
     required this.birthDay,
     required this.imageUrl,
     required this.createdAt,
+    required this.loadingForAddingToContacts,
+    required this.contact,
   });
 }

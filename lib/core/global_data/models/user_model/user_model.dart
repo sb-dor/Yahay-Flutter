@@ -15,6 +15,8 @@ class UserModel extends User with _$UserModel {
     String? birthDay,
     String? imageUrl,
     String? createdAt,
+    @Default(false) bool? loadingForAddingToContacts,
+    @JsonKey(name: "user_contact") UserModel? contact,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, Object?> json) => _$UserModelFromJson(json);
@@ -27,5 +29,7 @@ class UserModel extends User with _$UserModel {
         birthDay: user.birthDay,
         imageUrl: user.imageUrl,
         createdAt: user.createdAt,
+        loadingForAddingToContacts: user.loadingForAddingToContacts,
+        contact: user.contact == null ? null : UserModel.fromEntity(user.contact!),
       );
 }
