@@ -1,6 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
-import 'package:yahay/features/chats/view/chats_appbar/chats_appbar.dart';
+import 'chats_appbar/chats_appbar.dart';
 
 @RoutePage()
 class ChatsPage extends StatefulWidget {

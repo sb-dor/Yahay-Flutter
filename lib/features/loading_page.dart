@@ -5,7 +5,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
-import 'package:yahay/features/chats/view/chats_page.dart';
+import 'package:yahay/features/chats/view/pages/chats_page.dart';
+import 'package:yahay/injections/blocs_inj/chats_bloc_inj/chats_bloc_inj.dart';
 import 'package:yahay/injections/injections.dart';
 
 import 'authorization/view/bloc/auth_bloc.dart';
@@ -28,9 +29,10 @@ class _HomePageState extends State<LoadingPage> {
     super.initState();
     _authBloc = snoopy<AuthBloc>();
 
-    _streamSubscription = _authBloc.states.listen((state) {
+    _streamSubscription = _authBloc.states.listen((state) async {
       if (state is AuthorizedState) {
         AutoRouter.of(context).replaceAll([const HomeRoute()]);
+        await ChatsAuthInj.chatsAuthInj();
       } else if (state is UnAuthorizedState) {
         AutoRouter.of(context).replaceAll([const LoginRoute()]);
       } else if (state is ErrorAuthState) {
@@ -42,6 +44,12 @@ class _HomePageState extends State<LoadingPage> {
   void dispose() {
     _streamSubscription.cancel();
     super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    _streamSubscription.cancel();
+    super.deactivate();
   }
 
   @override

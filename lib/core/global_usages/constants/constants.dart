@@ -2,7 +2,6 @@ abstract class Constants {
   // integers
   static const int perPage = 30;
 
-
   // Strings
   static const String email = "Email";
   static const String enterEmail = "Enter Email";
@@ -23,4 +22,9 @@ abstract class Constants {
 
   // paths
   static const String userErrorImage = "";
+
+  // channels name
+  static const String channelNotifyOfUserName = "chat_notify_of_user_";
+  static const String channelNotifyOfUserEventName = "chat_notification.event";
+//
 }

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:yahay/features/authorization/view/pages/login_page.dart';
 import 'package:yahay/features/authorization/view/pages/register_page.dart';
-import 'package:yahay/features/chats/view/chats_page.dart';
+import 'package:yahay/features/chats/view/pages/chats_page.dart';
 import 'package:yahay/features/home_page.dart';
 import 'package:yahay/features/loading_page.dart';
 

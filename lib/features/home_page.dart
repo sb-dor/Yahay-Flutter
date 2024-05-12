@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/core/global_data/models/bottom_navbar_item/bottom_navbar_item.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
-import 'package:yahay/features/chats/view/chats_page.dart';
+import 'package:yahay/features/chats/view/pages/chats_page.dart';
 import 'package:yahay/features/contacts/view/contacts_page.dart';
 import 'package:yahay/features/profile/view/profile_page.dart';
 
