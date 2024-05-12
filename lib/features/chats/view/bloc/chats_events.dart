@@ -5,6 +5,9 @@ import 'package:pusher_client/pusher_client.dart';
 class ChatsEvents {}
 
 @immutable
+class GetUserChatsEvent extends ChatsEvents {}
+
+@immutable
 class ChatListenerEvent extends ChatsEvents {
   final PusherEvent? event;
 

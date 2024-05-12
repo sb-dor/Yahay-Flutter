@@ -11,7 +11,11 @@ abstract class ChatsAuthInj {
       () => ChatsDataSourceImpl(),
     );
 
-    snoopy.registerLazySingleton<ChatsRepo>(() => ChatsRepoImpl());
+    snoopy.registerLazySingleton<ChatsRepo>(
+      () => ChatsRepoImpl(
+        snoopy<ChatsDataSource>(),
+      ),
+    );
 
     snoopy.registerSingleton(
       ChatsBloc(

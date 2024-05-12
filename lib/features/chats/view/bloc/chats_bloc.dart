@@ -6,6 +6,7 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/chats/domain/repo/chats_repo.dart';
+import 'package:yahay/features/chats/domain/usecases/get_user_chats_usecase.dart';
 import 'package:yahay/features/chats/view/bloc/state_model/chats_state_model.dart';
 import 'package:yahay/injections/injections.dart';
 import 'chats_events.dart';
@@ -18,6 +19,7 @@ typedef PusherDataListener = void Function(
 class ChatsBloc {
   static late BehaviorSubject<ChatsStates> _currentState; // is necessary if you use _emitter()
   static late ChatsStateModel _currentStateModel;
+  static late GetUserChatsUseCase _getUserChatsUseCase;
 
   final Sink<ChatsEvents> events;
   final BehaviorSubject<ChatsStates> _states;
@@ -33,6 +35,7 @@ class ChatsBloc {
     required ChatsRepo chatsRepo,
   }) {
     _currentStateModel = ChatsStateModel();
+    _getUserChatsUseCase = GetUserChatsUseCase(chatsRepo);
 
     final chatsEventsBehavior = BehaviorSubject<ChatsEvents>();
 
@@ -41,6 +44,8 @@ class ChatsBloc {
 
       if (event is ChatListenerEvent) {
         state = _chatListenerEvent(event);
+      } else if (event is GetUserChatsEvent) {
+        state = _getUserChatsEvent(event);
       }
 
       yield* state;
@@ -69,6 +74,19 @@ class ChatsBloc {
       events: chatsEventsBehavior.sink,
       states: behaviorOfStates,
     );
+  }
+
+  static Stream<ChatsStates> _getUserChatsEvent(GetUserChatsEvent event) async* {
+    try {
+      yield LoadingChatsState(_currentStateModel);
+
+      _currentStateModel.chats = await _getUserChatsUseCase.chats();
+
+      yield LoadedChatsState(_currentStateModel);
+    } catch (e) {
+      debugPrint("_getUserChatsEvent error is: $e");
+      yield ErrorChatsState(_currentStateModel);
+    }
   }
 
   static Stream<ChatsStates> _chatListenerEvent(ChatListenerEvent event) async* {
