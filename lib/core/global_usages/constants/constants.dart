@@ -26,5 +26,8 @@ abstract class Constants {
   // channels name
   static const String channelNotifyOfUserName = "chat_notify_of_user_";
   static const String channelNotifyOfUserEventName = "chat_notification.event";
+
+  static const String chatChannelName = "chat_channel_";
+  static const String chatChannelEventName = "";
 //
 }

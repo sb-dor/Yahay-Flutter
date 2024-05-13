@@ -21,6 +21,8 @@ ChatModel _$ChatModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ChatModel {
   int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "chat_uuid")
+  String? get uuid => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
@@ -41,6 +43,7 @@ abstract class $ChatModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      @JsonKey(name: "chat_uuid") String? uuid,
       String? name,
       String? description,
       String? createdAt,
@@ -64,6 +67,7 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
   @override
   $Res call({
     Object? id = freezed,
+    Object? uuid = freezed,
     Object? name = freezed,
     Object? description = freezed,
     Object? createdAt = freezed,
@@ -75,6 +79,10 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -121,6 +129,7 @@ abstract class _$$ChatModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      @JsonKey(name: "chat_uuid") String? uuid,
       String? name,
       String? description,
       String? createdAt,
@@ -143,6 +152,7 @@ class __$$ChatModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? uuid = freezed,
     Object? name = freezed,
     Object? description = freezed,
     Object? createdAt = freezed,
@@ -154,6 +164,10 @@ class __$$ChatModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -183,6 +197,7 @@ class __$$ChatModelImplCopyWithImpl<$Res>
 class _$ChatModelImpl implements _ChatModel {
   const _$ChatModelImpl(
       {this.id,
+      @JsonKey(name: "chat_uuid") this.uuid,
       this.name,
       this.description,
       this.createdAt,
@@ -194,6 +209,9 @@ class _$ChatModelImpl implements _ChatModel {
 
   @override
   final int? id;
+  @override
+  @JsonKey(name: "chat_uuid")
+  final String? uuid;
   @override
   final String? name;
   @override
@@ -209,7 +227,7 @@ class _$ChatModelImpl implements _ChatModel {
 
   @override
   String toString() {
-    return 'ChatModel(id: $id, name: $name, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage)';
+    return 'ChatModel(id: $id, uuid: $uuid, name: $name, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage)';
   }
 
   @override
@@ -218,6 +236,7 @@ class _$ChatModelImpl implements _ChatModel {
         (other.runtimeType == runtimeType &&
             other is _$ChatModelImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -231,8 +250,8 @@ class _$ChatModelImpl implements _ChatModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, description, createdAt, updatedAt, lastMessage);
+  int get hashCode => Object.hash(runtimeType, id, uuid, name, description,
+      createdAt, updatedAt, lastMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -251,6 +270,7 @@ class _$ChatModelImpl implements _ChatModel {
 abstract class _ChatModel implements ChatModel {
   const factory _ChatModel(
       {final int? id,
+      @JsonKey(name: "chat_uuid") final String? uuid,
       final String? name,
       final String? description,
       final String? createdAt,
@@ -263,6 +283,9 @@ abstract class _ChatModel implements ChatModel {
 
   @override
   int? get id;
+  @override
+  @JsonKey(name: "chat_uuid")
+  String? get uuid;
   @override
   String? get name;
   @override

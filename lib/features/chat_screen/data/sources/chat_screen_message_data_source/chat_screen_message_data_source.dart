@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:yahay/core/global_data/entities/user.dart';
-import 'package:yahay/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 
-abstract class ChatScreenRepo {
+abstract class ChatScreenMessageDataSource {
   Future<void> sendMessage({required User toUser, String? message});
 
   Future<void> sendPicture({required User toUser, required File file, String? message});

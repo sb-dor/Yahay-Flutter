@@ -10,6 +10,7 @@ part 'chat_model.g.dart';
 class ChatModel extends Chat with _$ChatModel {
   const factory ChatModel({
     int? id,
+    @JsonKey(name: "chat_uuid") String? uuid,
     String? name,
     String? description,
     String? createdAt,

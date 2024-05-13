@@ -4,6 +4,7 @@ import 'package:yahay/core/global_data/entities/chats_entities/chat_message.dart
 @immutable
 class Chat {
   final int? id;
+  final String? uuid;
   final String? name;
   final String? description;
   final String? createdAt;
@@ -14,6 +15,7 @@ class Chat {
 
   const Chat({
     required this.id,
+    required this.uuid,
     required this.name,
     required this.description,
     required this.createdAt,

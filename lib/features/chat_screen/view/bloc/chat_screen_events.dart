@@ -1,4 +1,37 @@
 import 'package:flutter/foundation.dart';
+import 'package:pusher_client/pusher_client.dart';
+import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 
 @immutable
 class ChatScreenEvents {}
+
+// init chat on entering to the screen (if chat was already created)
+@immutable
+class InitChatScreenEvent extends ChatScreenEvents {
+  final Chat? chat;
+  final Sink<ChatScreenEvents> events;
+
+  InitChatScreenEvent(this.chat, this.events);
+}
+
+// init chat on message sending (if chat was not created)
+class InitChatOnMessageEvent extends ChatScreenEvents {
+  final Sink<ChatScreenEvents> events;
+
+  InitChatOnMessageEvent(this.events);
+}
+
+@immutable
+class HandleChatScreenEvent extends ChatScreenEvents {
+  final PusherEvent? event;
+
+  HandleChatScreenEvent(this.event);
+}
+
+// sending message event
+@immutable
+class SendMessageEvent extends ChatScreenEvents {
+  final Sink<ChatScreenEvents> events;
+
+  SendMessageEvent(this.events);
+}
