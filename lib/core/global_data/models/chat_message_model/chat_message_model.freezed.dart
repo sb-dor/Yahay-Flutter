@@ -21,6 +21,7 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ChatMessageModel {
   UserModel? get user => throw _privateConstructorUsedError;
+  @JsonKey(name: "related_to_user")
   UserModel? get relatedToUser => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
@@ -43,7 +44,7 @@ abstract class $ChatMessageModelCopyWith<$Res> {
   @useResult
   $Res call(
       {UserModel? user,
-      UserModel? relatedToUser,
+      @JsonKey(name: "related_to_user") UserModel? relatedToUser,
       String? message,
       String? imageUrl,
       String? videoUrl,
@@ -148,7 +149,7 @@ abstract class _$$ChatMessageModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {UserModel? user,
-      UserModel? relatedToUser,
+      @JsonKey(name: "related_to_user") UserModel? relatedToUser,
       String? message,
       String? imageUrl,
       String? videoUrl,
@@ -224,7 +225,7 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
 class _$ChatMessageModelImpl implements _ChatMessageModel {
   const _$ChatMessageModelImpl(
       {this.user,
-      this.relatedToUser,
+      @JsonKey(name: "related_to_user") this.relatedToUser,
       this.message,
       this.imageUrl,
       this.videoUrl,
@@ -238,6 +239,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   @override
   final UserModel? user;
   @override
+  @JsonKey(name: "related_to_user")
   final UserModel? relatedToUser;
   @override
   final String? message;
@@ -301,7 +303,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
 abstract class _ChatMessageModel implements ChatMessageModel {
   const factory _ChatMessageModel(
       {final UserModel? user,
-      final UserModel? relatedToUser,
+      @JsonKey(name: "related_to_user") final UserModel? relatedToUser,
       final String? message,
       final String? imageUrl,
       final String? videoUrl,
@@ -315,6 +317,7 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   @override
   UserModel? get user;
   @override
+  @JsonKey(name: "related_to_user")
   UserModel? get relatedToUser;
   @override
   String? get message;

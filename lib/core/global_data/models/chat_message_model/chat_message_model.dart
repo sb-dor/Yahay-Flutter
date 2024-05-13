@@ -10,7 +10,7 @@ part 'chat_message_model.g.dart';
 class ChatMessageModel extends ChatMessage with _$ChatMessageModel {
   const factory ChatMessageModel({
     UserModel? user,
-    UserModel? relatedToUser,
+    @JsonKey(name: "related_to_user") UserModel? relatedToUser,
     String? message,
     String? imageUrl,
     String? videoUrl,

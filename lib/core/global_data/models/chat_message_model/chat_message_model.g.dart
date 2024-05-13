@@ -12,9 +12,9 @@ _$ChatMessageModelImpl _$$ChatMessageModelImplFromJson(
       user: json['user'] == null
           ? null
           : UserModel.fromJson(json['user'] as Map<String, dynamic>),
-      relatedToUser: json['relatedToUser'] == null
+      relatedToUser: json['related_to_user'] == null
           ? null
-          : UserModel.fromJson(json['relatedToUser'] as Map<String, dynamic>),
+          : UserModel.fromJson(json['related_to_user'] as Map<String, dynamic>),
       message: json['message'] as String?,
       imageUrl: json['imageUrl'] as String?,
       videoUrl: json['videoUrl'] as String?,
@@ -27,7 +27,7 @@ Map<String, dynamic> _$$ChatMessageModelImplToJson(
         _$ChatMessageModelImpl instance) =>
     <String, dynamic>{
       'user': instance.user,
-      'relatedToUser': instance.relatedToUser,
+      'related_to_user': instance.relatedToUser,
       'message': instance.message,
       'imageUrl': instance.imageUrl,
       'videoUrl': instance.videoUrl,

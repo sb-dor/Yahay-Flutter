@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/core/global_data/entities/user.dart';
 
 @immutable
 class ChatScreenEvents {}
@@ -9,17 +10,18 @@ class ChatScreenEvents {}
 @immutable
 class InitChatScreenEvent extends ChatScreenEvents {
   final Chat? chat;
+  final User? user; // temp for creating temp chat if chat does not exist
   final Sink<ChatScreenEvents> events;
 
-  InitChatScreenEvent(this.chat, this.events);
+  InitChatScreenEvent(this.chat, this.user, this.events);
 }
 
 // init chat on message sending (if chat was not created)
-class InitChatOnMessageEvent extends ChatScreenEvents {
-  final Sink<ChatScreenEvents> events;
-
-  InitChatOnMessageEvent(this.events);
-}
+// class InitChatOnMessageEvent extends ChatScreenEvents {
+//   final Sink<ChatScreenEvents> events;
+//
+//   InitChatOnMessageEvent(this.events);
+// }
 
 @immutable
 class HandleChatScreenEvent extends ChatScreenEvents {

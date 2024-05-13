@@ -29,6 +29,11 @@ mixin _$ChatModel {
   String? get updatedAt => throw _privateConstructorUsedError; //
   @JsonKey(name: "chat_last_message")
   ChatMessageModel? get lastMessage => throw _privateConstructorUsedError;
+  @JsonKey(name: "participants")
+  List<ChatParticipantModel>? get participants =>
+      throw _privateConstructorUsedError;
+  @JsonKey(name: "messages")
+  List<ChatMessageModel>? get messages => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +53,9 @@ abstract class $ChatModelCopyWith<$Res> {
       String? description,
       String? createdAt,
       String? updatedAt,
-      @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage});
+      @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
+      @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
+      @JsonKey(name: "messages") List<ChatMessageModel>? messages});
 
   $ChatMessageModelCopyWith<$Res>? get lastMessage;
 }
@@ -73,6 +80,8 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? lastMessage = freezed,
+    Object? participants = freezed,
+    Object? messages = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -103,6 +112,14 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
           ? _value.lastMessage
           : lastMessage // ignore: cast_nullable_to_non_nullable
               as ChatMessageModel?,
+      participants: freezed == participants
+          ? _value.participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<ChatParticipantModel>?,
+      messages: freezed == messages
+          ? _value.messages
+          : messages // ignore: cast_nullable_to_non_nullable
+              as List<ChatMessageModel>?,
     ) as $Val);
   }
 
@@ -134,7 +151,9 @@ abstract class _$$ChatModelImplCopyWith<$Res>
       String? description,
       String? createdAt,
       String? updatedAt,
-      @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage});
+      @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
+      @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
+      @JsonKey(name: "messages") List<ChatMessageModel>? messages});
 
   @override
   $ChatMessageModelCopyWith<$Res>? get lastMessage;
@@ -158,6 +177,8 @@ class __$$ChatModelImplCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? lastMessage = freezed,
+    Object? participants = freezed,
+    Object? messages = freezed,
   }) {
     return _then(_$ChatModelImpl(
       id: freezed == id
@@ -188,6 +209,14 @@ class __$$ChatModelImplCopyWithImpl<$Res>
           ? _value.lastMessage
           : lastMessage // ignore: cast_nullable_to_non_nullable
               as ChatMessageModel?,
+      participants: freezed == participants
+          ? _value._participants
+          : participants // ignore: cast_nullable_to_non_nullable
+              as List<ChatParticipantModel>?,
+      messages: freezed == messages
+          ? _value._messages
+          : messages // ignore: cast_nullable_to_non_nullable
+              as List<ChatMessageModel>?,
     ));
   }
 }
@@ -202,7 +231,12 @@ class _$ChatModelImpl implements _ChatModel {
       this.description,
       this.createdAt,
       this.updatedAt,
-      @JsonKey(name: "chat_last_message") this.lastMessage});
+      @JsonKey(name: "chat_last_message") this.lastMessage,
+      @JsonKey(name: "participants")
+      final List<ChatParticipantModel>? participants,
+      @JsonKey(name: "messages") final List<ChatMessageModel>? messages})
+      : _participants = participants,
+        _messages = messages;
 
   factory _$ChatModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatModelImplFromJson(json);
@@ -224,10 +258,31 @@ class _$ChatModelImpl implements _ChatModel {
   @override
   @JsonKey(name: "chat_last_message")
   final ChatMessageModel? lastMessage;
+  final List<ChatParticipantModel>? _participants;
+  @override
+  @JsonKey(name: "participants")
+  List<ChatParticipantModel>? get participants {
+    final value = _participants;
+    if (value == null) return null;
+    if (_participants is EqualUnmodifiableListView) return _participants;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<ChatMessageModel>? _messages;
+  @override
+  @JsonKey(name: "messages")
+  List<ChatMessageModel>? get messages {
+    final value = _messages;
+    if (value == null) return null;
+    if (_messages is EqualUnmodifiableListView) return _messages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ChatModel(id: $id, uuid: $uuid, name: $name, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage)';
+    return 'ChatModel(id: $id, uuid: $uuid, name: $name, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage, participants: $participants, messages: $messages)';
   }
 
   @override
@@ -245,13 +300,25 @@ class _$ChatModelImpl implements _ChatModel {
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.lastMessage, lastMessage) ||
-                other.lastMessage == lastMessage));
+                other.lastMessage == lastMessage) &&
+            const DeepCollectionEquality()
+                .equals(other._participants, _participants) &&
+            const DeepCollectionEquality().equals(other._messages, _messages));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, uuid, name, description,
-      createdAt, updatedAt, lastMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      uuid,
+      name,
+      description,
+      createdAt,
+      updatedAt,
+      lastMessage,
+      const DeepCollectionEquality().hash(_participants),
+      const DeepCollectionEquality().hash(_messages));
 
   @JsonKey(ignore: true)
   @override
@@ -275,8 +342,11 @@ abstract class _ChatModel implements ChatModel {
       final String? description,
       final String? createdAt,
       final String? updatedAt,
-      @JsonKey(name: "chat_last_message")
-      final ChatMessageModel? lastMessage}) = _$ChatModelImpl;
+      @JsonKey(name: "chat_last_message") final ChatMessageModel? lastMessage,
+      @JsonKey(name: "participants")
+      final List<ChatParticipantModel>? participants,
+      @JsonKey(name: "messages")
+      final List<ChatMessageModel>? messages}) = _$ChatModelImpl;
 
   factory _ChatModel.fromJson(Map<String, dynamic> json) =
       _$ChatModelImpl.fromJson;
@@ -297,6 +367,12 @@ abstract class _ChatModel implements ChatModel {
   @override //
   @JsonKey(name: "chat_last_message")
   ChatMessageModel? get lastMessage;
+  @override
+  @JsonKey(name: "participants")
+  List<ChatParticipantModel>? get participants;
+  @override
+  @JsonKey(name: "messages")
+  List<ChatMessageModel>? get messages;
   @override
   @JsonKey(ignore: true)
   _$$ChatModelImplCopyWith<_$ChatModelImpl> get copyWith =>

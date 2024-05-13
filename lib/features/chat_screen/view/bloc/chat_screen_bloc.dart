@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
@@ -63,16 +64,17 @@ class ChatScreenBloc {
       yield* _handleChatScreenEvent(event);
     } else if (event is SendMessageEvent) {
       yield* _sendMessageEvent(event);
-    } else if (event is InitChatOnMessageEvent) {
-      yield* _initChatOnMessageEvent(event);
     }
+    // else if (event is InitChatOnMessageEvent) {
+    //   yield* _initChatOnMessageEvent(event);
+    // }
   }
 
   // message sending event
   static Stream<ChatScreenStates> _sendMessageEvent(SendMessageEvent event) async* {
     try {
       // just check whether user subscribed to the channel
-      if (_channel == null) event.events.add(InitChatOnMessageEvent(event.events));
+      // if (_channel == null) event.events.add(InitChatOnMessageEvent(event.events));
       //
       // send message logic
     } catch (e) {
@@ -83,9 +85,11 @@ class ChatScreenBloc {
   // initializing chat screen on entering to the screen
   static Stream<ChatScreenStates> _initChatScreenEvent(InitChatScreenEvent event) async* {
     try {
-      final chat = event.chat;
+      final chat = await _chatScreenChatUsecase.chat(chat: event.chat, withUser: event.user);
 
-      if (chat == null) return;
+      if (chat == null || chat.uuid == null) return;
+
+      _currentStateModel.setChat(chat);
 
       _channel = snoopy<PusherClientService>()
           .pusherClient
@@ -103,28 +107,30 @@ class ChatScreenBloc {
 
   // every time when user clicks "send message" this func below will check users chat
   // if it's already exits this func do nothing
-  static Stream<ChatScreenStates> _initChatOnMessageEvent(InitChatOnMessageEvent event) async* {
-    try {
-      // checking channel for null one more time
-      if (_channel != null) return;
-      // check server for getting chat
-      final chat = await _chatScreenChatUsecase.chat();
-
-      if (chat == null) return;
-
-      _channel = snoopy<PusherClientService>()
-          .pusherClient
-          .subscribe("${Constants.chatChannelName}${chat.uuid}");
-
-      _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
-        event.events.add(HandleChatScreenEvent(pusherEvent));
-      });
-
-      // get all chat messages here
-    } catch (e) {
-      yield ErrorChatScreenState(_currentStateModel);
-    }
-  }
+  // static Stream<ChatScreenStates> _initChatOnMessageEvent(InitChatOnMessageEvent event) async* {
+  //   try {
+  //     // checking channel for null one more time
+  //     if (_channel != null) return;
+  //     // check server for getting chat
+  //     final chat = await _chatScreenChatUsecase.chat();
+  //
+  //     if (chat == null) return;
+  //
+  //     _currentStateModel.setChat(chat);
+  //
+  //     _channel = snoopy<PusherClientService>()
+  //         .pusherClient
+  //         .subscribe("${Constants.chatChannelName}${chat.uuid}");
+  //
+  //     _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
+  //       event.events.add(HandleChatScreenEvent(pusherEvent));
+  //     });
+  //
+  //     // get all chat messages here
+  //   } catch (e) {
+  //     yield ErrorChatScreenState(_currentStateModel);
+  //   }
+  // }
 
   // all handling chat messages through pusher will be here
   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatScreenEvent event) async* {}
