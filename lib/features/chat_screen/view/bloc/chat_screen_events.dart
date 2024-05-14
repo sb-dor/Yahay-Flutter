@@ -16,12 +16,8 @@ class InitChatScreenEvent extends ChatScreenEvents {
   InitChatScreenEvent(this.chat, this.user, this.events);
 }
 
-// init chat on message sending (if chat was not created)
-// class InitChatOnMessageEvent extends ChatScreenEvents {
-//   final Sink<ChatScreenEvents> events;
-//
-//   InitChatOnMessageEvent(this.events);
-// }
+@immutable
+class RemoveAllTempCreatedChatsEvent extends ChatScreenEvents {}
 
 @immutable
 class HandleChatScreenEvent extends ChatScreenEvents {

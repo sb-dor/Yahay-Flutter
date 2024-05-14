@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
@@ -47,7 +48,10 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => [],
+          onPressed: () {
+            _chatScreenBloc.events.add(RemoveAllTempCreatedChatsEvent());
+            AutoRouter.of(context).maybePop();
+          },
           icon: const Icon(CupertinoIcons.back),
         ),
       ),

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
@@ -11,19 +14,41 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
   final _dioSettings = snoopy<DioSettings>();
 
   static const String _getChatUrl = "${AppHttpRoutes.chatsPrefix}/get/chat/on/entrance";
+  static const String _deleteTempCreatedChatsUrl =
+      "${AppHttpRoutes.chatsPrefix}/delete/temp/created/chats";
 
   @override
   Future<ChatModel?> chat({Chat? chat, User? withUser}) async {
     try {
       final body = {
-        "chat_id": chat?.id,
+        "chat_uuid": chat?.uuid,
         'with_user_id': withUser?.id,
       };
 
       final response = await _dioSettings.dio.get(_getChatUrl, data: body);
+
+      debugPrint("chat response is: ${response.data}");
+
+      if (response.statusCode != HttpStatusCodes.success) return null;
+
+      Map<String, dynamic> json =
+          response.data is String ? jsonDecode(response.data) : response.data;
+
+      if (!json.containsKey("chat")) return null;
+
+      return ChatModel.fromJson(json['chat']);
     } catch (e) {
       debugPrint("ChatScreenChatDataSourceImpl chat error is: $e");
       return null;
+    }
+  }
+
+  @override
+  Future<void> removeAllTempCreatedChats() async {
+    try {
+      await _dioSettings.dio.delete(_deleteTempCreatedChatsUrl);
+    } catch (e) {
+      debugPrint("removeAllTempCreatedChats error is: $e");
     }
   }
 }

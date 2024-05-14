@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/user_model/user_functions.dart';
 import 'package:yahay/core/global_usages/widgets/image_loader/image_loaded.dart';
@@ -59,7 +61,10 @@ class AddContactUserWidget extends StatelessWidget {
               ),
               if (user.contact != null)
                 IconButton(
-                  onPressed: () => [],
+                  onPressed: () {
+                    Navigator.pop(context);
+                    AutoRouter.of(context).push(ChatRoute(chat: null, user: user));
+                  },
                   icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
                 )
               else if ((user.loadingForAddingToContacts ?? false))

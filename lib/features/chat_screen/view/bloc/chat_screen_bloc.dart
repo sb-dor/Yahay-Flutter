@@ -64,10 +64,9 @@ class ChatScreenBloc {
       yield* _handleChatScreenEvent(event);
     } else if (event is SendMessageEvent) {
       yield* _sendMessageEvent(event);
+    } else if (event is RemoveAllTempCreatedChatsEvent) {
+      _removeAllTempCreatedChatsEvent(event);
     }
-    // else if (event is InitChatOnMessageEvent) {
-    //   yield* _initChatOnMessageEvent(event);
-    // }
   }
 
   // message sending event
@@ -85,9 +84,15 @@ class ChatScreenBloc {
   // initializing chat screen on entering to the screen
   static Stream<ChatScreenStates> _initChatScreenEvent(InitChatScreenEvent event) async* {
     try {
+      yield LoadingChatScreenState(_currentStateModel);
+
       final chat = await _chatScreenChatUsecase.chat(chat: event.chat, withUser: event.user);
 
-      if (chat == null || chat.uuid == null) return;
+      if (chat == null || chat.uuid == null) {
+        _currentStateModel.setChat(null);
+        yield ErrorChatScreenState(_currentStateModel);
+        return;
+      }
 
       _currentStateModel.setChat(chat);
 
@@ -99,39 +104,17 @@ class ChatScreenBloc {
         event.events.add(HandleChatScreenEvent(pusherEvent));
       });
 
+      yield LoadedChatScreenState(_currentStateModel);
+
       // get all chat messages here
     } catch (e) {
       yield ErrorChatScreenState(_currentStateModel);
     }
   }
 
-  // every time when user clicks "send message" this func below will check users chat
-  // if it's already exits this func do nothing
-  // static Stream<ChatScreenStates> _initChatOnMessageEvent(InitChatOnMessageEvent event) async* {
-  //   try {
-  //     // checking channel for null one more time
-  //     if (_channel != null) return;
-  //     // check server for getting chat
-  //     final chat = await _chatScreenChatUsecase.chat();
-  //
-  //     if (chat == null) return;
-  //
-  //     _currentStateModel.setChat(chat);
-  //
-  //     _channel = snoopy<PusherClientService>()
-  //         .pusherClient
-  //         .subscribe("${Constants.chatChannelName}${chat.uuid}");
-  //
-  //     _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
-  //       event.events.add(HandleChatScreenEvent(pusherEvent));
-  //     });
-  //
-  //     // get all chat messages here
-  //   } catch (e) {
-  //     yield ErrorChatScreenState(_currentStateModel);
-  //   }
-  // }
+  static void _removeAllTempCreatedChatsEvent(RemoveAllTempCreatedChatsEvent event) {
+    try {} catch (e) {}
+  }
 
-  // all handling chat messages through pusher will be here
   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatScreenEvent event) async* {}
 }
