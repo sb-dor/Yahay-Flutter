@@ -11,4 +11,7 @@ class ChatScreenChatUsecase {
         chat: chat,
         withUser: withUser,
       );
+
+  Future<void> removeAllTempCreatedChats({required Chat? chat}) =>
+      _chatScreenChatRepo.removeAllTempCreatedChats(chat: chat);
 }

@@ -113,7 +113,11 @@ class ChatScreenBloc {
   }
 
   static void _removeAllTempCreatedChatsEvent(RemoveAllTempCreatedChatsEvent event) {
-    try {} catch (e) {}
+    try {
+      _chatScreenChatUsecase.removeAllTempCreatedChats(chat: _currentStateModel.currentChat);
+    } catch (e) {
+      debugPrint("_removeAllTempCreatedChatsEvent error is: $e");
+    }
   }
 
   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatScreenEvent event) async* {}

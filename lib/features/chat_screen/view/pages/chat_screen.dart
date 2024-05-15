@@ -6,6 +6,7 @@ import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_events.dart';
+import 'package:yahay/features/chat_screen/view/pages/bottom_chat_widget/bottom_chat_widget.dart';
 import 'package:yahay/injections/injections.dart';
 
 @RoutePage()
@@ -54,6 +55,16 @@ class _ChatScreenState extends State<ChatScreen> {
           },
           icon: const Icon(CupertinoIcons.back),
         ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: [],
+            ),
+          ),
+          BottomChatWidget(),
+        ],
       ),
     );
   }

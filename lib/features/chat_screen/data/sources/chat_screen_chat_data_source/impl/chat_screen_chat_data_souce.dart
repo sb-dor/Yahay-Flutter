@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
@@ -44,9 +45,14 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
   }
 
   @override
-  Future<void> removeAllTempCreatedChats() async {
+  Future<void> removeAllTempCreatedChats({required Chat? chat}) async {
     try {
-      await _dioSettings.dio.delete(_deleteTempCreatedChatsUrl);
+      final body = {"chat_id": chat?.id, "chat_uuid": chat?.uuid};
+
+      final response = await _dioSettings.dio.delete(_deleteTempCreatedChatsUrl, data: body);
+
+      debugPrint("coming remove temp created chats: ${response.data}");
+
     } catch (e) {
       debugPrint("removeAllTempCreatedChats error is: $e");
     }

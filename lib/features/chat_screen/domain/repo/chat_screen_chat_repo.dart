@@ -5,5 +5,5 @@ abstract class ChatScreenChatRepo {
   // create or get existing chat
   Future<Chat?> chat({Chat? chat, User? withUser});
 
-  Future<void> removeAllTempCreatedChats();
+  Future<void> removeAllTempCreatedChats({required Chat? chat});
 }

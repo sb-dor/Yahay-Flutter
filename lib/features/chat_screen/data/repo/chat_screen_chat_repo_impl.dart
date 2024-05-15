@@ -16,5 +16,6 @@ class ChatScreenChatRepoImpl implements ChatScreenChatRepo {
       );
 
   @override
-  Future<void> removeAllTempCreatedChats() => _chatScreenChatDataSource.removeAllTempCreatedChats();
+  Future<void> removeAllTempCreatedChats({required Chat? chat}) =>
+      _chatScreenChatDataSource.removeAllTempCreatedChats(chat: chat);
 }
