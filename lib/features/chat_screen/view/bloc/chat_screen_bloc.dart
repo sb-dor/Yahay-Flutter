@@ -1,16 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/features/chat_screen/domain/repo/chat_screen_repo.dart';
 import 'package:yahay/features/chat_screen/domain/usecases/chat_screen_chat_usecase.dart';
+import 'package:yahay/features/chat_screen/domain/usecases/chat_screen_send_messages_usecases.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
 import 'package:yahay/features/chat_screen/view/bloc/state_model/chat_screen_state_model.dart';
 import 'package:yahay/injections/injections.dart';
-
 import 'chat_screen_events.dart';
 
 @immutable
@@ -18,6 +17,7 @@ class ChatScreenBloc {
   static late BehaviorSubject<ChatScreenStates> _currentState;
   static late ChatScreenStateModel _currentStateModel;
   static late ChatScreenChatUsecase _chatScreenChatUsecase;
+  static late ChatScreenSendMessagesUsecases _chatScreenSendMessagesUsecases;
 
   static Channel? _channel;
 
@@ -43,6 +43,7 @@ class ChatScreenBloc {
   }) {
     _currentStateModel = ChatScreenStateModel();
     _chatScreenChatUsecase = ChatScreenChatUsecase(chatScreenChatRepo);
+    _chatScreenSendMessagesUsecases = ChatScreenSendMessagesUsecases(chatScreenRepo);
 
     final eventsBehavior = BehaviorSubject<ChatScreenEvents>();
 
@@ -72,10 +73,14 @@ class ChatScreenBloc {
   // message sending event
   static Stream<ChatScreenStates> _sendMessageEvent(SendMessageEvent event) async* {
     try {
-      // just check whether user subscribed to the channel
-      // if (_channel == null) event.events.add(InitChatOnMessageEvent(event.events));
-      //
-      // send message logic
+      if (_currentStateModel.messageController.text.trim().isEmpty) return;
+
+      if (_currentStateModel.pickedFile == null) {
+        _chatScreenSendMessagesUsecases.sendMessage(
+          chat: _currentStateModel.currentChat,
+          toUser: _currentStateModel.relatedUser,
+        );
+      } else {}
     } catch (e) {
       yield ErrorChatScreenState(_currentStateModel);
     }
