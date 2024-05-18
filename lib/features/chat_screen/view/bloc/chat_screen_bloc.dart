@@ -1,8 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:uuid/uuid.dart';
+import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
+import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
+import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/features/chat_screen/domain/repo/chat_screen_repo.dart';
 import 'package:yahay/features/chat_screen/domain/usecases/chat_screen_chat_usecase.dart';
@@ -61,7 +66,7 @@ class ChatScreenBloc {
   static Stream<ChatScreenStates> _eventHandler(ChatScreenEvents event) async* {
     if (event is InitChatScreenEvent) {
       yield* _initChatScreenEvent(event);
-    } else if (event is HandleChatScreenEvent) {
+    } else if (event is HandleChatMessageEvent) {
       yield* _handleChatScreenEvent(event);
     } else if (event is SendMessageEvent) {
       yield* _sendMessageEvent(event);
@@ -75,12 +80,26 @@ class ChatScreenBloc {
     try {
       if (_currentStateModel.messageController.text.trim().isEmpty) return;
 
-      if (_currentStateModel.pickedFile == null) {
-        _chatScreenSendMessagesUsecases.sendMessage(
-          chat: _currentStateModel.currentChat,
-          toUser: _currentStateModel.relatedUser,
-        );
-      } else {}
+      final user = snoopy<AuthBloc>().states.value.authStateModel.user;
+
+      final chatMessage = ChatMessageModel(
+        chat: ChatModel.fromEntity(_currentStateModel.currentChat),
+        user: UserModel.fromEntity(user),
+        relatedToUser: UserModel.fromEntity(_currentStateModel.relatedUser),
+        message: _currentStateModel.messageController.text.trim(),
+        chatMessageUUID: const Uuid().v4(),
+        file: _currentStateModel.pickedFile,
+        createdAt: DateTime.now().toString().substring(0, 19),
+        messageSent: false,
+      );
+
+      _currentStateModel.addMessage(chatMessage);
+
+      yield* _emitter();
+
+      await _chatScreenSendMessagesUsecases.sendMessage(
+        chatMessage: chatMessage,
+      );
     } catch (e) {
       yield ErrorChatScreenState(_currentStateModel);
     }
@@ -106,7 +125,7 @@ class ChatScreenBloc {
           .subscribe("${Constants.chatChannelName}${chat.uuid}");
 
       _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
-        event.events.add(HandleChatScreenEvent(pusherEvent));
+        event.events.add(HandleChatMessageEvent(pusherEvent));
       });
 
       yield LoadedChatScreenState(_currentStateModel);
@@ -125,5 +144,17 @@ class ChatScreenBloc {
     }
   }
 
-  static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatScreenEvent event) async* {}
+  static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatMessageEvent event) async* {
+    //
+  }
+
+  static Stream<ChatScreenStates> _emitter() async* {
+    if (_currentState is LoadingChatScreenState) {
+      yield LoadingChatScreenState(_currentStateModel);
+    } else if (_currentState is ErrorChatScreenState) {
+      yield ErrorChatScreenState(_currentStateModel);
+    } else {
+      yield LoadedChatScreenState(_currentStateModel);
+    }
+  }
 }

@@ -24,4 +24,18 @@ class ChatModel extends Chat with _$ChatModel {
   }) = _ChatModel;
 
   factory ChatModel.fromJson(Map<String, Object?> json) => _$ChatModelFromJson(json);
+
+  factory ChatModel.fromEntity(Chat? chat) {
+    return ChatModel(
+      id: chat?.id,
+      uuid: chat?.uuid,
+      name: chat?.name,
+      description: chat?.description,
+      createdAt: chat?.createdAt,
+      updatedAt: chat?.updatedAt,
+      lastMessage: ChatMessageModel.fromEntity(chat?.lastMessage),
+      participants: chat?.participants?.map((e) => ChatParticipantModel.fromEntity(e)).toList(),
+      messages: chat?.messages?.map((e) => ChatMessageModel.fromEntity(e)).toList(),
+    );
+  }
 }

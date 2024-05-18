@@ -20,10 +20,10 @@ class InitChatScreenEvent extends ChatScreenEvents {
 class RemoveAllTempCreatedChatsEvent extends ChatScreenEvents {}
 
 @immutable
-class HandleChatScreenEvent extends ChatScreenEvents {
+class HandleChatMessageEvent extends ChatScreenEvents {
   final PusherEvent? event;
 
-  HandleChatScreenEvent(this.event);
+  HandleChatMessageEvent(this.event);
 }
 
 // sending message event

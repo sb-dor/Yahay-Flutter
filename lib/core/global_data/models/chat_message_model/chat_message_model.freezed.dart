@@ -23,12 +23,17 @@ mixin _$ChatMessageModel {
   UserModel? get user => throw _privateConstructorUsedError;
   @JsonKey(name: "related_to_user")
   UserModel? get relatedToUser => throw _privateConstructorUsedError;
+  ChatModel? get chat => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
+  String? get chatMessageUUID => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  File? get file => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   String? get videoUrl => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
   String? get deletedAt => throw _privateConstructorUsedError;
+  bool? get messageSent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,15 +50,20 @@ abstract class $ChatMessageModelCopyWith<$Res> {
   $Res call(
       {UserModel? user,
       @JsonKey(name: "related_to_user") UserModel? relatedToUser,
+      ChatModel? chat,
       String? message,
+      String? chatMessageUUID,
+      @JsonKey(includeFromJson: false, includeToJson: false) File? file,
       String? imageUrl,
       String? videoUrl,
       String? createdAt,
       String? updatedAt,
-      String? deletedAt});
+      String? deletedAt,
+      bool? messageSent});
 
   $UserModelCopyWith<$Res>? get user;
   $UserModelCopyWith<$Res>? get relatedToUser;
+  $ChatModelCopyWith<$Res>? get chat;
 }
 
 /// @nodoc
@@ -71,12 +81,16 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
   $Res call({
     Object? user = freezed,
     Object? relatedToUser = freezed,
+    Object? chat = freezed,
     Object? message = freezed,
+    Object? chatMessageUUID = freezed,
+    Object? file = freezed,
     Object? imageUrl = freezed,
     Object? videoUrl = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
+    Object? messageSent = freezed,
   }) {
     return _then(_value.copyWith(
       user: freezed == user
@@ -87,10 +101,22 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
           ? _value.relatedToUser
           : relatedToUser // ignore: cast_nullable_to_non_nullable
               as UserModel?,
+      chat: freezed == chat
+          ? _value.chat
+          : chat // ignore: cast_nullable_to_non_nullable
+              as ChatModel?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      chatMessageUUID: freezed == chatMessageUUID
+          ? _value.chatMessageUUID
+          : chatMessageUUID // ignore: cast_nullable_to_non_nullable
+              as String?,
+      file: freezed == file
+          ? _value.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as File?,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -111,6 +137,10 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      messageSent: freezed == messageSent
+          ? _value.messageSent
+          : messageSent // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 
@@ -137,6 +167,18 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
       return _then(_value.copyWith(relatedToUser: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ChatModelCopyWith<$Res>? get chat {
+    if (_value.chat == null) {
+      return null;
+    }
+
+    return $ChatModelCopyWith<$Res>(_value.chat!, (value) {
+      return _then(_value.copyWith(chat: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -150,17 +192,23 @@ abstract class _$$ChatMessageModelImplCopyWith<$Res>
   $Res call(
       {UserModel? user,
       @JsonKey(name: "related_to_user") UserModel? relatedToUser,
+      ChatModel? chat,
       String? message,
+      String? chatMessageUUID,
+      @JsonKey(includeFromJson: false, includeToJson: false) File? file,
       String? imageUrl,
       String? videoUrl,
       String? createdAt,
       String? updatedAt,
-      String? deletedAt});
+      String? deletedAt,
+      bool? messageSent});
 
   @override
   $UserModelCopyWith<$Res>? get user;
   @override
   $UserModelCopyWith<$Res>? get relatedToUser;
+  @override
+  $ChatModelCopyWith<$Res>? get chat;
 }
 
 /// @nodoc
@@ -176,12 +224,16 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
   $Res call({
     Object? user = freezed,
     Object? relatedToUser = freezed,
+    Object? chat = freezed,
     Object? message = freezed,
+    Object? chatMessageUUID = freezed,
+    Object? file = freezed,
     Object? imageUrl = freezed,
     Object? videoUrl = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
+    Object? messageSent = freezed,
   }) {
     return _then(_$ChatMessageModelImpl(
       user: freezed == user
@@ -192,10 +244,22 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
           ? _value.relatedToUser
           : relatedToUser // ignore: cast_nullable_to_non_nullable
               as UserModel?,
+      chat: freezed == chat
+          ? _value.chat
+          : chat // ignore: cast_nullable_to_non_nullable
+              as ChatModel?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      chatMessageUUID: freezed == chatMessageUUID
+          ? _value.chatMessageUUID
+          : chatMessageUUID // ignore: cast_nullable_to_non_nullable
+              as String?,
+      file: freezed == file
+          ? _value.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as File?,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -216,6 +280,10 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
           ? _value.deletedAt
           : deletedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      messageSent: freezed == messageSent
+          ? _value.messageSent
+          : messageSent // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -226,12 +294,16 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   const _$ChatMessageModelImpl(
       {this.user,
       @JsonKey(name: "related_to_user") this.relatedToUser,
+      this.chat,
       this.message,
+      this.chatMessageUUID,
+      @JsonKey(includeFromJson: false, includeToJson: false) this.file,
       this.imageUrl,
       this.videoUrl,
       this.createdAt,
       this.updatedAt,
-      this.deletedAt});
+      this.deletedAt,
+      this.messageSent});
 
   factory _$ChatMessageModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatMessageModelImplFromJson(json);
@@ -242,7 +314,14 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   @JsonKey(name: "related_to_user")
   final UserModel? relatedToUser;
   @override
+  final ChatModel? chat;
+  @override
   final String? message;
+  @override
+  final String? chatMessageUUID;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final File? file;
   @override
   final String? imageUrl;
   @override
@@ -253,10 +332,12 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   final String? updatedAt;
   @override
   final String? deletedAt;
+  @override
+  final bool? messageSent;
 
   @override
   String toString() {
-    return 'ChatMessageModel(user: $user, relatedToUser: $relatedToUser, message: $message, imageUrl: $imageUrl, videoUrl: $videoUrl, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'ChatMessageModel(user: $user, relatedToUser: $relatedToUser, chat: $chat, message: $message, chatMessageUUID: $chatMessageUUID, file: $file, imageUrl: $imageUrl, videoUrl: $videoUrl, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, messageSent: $messageSent)';
   }
 
   @override
@@ -267,7 +348,11 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
             (identical(other.user, user) || other.user == user) &&
             (identical(other.relatedToUser, relatedToUser) ||
                 other.relatedToUser == relatedToUser) &&
+            (identical(other.chat, chat) || other.chat == chat) &&
             (identical(other.message, message) || other.message == message) &&
+            (identical(other.chatMessageUUID, chatMessageUUID) ||
+                other.chatMessageUUID == chatMessageUUID) &&
+            (identical(other.file, file) || other.file == file) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.videoUrl, videoUrl) ||
@@ -277,13 +362,27 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.deletedAt, deletedAt) ||
-                other.deletedAt == deletedAt));
+                other.deletedAt == deletedAt) &&
+            (identical(other.messageSent, messageSent) ||
+                other.messageSent == messageSent));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, user, relatedToUser, message,
-      imageUrl, videoUrl, createdAt, updatedAt, deletedAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      user,
+      relatedToUser,
+      chat,
+      message,
+      chatMessageUUID,
+      file,
+      imageUrl,
+      videoUrl,
+      createdAt,
+      updatedAt,
+      deletedAt,
+      messageSent);
 
   @JsonKey(ignore: true)
   @override
@@ -304,12 +403,16 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   const factory _ChatMessageModel(
       {final UserModel? user,
       @JsonKey(name: "related_to_user") final UserModel? relatedToUser,
+      final ChatModel? chat,
       final String? message,
+      final String? chatMessageUUID,
+      @JsonKey(includeFromJson: false, includeToJson: false) final File? file,
       final String? imageUrl,
       final String? videoUrl,
       final String? createdAt,
       final String? updatedAt,
-      final String? deletedAt}) = _$ChatMessageModelImpl;
+      final String? deletedAt,
+      final bool? messageSent}) = _$ChatMessageModelImpl;
 
   factory _ChatMessageModel.fromJson(Map<String, dynamic> json) =
       _$ChatMessageModelImpl.fromJson;
@@ -320,7 +423,14 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   @JsonKey(name: "related_to_user")
   UserModel? get relatedToUser;
   @override
+  ChatModel? get chat;
+  @override
   String? get message;
+  @override
+  String? get chatMessageUUID;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  File? get file;
   @override
   String? get imageUrl;
   @override
@@ -331,6 +441,8 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   String? get updatedAt;
   @override
   String? get deletedAt;
+  @override
+  bool? get messageSent;
   @override
   @JsonKey(ignore: true)
   _$$ChatMessageModelImplCopyWith<_$ChatMessageModelImpl> get copyWith =>

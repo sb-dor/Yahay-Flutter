@@ -31,11 +31,13 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     _chatScreenBloc = snoopy<ChatScreenBloc>();
-    _chatScreenBloc.events.add(InitChatScreenEvent(
-      widget.chat,
-      widget.user,
-      _chatScreenBloc.events,
-    ));
+    _chatScreenBloc.events.add(
+      InitChatScreenEvent(
+        widget.chat,
+        widget.user,
+        _chatScreenBloc.events,
+      ),
+    );
   }
 
   @override
