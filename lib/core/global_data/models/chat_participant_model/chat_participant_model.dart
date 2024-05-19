@@ -15,19 +15,20 @@ class ChatParticipantModel extends ChatParticipant with _$ChatParticipantModel {
     final UserModel? user,
     final ChatParticipantStatusModel? status,
     final bool? muted,
-    final String? participateAt,
+    @JsonKey(name: "participated_at") final String? participateAt,
   }) = _ChatParticipantModel;
 
   factory ChatParticipantModel.fromJson(Map<String, Object?> json) =>
       _$ChatParticipantModelFromJson(json);
 
-  factory ChatParticipantModel.fromEntity(ChatParticipant? chatParticipant){
+  static ChatParticipantModel? fromEntity(ChatParticipant? chatParticipant) {
+    if (chatParticipant == null) return null;
     return ChatParticipantModel(
-      id: chatParticipant?.id,
-      user: UserModel.fromEntity(chatParticipant?.user),
-      status: ChatParticipantStatusModel.fromEntity(chatParticipant?.status),
-      muted: chatParticipant?.muted,
-      participateAt: chatParticipant?.participateAt,
+      id: chatParticipant.id,
+      user: UserModel.fromEntity(chatParticipant.user),
+      status: ChatParticipantStatusModel.fromEntity(chatParticipant.status),
+      muted: chatParticipant.muted,
+      participateAt: chatParticipant.participateAt,
     );
   }
 }

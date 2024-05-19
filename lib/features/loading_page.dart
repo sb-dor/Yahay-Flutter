@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/features/chats/view/pages/chats_page.dart';
+import 'package:yahay/features/home_page.dart';
 import 'package:yahay/injections/blocs_inj/chats_bloc_inj/chats_bloc_inj.dart';
 import 'package:yahay/injections/injections.dart';
 

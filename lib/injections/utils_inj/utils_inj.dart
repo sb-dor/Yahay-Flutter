@@ -1,3 +1,4 @@
+import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/utils/dotenv/dotenv.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
@@ -31,5 +32,7 @@ abstract class UtilsInj {
     snoopy.registerLazySingleton<ListPaginationChecker>(
       () => ListPaginationChecker(),
     );
+
+    snoopy.registerLazySingleton<AppRouter>(() => AppRouter());
   }
 }

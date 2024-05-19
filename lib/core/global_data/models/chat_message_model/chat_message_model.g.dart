@@ -19,13 +19,12 @@ _$ChatMessageModelImpl _$$ChatMessageModelImplFromJson(
           ? null
           : ChatModel.fromJson(json['chat'] as Map<String, dynamic>),
       message: json['message'] as String?,
-      chatMessageUUID: json['chatMessageUUID'] as String?,
-      imageUrl: json['imageUrl'] as String?,
-      videoUrl: json['videoUrl'] as String?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
-      deletedAt: json['deletedAt'] as String?,
-      messageSent: json['messageSent'] as bool?,
+      chatMessageUUID: json['chat_message_uuid'] as String?,
+      imageUrl: json['image_url'] as String?,
+      videoUrl: json['video_url'] as String?,
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
+      deletedAt: json['deleted_at'] as String?,
     );
 
 Map<String, dynamic> _$$ChatMessageModelImplToJson(
@@ -35,11 +34,10 @@ Map<String, dynamic> _$$ChatMessageModelImplToJson(
       'related_to_user': instance.relatedToUser,
       'chat': instance.chat,
       'message': instance.message,
-      'chatMessageUUID': instance.chatMessageUUID,
-      'imageUrl': instance.imageUrl,
-      'videoUrl': instance.videoUrl,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
-      'deletedAt': instance.deletedAt,
-      'messageSent': instance.messageSent,
+      'chat_message_uuid': instance.chatMessageUUID,
+      'image_url': instance.imageUrl,
+      'video_url': instance.videoUrl,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
+      'deleted_at': instance.deletedAt,
     };

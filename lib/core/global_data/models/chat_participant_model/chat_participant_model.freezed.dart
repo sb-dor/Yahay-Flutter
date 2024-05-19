@@ -24,6 +24,7 @@ mixin _$ChatParticipantModel {
   UserModel? get user => throw _privateConstructorUsedError;
   ChatParticipantStatusModel? get status => throw _privateConstructorUsedError;
   bool? get muted => throw _privateConstructorUsedError;
+  @JsonKey(name: "participated_at")
   String? get participateAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,7 +44,7 @@ abstract class $ChatParticipantModelCopyWith<$Res> {
       UserModel? user,
       ChatParticipantStatusModel? status,
       bool? muted,
-      String? participateAt});
+      @JsonKey(name: "participated_at") String? participateAt});
 
   $UserModelCopyWith<$Res>? get user;
   $ChatParticipantStatusModelCopyWith<$Res>? get status;
@@ -131,7 +132,7 @@ abstract class _$$ChatParticipantModelImplCopyWith<$Res>
       UserModel? user,
       ChatParticipantStatusModel? status,
       bool? muted,
-      String? participateAt});
+      @JsonKey(name: "participated_at") String? participateAt});
 
   @override
   $UserModelCopyWith<$Res>? get user;
@@ -185,7 +186,11 @@ class __$$ChatParticipantModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatParticipantModelImpl implements _ChatParticipantModel {
   const _$ChatParticipantModelImpl(
-      {this.id, this.user, this.status, this.muted, this.participateAt});
+      {this.id,
+      this.user,
+      this.status,
+      this.muted,
+      @JsonKey(name: "participated_at") this.participateAt});
 
   factory _$ChatParticipantModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatParticipantModelImplFromJson(json);
@@ -199,6 +204,7 @@ class _$ChatParticipantModelImpl implements _ChatParticipantModel {
   @override
   final bool? muted;
   @override
+  @JsonKey(name: "participated_at")
   final String? participateAt;
 
   @override
@@ -242,11 +248,12 @@ class _$ChatParticipantModelImpl implements _ChatParticipantModel {
 
 abstract class _ChatParticipantModel implements ChatParticipantModel {
   const factory _ChatParticipantModel(
-      {final int? id,
-      final UserModel? user,
-      final ChatParticipantStatusModel? status,
-      final bool? muted,
-      final String? participateAt}) = _$ChatParticipantModelImpl;
+          {final int? id,
+          final UserModel? user,
+          final ChatParticipantStatusModel? status,
+          final bool? muted,
+          @JsonKey(name: "participated_at") final String? participateAt}) =
+      _$ChatParticipantModelImpl;
 
   factory _ChatParticipantModel.fromJson(Map<String, dynamic> json) =
       _$ChatParticipantModelImpl.fromJson;
@@ -260,6 +267,7 @@ abstract class _ChatParticipantModel implements ChatParticipantModel {
   @override
   bool? get muted;
   @override
+  @JsonKey(name: "participated_at")
   String? get participateAt;
   @override
   @JsonKey(ignore: true)

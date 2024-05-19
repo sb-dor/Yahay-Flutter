@@ -23,10 +23,15 @@ mixin _$UserModel {
   int? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
+  @JsonKey(name: "user_name")
   String? get userName => throw _privateConstructorUsedError;
+  @JsonKey(name: "birth_day")
   String? get birthDay => throw _privateConstructorUsedError;
+  @JsonKey(name: "image_url")
   String? get imageUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: "created_at")
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool? get loadingForAddingToContacts => throw _privateConstructorUsedError;
   @JsonKey(name: "user_contact")
   UserModel? get contact => throw _privateConstructorUsedError;
@@ -46,10 +51,11 @@ abstract class $UserModelCopyWith<$Res> {
       {int? id,
       String? name,
       String? email,
-      String? userName,
-      String? birthDay,
-      String? imageUrl,
-      String? createdAt,
+      @JsonKey(name: "user_name") String? userName,
+      @JsonKey(name: "birth_day") String? birthDay,
+      @JsonKey(name: "image_url") String? imageUrl,
+      @JsonKey(name: "created_at") String? createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
       bool? loadingForAddingToContacts,
       @JsonKey(name: "user_contact") UserModel? contact});
 
@@ -144,10 +150,11 @@ abstract class _$$UserModelImplCopyWith<$Res>
       {int? id,
       String? name,
       String? email,
-      String? userName,
-      String? birthDay,
-      String? imageUrl,
-      String? createdAt,
+      @JsonKey(name: "user_name") String? userName,
+      @JsonKey(name: "birth_day") String? birthDay,
+      @JsonKey(name: "image_url") String? imageUrl,
+      @JsonKey(name: "created_at") String? createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
       bool? loadingForAddingToContacts,
       @JsonKey(name: "user_contact") UserModel? contact});
 
@@ -224,10 +231,11 @@ class _$UserModelImpl implements _UserModel {
       {this.id,
       this.name,
       this.email,
-      this.userName,
-      this.birthDay,
-      this.imageUrl,
-      this.createdAt,
+      @JsonKey(name: "user_name") this.userName,
+      @JsonKey(name: "birth_day") this.birthDay,
+      @JsonKey(name: "image_url") this.imageUrl,
+      @JsonKey(name: "created_at") this.createdAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
       this.loadingForAddingToContacts = false,
       @JsonKey(name: "user_contact") this.contact});
 
@@ -241,15 +249,19 @@ class _$UserModelImpl implements _UserModel {
   @override
   final String? email;
   @override
+  @JsonKey(name: "user_name")
   final String? userName;
   @override
+  @JsonKey(name: "birth_day")
   final String? birthDay;
   @override
+  @JsonKey(name: "image_url")
   final String? imageUrl;
   @override
+  @JsonKey(name: "created_at")
   final String? createdAt;
   @override
-  @JsonKey()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final bool? loadingForAddingToContacts;
   @override
   @JsonKey(name: "user_contact")
@@ -307,10 +319,11 @@ abstract class _UserModel implements UserModel {
           {final int? id,
           final String? name,
           final String? email,
-          final String? userName,
-          final String? birthDay,
-          final String? imageUrl,
-          final String? createdAt,
+          @JsonKey(name: "user_name") final String? userName,
+          @JsonKey(name: "birth_day") final String? birthDay,
+          @JsonKey(name: "image_url") final String? imageUrl,
+          @JsonKey(name: "created_at") final String? createdAt,
+          @JsonKey(includeFromJson: false, includeToJson: false)
           final bool? loadingForAddingToContacts,
           @JsonKey(name: "user_contact") final UserModel? contact}) =
       _$UserModelImpl;
@@ -325,14 +338,19 @@ abstract class _UserModel implements UserModel {
   @override
   String? get email;
   @override
+  @JsonKey(name: "user_name")
   String? get userName;
   @override
+  @JsonKey(name: "birth_day")
   String? get birthDay;
   @override
+  @JsonKey(name: "image_url")
   String? get imageUrl;
   @override
+  @JsonKey(name: "created_at")
   String? get createdAt;
   @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool? get loadingForAddingToContacts;
   @override
   @JsonKey(name: "user_contact")

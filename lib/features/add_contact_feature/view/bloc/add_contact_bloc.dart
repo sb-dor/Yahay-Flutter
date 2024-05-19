@@ -107,7 +107,7 @@ class AddContactBloc {
     try {
       if (event.user == null) return;
 
-      UserModel changingModel = UserModel.fromEntity(event.user!).copyWith(
+      UserModel? changingModel = UserModel.fromEntity(event.user!)?.copyWith(
         loadingForAddingToContacts: true,
       );
 
@@ -119,7 +119,7 @@ class AddContactBloc {
 
       debugPrint("reponse value: $responseValue");
 
-      changingModel = changingModel.copyWith(
+      changingModel = changingModel?.copyWith(
         loadingForAddingToContacts: false,
       );
 
@@ -130,7 +130,7 @@ class AddContactBloc {
       if (!responseValue) return;
 
       // set temp user. means that user successfully added this user to his contacts
-      changingModel = changingModel.copyWith(contact: UserModel());
+      changingModel = changingModel?.copyWith(contact: UserModel());
 
       _currentStateModel.setChangedModel(changingModel);
 

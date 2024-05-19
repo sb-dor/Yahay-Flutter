@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:rxdart/rxdart.dart';
@@ -75,42 +77,20 @@ class ChatScreenBloc {
     }
   }
 
-  // message sending event
-  static Stream<ChatScreenStates> _sendMessageEvent(SendMessageEvent event) async* {
-    try {
-      if (_currentStateModel.messageController.text.trim().isEmpty) return;
-
-      final user = snoopy<AuthBloc>().states.value.authStateModel.user;
-
-      final chatMessage = ChatMessageModel(
-        chat: ChatModel.fromEntity(_currentStateModel.currentChat),
-        user: UserModel.fromEntity(user),
-        relatedToUser: UserModel.fromEntity(_currentStateModel.relatedUser),
-        message: _currentStateModel.messageController.text.trim(),
-        chatMessageUUID: const Uuid().v4(),
-        file: _currentStateModel.pickedFile,
-        createdAt: DateTime.now().toString().substring(0, 19),
-        messageSent: false,
-      );
-
-      _currentStateModel.addMessage(chatMessage);
-
-      yield* _emitter();
-
-      await _chatScreenSendMessagesUsecases.sendMessage(
-        chatMessage: chatMessage,
-      );
-    } catch (e) {
-      yield ErrorChatScreenState(_currentStateModel);
-    }
-  }
-
   // initializing chat screen on entering to the screen
   static Stream<ChatScreenStates> _initChatScreenEvent(InitChatScreenEvent event) async* {
     try {
       yield LoadingChatScreenState(_currentStateModel);
 
+      final user = snoopy<AuthBloc>().states.value.authStateModel.user;
+
+      _currentStateModel.setToCurrentUser(user);
+
       final chat = await _chatScreenChatUsecase.chat(chat: event.chat, withUser: event.user);
+
+      // i don't know why after calling function above currentUser from "_currentStateModel.currentUser" disappears
+      // i didn't find a bug
+      if (_currentStateModel.currentUser == null) _currentStateModel.setToCurrentUser(user);
 
       if (chat == null || chat.uuid == null) {
         _currentStateModel.setChat(null);
@@ -120,18 +100,52 @@ class ChatScreenBloc {
 
       _currentStateModel.setChat(chat);
 
-      _channel = snoopy<PusherClientService>()
-          .pusherClient
-          .subscribe("${Constants.chatChannelName}${chat.uuid}");
+      final channelName =
+          "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
+
+      _channel = snoopy<PusherClientService>().pusherClient.subscribe(channelName);
 
       _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
         event.events.add(HandleChatMessageEvent(pusherEvent));
       });
 
+      debugPrint("setting user name5: ${_currentStateModel.currentUser?.name}");
+
       yield LoadedChatScreenState(_currentStateModel);
 
       // get all chat messages here
     } catch (e) {
+      yield ErrorChatScreenState(_currentStateModel);
+    }
+  }
+
+  // message sending event
+  static Stream<ChatScreenStates> _sendMessageEvent(SendMessageEvent event) async* {
+    try {
+      if (_currentStateModel.messageController.text.trim().isEmpty) return;
+
+      final chatMessage = ChatMessageModel(
+        chat: ChatModel.fromEntity(_currentStateModel.currentChat),
+        user: UserModel.fromEntity(_currentStateModel.currentUser),
+        relatedToUser: UserModel.fromEntity(_currentStateModel.relatedUser),
+        message: _currentStateModel.messageController.text.trim(),
+        chatMessageUUID: const Uuid().v4(),
+        file: _currentStateModel.pickedFile,
+        createdAt: DateTime.now().toString().substring(0, 19),
+        messageSent: false,
+      );
+
+      debugPrint("data is: ${chatMessage.toJson()}");
+
+      _currentStateModel.addMessage(chatMessage);
+
+      yield* _emitter();
+
+      await _chatScreenSendMessagesUsecases.sendMessage(
+        chatMessage: chatMessage,
+      );
+    } catch (e) {
+      debugPrint("Errorrr is $e");
       yield ErrorChatScreenState(_currentStateModel);
     }
   }
@@ -145,7 +159,16 @@ class ChatScreenBloc {
   }
 
   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatMessageEvent event) async* {
-    //
+    debugPrint("coming data: ${event.event?.data}");
+    try {
+      Map<String, dynamic> messageJson = jsonDecode(event.event?.data ?? '');
+
+      if (messageJson.containsKey('message')) {
+        ChatMessageModel message = ChatMessageModel.fromJson(messageJson['message']);
+      }
+    } catch (e) {
+      yield ErrorChatScreenState(_currentStateModel);
+    }
   }
 
   static Stream<ChatScreenStates> _emitter() async* {

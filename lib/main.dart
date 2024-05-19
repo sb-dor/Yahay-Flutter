@@ -28,7 +28,6 @@ class Yahay extends StatefulWidget {
 }
 
 class _YahayState extends State<Yahay> {
-  final _appRouter = AppRouter();
   late final AppThemeBloc _appThemeBloc;
   late final AuthBloc _authBloc;
 
@@ -56,8 +55,16 @@ class _YahayState extends State<Yahay> {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           theme: themeStates.data,
-          scaffoldMessengerKey: snoopy<GlobalContext>().globalContext,
-          routerConfig: _appRouter.config(),
+          // if you will use the auto_route package in order to navigate between screens without context
+          // navigatorKey is already set in autoRouter
+          // the only thing that you have to do is
+          // setting "_appRouter" globally
+          // like singlton
+          // example:
+          // snoopy<AppRouter>().push(route)
+          routerConfig: snoopy<AppRouter>().config(),
+          // about deeplinking have a look this doc:
+          // https://pub.dev/packages/auto_route#deep-linking
         );
       },
     );

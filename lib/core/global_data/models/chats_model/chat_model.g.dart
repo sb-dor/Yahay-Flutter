@@ -12,8 +12,8 @@ _$ChatModelImpl _$$ChatModelImplFromJson(Map<String, dynamic> json) =>
       uuid: json['chat_uuid'] as String?,
       name: json['name'] as String?,
       description: json['description'] as String?,
-      createdAt: json['createdAt'] as String?,
-      updatedAt: json['updatedAt'] as String?,
+      createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
       lastMessage: json['chat_last_message'] == null
           ? null
           : ChatMessageModel.fromJson(
@@ -32,8 +32,8 @@ Map<String, dynamic> _$$ChatModelImplToJson(_$ChatModelImpl instance) =>
       'chat_uuid': instance.uuid,
       'name': instance.name,
       'description': instance.description,
-      'createdAt': instance.createdAt,
-      'updatedAt': instance.updatedAt,
+      'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
       'chat_last_message': instance.lastMessage,
       'participants': instance.participants,
       'messages': instance.messages,

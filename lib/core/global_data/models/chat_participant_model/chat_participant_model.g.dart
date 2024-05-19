@@ -18,7 +18,7 @@ _$ChatParticipantModelImpl _$$ChatParticipantModelImplFromJson(
           : ChatParticipantStatusModel.fromJson(
               json['status'] as Map<String, dynamic>),
       muted: json['muted'] as bool?,
-      participateAt: json['participateAt'] as String?,
+      participateAt: json['participated_at'] as String?,
     );
 
 Map<String, dynamic> _$$ChatParticipantModelImplToJson(
@@ -28,5 +28,5 @@ Map<String, dynamic> _$$ChatParticipantModelImplToJson(
       'user': instance.user,
       'status': instance.status,
       'muted': instance.muted,
-      'participateAt': instance.participateAt,
+      'participated_at': instance.participateAt,
     };

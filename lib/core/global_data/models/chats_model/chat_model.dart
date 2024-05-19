@@ -14,8 +14,8 @@ class ChatModel extends Chat with _$ChatModel {
     @JsonKey(name: "chat_uuid") String? uuid,
     String? name,
     String? description,
-    String? createdAt,
-    String? updatedAt,
+    @JsonKey(name: "created_at") String? createdAt,
+    @JsonKey(name: "updated_at") String? updatedAt,
 
     //
     @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
@@ -34,8 +34,8 @@ class ChatModel extends Chat with _$ChatModel {
       createdAt: chat?.createdAt,
       updatedAt: chat?.updatedAt,
       lastMessage: ChatMessageModel.fromEntity(chat?.lastMessage),
-      participants: chat?.participants?.map((e) => ChatParticipantModel.fromEntity(e)).toList(),
-      messages: chat?.messages?.map((e) => ChatMessageModel.fromEntity(e)).toList(),
+      participants: chat?.participants?.map((e) => ChatParticipantModel.fromEntity(e)!).toList(),
+      messages: chat?.messages?.map((e) => ChatMessageModel.fromEntity(e)!).toList(),
     );
   }
 }

@@ -11,7 +11,7 @@ class ChatScreenStateModel {
 
   TextEditingController get messageController => _messageController;
 
-  List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages = [];
 
   List<ChatMessage> get messages => _messages;
 
@@ -23,9 +23,11 @@ class ChatScreenStateModel {
 
   File? get pickedFile => _pickedFile;
 
-  User? _relatedUser;
+  User? _currentUser, _relatedUser;
 
   User? get relatedUser => _relatedUser;
+
+  User? get currentUser => _currentUser;
 
   void setChat(Chat? chat) => _currentChat = chat;
 
@@ -33,5 +35,9 @@ class ChatScreenStateModel {
 
   void setToRelatedUser(User? user) => _relatedUser = user;
 
-  void addMessage(ChatMessage message) => _messages.add(message);
+  void setToCurrentUser(User? user) => _currentUser = user;
+
+  void addMessage(ChatMessage message) {
+    _messages.add(message);
+  }
 }

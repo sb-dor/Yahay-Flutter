@@ -28,8 +28,4 @@ class HandleChatMessageEvent extends ChatScreenEvents {
 
 // sending message event
 @immutable
-class SendMessageEvent extends ChatScreenEvents {
-  final Sink<ChatScreenEvents> events;
-
-  SendMessageEvent(this.events);
-}
+class SendMessageEvent extends ChatScreenEvents {}

@@ -25,7 +25,9 @@ mixin _$ChatModel {
   String? get uuid => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  @JsonKey(name: "created_at")
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: "updated_at")
   String? get updatedAt => throw _privateConstructorUsedError; //
   @JsonKey(name: "chat_last_message")
   ChatMessageModel? get lastMessage => throw _privateConstructorUsedError;
@@ -51,8 +53,8 @@ abstract class $ChatModelCopyWith<$Res> {
       @JsonKey(name: "chat_uuid") String? uuid,
       String? name,
       String? description,
-      String? createdAt,
-      String? updatedAt,
+      @JsonKey(name: "created_at") String? createdAt,
+      @JsonKey(name: "updated_at") String? updatedAt,
       @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
       @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
       @JsonKey(name: "messages") List<ChatMessageModel>? messages});
@@ -149,8 +151,8 @@ abstract class _$$ChatModelImplCopyWith<$Res>
       @JsonKey(name: "chat_uuid") String? uuid,
       String? name,
       String? description,
-      String? createdAt,
-      String? updatedAt,
+      @JsonKey(name: "created_at") String? createdAt,
+      @JsonKey(name: "updated_at") String? updatedAt,
       @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
       @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
       @JsonKey(name: "messages") List<ChatMessageModel>? messages});
@@ -229,8 +231,8 @@ class _$ChatModelImpl implements _ChatModel {
       @JsonKey(name: "chat_uuid") this.uuid,
       this.name,
       this.description,
-      this.createdAt,
-      this.updatedAt,
+      @JsonKey(name: "created_at") this.createdAt,
+      @JsonKey(name: "updated_at") this.updatedAt,
       @JsonKey(name: "chat_last_message") this.lastMessage,
       @JsonKey(name: "participants")
       final List<ChatParticipantModel>? participants,
@@ -251,8 +253,10 @@ class _$ChatModelImpl implements _ChatModel {
   @override
   final String? description;
   @override
+  @JsonKey(name: "created_at")
   final String? createdAt;
   @override
+  @JsonKey(name: "updated_at")
   final String? updatedAt;
 //
   @override
@@ -340,8 +344,8 @@ abstract class _ChatModel implements ChatModel {
       @JsonKey(name: "chat_uuid") final String? uuid,
       final String? name,
       final String? description,
-      final String? createdAt,
-      final String? updatedAt,
+      @JsonKey(name: "created_at") final String? createdAt,
+      @JsonKey(name: "updated_at") final String? updatedAt,
       @JsonKey(name: "chat_last_message") final ChatMessageModel? lastMessage,
       @JsonKey(name: "participants")
       final List<ChatParticipantModel>? participants,
@@ -361,8 +365,10 @@ abstract class _ChatModel implements ChatModel {
   @override
   String? get description;
   @override
+  @JsonKey(name: "created_at")
   String? get createdAt;
   @override
+  @JsonKey(name: "updated_at")
   String? get updatedAt;
   @override //
   @JsonKey(name: "chat_last_message")

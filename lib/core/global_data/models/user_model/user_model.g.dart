@@ -11,12 +11,10 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       email: json['email'] as String?,
-      userName: json['userName'] as String?,
-      birthDay: json['birthDay'] as String?,
-      imageUrl: json['imageUrl'] as String?,
-      createdAt: json['createdAt'] as String?,
-      loadingForAddingToContacts:
-          json['loadingForAddingToContacts'] as bool? ?? false,
+      userName: json['user_name'] as String?,
+      birthDay: json['birth_day'] as String?,
+      imageUrl: json['image_url'] as String?,
+      createdAt: json['created_at'] as String?,
       contact: json['user_contact'] == null
           ? null
           : UserModel.fromJson(json['user_contact'] as Map<String, dynamic>),
@@ -27,10 +25,9 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'id': instance.id,
       'name': instance.name,
       'email': instance.email,
-      'userName': instance.userName,
-      'birthDay': instance.birthDay,
-      'imageUrl': instance.imageUrl,
-      'createdAt': instance.createdAt,
-      'loadingForAddingToContacts': instance.loadingForAddingToContacts,
+      'user_name': instance.userName,
+      'birth_day': instance.birthDay,
+      'image_url': instance.imageUrl,
+      'created_at': instance.createdAt,
       'user_contact': instance.contact,
     };

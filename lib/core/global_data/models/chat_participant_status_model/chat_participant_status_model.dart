@@ -18,10 +18,11 @@ class ChatParticipantStatusModel extends ChatParticipantStatus with _$ChatPartic
   factory ChatParticipantStatusModel.fromJson(Map<String, Object?> json) =>
       _$ChatParticipantStatusModelFromJson(json);
 
-  factory ChatParticipantStatusModel.fromEntity(ChatParticipantStatus? status) {
+  static ChatParticipantStatusModel? fromEntity(ChatParticipantStatus? status) {
+    if (status == null) return null;
     return ChatParticipantStatusModel(
-      id: status?.id,
-      status: status?.status,
+      id: status.id,
+      status: status.status,
     );
   }
 }

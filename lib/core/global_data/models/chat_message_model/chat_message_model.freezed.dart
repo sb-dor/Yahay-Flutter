@@ -25,14 +25,21 @@ mixin _$ChatMessageModel {
   UserModel? get relatedToUser => throw _privateConstructorUsedError;
   ChatModel? get chat => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
+  @JsonKey(name: "chat_message_uuid")
   String? get chatMessageUUID => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   File? get file => throw _privateConstructorUsedError;
+  @JsonKey(name: "image_url")
   String? get imageUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: "video_url")
   String? get videoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: "created_at")
   String? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(name: "updated_at")
   String? get updatedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: "deleted_at")
   String? get deletedAt => throw _privateConstructorUsedError;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   bool? get messageSent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,13 +59,14 @@ abstract class $ChatMessageModelCopyWith<$Res> {
       @JsonKey(name: "related_to_user") UserModel? relatedToUser,
       ChatModel? chat,
       String? message,
-      String? chatMessageUUID,
+      @JsonKey(name: "chat_message_uuid") String? chatMessageUUID,
       @JsonKey(includeFromJson: false, includeToJson: false) File? file,
-      String? imageUrl,
-      String? videoUrl,
-      String? createdAt,
-      String? updatedAt,
-      String? deletedAt,
+      @JsonKey(name: "image_url") String? imageUrl,
+      @JsonKey(name: "video_url") String? videoUrl,
+      @JsonKey(name: "created_at") String? createdAt,
+      @JsonKey(name: "updated_at") String? updatedAt,
+      @JsonKey(name: "deleted_at") String? deletedAt,
+      @JsonKey(includeToJson: false, includeFromJson: false)
       bool? messageSent});
 
   $UserModelCopyWith<$Res>? get user;
@@ -194,13 +202,14 @@ abstract class _$$ChatMessageModelImplCopyWith<$Res>
       @JsonKey(name: "related_to_user") UserModel? relatedToUser,
       ChatModel? chat,
       String? message,
-      String? chatMessageUUID,
+      @JsonKey(name: "chat_message_uuid") String? chatMessageUUID,
       @JsonKey(includeFromJson: false, includeToJson: false) File? file,
-      String? imageUrl,
-      String? videoUrl,
-      String? createdAt,
-      String? updatedAt,
-      String? deletedAt,
+      @JsonKey(name: "image_url") String? imageUrl,
+      @JsonKey(name: "video_url") String? videoUrl,
+      @JsonKey(name: "created_at") String? createdAt,
+      @JsonKey(name: "updated_at") String? updatedAt,
+      @JsonKey(name: "deleted_at") String? deletedAt,
+      @JsonKey(includeToJson: false, includeFromJson: false)
       bool? messageSent});
 
   @override
@@ -296,14 +305,14 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
       @JsonKey(name: "related_to_user") this.relatedToUser,
       this.chat,
       this.message,
-      this.chatMessageUUID,
+      @JsonKey(name: "chat_message_uuid") this.chatMessageUUID,
       @JsonKey(includeFromJson: false, includeToJson: false) this.file,
-      this.imageUrl,
-      this.videoUrl,
-      this.createdAt,
-      this.updatedAt,
-      this.deletedAt,
-      this.messageSent});
+      @JsonKey(name: "image_url") this.imageUrl,
+      @JsonKey(name: "video_url") this.videoUrl,
+      @JsonKey(name: "created_at") this.createdAt,
+      @JsonKey(name: "updated_at") this.updatedAt,
+      @JsonKey(name: "deleted_at") this.deletedAt,
+      @JsonKey(includeToJson: false, includeFromJson: false) this.messageSent});
 
   factory _$ChatMessageModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatMessageModelImplFromJson(json);
@@ -318,21 +327,28 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   @override
   final String? message;
   @override
+  @JsonKey(name: "chat_message_uuid")
   final String? chatMessageUUID;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   final File? file;
   @override
+  @JsonKey(name: "image_url")
   final String? imageUrl;
   @override
+  @JsonKey(name: "video_url")
   final String? videoUrl;
   @override
+  @JsonKey(name: "created_at")
   final String? createdAt;
   @override
+  @JsonKey(name: "updated_at")
   final String? updatedAt;
   @override
+  @JsonKey(name: "deleted_at")
   final String? deletedAt;
   @override
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final bool? messageSent;
 
   @override
@@ -405,13 +421,14 @@ abstract class _ChatMessageModel implements ChatMessageModel {
       @JsonKey(name: "related_to_user") final UserModel? relatedToUser,
       final ChatModel? chat,
       final String? message,
-      final String? chatMessageUUID,
+      @JsonKey(name: "chat_message_uuid") final String? chatMessageUUID,
       @JsonKey(includeFromJson: false, includeToJson: false) final File? file,
-      final String? imageUrl,
-      final String? videoUrl,
-      final String? createdAt,
-      final String? updatedAt,
-      final String? deletedAt,
+      @JsonKey(name: "image_url") final String? imageUrl,
+      @JsonKey(name: "video_url") final String? videoUrl,
+      @JsonKey(name: "created_at") final String? createdAt,
+      @JsonKey(name: "updated_at") final String? updatedAt,
+      @JsonKey(name: "deleted_at") final String? deletedAt,
+      @JsonKey(includeToJson: false, includeFromJson: false)
       final bool? messageSent}) = _$ChatMessageModelImpl;
 
   factory _ChatMessageModel.fromJson(Map<String, dynamic> json) =
@@ -427,21 +444,28 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   @override
   String? get message;
   @override
+  @JsonKey(name: "chat_message_uuid")
   String? get chatMessageUUID;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   File? get file;
   @override
+  @JsonKey(name: "image_url")
   String? get imageUrl;
   @override
+  @JsonKey(name: "video_url")
   String? get videoUrl;
   @override
+  @JsonKey(name: "created_at")
   String? get createdAt;
   @override
+  @JsonKey(name: "updated_at")
   String? get updatedAt;
   @override
+  @JsonKey(name: "deleted_at")
   String? get deletedAt;
   @override
+  @JsonKey(includeToJson: false, includeFromJson: false)
   bool? get messageSent;
   @override
   @JsonKey(ignore: true)

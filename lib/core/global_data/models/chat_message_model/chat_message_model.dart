@@ -17,32 +17,33 @@ class ChatMessageModel extends ChatMessage with _$ChatMessageModel {
     @JsonKey(name: "related_to_user") UserModel? relatedToUser,
     ChatModel? chat,
     String? message,
-    String? chatMessageUUID,
+    @JsonKey(name: "chat_message_uuid") String? chatMessageUUID,
     @JsonKey(includeFromJson: false, includeToJson: false) File? file,
-    String? imageUrl,
-    String? videoUrl,
-    String? createdAt,
-    String? updatedAt,
-    String? deletedAt,
-    bool? messageSent,
+    @JsonKey(name: "image_url") String? imageUrl,
+    @JsonKey(name: "video_url") String? videoUrl,
+    @JsonKey(name: "created_at") String? createdAt,
+    @JsonKey(name: "updated_at") String? updatedAt,
+    @JsonKey(name: "deleted_at") String? deletedAt,
+    @JsonKey(includeToJson: false, includeFromJson: false) bool? messageSent,
   }) = _ChatMessageModel;
 
   factory ChatMessageModel.fromJson(Map<String, Object?> json) => _$ChatMessageModelFromJson(json);
 
-  factory ChatMessageModel.fromEntity(ChatMessage? message) {
+  static ChatMessageModel? fromEntity(ChatMessage? message) {
+    if (message == null) return null;
     return ChatMessageModel(
-      user: UserModel.fromEntity(message?.user),
-      relatedToUser: UserModel.fromEntity(message?.relatedToUser),
-      chat: ChatModel.fromEntity(message?.chat),
-      message: message?.message,
-      chatMessageUUID: message?.chatMessageUUID,
-      file: message?.file,
-      imageUrl: message?.imageUrl,
-      videoUrl: message?.videoUrl,
-      createdAt: message?.createdAt,
-      updatedAt: message?.updatedAt,
-      deletedAt: message?.deletedAt,
-      messageSent: message?.messageSent,
+      user: UserModel.fromEntity(message.user),
+      relatedToUser: UserModel.fromEntity(message.relatedToUser),
+      // chat: ChatModel.fromEntity(message?.chat), // stack overflow
+      message: message.message,
+      chatMessageUUID: message.chatMessageUUID,
+      file: message.file,
+      imageUrl: message.imageUrl,
+      videoUrl: message.videoUrl,
+      createdAt: message.createdAt,
+      updatedAt: message.updatedAt,
+      deletedAt: message.deletedAt,
+      messageSent: message.messageSent,
     );
   }
 }
