@@ -17,16 +17,24 @@ class DioSettings {
     };
   }
 
+  Future<BaseOptions> _options() async {
+    return BaseOptions(
+      baseUrl: _mainUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(seconds: 10),
+      headers: await headers(),
+      queryParameters: {
+        "per_page": Constants.perPage,
+      },
+    );
+  }
+
   Future<void> init() async {
-    final baseOptions = BaseOptions(
-        baseUrl: _mainUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 10),
-        headers: await headers(),
-        queryParameters: {
-          "per_page": Constants.perPage,
-        });
-    dio = Dio(baseOptions);
+    dio = Dio(await _options());
+  }
+
+  Future<void> updateDio() async {
+    dio.options = await _options();
   }
 }

@@ -4,14 +4,15 @@ import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_events.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
 import 'package:yahay/features/chat_screen/view/bloc/state_model/chat_screen_state_model.dart';
+import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
 import 'package:yahay/injections/injections.dart';
 
 class BottomChatWidget extends StatefulWidget {
-  final ChatScreenStateModel currentStateModel;
+  final ChatScreenBloc chatsBloc;
 
   const BottomChatWidget({
     super.key,
-    required this.currentStateModel,
+    required this.chatsBloc,
   });
 
   @override
@@ -25,7 +26,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
   @override
   void initState() {
     super.initState();
-    _chatsBloc = snoopy<ChatScreenBloc>();
+    _chatsBloc = widget.chatsBloc;
   }
 
   @override
@@ -50,8 +51,8 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 35),
                       width: MediaQuery.of(context).size.width,
                       child: TextField(
-                        controller: widget.currentStateModel.messageController,
-                        textInputAction: TextInputAction.send,
+                        controller: _chatsBloc.states.value.chatScreenStateModel.messageController,
+                        textInputAction: TextInputAction.newline,
                         focusNode: _focusNode,
                         onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
                         decoration: const InputDecoration(

@@ -82,6 +82,8 @@ class ChatsBloc {
 
       _currentStateModel.chats = await _getUserChatsUseCase.chats();
 
+      debugPrint("chat length is: ${_currentStateModel.chats.length}");
+
       yield LoadedChatsState(_currentStateModel);
     } catch (e) {
       debugPrint("_getUserChatsEvent error is: $e");

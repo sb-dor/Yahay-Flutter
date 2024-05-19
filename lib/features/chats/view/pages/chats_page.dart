@@ -2,6 +2,8 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
 import 'package:yahay/features/chats/view/bloc/chats_events.dart';
+import 'package:yahay/features/chats/view/bloc/chats_states.dart';
+import 'package:yahay/features/chats/view/pages/chat_widget/chat_widget.dart';
 import 'package:yahay/injections/injections.dart';
 import 'chats_appbar/chats_appbar.dart';
 
@@ -25,11 +27,44 @@ class _ChatsPageState extends State<ChatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-        child: const ChatsAppbar(),
-      ),
+    return StreamBuilder<ChatsStates>(
+      stream: _chatsBloc.states,
+      builder: (context, snap) {
+        switch (snap.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return const SizedBox();
+          case ConnectionState.active:
+          case ConnectionState.done:
+            final currentState = snap.requireData;
+            final currentStateModel = currentState.chatsStateModel;
+            return Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+                child: const ChatsAppbar(),
+              ),
+              body: RefreshIndicator(
+                onRefresh: () async => _chatsBloc.events.add(GetUserChatsEvent()),
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(8),
+                  children: [
+                    ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(height: 15),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: currentStateModel.chats.length,
+                      itemBuilder: (context, index) {
+                        final chat = currentStateModel.chats[index];
+                        return ChatWidget(chat: chat);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+        }
+      },
     );
   }
 }

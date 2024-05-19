@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
@@ -17,6 +18,8 @@ class ChatsDataSourceImpl implements ChatsDataSource {
     try {
       final response = await _dioHelper.dio.get(_getUserChatsUrl);
 
+      debugPrint("chats response: ${response.data}");
+
       if (response.statusCode != HttpStatusCodes.success) return <ChatModel>[];
 
       Map<String, dynamic> json =
@@ -30,6 +33,7 @@ class ChatsDataSourceImpl implements ChatsDataSource {
 
       return result;
     } catch (e) {
+      debugPrint("chats error is: $e");
       return <ChatModel>[];
     }
   }

@@ -20,6 +20,7 @@ ChatMessageModel _$ChatMessageModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatMessageModel {
+  int? get id => throw _privateConstructorUsedError;
   UserModel? get user => throw _privateConstructorUsedError;
   @JsonKey(name: "related_to_user")
   UserModel? get relatedToUser => throw _privateConstructorUsedError;
@@ -55,7 +56,8 @@ abstract class $ChatMessageModelCopyWith<$Res> {
       _$ChatMessageModelCopyWithImpl<$Res, ChatMessageModel>;
   @useResult
   $Res call(
-      {UserModel? user,
+      {int? id,
+      UserModel? user,
       @JsonKey(name: "related_to_user") UserModel? relatedToUser,
       ChatModel? chat,
       String? message,
@@ -87,6 +89,7 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? user = freezed,
     Object? relatedToUser = freezed,
     Object? chat = freezed,
@@ -101,6 +104,10 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
     Object? messageSent = freezed,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       user: freezed == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -198,7 +205,8 @@ abstract class _$$ChatMessageModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {UserModel? user,
+      {int? id,
+      UserModel? user,
       @JsonKey(name: "related_to_user") UserModel? relatedToUser,
       ChatModel? chat,
       String? message,
@@ -231,6 +239,7 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? user = freezed,
     Object? relatedToUser = freezed,
     Object? chat = freezed,
@@ -245,6 +254,10 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
     Object? messageSent = freezed,
   }) {
     return _then(_$ChatMessageModelImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       user: freezed == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -301,7 +314,8 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatMessageModelImpl implements _ChatMessageModel {
   const _$ChatMessageModelImpl(
-      {this.user,
+      {this.id,
+      this.user,
       @JsonKey(name: "related_to_user") this.relatedToUser,
       this.chat,
       this.message,
@@ -317,6 +331,8 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   factory _$ChatMessageModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatMessageModelImplFromJson(json);
 
+  @override
+  final int? id;
   @override
   final UserModel? user;
   @override
@@ -353,7 +369,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
 
   @override
   String toString() {
-    return 'ChatMessageModel(user: $user, relatedToUser: $relatedToUser, chat: $chat, message: $message, chatMessageUUID: $chatMessageUUID, file: $file, imageUrl: $imageUrl, videoUrl: $videoUrl, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, messageSent: $messageSent)';
+    return 'ChatMessageModel(id: $id, user: $user, relatedToUser: $relatedToUser, chat: $chat, message: $message, chatMessageUUID: $chatMessageUUID, file: $file, imageUrl: $imageUrl, videoUrl: $videoUrl, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, messageSent: $messageSent)';
   }
 
   @override
@@ -361,6 +377,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ChatMessageModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.relatedToUser, relatedToUser) ||
                 other.relatedToUser == relatedToUser) &&
@@ -387,6 +404,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
       user,
       relatedToUser,
       chat,
@@ -417,7 +435,8 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
 
 abstract class _ChatMessageModel implements ChatMessageModel {
   const factory _ChatMessageModel(
-      {final UserModel? user,
+      {final int? id,
+      final UserModel? user,
       @JsonKey(name: "related_to_user") final UserModel? relatedToUser,
       final ChatModel? chat,
       final String? message,
@@ -434,6 +453,8 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   factory _ChatMessageModel.fromJson(Map<String, dynamic> json) =
       _$ChatMessageModelImpl.fromJson;
 
+  @override
+  int? get id;
   @override
   UserModel? get user;
   @override

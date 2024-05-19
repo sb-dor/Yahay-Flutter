@@ -13,6 +13,7 @@ part 'chat_message_model.g.dart';
 @freezed
 class ChatMessageModel extends ChatMessage with _$ChatMessageModel {
   const factory ChatMessageModel({
+    int? id,
     UserModel? user,
     @JsonKey(name: "related_to_user") UserModel? relatedToUser,
     ChatModel? chat,
@@ -32,6 +33,7 @@ class ChatMessageModel extends ChatMessage with _$ChatMessageModel {
   static ChatMessageModel? fromEntity(ChatMessage? message) {
     if (message == null) return null;
     return ChatMessageModel(
+      id: message.id,
       user: UserModel.fromEntity(message.user),
       relatedToUser: UserModel.fromEntity(message.relatedToUser),
       // chat: ChatModel.fromEntity(message?.chat), // stack overflow

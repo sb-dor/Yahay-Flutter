@@ -28,7 +28,7 @@ class AppThemeBloc {
   factory AppThemeBloc() {
     final eventBehavior = BehaviorSubject<AppThemeEvents>();
 
-    _currentState = AppColorsScheme.dark;
+    _currentState = AppColorsScheme.light;
 
     final themeData = eventBehavior.map<ThemeData>((appThemeDataEvent) {
       ThemeData theme = _appThemeChangerEvent(appThemeDataEvent as AppThemeChangerEvent);

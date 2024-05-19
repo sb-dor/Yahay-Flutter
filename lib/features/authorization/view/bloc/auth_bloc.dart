@@ -133,7 +133,7 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
-      await snoopy<DioSettings>().init();
+      await snoopy<DioSettings>().updateDio();
 
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
@@ -166,7 +166,7 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
-      await snoopy<DioSettings>().init();
+      await snoopy<DioSettings>().updateDio();
 
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
@@ -190,7 +190,7 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
-      await snoopy<DioSettings>().init();
+      await snoopy<DioSettings>().updateDio();
 
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
@@ -210,7 +210,7 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
-      await snoopy<DioSettings>().init();
+      await snoopy<DioSettings>().updateDio();
 
       yield AuthorizedState(_currentStateModel);
     } catch (e) {

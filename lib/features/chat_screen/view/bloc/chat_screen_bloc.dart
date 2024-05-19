@@ -60,9 +60,14 @@ class ChatScreenBloc {
 
     final behaviorOfState = BehaviorSubject<ChatScreenStates>()..addStream(state);
 
-    _currentState = behaviorOfState;
+    behaviorOfState.listen((value) {
+      _currentState = BehaviorSubject()..add(value);
+    });
 
-    return ChatScreenBloc._(events: eventsBehavior.sink, states: behaviorOfState);
+    return ChatScreenBloc._(
+      events: eventsBehavior.sink,
+      states: behaviorOfState,
+    );
   }
 
   static Stream<ChatScreenStates> _eventHandler(ChatScreenEvents event) async* {
@@ -71,7 +76,7 @@ class ChatScreenBloc {
     } else if (event is HandleChatMessageEvent) {
       yield* _handleChatScreenEvent(event);
     } else if (event is SendMessageEvent) {
-      yield* _sendMessageEvent(event);
+      yield* _sendMessageEvent();
     } else if (event is RemoveAllTempCreatedChatsEvent) {
       _removeAllTempCreatedChatsEvent(event);
     }
@@ -109,8 +114,6 @@ class ChatScreenBloc {
         event.events.add(HandleChatMessageEvent(pusherEvent));
       });
 
-      debugPrint("setting user name5: ${_currentStateModel.currentUser?.name}");
-
       yield LoadedChatScreenState(_currentStateModel);
 
       // get all chat messages here
@@ -120,7 +123,7 @@ class ChatScreenBloc {
   }
 
   // message sending event
-  static Stream<ChatScreenStates> _sendMessageEvent(SendMessageEvent event) async* {
+  static Stream<ChatScreenStates> _sendMessageEvent() async* {
     try {
       if (_currentStateModel.messageController.text.trim().isEmpty) return;
 
@@ -135,9 +138,9 @@ class ChatScreenBloc {
         messageSent: false,
       );
 
-      debugPrint("data is: ${chatMessage.toJson()}");
-
       _currentStateModel.addMessage(chatMessage);
+
+      _currentStateModel.clearMessage();
 
       yield* _emitter();
 
@@ -145,7 +148,6 @@ class ChatScreenBloc {
         chatMessage: chatMessage,
       );
     } catch (e) {
-      debugPrint("Errorrr is $e");
       yield ErrorChatScreenState(_currentStateModel);
     }
   }
@@ -153,9 +155,7 @@ class ChatScreenBloc {
   static void _removeAllTempCreatedChatsEvent(RemoveAllTempCreatedChatsEvent event) {
     try {
       _chatScreenChatUsecase.removeAllTempCreatedChats(chat: _currentStateModel.currentChat);
-    } catch (e) {
-      debugPrint("_removeAllTempCreatedChatsEvent error is: $e");
-    }
+    } catch (e) {}
   }
 
   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatMessageEvent event) async* {
@@ -164,7 +164,10 @@ class ChatScreenBloc {
       Map<String, dynamic> messageJson = jsonDecode(event.event?.data ?? '');
 
       if (messageJson.containsKey('message')) {
-        ChatMessageModel message = ChatMessageModel.fromJson(messageJson['message']);
+        ChatMessageModel message =
+            ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
+        _currentStateModel.addMessage(message);
+        yield* _emitter();
       }
     } catch (e) {
       yield ErrorChatScreenState(_currentStateModel);
@@ -172,12 +175,14 @@ class ChatScreenBloc {
   }
 
   static Stream<ChatScreenStates> _emitter() async* {
-    if (_currentState is LoadingChatScreenState) {
+    if (_currentState.value is LoadingChatScreenState) {
       yield LoadingChatScreenState(_currentStateModel);
-    } else if (_currentState is ErrorChatScreenState) {
+    } else if (_currentState.value is ErrorChatScreenState) {
       yield ErrorChatScreenState(_currentStateModel);
-    } else {
+    } else if (_currentState.value is LoadedChatScreenState) {
       yield LoadedChatScreenState(_currentStateModel);
+    } else {
+      yield LoadedChatScreenState(_currentStateModel); // Default to loaded state
     }
   }
 }

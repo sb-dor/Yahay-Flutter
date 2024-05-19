@@ -22,7 +22,7 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
         "chat_id": chatMessage.chat?.id,
         "user_id": chatMessage.user?.id,
         "related_to_user_id": chatMessage.relatedToUser?.id,
-        "chat_message_uuid": chatMessage.chatMessageUUID,
+        "chat_message_uuid": chatMessage.chatMessageUUID.toString(),
         "message": chatMessage.message,
         "created_at": chatMessage.createdAt,
       };
@@ -36,6 +36,8 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
           )
         ];
       }
+
+      debugPrint("sending data is: $toJson");
 
       final formData = FormData.fromMap(toJson);
 
