@@ -30,5 +30,8 @@ abstract class Constants {
   static const String chatChannelName = "chat_channel_id_";
   static const String chatChannelUUID = "_uuid_";
   static const String chatChannelEventName = "chat_messages.event";
-//
+
+  //
+
+  static const String tempDateTime = "2024-01-01 12:00:00";
 }

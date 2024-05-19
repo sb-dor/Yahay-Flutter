@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
@@ -53,6 +54,13 @@ class _YahayState extends State<Yahay> {
       stream: _appThemeBloc.theme,
       builder: (context, themeStates) {
         return MaterialApp.router(
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: const Locale("en"),
+          supportedLocales: [const Locale("ru"), const Locale("en")],
           debugShowCheckedModeBanner: false,
           theme: themeStates.data,
           // if you will use the auto_route package in order to navigate between screens without context

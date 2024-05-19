@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_message.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
+import 'package:intl/intl.dart';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 
 class MessageWidget extends StatefulWidget {
   final User? currentUser;
@@ -51,14 +53,17 @@ class _LeftSide extends StatelessWidget {
             ),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "${message?.message}",
                 style: GoogleFonts.aBeeZee(
-                  fontSize: 13,
+                  fontSize: 15,
                   color: Colors.white,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
+              _MessageTime(message: message),
             ],
           ),
         ),
@@ -90,6 +95,7 @@ class _RightSide extends StatelessWidget {
             ),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 "${message?.message}",
@@ -98,6 +104,53 @@ class _RightSide extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
+              _MessageTime(message: message),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _MessageTime extends StatelessWidget {
+  final ChatMessage? message;
+
+  const _MessageTime({super.key, required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          DateFormat.yMMMd().format(DateTime.parse(message?.createdAt ?? Constants.tempDateTime)),
+          style: GoogleFonts.aBeeZee(
+            fontSize: 9,
+            height: 0,
+            color: Colors.white70,
+            fontWeight: FontWeight.w100,
+          ),
+        ),
+        const SizedBox(width: 3),
+        const SizedBox(
+          width: 15,
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Icon(
+                Icons.check,
+                size: 13,
+                color: Colors.white,
+              ),
+              Positioned(
+                left: 5,
+                child: Icon(
+                  Icons.check,
+                  size: 13,
+                  color: Colors.white,
+                ),
+              )
             ],
           ),
         )

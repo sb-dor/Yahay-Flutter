@@ -15,6 +15,7 @@ class ChatsAppbar extends StatelessWidget {
         style: GoogleFonts.aBeeZee(),
       ),
       centerTitle: true,
+      scrolledUnderElevation: 0.0,
       leading: IconButton(
         onPressed: () => OpenSearchContactsPopup.openSearchContactsPopup(context),
         icon: const Icon(Icons.person_add_alt),
