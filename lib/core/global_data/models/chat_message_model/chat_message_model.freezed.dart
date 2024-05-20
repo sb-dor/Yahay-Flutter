@@ -34,6 +34,8 @@ mixin _$ChatMessageModel {
   String? get imageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: "video_url")
   String? get videoUrl => throw _privateConstructorUsedError;
+  @JsonKey(name: "message_seen_at")
+  String? get messageSeenAt => throw _privateConstructorUsedError;
   @JsonKey(name: "created_at")
   String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: "updated_at")
@@ -65,6 +67,7 @@ abstract class $ChatMessageModelCopyWith<$Res> {
       @JsonKey(includeFromJson: false, includeToJson: false) File? file,
       @JsonKey(name: "image_url") String? imageUrl,
       @JsonKey(name: "video_url") String? videoUrl,
+      @JsonKey(name: "message_seen_at") String? messageSeenAt,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
       @JsonKey(name: "deleted_at") String? deletedAt,
@@ -98,6 +101,7 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
     Object? file = freezed,
     Object? imageUrl = freezed,
     Object? videoUrl = freezed,
+    Object? messageSeenAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -139,6 +143,10 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
       videoUrl: freezed == videoUrl
           ? _value.videoUrl
           : videoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      messageSeenAt: freezed == messageSeenAt
+          ? _value.messageSeenAt
+          : messageSeenAt // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -214,6 +222,7 @@ abstract class _$$ChatMessageModelImplCopyWith<$Res>
       @JsonKey(includeFromJson: false, includeToJson: false) File? file,
       @JsonKey(name: "image_url") String? imageUrl,
       @JsonKey(name: "video_url") String? videoUrl,
+      @JsonKey(name: "message_seen_at") String? messageSeenAt,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
       @JsonKey(name: "deleted_at") String? deletedAt,
@@ -248,6 +257,7 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
     Object? file = freezed,
     Object? imageUrl = freezed,
     Object? videoUrl = freezed,
+    Object? messageSeenAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -290,6 +300,10 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
           ? _value.videoUrl
           : videoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      messageSeenAt: freezed == messageSeenAt
+          ? _value.messageSeenAt
+          : messageSeenAt // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -323,6 +337,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
       @JsonKey(includeFromJson: false, includeToJson: false) this.file,
       @JsonKey(name: "image_url") this.imageUrl,
       @JsonKey(name: "video_url") this.videoUrl,
+      @JsonKey(name: "message_seen_at") this.messageSeenAt,
       @JsonKey(name: "created_at") this.createdAt,
       @JsonKey(name: "updated_at") this.updatedAt,
       @JsonKey(name: "deleted_at") this.deletedAt,
@@ -355,6 +370,9 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
   @JsonKey(name: "video_url")
   final String? videoUrl;
   @override
+  @JsonKey(name: "message_seen_at")
+  final String? messageSeenAt;
+  @override
   @JsonKey(name: "created_at")
   final String? createdAt;
   @override
@@ -369,7 +387,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
 
   @override
   String toString() {
-    return 'ChatMessageModel(id: $id, user: $user, relatedToUser: $relatedToUser, chat: $chat, message: $message, chatMessageUUID: $chatMessageUUID, file: $file, imageUrl: $imageUrl, videoUrl: $videoUrl, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, messageSent: $messageSent)';
+    return 'ChatMessageModel(id: $id, user: $user, relatedToUser: $relatedToUser, chat: $chat, message: $message, chatMessageUUID: $chatMessageUUID, file: $file, imageUrl: $imageUrl, videoUrl: $videoUrl, messageSeenAt: $messageSeenAt, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, messageSent: $messageSent)';
   }
 
   @override
@@ -390,6 +408,8 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
                 other.imageUrl == imageUrl) &&
             (identical(other.videoUrl, videoUrl) ||
                 other.videoUrl == videoUrl) &&
+            (identical(other.messageSeenAt, messageSeenAt) ||
+                other.messageSeenAt == messageSeenAt) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -413,6 +433,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
       file,
       imageUrl,
       videoUrl,
+      messageSeenAt,
       createdAt,
       updatedAt,
       deletedAt,
@@ -444,6 +465,7 @@ abstract class _ChatMessageModel implements ChatMessageModel {
       @JsonKey(includeFromJson: false, includeToJson: false) final File? file,
       @JsonKey(name: "image_url") final String? imageUrl,
       @JsonKey(name: "video_url") final String? videoUrl,
+      @JsonKey(name: "message_seen_at") final String? messageSeenAt,
       @JsonKey(name: "created_at") final String? createdAt,
       @JsonKey(name: "updated_at") final String? updatedAt,
       @JsonKey(name: "deleted_at") final String? deletedAt,
@@ -476,6 +498,9 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   @override
   @JsonKey(name: "video_url")
   String? get videoUrl;
+  @override
+  @JsonKey(name: "message_seen_at")
+  String? get messageSeenAt;
   @override
   @JsonKey(name: "created_at")
   String? get createdAt;

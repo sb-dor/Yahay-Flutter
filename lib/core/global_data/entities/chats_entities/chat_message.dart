@@ -15,6 +15,7 @@ class ChatMessage {
   final File? file;
   final String? imageUrl;
   final String? videoUrl;
+  final String? messageSeenAt;
   final String? createdAt;
   final String? updatedAt;
   final String? deletedAt;
@@ -31,6 +32,7 @@ class ChatMessage {
     required this.file,
     required this.imageUrl,
     required this.videoUrl,
+    required this.messageSeenAt,
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,

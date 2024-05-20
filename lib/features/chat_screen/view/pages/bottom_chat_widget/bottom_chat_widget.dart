@@ -22,6 +22,7 @@ class BottomChatWidget extends StatefulWidget {
 class _BottomChatWidgetState extends State<BottomChatWidget> {
   late ChatScreenBloc _chatsBloc;
   final FocusNode _focusNode = FocusNode();
+  bool permissionForFilePicking = true;
 
   @override
   void initState() {
@@ -55,6 +56,14 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                         textInputAction: TextInputAction.newline,
                         focusNode: _focusNode,
                         onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
+                        onChanged: (v) {
+                          if (v.isEmpty) {
+                            permissionForFilePicking = true;
+                          } else {
+                            permissionForFilePicking = false;
+                          }
+                          setState(() {});
+                        },
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           disabledBorder: InputBorder.none,
@@ -70,24 +79,26 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                   ),
                 ),
                 AnimatedPositioned(
-                  duration: const Duration(seconds: 1),
+                  duration: const Duration(milliseconds: 350),
                   bottom: -1,
-                  right: 0,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () => [],
-                        icon: const Icon(
-                          Icons.emoji_emotions_outlined,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () => [],
-                        icon: const FaIcon(FontAwesomeIcons.paste),
-                      ),
-                    ],
+                  right: permissionForFilePicking ? 40 : 0,
+                  child: IconButton(
+                    onPressed: () => [],
+                    icon: const Icon(
+                      Icons.emoji_emotions_outlined,
+                    ),
                   ),
-                )
+                ),
+                if (permissionForFilePicking)
+                  AnimatedPositioned(
+                    duration: const Duration(seconds: 1),
+                    bottom: -1,
+                    right: 0,
+                    child: IconButton(
+                      onPressed: () => [],
+                      icon: const FaIcon(FontAwesomeIcons.paste),
+                    ),
+                  )
               ],
             ),
           ),

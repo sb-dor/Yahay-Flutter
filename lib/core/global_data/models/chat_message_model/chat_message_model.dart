@@ -22,6 +22,7 @@ class ChatMessageModel extends ChatMessage with _$ChatMessageModel {
     @JsonKey(includeFromJson: false, includeToJson: false) File? file,
     @JsonKey(name: "image_url") String? imageUrl,
     @JsonKey(name: "video_url") String? videoUrl,
+    @JsonKey(name: "message_seen_at") String? messageSeenAt,
     @JsonKey(name: "created_at") String? createdAt,
     @JsonKey(name: "updated_at") String? updatedAt,
     @JsonKey(name: "deleted_at") String? deletedAt,

@@ -63,7 +63,10 @@ class _LeftSide extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              _MessageTime(message: message),
+              _MessageTime(
+                message: message,
+                showSeen: false,
+              ),
             ],
           ),
         ),
@@ -114,9 +117,13 @@ class _RightSide extends StatelessWidget {
 }
 
 class _MessageTime extends StatelessWidget {
+  final bool showSeen;
   final ChatMessage? message;
 
-  const _MessageTime({super.key, required this.message});
+  const _MessageTime({
+    required this.message,
+    this.showSeen = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -132,28 +139,37 @@ class _MessageTime extends StatelessWidget {
             fontWeight: FontWeight.w100,
           ),
         ),
-        const SizedBox(width: 3),
-        const SizedBox(
-          width: 15,
-          child: Stack(
-            fit: StackFit.passthrough,
-            children: [
-              Icon(
-                Icons.check,
-                size: 13,
-                color: Colors.white,
+        if (showSeen) const SizedBox(width: 3),
+        if (showSeen)
+          if (message?.messageSent ?? false)
+            SizedBox(
+              width: 15,
+              child: Stack(
+                fit: StackFit.passthrough,
+                children: [
+                  const Icon(
+                    Icons.check,
+                    size: 13,
+                    color: Colors.white,
+                  ),
+                  if (message?.messageSeenAt != null)
+                    const Positioned(
+                      left: 5,
+                      child: Icon(
+                        Icons.check,
+                        size: 13,
+                        color: Colors.white,
+                      ),
+                    )
+                ],
               ),
-              Positioned(
-                left: 5,
-                child: Icon(
-                  Icons.check,
-                  size: 13,
-                  color: Colors.white,
-                ),
-              )
-            ],
-          ),
-        )
+            )
+          else
+            const Icon(
+              Icons.access_time_outlined,
+              size: 13,
+              color: Colors.white,
+            )
       ],
     );
   }

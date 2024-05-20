@@ -37,7 +37,12 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
 
       if (!json.containsKey("chat")) return null;
 
-      return ChatModel.fromJson(json['chat']);
+      final gettingChat = ChatModel.fromJson(json['chat']);
+
+      return gettingChat.copyWith(
+          messages: gettingChat.messages?.map((e) {
+        return e.copyWith(messageSent: true);
+      }).toList());
     } catch (e) {
       debugPrint("ChatScreenChatDataSourceImpl chat error is: $e");
       return null;
@@ -52,7 +57,6 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
       final response = await _dioSettings.dio.delete(_deleteTempCreatedChatsUrl, data: body);
 
       debugPrint("coming remove temp created chats: ${response.data}");
-
     } catch (e) {
       debugPrint("removeAllTempCreatedChats error is: $e");
     }
