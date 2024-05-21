@@ -63,6 +63,7 @@ dependencies:
   firebase_crashlytics: ^3.5.5
   talker: ^4.2.0
   uuid: ^4.4.0
+  emoji_picker_flutter: ^2.2.0
 
 
 dev_dependencies:

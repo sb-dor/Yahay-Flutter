@@ -13,6 +13,7 @@ import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
 import 'package:yahay/features/chat_screen/view/pages/app_bar/chat_screen_app_bar.dart';
 import 'package:yahay/features/chat_screen/view/pages/app_bar/chat_screen_loading_app_bar.dart';
 import 'package:yahay/features/chat_screen/view/pages/bottom_chat_widget/bottom_chat_widget.dart';
+import 'package:yahay/features/chat_screen/view/pages/bottom_chat_widget/emoji_picker_helper.dart';
 import 'package:yahay/features/chat_screen/view/pages/message_widget/loading_messages_widget.dart';
 import 'package:yahay/features/chat_screen/view/pages/message_widget/message_widget.dart';
 import 'package:yahay/injections/injections.dart';
@@ -71,40 +72,45 @@ class _ChatScreenState extends State<ChatScreen> {
             final currentState = snap.requireData;
             final currentStateModel = currentState.chatScreenStateModel;
             return Scaffold(
-                appBar: PreferredSize(
-                  preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-                  child: ChatScreenAppBar(chatScreenBloc: _chatScreenBloc),
+              appBar: PreferredSize(
+                preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+                child: ChatScreenAppBar(chatScreenBloc: _chatScreenBloc),
+              ),
+              body: ShimmerLoader(
+                isLoading: currentState is LoadingChatScreenState,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        reverse: true,
+                        children: [
+                          if (currentState is LoadedChatScreenState)
+                            ListView.separated(
+                              separatorBuilder: (context, index) => const SizedBox(height: 10),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: currentStateModel.messages.length,
+                              itemBuilder: (context, index) {
+                                final message = currentStateModel.messages[index];
+                                return MessageWidget(message: message, currentUser: currentUser);
+                              },
+                            )
+                          else
+                            const LoadingMessagesWidget()
+                        ],
+                      ),
+                    ),
+                    BottomChatWidget(
+                      chatsBloc: _chatScreenBloc,
+                    ),
+                    if (currentStateModel.showEmojiPicker)
+                      EmojiPickerHelper(
+                        chatScreenBloc: _chatScreenBloc,
+                      )
+                  ],
                 ),
-                body: ShimmerLoader(
-                  isLoading: currentState is LoadingChatScreenState,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView(
-                          reverse: true,
-                          children: [
-                            if (currentState is LoadedChatScreenState)
-                              ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(height: 10),
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: currentStateModel.messages.length,
-                                itemBuilder: (context, index) {
-                                  final message = currentStateModel.messages[index];
-                                  return MessageWidget(message: message, currentUser: currentUser);
-                                },
-                              )
-                            else
-                              const LoadingMessagesWidget()
-                          ],
-                        ),
-                      ),
-                      BottomChatWidget(
-                        chatsBloc: _chatScreenBloc,
-                      ),
-                    ],
-                  ),
-                ));
+              ),
+            );
         }
       },
     );

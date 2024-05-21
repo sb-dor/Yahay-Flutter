@@ -77,6 +77,8 @@ class ChatScreenBloc {
       yield* _handleChatScreenEvent(event);
     } else if (event is SendMessageEvent) {
       yield* _sendMessageEvent();
+    } else if (event is ChaneEmojiPicker) {
+      yield* _chaneEmojiPicker(event);
     } else if (event is RemoveAllTempCreatedChatsEvent) {
       _removeAllTempCreatedChatsEvent(event);
     }
@@ -125,7 +127,10 @@ class ChatScreenBloc {
   // message sending event
   static Stream<ChatScreenStates> _sendMessageEvent() async* {
     try {
-      if (_currentStateModel.messageController.text.trim().isEmpty) return;
+      if (_currentStateModel.messageController.text.trim().isEmpty &&
+          _currentStateModel.pickedFile == null) {
+        return;
+      }
 
       final chatMessage = ChatMessageModel(
         chat: ChatModel.fromEntity(_currentStateModel.currentChat),
@@ -172,6 +177,13 @@ class ChatScreenBloc {
     } catch (e) {
       yield ErrorChatScreenState(_currentStateModel);
     }
+  }
+
+  static Stream<ChatScreenStates> _chaneEmojiPicker(ChaneEmojiPicker event) async* {
+    try {
+      _currentStateModel.changeEmojiPicker(value: event.value);
+      yield* _emitter();
+    } catch (e) {}
   }
 
   static Stream<ChatScreenStates> _emitter() async* {

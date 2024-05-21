@@ -54,8 +54,14 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                       child: TextField(
                         controller: _chatsBloc.states.value.chatScreenStateModel.messageController,
                         textInputAction: TextInputAction.newline,
+                        onTap: () {
+                          _chatsBloc.events.add(ChaneEmojiPicker(value: false));
+                        },
                         focusNode: _focusNode,
-                        onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
+                        onTapOutside: (v) {
+                          _chatsBloc.events.add(ChaneEmojiPicker(value: false));
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                         onChanged: (v) {
                           if (v.isEmpty) {
                             permissionForFilePicking = true;
@@ -83,7 +89,10 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                   bottom: -1,
                   right: permissionForFilePicking ? 40 : 0,
                   child: IconButton(
-                    onPressed: () => [],
+                    onPressed: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      _chatsBloc.events.add(ChaneEmojiPicker());
+                    },
                     icon: const Icon(
                       Icons.emoji_emotions_outlined,
                     ),

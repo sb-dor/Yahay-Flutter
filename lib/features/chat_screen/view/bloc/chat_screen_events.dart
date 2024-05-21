@@ -29,3 +29,10 @@ class HandleChatMessageEvent extends ChatScreenEvents {
 // sending message event
 @immutable
 class SendMessageEvent extends ChatScreenEvents {}
+
+@immutable
+class ChaneEmojiPicker extends ChatScreenEvents {
+  final bool? value;
+
+  ChaneEmojiPicker({this.value});
+}

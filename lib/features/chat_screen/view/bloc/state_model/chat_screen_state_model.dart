@@ -12,7 +12,7 @@ class ChatScreenStateModel {
 
   TextEditingController get messageController => _messageController;
 
-  List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages = [];
 
   List<ChatMessage> get messages => _messages;
 
@@ -29,6 +29,10 @@ class ChatScreenStateModel {
   User? get relatedUser => _relatedUser;
 
   User? get currentUser => _currentUser;
+
+  bool _showEmojiPicker = false;
+
+  bool get showEmojiPicker => _showEmojiPicker;
 
   void setChat(Chat? chat) {
     if (chat == null) return;
@@ -54,4 +58,12 @@ class ChatScreenStateModel {
   }
 
   void clearMessage() => _messageController.clear();
+
+  void changeEmojiPicker({bool? value}) {
+    if (value != null) {
+      _showEmojiPicker = value;
+      return;
+    }
+    _showEmojiPicker = !_showEmojiPicker;
+  }
 }

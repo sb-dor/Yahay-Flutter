@@ -5,6 +5,7 @@ import 'package:yahay/features/chats/view/bloc/chats_events.dart';
 import 'package:yahay/features/chats/view/bloc/chats_states.dart';
 import 'package:yahay/features/chats/view/pages/chat_widget/chat_widget.dart';
 import 'package:yahay/injections/injections.dart';
+import 'chat_widget/chat_loading_widget.dart';
 import 'chats_appbar/chats_appbar.dart';
 
 @RoutePage()
@@ -49,16 +50,19 @@ class _ChatsPageState extends State<ChatsPage> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),
                   children: [
-                    ListView.separated(
-                      separatorBuilder: (context, index) => const SizedBox(height: 15),
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: currentStateModel.chats.length,
-                      itemBuilder: (context, index) {
-                        final chat = currentStateModel.chats[index];
-                        return ChatWidget(chat: chat);
-                      },
-                    ),
+                    if (currentState is LoadedChatsState)
+                      ListView.separated(
+                        separatorBuilder: (context, index) => const SizedBox(height: 15),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: currentStateModel.chats.length,
+                        itemBuilder: (context, index) {
+                          final chat = currentStateModel.chats[index];
+                          return ChatWidget(chat: chat);
+                        },
+                      )
+                    else
+                      const ChatLoadingWidget(),
                   ],
                 ),
               ),
