@@ -13,4 +13,6 @@ abstract class AuthorizationRepo {
   });
 
   Future<User?> checkAuth();
+
+  Future<bool> logout();
 }

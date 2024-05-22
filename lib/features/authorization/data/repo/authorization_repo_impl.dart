@@ -31,4 +31,7 @@ class AuthorizationRepoImpl implements AuthorizationRepo {
         password: password,
         userName: userName,
       );
+
+  @override
+  Future<bool> logout() => _laravelAuthDataSource.logout();
 }

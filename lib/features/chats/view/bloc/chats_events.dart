@@ -5,7 +5,11 @@ import 'package:pusher_client/pusher_client.dart';
 class ChatsEvents {}
 
 @immutable
-class GetUserChatsEvent extends ChatsEvents {}
+class GetUserChatsEvent extends ChatsEvents {
+  final bool refresh;
+
+  GetUserChatsEvent({this.refresh = false});
+}
 
 @immutable
 class ChatListenerEvent extends ChatsEvents {

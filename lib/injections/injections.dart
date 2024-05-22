@@ -5,6 +5,7 @@ import 'package:yahay/injections/blocs_inj/app_theme_bloc_inj/app_theme_bloc_inj
 import 'package:yahay/injections/blocs_inj/auth_inj/auth_inj.dart';
 import 'package:yahay/injections/blocs_inj/chat_screen_bloc_inj/chat_screen_bloc_inj.dart';
 import 'package:yahay/injections/blocs_inj/chats_bloc_inj/chats_bloc_inj.dart';
+import 'package:yahay/injections/blocs_inj/profile_bloc_inj/profile_bloc_inj.dart';
 import 'package:yahay/injections/utils_inj/utils_inj.dart';
 
 final snoopy = GetIt.instance;
@@ -29,5 +30,7 @@ abstract class Injections {
     await ChatsAuthInj.chatsAuthInj();
 
     await ChatScreenBlocInj.chatScreenBlocInj();
+
+    await ProfileBlocInj.profileBlocInj();
   }
 }

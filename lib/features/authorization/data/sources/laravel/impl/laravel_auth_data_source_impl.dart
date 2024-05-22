@@ -17,6 +17,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   final String _checkAuth = "/check-auth";
   final String _register = "/register";
   final String _login = "/login";
+  final String _logout = "/logout";
 
   @override
   Future<UserModel?> checkAuth() async {
@@ -121,6 +122,33 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     } catch (e) {
       debugPrint("register error is $e");
       return null;
+    }
+  }
+
+  @override
+  Future<bool> logout() async {
+    try {
+      final url = "${AppHttpRoutes.authPrefix}$_logout";
+
+      final response = await _dio.dio.delete(url);
+
+      debugPrint("logout response: ${response.data}");
+
+      if (response.statusCode != HttpStatusCodes.success) return false;
+
+      Map<String, dynamic> json =
+          response.data is String ? jsonDecode(response.data) : response.data;
+
+      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) return false;
+
+      if (json[HttpStatusCodes.serverSuccessResponse] == true) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      debugPrint("logout error is: $e");
+      return false;
     }
   }
 }

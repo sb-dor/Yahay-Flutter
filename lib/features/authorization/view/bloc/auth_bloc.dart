@@ -8,6 +8,7 @@ import 'package:yahay/features/authorization/domain/usecases/check_token_usecase
 import 'package:yahay/features/authorization/domain/usecases/facebook_auth_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/google_auth_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/login_usecase.dart';
+import 'package:yahay/features/authorization/domain/usecases/logout_usecase.dart';
 import 'package:yahay/features/authorization/domain/usecases/register_usecase.dart';
 import 'package:yahay/features/authorization/view/bloc/state_model/auth_state_model.dart';
 import 'package:yahay/injections/injections.dart';
@@ -24,6 +25,7 @@ class AuthBloc {
   static late final LoginUsecase _loginUsecase;
   static late final GoogleAuthUsecase _googleAuthUsecase;
   static late final FacebookAuthUsecase _facebookAuthUsecase;
+  static late final LogoutUsecase _logoutUsecase;
   static late final BehaviorSubject<AuthStates> _currentState;
 
   // state data
@@ -49,6 +51,7 @@ class AuthBloc {
     _googleAuthUsecase = GoogleAuthUsecase(_otherAuthorizationRepo);
     _facebookAuthUsecase = FacebookAuthUsecase(_otherAuthorizationRepo);
     _loginUsecase = LoginUsecase(_authorizationRepo);
+    _logoutUsecase = LogoutUsecase(_authorizationRepo);
 
     final eventBehavior = BehaviorSubject<AuthEvents>();
 
@@ -82,6 +85,8 @@ class AuthBloc {
       state = _googleAuth(event);
     } else if (event is FacebookAuth) {
       state = _facebookAuth(event);
+    } else if (event is LogOutEvent) {
+      state = _logOutEvent(event);
     }
     yield* state;
   }
@@ -213,6 +218,19 @@ class AuthBloc {
       await snoopy<DioSettings>().updateDio();
 
       yield AuthorizedState(_currentStateModel);
+    } catch (e) {
+      yield ErrorAuthState(_currentStateModel);
+    }
+  }
+
+  static Stream<AuthStates> _logOutEvent(LogOutEvent event) async* {
+    try {
+      final data = await _logoutUsecase.logout();
+
+      if (data) {
+        _currentStateModel.setUser(null);
+        yield UnAuthorizedState(_currentStateModel);
+      }
     } catch (e) {
       yield ErrorAuthState(_currentStateModel);
     }

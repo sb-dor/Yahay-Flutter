@@ -35,3 +35,6 @@ class CheckAuthEvent extends AuthEvents {}
 
 @immutable
 class ChangePasswordVisibility extends AuthEvents {}
+
+@immutable
+class LogOutEvent extends AuthEvents {}

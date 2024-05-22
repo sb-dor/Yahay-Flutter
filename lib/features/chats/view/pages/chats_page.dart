@@ -45,7 +45,7 @@ class _ChatsPageState extends State<ChatsPage> {
                 child: const ChatsAppbar(),
               ),
               body: RefreshIndicator(
-                onRefresh: () async => _chatsBloc.events.add(GetUserChatsEvent()),
+                onRefresh: () async => _chatsBloc.events.add(GetUserChatsEvent(refresh: true)),
                 child: ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),

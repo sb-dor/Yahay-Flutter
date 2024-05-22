@@ -78,6 +78,8 @@ class ChatsBloc {
 
   static Stream<ChatsStates> _getUserChatsEvent(GetUserChatsEvent event) async* {
     try {
+      if (_currentState.value is LoadedChatsState && !event.refresh) return;
+
       yield LoadingChatsState(_currentStateModel);
 
       _currentStateModel.chats = await _getUserChatsUseCase.chats();

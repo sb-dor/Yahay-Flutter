@@ -13,4 +13,6 @@ abstract class LaravelAuthDataSource {
   });
 
   Future<UserModel?> checkAuth();
+
+  Future<bool> logout();
 }

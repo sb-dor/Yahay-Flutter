@@ -93,8 +93,11 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                       FocusManager.instance.primaryFocus?.unfocus();
                       _chatsBloc.events.add(ChaneEmojiPicker());
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.emoji_emotions_outlined,
+                      color: _chatsBloc.states.value.chatScreenStateModel.showEmojiPicker
+                          ? Colors.blue
+                          : null,
                     ),
                   ),
                 ),
