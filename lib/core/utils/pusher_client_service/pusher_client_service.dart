@@ -1,4 +1,5 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/utils/dotenv/dotenv.dart';
 import 'package:yahay/injections/injections.dart';
 
@@ -30,28 +31,27 @@ class PusherClientService {
 
   late final PusherChannelsClient pusherClient;
 
-  PusherClientService() {
-    init();
-  }
+  Future<void> init() async {
+    PusherChannelsPackageLogger.enableLogs();
 
-  void init() async {
-    final options = PusherChannelsOptions.fromCluster(
-      scheme: _envHelper.dotEnv.get("PUSHER_SCHEME"),
-      cluster: _envHelper.dotEnv.get("PUSHER_APP_CLUSTER"),
-      key: _envHelper.dotEnv.get("PUSHER_APP_KEY"),
-      host: _envHelper.dotEnv.get("PUSHER_HOST"),
-      // shouldSupplyMetadataQueries: true,
-      // metadata: const PusherChannelsOptionsMetadata.byDefault(),
+    final options = PusherChannelsOptions.fromHost(
+      scheme: _envHelper.dotEnv.get('PUSHER_SCHEME'),
+      host: _envHelper.dotEnv.get('PUSHER_HOST'),
       port: int.parse(_envHelper.dotEnv.get("PUSHER_PORT")),
+      key: _envHelper.dotEnv.get("PUSHER_APP_KEY"),
     );
 
     pusherClient = PusherChannelsClient.websocket(
       options: options,
-      connectionErrorHandler: (exception, trace, refresh) {
-        refresh();
+      connectionErrorHandler: (f, s, t) {
+        debugPrint("error is: $f");
       },
     );
 
     await pusherClient.connect();
+
+    pusherClient.pusherErrorEventStream.listen((e) {
+      debugPrint("error of pusher is: ${e.data}");
+    });
   }
 }

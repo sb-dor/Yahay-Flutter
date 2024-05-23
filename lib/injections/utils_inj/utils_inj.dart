@@ -27,6 +27,8 @@ abstract class UtilsInj {
       () => PusherClientService(),
     );
 
+    await snoopy<PusherClientService>().init();
+
     snoopy.registerLazySingleton<ScreenMessaging>(() => ScreenMessaging());
 
     snoopy.registerLazySingleton<ListPaginationChecker>(

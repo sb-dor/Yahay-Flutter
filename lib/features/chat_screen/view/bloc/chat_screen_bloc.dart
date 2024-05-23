@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
-import 'package:pusher_client/pusher_client.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
@@ -113,6 +111,8 @@ class ChatScreenBloc {
 
       _channel = snoopy<PusherClientService>().pusherClient.publicChannel(channelName);
 
+      debugPrint("current channel: ${_channel?.name}");
+
       _channel?.subscribeIfNotUnsubscribed();
 
       _channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
@@ -126,6 +126,7 @@ class ChatScreenBloc {
 
       // get all chat messages here
     } catch (e) {
+      debugPrint("channel connecting error: $e");
       yield ErrorChatScreenState(_currentStateModel);
     }
   }
