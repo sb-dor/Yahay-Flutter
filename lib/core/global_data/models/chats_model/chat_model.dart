@@ -14,6 +14,7 @@ class ChatModel extends Chat with _$ChatModel {
     @JsonKey(name: "chat_uuid") String? uuid,
     String? name,
     String? description,
+    @JsonKey(name: "image_url") String? imageUrl,
     @JsonKey(name: "created_at") String? createdAt,
     @JsonKey(name: "updated_at") String? updatedAt,
 
@@ -32,6 +33,7 @@ class ChatModel extends Chat with _$ChatModel {
       uuid: chat.uuid,
       name: chat.name,
       description: chat.description,
+      imageUrl: chat.imageUrl,
       createdAt: chat.createdAt,
       updatedAt: chat.updatedAt,
       lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),

@@ -1,3 +1,4 @@
+import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 
@@ -13,7 +14,7 @@ class GetUserChatsEvent extends ChatsEvents {
 
 @immutable
 class ChatListenerEvent extends ChatsEvents {
-  final PusherEvent? event;
+  final ChannelReadEvent? event;
 
   ChatListenerEvent(this.event);
 }

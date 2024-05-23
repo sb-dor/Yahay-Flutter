@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:rxdart/rxdart.dart';
@@ -26,7 +27,7 @@ class ChatScreenBloc {
   static late ChatScreenChatUsecase _chatScreenChatUsecase;
   static late ChatScreenSendMessagesUsecases _chatScreenSendMessagesUsecases;
 
-  static Channel? _channel;
+  static PublicChannel? _channel;
 
   final Sink<ChatScreenEvents> events;
   final BehaviorSubject<ChatScreenStates> _states;
@@ -34,7 +35,7 @@ class ChatScreenBloc {
   BehaviorSubject<ChatScreenStates> get states => _states;
 
   void dispose() {
-    _channel?.cancelEventChannelStream();
+    _channel?.unsubscribe();
     _channel = null;
     events.close();
   }
@@ -110,11 +111,16 @@ class ChatScreenBloc {
       final channelName =
           "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
 
-      _channel = snoopy<PusherClientService>().pusherClient.subscribe(channelName);
+      _channel = snoopy<PusherClientService>().pusherClient.publicChannel(channelName);
 
-      _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
+      _channel?.subscribeIfNotUnsubscribed();
+
+      _channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
         event.events.add(HandleChatMessageEvent(pusherEvent));
       });
+
+      // _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
+      // });
 
       yield LoadedChatScreenState(_currentStateModel);
 

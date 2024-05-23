@@ -12,7 +12,20 @@
           "package_name": "com.bdaynabday.yahay"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "176015174248-5rlffqncd77a0kjp6bkig84h0bgim7jk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bdaynabday.yahay",
+            "certificate_hash": "3a86fef678ac092a423656650d994a459d0153d8"
+          }
+        },
+        {
+          "client_id": "176015174248-eg7ip41sln4ou6tcjl4tj7vgu8fnc08j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDhcnBjEsmPPKkhAyPlX5Qdhhj0GgattM8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176015174248-eg7ip41sln4ou6tcjl4tj7vgu8fnc08j.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "176015174248-53k5ts8nuiupqsilsq0c73rk52vmfsu7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bdaynabday.yahay"
+              }
+            }
+          ]
         }
       }
     }

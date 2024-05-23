@@ -34,4 +34,5 @@ abstract class Constants {
   //
 
   static const String tempDateTime = "2024-01-01 12:00:00";
+  static const String defaultUserImage = "assets/default_images/temp_user.jpg";
 }

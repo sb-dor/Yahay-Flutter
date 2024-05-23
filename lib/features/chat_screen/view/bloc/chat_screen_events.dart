@@ -1,3 +1,4 @@
+import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
@@ -21,7 +22,7 @@ class RemoveAllTempCreatedChatsEvent extends ChatScreenEvents {}
 
 @immutable
 class HandleChatMessageEvent extends ChatScreenEvents {
-  final PusherEvent? event;
+  final ChannelReadEvent? event;
 
   HandleChatMessageEvent(this.event);
 }

@@ -63,11 +63,16 @@ class ChatsBloc {
 
     final channelName = "${Constants.channelNotifyOfUserName}${user?.id}";
 
-    final chatChannel = snoopy<PusherClientService>().pusherClient.subscribe(channelName);
+    final chatChannel = snoopy<PusherClientService>().pusherClient.publicChannel(channelName);
 
-    chatChannel.bind(Constants.channelNotifyOfUserEventName, (pusherData) {
+    chatChannel.subscribeIfNotUnsubscribed();
+
+    chatChannel.bind(Constants.channelNotifyOfUserEventName).listen((pusherData) {
       chatsEventsBehavior.add(ChatListenerEvent(pusherData));
     });
+
+    // chatChannel.bind(Constants.channelNotifyOfUserEventName, (pusherData) {
+    // });
     //
 
     return ChatsBloc._(

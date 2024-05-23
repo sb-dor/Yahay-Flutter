@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/global_usages/widgets/image_loader/image_loaded.dart';
 import 'package:yahay/core/global_usages/widgets/splash_button_clicker.dart';
 
@@ -60,27 +62,45 @@ class _ChatMainImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if ((chat?.participants?.length ?? 0) > 1) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: CircleAvatar(
-          radius: 30,
-          child: Container(
-            color: Colors.green,
-            child: const Text(""),
+      if (chat?.imageUrl != null) {
+        return _ChatImageBuilder(path: chat?.imageUrl);
+      } else {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: CircleAvatar(
+            radius: 30,
+            child: Container(
+              color: Colors.green,
+              child: Text(ChatFunctions.fromEntity(chat)?.getWrappedName() ?? '-'),
+            ),
           ),
-        ),
-      );
+        );
+      }
     } else if ((chat?.participants?.length ?? 0) == 1) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: CircleAvatar(
-          radius: 30,
-          child: ImageLoaderWidget(url: chat?.participants?.first.user?.imageUrl ?? ''),
-        ),
-      );
+      return _ChatImageBuilder(path: chat?.participants?.first.user?.imageUrl);
     } else {
-      return const Text("");
+      return Text(ChatFunctions.fromEntity(chat)?.getWrappedName() ?? '-');
     }
+  }
+}
+
+class _ChatImageBuilder extends StatelessWidget {
+  final String? path;
+
+  const _ChatImageBuilder({super.key, required this.path});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(50),
+      child: CircleAvatar(
+        radius: 30,
+        child: ImageLoaderWidget(
+          url: path ?? '',
+          errorImageUrl: Constants.defaultUserImage,
+        ),
+      ),
+    );
   }
 }
 

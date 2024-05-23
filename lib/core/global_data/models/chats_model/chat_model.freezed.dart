@@ -25,6 +25,8 @@ mixin _$ChatModel {
   String? get uuid => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  @JsonKey(name: "image_url")
+  String? get imageUrl => throw _privateConstructorUsedError;
   @JsonKey(name: "created_at")
   String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: "updated_at")
@@ -53,6 +55,7 @@ abstract class $ChatModelCopyWith<$Res> {
       @JsonKey(name: "chat_uuid") String? uuid,
       String? name,
       String? description,
+      @JsonKey(name: "image_url") String? imageUrl,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
       @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
@@ -79,6 +82,7 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
     Object? uuid = freezed,
     Object? name = freezed,
     Object? description = freezed,
+    Object? imageUrl = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? lastMessage = freezed,
@@ -101,6 +105,10 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -151,6 +159,7 @@ abstract class _$$ChatModelImplCopyWith<$Res>
       @JsonKey(name: "chat_uuid") String? uuid,
       String? name,
       String? description,
+      @JsonKey(name: "image_url") String? imageUrl,
       @JsonKey(name: "created_at") String? createdAt,
       @JsonKey(name: "updated_at") String? updatedAt,
       @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
@@ -176,6 +185,7 @@ class __$$ChatModelImplCopyWithImpl<$Res>
     Object? uuid = freezed,
     Object? name = freezed,
     Object? description = freezed,
+    Object? imageUrl = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? lastMessage = freezed,
@@ -198,6 +208,10 @@ class __$$ChatModelImplCopyWithImpl<$Res>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -231,6 +245,7 @@ class _$ChatModelImpl implements _ChatModel {
       @JsonKey(name: "chat_uuid") this.uuid,
       this.name,
       this.description,
+      @JsonKey(name: "image_url") this.imageUrl,
       @JsonKey(name: "created_at") this.createdAt,
       @JsonKey(name: "updated_at") this.updatedAt,
       @JsonKey(name: "chat_last_message") this.lastMessage,
@@ -252,6 +267,9 @@ class _$ChatModelImpl implements _ChatModel {
   final String? name;
   @override
   final String? description;
+  @override
+  @JsonKey(name: "image_url")
+  final String? imageUrl;
   @override
   @JsonKey(name: "created_at")
   final String? createdAt;
@@ -286,7 +304,7 @@ class _$ChatModelImpl implements _ChatModel {
 
   @override
   String toString() {
-    return 'ChatModel(id: $id, uuid: $uuid, name: $name, description: $description, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage, participants: $participants, messages: $messages)';
+    return 'ChatModel(id: $id, uuid: $uuid, name: $name, description: $description, imageUrl: $imageUrl, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage, participants: $participants, messages: $messages)';
   }
 
   @override
@@ -299,6 +317,8 @@ class _$ChatModelImpl implements _ChatModel {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -318,6 +338,7 @@ class _$ChatModelImpl implements _ChatModel {
       uuid,
       name,
       description,
+      imageUrl,
       createdAt,
       updatedAt,
       lastMessage,
@@ -344,6 +365,7 @@ abstract class _ChatModel implements ChatModel {
       @JsonKey(name: "chat_uuid") final String? uuid,
       final String? name,
       final String? description,
+      @JsonKey(name: "image_url") final String? imageUrl,
       @JsonKey(name: "created_at") final String? createdAt,
       @JsonKey(name: "updated_at") final String? updatedAt,
       @JsonKey(name: "chat_last_message") final ChatMessageModel? lastMessage,
@@ -364,6 +386,9 @@ abstract class _ChatModel implements ChatModel {
   String? get name;
   @override
   String? get description;
+  @override
+  @JsonKey(name: "image_url")
+  String? get imageUrl;
   @override
   @JsonKey(name: "created_at")
   String? get createdAt;
