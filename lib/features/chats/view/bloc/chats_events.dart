@@ -13,6 +13,13 @@ class GetUserChatsEvent extends ChatsEvents {
 }
 
 @immutable
+class ChatListenerInitEvent extends ChatsEvents {
+  final Sink<ChatsEvents> events;
+
+  ChatListenerInitEvent(this.events);
+}
+
+@immutable
 class ChatListenerEvent extends ChatsEvents {
   final ChannelReadEvent? event;
 

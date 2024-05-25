@@ -24,6 +24,7 @@ class _ChatsPageState extends State<ChatsPage> {
     super.initState();
     _chatsBloc = snoopy<ChatsBloc>();
     _chatsBloc.events.add(GetUserChatsEvent());
+    _chatsBloc.events.add(ChatListenerInitEvent(_chatsBloc.events));
   }
 
   @override

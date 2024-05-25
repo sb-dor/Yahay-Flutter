@@ -39,16 +39,14 @@ class ChatsBloc {
 
     final chatsEventsBehavior = BehaviorSubject<ChatsEvents>();
 
-    final chatsEventsStates = chatsEventsBehavior.switchMap<ChatsStates>((event) async* {
-      Stream<ChatsStates> state = Stream.value(LoadingChatsState(_currentStateModel));
-
+    final chatsEventsStates = chatsEventsBehavior.flatMap<ChatsStates>((event) async* {
       if (event is ChatListenerEvent) {
-        state = _chatListenerEvent(event);
+        yield* _chatListenerEvent(event);
+      } else if (event is ChatListenerInitEvent) {
+        yield* _chatListenerInitEvent(event);
       } else if (event is GetUserChatsEvent) {
-        state = _getUserChatsEvent(event);
+        yield* _getUserChatsEvent(event);
       }
-
-      yield* state;
     }).startWith(LoadingChatsState(_currentStateModel));
 
     final BehaviorSubject<ChatsStates> behaviorOfStates = BehaviorSubject<ChatsStates>()
@@ -56,40 +54,42 @@ class ChatsBloc {
 
     _currentState = behaviorOfStates;
 
-    //
-    //
-    // for channel listening (for getting new chats when whoever writes)
-    final user = snoopy<AuthBloc>().states.value.authStateModel.user;
-
-    final channelName = "${Constants.channelNotifyOfUserName}${user?.id}";
-
-    _currentStateModel.setToPusherClient(
-      PusherChannelsClient.websocket(
-        options: snoopy<PusherClientService>().options,
-        connectionErrorHandler: (f, s, t) {},
-      ),
-    );
-
-    final chatChannel = _currentStateModel.pusherClientService?.publicChannel(channelName);
-
-    final subs = _currentStateModel.pusherClientService?.onConnectionEstablished.listen((e) {
-      chatChannel?.subscribeIfNotUnsubscribed();
-    });
-
-    _currentStateModel.setToSubscription(subs);
-
-    chatChannel?.bind(Constants.channelNotifyOfUserEventName).listen((pusherData) {
-      chatsEventsBehavior.add(ChatListenerEvent(pusherData));
-    });
-
-    // chatChannel.bind(Constants.channelNotifyOfUserEventName, (pusherData) {
-    // });
-    //
-
     return ChatsBloc._(
       events: chatsEventsBehavior.sink,
       states: behaviorOfStates,
     );
+  }
+
+  // for channel listening (for getting new chats when whoever writes)
+  static Stream<ChatsStates> _chatListenerInitEvent(ChatListenerInitEvent event) async* {
+    try {
+      final user = snoopy<AuthBloc>().states.value.authStateModel.user;
+
+      final channelName = "${Constants.channelNotifyOfUserName}${user?.id}";
+
+      debugPrint("current whole channel listeners: $channelName");
+
+      _currentStateModel.setToPusherClient(
+        PusherChannelsClient.websocket(
+          options: snoopy<PusherClientService>().options,
+          connectionErrorHandler: (f, s, t) {},
+        ),
+      );
+
+      final chatChannel = _currentStateModel.pusherClientService?.publicChannel(channelName);
+
+      final subs = _currentStateModel.pusherClientService?.onConnectionEstablished.listen((e) {
+        chatChannel?.subscribeIfNotUnsubscribed();
+      });
+
+      _currentStateModel.setToSubscription(subs);
+
+      await _currentStateModel.pusherClientService?.connect();
+
+      chatChannel?.bind(Constants.channelNotifyOfUserEventName).listen((pusherData) {
+        event.events.add(ChatListenerEvent(pusherData));
+      });
+    } catch (e) {}
   }
 
   static Stream<ChatsStates> _getUserChatsEvent(GetUserChatsEvent event) async* {
@@ -124,7 +124,7 @@ class ChatsBloc {
       yield LoadingChatsState(_currentStateModel);
     } else if (_currentState.value is ErrorChatsState) {
       yield ErrorChatsState(_currentStateModel);
-    } else if (_currentState is LoadedChatsState) {
+    } else if (_currentState.value is LoadedChatsState) {
       yield LoadedChatsState(_currentStateModel);
     }
   }

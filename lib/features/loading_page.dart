@@ -32,6 +32,7 @@ class _HomePageState extends State<LoadingPage> {
 
     _streamSubscription = _authBloc.states.listen((state) async {
       if (state is AuthorizedState) {
+        await ChatsAuthInj.chatsAuthInj();
         AutoRouter.of(context).replaceAll([const HomeRoute()]);
       } else if (state is UnAuthorizedState) {
         AutoRouter.of(context).replaceAll([const LoginRoute()]);
