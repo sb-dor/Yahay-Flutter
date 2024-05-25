@@ -37,7 +37,7 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(
           page: ChatRoute.page,
-          path: "/chat/screen"
+          path: "/homepage/chat/screen"
         )
       ];
 }

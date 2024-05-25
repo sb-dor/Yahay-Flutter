@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/core/global_data/entities/chats_entities/chat_participant.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/core/global_data/models/chat_participant_model/chat_participant_model.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/injections/injections.dart';
@@ -40,16 +41,24 @@ class ChatsStateModel {
   void setChat(List<Chat> list) => _chats = list;
 
   void addChat(Chat chat) {
-    final findChat = _chats.firstWhereOrNull((e) => e.id == chat.id && e.uuid == chat.uuid);
+    var convertedToModelChat = ChatModel.fromEntity(chat);
+    if (convertedToModelChat == null) return;
+    final findChat = _chats.firstWhereOrNull(
+      (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
+    );
     if (findChat != null) {
-      _chats[_chats.indexWhere((e) => e.id == chat.id && e.uuid == chat.uuid)] =
-          ChatModel.fromEntity(findChat)!.copyWith(
+      _chats[_chats.indexWhere(
+        (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
+      )] = convertedToModelChat.copyWith(
         lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
       );
     } else {
       final currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
-      chat.participants?.removeWhere((e) => e.user?.id == currentUser?.id);
-      _chats.add(chat);
+      final data =
+          List<ChatParticipantModel>.from(convertedToModelChat.participants ?? <ChatParticipant>[]);
+      data.removeWhere((e) => e.user?.id == currentUser?.id);
+      convertedToModelChat = convertedToModelChat.copyWith(participants: data);
+      _chats.add(convertedToModelChat);
     }
   }
 
