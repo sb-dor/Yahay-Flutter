@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_participant.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
@@ -42,10 +43,15 @@ class ChatsStateModel {
 
   void addChat(Chat chat) {
     var convertedToModelChat = ChatModel.fromEntity(chat);
+
     if (convertedToModelChat == null) return;
+
+    convertedToModelChat = _removeCurrentUserFromParticipants(convertedToModelChat);
+
     final findChat = _chats.firstWhereOrNull(
       (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
     );
+
     if (findChat != null) {
       _chats[_chats.indexWhere(
         (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
@@ -53,13 +59,20 @@ class ChatsStateModel {
         lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
       );
     } else {
-      final currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
-      final data =
-          List<ChatParticipantModel>.from(convertedToModelChat.participants ?? <ChatParticipant>[]);
-      data.removeWhere((e) => e.user?.id == currentUser?.id);
-      convertedToModelChat = convertedToModelChat.copyWith(participants: data);
       _chats.add(convertedToModelChat);
     }
+  }
+
+  ChatModel _removeCurrentUserFromParticipants(ChatModel chatModel) {
+    final currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
+
+    final data = List<ChatParticipantModel>.from(chatModel.participants ?? <ChatParticipant>[]);
+
+    data.removeWhere((e) => e.user?.id == currentUser?.id);
+
+    chatModel = chatModel.copyWith(participants: data);
+
+    return chatModel;
   }
 
   Future<void> clearAll() async {

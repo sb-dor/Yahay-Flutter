@@ -107,6 +107,8 @@ class ChatScreenBloc {
       final channelName =
           "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
 
+      debugPrint("channel name: $channelName");
+
       _currentStateModel.setPusherChannel(
         PusherChannelsClient.websocket(
           options: snoopy<PusherClientService>().options,
