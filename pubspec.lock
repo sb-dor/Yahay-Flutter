@@ -1037,14 +1037,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
-  pusher_client:
-    dependency: "direct main"
-    description:
-      name: pusher_client
-      sha256: "0dce30a1b4b0dca2a9af2f680eec495b9cdc2b0281491426f3af9718776dc14a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   rename:
     dependency: "direct main"
     description:

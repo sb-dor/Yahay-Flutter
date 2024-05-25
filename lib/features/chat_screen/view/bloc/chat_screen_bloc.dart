@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
@@ -25,16 +26,13 @@ class ChatScreenBloc {
   static late ChatScreenChatUsecase _chatScreenChatUsecase;
   static late ChatScreenSendMessagesUsecases _chatScreenSendMessagesUsecases;
 
-  static PublicChannel? _channel;
-
   final Sink<ChatScreenEvents> events;
   final BehaviorSubject<ChatScreenStates> _states;
 
   BehaviorSubject<ChatScreenStates> get states => _states;
 
   void dispose() {
-    _channel?.unsubscribe();
-    _channel = null;
+    _currentStateModel.disposePusherChannelWithStreamSubscription();
     events.close();
   }
 
@@ -109,18 +107,28 @@ class ChatScreenBloc {
       final channelName =
           "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
 
-      _channel = snoopy<PusherClientService>().pusherClient.publicChannel(channelName);
+      _currentStateModel.setPusherChannel(
+        PusherChannelsClient.websocket(
+          options: snoopy<PusherClientService>().options,
+          connectionErrorHandler: (f, s, t) {},
+        ),
+      );
 
-      debugPrint("current channel: ${_channel?.name}");
+      final channel = _currentStateModel.pusherChannelClient?.publicChannel(channelName);
 
-      _channel?.subscribeIfNotUnsubscribed();
+      final subs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
+        (e) {
+          channel?.subscribeIfNotUnsubscribed();
+        },
+      );
 
-      _channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
+      _currentStateModel.setToSubscription(subs);
+
+      await _currentStateModel.pusherChannelClient?.connect();
+
+      channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
         event.events.add(HandleChatMessageEvent(pusherEvent));
       });
-
-      // _channel?.bind(Constants.chatChannelEventName, (pusherEvent) {
-      // });
 
       yield LoadedChatScreenState(_currentStateModel);
 

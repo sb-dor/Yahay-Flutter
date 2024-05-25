@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:collection/collection.dart';
+import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
@@ -8,6 +10,14 @@ import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
 
 class ChatScreenStateModel {
+  StreamSubscription<void>? _channelSubscription;
+
+  StreamSubscription<void>? get channelSubscription => _channelSubscription;
+
+  PusherChannelsClient? _pusherChannelsClient;
+
+  PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
+
   final TextEditingController _messageController = TextEditingController();
 
   TextEditingController get messageController => _messageController;
@@ -65,5 +75,21 @@ class ChatScreenStateModel {
       return;
     }
     _showEmojiPicker = !_showEmojiPicker;
+  }
+
+  void setPusherChannel(PusherChannelsClient client) {
+    _pusherChannelsClient = client;
+  }
+
+  void setToSubscription(StreamSubscription<void>? subs) {
+    _channelSubscription = subs;
+  }
+
+  void disposePusherChannelWithStreamSubscription() async {
+    await _pusherChannelsClient?.disconnect();
+    await _channelSubscription?.cancel();
+    _pusherChannelsClient?.dispose();
+    _channelSubscription = null;
+    _pusherChannelsClient = null;
   }
 }

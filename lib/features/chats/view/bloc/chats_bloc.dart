@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
-import 'package:pusher_client/pusher_client.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
@@ -12,8 +12,8 @@ import 'package:yahay/injections/injections.dart';
 import 'chats_events.dart';
 import 'chats_states.dart';
 
-typedef PusherDataListener = void Function(
-    String eventName, void Function(PusherEvent? event) onEvent);
+// typedef PusherDataListener = void Function(
+//     String eventName, void Function(PusherEvent? event) onEvent);
 
 @immutable
 class ChatsBloc {
@@ -63,11 +63,22 @@ class ChatsBloc {
 
     final channelName = "${Constants.channelNotifyOfUserName}${user?.id}";
 
-    final chatChannel = snoopy<PusherClientService>().pusherClient.publicChannel(channelName);
+    _currentStateModel.setToPusherClient(
+      PusherChannelsClient.websocket(
+        options: snoopy<PusherClientService>().options,
+        connectionErrorHandler: (f, s, t) {},
+      ),
+    );
 
-    chatChannel.subscribeIfNotUnsubscribed();
+    final chatChannel = _currentStateModel.pusherClientService?.publicChannel(channelName);
 
-    chatChannel.bind(Constants.channelNotifyOfUserEventName).listen((pusherData) {
+    final subs = _currentStateModel.pusherClientService?.onConnectionEstablished.listen((e) {
+      chatChannel?.subscribeIfNotUnsubscribed();
+    });
+
+    _currentStateModel.setToSubscription(subs);
+
+    chatChannel?.bind(Constants.channelNotifyOfUserEventName).listen((pusherData) {
       chatsEventsBehavior.add(ChatListenerEvent(pusherData));
     });
 

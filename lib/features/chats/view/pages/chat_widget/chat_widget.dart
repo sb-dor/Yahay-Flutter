@@ -123,8 +123,9 @@ class _ChatName extends StatelessWidget {
         ),
       );
     } else if ((chat?.participants?.length ?? 0) == 1) {
+      final user = chat?.participants?.first.user;
       return Text(
-        chat?.participants?.first.user?.name ?? '-',
+        user?.name ?? user?.email ?? '-',
         style: GoogleFonts.aBeeZee(
           fontWeight: FontWeight.bold,
           fontSize: 18,

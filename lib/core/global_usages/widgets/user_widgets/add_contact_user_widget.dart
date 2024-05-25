@@ -52,7 +52,7 @@ class AddContactUserWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      user.name ?? '',
+                      user.name ?? user.email ?? '-',
                       style: GoogleFonts.aBeeZee(fontSize: 15),
                     ),
                     Text(
