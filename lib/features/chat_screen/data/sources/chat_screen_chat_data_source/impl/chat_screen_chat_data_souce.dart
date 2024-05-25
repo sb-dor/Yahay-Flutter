@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
@@ -26,7 +28,13 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
         'with_user_id': withUser?.id,
       };
 
-      final response = await _dioSettings.dio.get(_getChatUrl, data: body);
+      late Response response;
+
+      if (kIsWeb) {
+        response = await _dioSettings.dio.post(_getChatUrl, data: body);
+      } else {
+        response = await _dioSettings.dio.get(_getChatUrl, data: body);
+      }
 
       debugPrint("chat response is: ${response.data}");
 

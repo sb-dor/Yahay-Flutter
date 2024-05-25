@@ -10,6 +10,8 @@ import 'package:yahay/core/global_data/models/bottom_navbar_item/bottom_navbar_i
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_states.dart';
+import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
+import 'package:yahay/features/chats/view/bloc/chats_events.dart';
 import 'package:yahay/features/chats/view/pages/chats_page.dart';
 import 'package:yahay/features/contacts/view/contacts_page.dart';
 import 'package:yahay/features/profile/view/pages/profile_page.dart';
@@ -26,11 +28,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late StreamSubscription _authStreamListener;
   late List<BottomNavbarItem> _screens = [];
+  late ChatsBloc _chatsBloc;
   int _index = 1;
 
   @override
   void initState() {
     super.initState();
+    _chatsBloc = snoopy<ChatsBloc>();
 
     _authStreamListener = snoopy<AuthBloc>().states.listen((authState) {
       if (authState is UnAuthorizedState) {
@@ -70,6 +74,7 @@ class _HomePageState extends State<HomePage> {
   void deactivate() {
     debugPrint("home page deactivate worked");
     _authStreamListener.cancel();
+    _chatsBloc.events.add(ChangeToLoadingState());
     super.deactivate();
   }
 

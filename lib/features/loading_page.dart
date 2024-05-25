@@ -5,6 +5,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
+import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
+import 'package:yahay/features/chats/view/bloc/chats_events.dart';
 import 'package:yahay/features/chats/view/pages/chats_page.dart';
 import 'package:yahay/features/home_page.dart';
 import 'package:yahay/injections/blocs_inj/chats_bloc_inj/chats_bloc_inj.dart';
@@ -32,12 +34,13 @@ class _HomePageState extends State<LoadingPage> {
 
     _streamSubscription = _authBloc.states.listen((state) async {
       if (state is AuthorizedState) {
-        await ChatsAuthInj.chatsAuthInj();
         AutoRouter.of(context).replaceAll([const HomeRoute()]);
       } else if (state is UnAuthorizedState) {
         AutoRouter.of(context).replaceAll([const LoginRoute()]);
       } else if (state is ErrorAuthState) {
-      } else {}
+      } else {
+        // TODO something on error state
+      }
     });
   }
 

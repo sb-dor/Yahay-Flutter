@@ -27,7 +27,7 @@ abstract class Injections {
 
     await AddContactFeatureInj.addContactFeatureInj();
 
-    // await ChatsAuthInj.chatsAuthInj();
+    await ChatsAuthInj.chatsAuthInj();
 
     await ChatScreenBlocInj.chatScreenBlocInj();
 

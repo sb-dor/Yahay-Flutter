@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
+import 'package:yahay/core/utils/talker/talker_service.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/chats/domain/repo/chats_repo.dart';
 import 'package:yahay/features/chats/domain/usecases/get_user_chats_usecase.dart';
@@ -46,6 +49,8 @@ class ChatsBloc {
         yield* _chatListenerInitEvent(event);
       } else if (event is GetUserChatsEvent) {
         yield* _getUserChatsEvent(event);
+      } else if (event is ChangeToLoadingState) {
+        yield* _changeToLoadingState(event);
       }
     }).startWith(LoadingChatsState(_currentStateModel));
 
@@ -89,7 +94,9 @@ class ChatsBloc {
       chatChannel?.bind(Constants.channelNotifyOfUserEventName).listen((pusherData) {
         event.events.add(ChatListenerEvent(pusherData));
       });
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("current whole channel listeners error is: $e");
+    }
   }
 
   static Stream<ChatsStates> _getUserChatsEvent(GetUserChatsEvent event) async* {
@@ -98,7 +105,7 @@ class ChatsBloc {
 
       yield LoadingChatsState(_currentStateModel);
 
-      _currentStateModel.chats = await _getUserChatsUseCase.chats();
+      _currentStateModel.setChat(await _getUserChatsUseCase.chats());
 
       debugPrint("chat length is: ${_currentStateModel.chats.length}");
 
@@ -111,12 +118,31 @@ class ChatsBloc {
 
   static Stream<ChatsStates> _chatListenerEvent(ChatListenerEvent event) async* {
     try {
-      debugPrint("coming data from event is: ${event.event?.data}");
+      final data = event.event?.data;
+
+      TalkerService.instance.talker.log("$data");
+
+      Map<String, dynamic> json = data is String
+          ? jsonDecode(data)
+          : data is Map
+              ? data
+              : {};
+
+      ChatModel chat = ChatModel.fromJson(json['chat']);
+
+      debugPrint("is this chat: ${chat.lastMessage?.message}");
+
+      _currentStateModel.addChat(chat);
 
       yield* _emitter();
     } catch (e) {
       debugPrint("_channelListenerEvent error is: $e");
     }
+  }
+
+  static Stream<ChatsStates> _changeToLoadingState(ChangeToLoadingState event) async* {
+    await _currentStateModel.clearAll();
+    yield LoadingChatsState(_currentStateModel);
   }
 
   static Stream<ChatsStates> _emitter() async* {

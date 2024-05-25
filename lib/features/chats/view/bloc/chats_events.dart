@@ -25,3 +25,6 @@ class ChatListenerEvent extends ChatsEvents {
 
   ChatListenerEvent(this.event);
 }
+
+@immutable
+class ChangeToLoadingState extends ChatsEvents {}
