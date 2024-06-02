@@ -63,6 +63,7 @@ class OtherAuthorizationImpl implements OtherAuthorization {
 
   @override
   Future<UserModel?> googleAuth() async {
+    debugPrint("sending after url: ${_dioSettings.dio.options.baseUrl}$_googleAuthPath");
     try {
       final googleAccount = await _googleSignIn.signIn();
 

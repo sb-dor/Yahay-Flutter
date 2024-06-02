@@ -13,7 +13,7 @@ class PusherClientService {
     PusherChannelsPackageLogger.enableLogs();
 
     _options = PusherChannelsOptions.fromHost(
-      scheme: _envHelper.dotEnv.get('PUSHER_SCHEME'),
+      scheme: _envHelper.dotEnv.get('PUSHER_SCHEME'), // should be -> ws
       host: _envHelper.dotEnv.get('PUSHER_HOST'),
       port: int.parse(_envHelper.dotEnv.get("PUSHER_PORT")),
       key: _envHelper.dotEnv.get("PUSHER_APP_KEY"),
