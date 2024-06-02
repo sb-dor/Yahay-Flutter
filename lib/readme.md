@@ -50,7 +50,7 @@ then add this line in your Info.plis:
 
 for ios:
 
-     <key>CFBundleURLTypes</key>
+    <key>CFBundleURLTypes</key>
     <array>
       <dict>
       <key>CFBundleURLSchemes</key>
@@ -65,3 +65,7 @@ for ios:
     <string>CLIENT-TOKEN</string>
     <key>FacebookDisplayName</key>
     <string>APP-NAME</string>
+
+
+for more information about facebook and google ath take a look to the
+android and ios folder -> AndroidManifest.xml and Info.plist

@@ -5,46 +5,50 @@
 
 
 
-    <key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.bdaynabday.yahay</string>
-            </array>
-        </dict>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.googleusercontent.apps.176015174248-53k5ts8nuiupqsilsq0c73rk52vmfsu7</string>
-            </array>
-        </dict>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>***Something here***</string>
-            </array>
-        </dict>
-    </array>
+    <!-- Other configurations -->
 
+        <!-- URL types for custom schemes and external services -->
+        <key>CFBundleURLTypes</key>
+        <array>
+            <!-- Custom scheme for your app -->
+            <dict>
+                <key>CFBundleTypeRole</key>
+                <string>Editor</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>com.bdaynabday.yahay</string>
+                </array>
+            </dict>
+            <!-- Google Sign-In scheme -->
+            <dict>
+                <key>CFBundleTypeRole</key>
+                <string>Editor</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>com.googleusercontent.apps.176015174248-53k5ts8nuiupqsilsq0c73rk52vmfsu7</string>
+                </array>
+            </dict>
+            <!-- Placeholder for additional URL schemes -->
+            <dict>
+                <key>CFBundleTypeRole</key>
+                <string>Editor</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>***Something here***</string>
+                </array>
+            </dict>
+            <!-- Facebook scheme -->
+            <dict>
+                <key>CFBundleTypeRole</key>
+                <string>Editor</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>fb2233168260355735</string>
+                </array>
+            </dict>
+        </array>
 
-
-
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>fb2233168260355735</string>
-      </array>
-      </dict>
-    </array>
+    <!-- Facebook configuration -->
     <key>FacebookAppID</key>
     <string>2233168260355735</string>
     <key>FacebookClientToken</key>
