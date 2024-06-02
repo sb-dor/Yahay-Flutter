@@ -39,6 +39,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       return UserModel.fromJson(json['user']);
     } catch (e) {
+      debugPrint("error is: $e");
       return null;
     }
   }
