@@ -22,6 +22,7 @@ abstract class AppColorsScheme {
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
     blendLevel: 7,
     subThemesData: const FlexSubThemesData(
+      appBarCenterTitle: false,
       blendOnLevel: 10,
       blendOnColors: false,
       useTextTheme: true,
@@ -54,6 +55,7 @@ abstract class AppColorsScheme {
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
     blendLevel: 13,
     subThemesData: const FlexSubThemesData(
+      appBarCenterTitle: false,
       blendOnLevel: 20,
       useTextTheme: true,
       useM2StyleDividerInM3: true,

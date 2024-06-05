@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_usages/widgets/shimmer_loader.dart';
@@ -11,7 +12,6 @@ import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_events.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
 import 'package:yahay/features/chat_screen/view/pages/app_bar/chat_screen_app_bar.dart';
-import 'package:yahay/features/chat_screen/view/pages/app_bar/chat_screen_loading_app_bar.dart';
 import 'package:yahay/features/chat_screen/view/pages/bottom_chat_widget/bottom_chat_widget.dart';
 import 'package:yahay/features/chat_screen/view/pages/bottom_chat_widget/emoji_picker_helper.dart';
 import 'package:yahay/features/chat_screen/view/pages/message_widget/loading_messages_widget.dart';
@@ -35,12 +35,14 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late final ChatScreenBloc _chatScreenBloc;
+  late final AppThemeBloc _appThemeBloc;
   late User? currentUser;
 
   @override
   void initState() {
     super.initState();
     _chatScreenBloc = snoopy<ChatScreenBloc>();
+    _appThemeBloc = snoopy<AppThemeBloc>();
     currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
     _chatScreenBloc.events.add(
       InitChatScreenEvent(
@@ -74,10 +76,14 @@ class _ChatScreenState extends State<ChatScreen> {
             return Scaffold(
               appBar: PreferredSize(
                 preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-                child: ChatScreenAppBar(chatScreenBloc: _chatScreenBloc),
+                child: ChatScreenAppBar(
+                  chatScreenBloc: _chatScreenBloc,
+                  themeData: _appThemeBloc.theme.value,
+                ),
               ),
               body: ShimmerLoader(
                 isLoading: currentState is LoadingChatScreenState,
+                mode: _appThemeBloc.theme.value,
                 child: Column(
                   children: [
                     Expanded(

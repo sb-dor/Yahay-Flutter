@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:yahay/core/global_usages/widgets/search_widget/search_widget.dart';
 import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
 import 'package:yahay/features/chats/view/bloc/chats_events.dart';
 import 'package:yahay/features/chats/view/bloc/chats_states.dart';
@@ -51,6 +52,10 @@ class _ChatsPageState extends State<ChatsPage> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),
                   children: [
+                    SearchWidget(
+                      value: (String value) {},
+                      onDispose: () {},
+                    ),
                     if (currentState is LoadedChatsState)
                       ListView.separated(
                         separatorBuilder: (context, index) => const SizedBox(height: 15),
