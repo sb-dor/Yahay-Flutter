@@ -65,6 +65,7 @@ dependencies:
   talker: ^4.2.0
   uuid: ^4.4.0
   emoji_picker_flutter: ^2.2.0
+  camera: ^0.11.0+1
 
 
 dev_dependencies:

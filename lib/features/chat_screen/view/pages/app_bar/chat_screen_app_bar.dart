@@ -44,6 +44,28 @@ class ChatScreenAppBar extends StatelessWidget {
           : _ChatAppBarTitle(
               chat: chatScreenBloc.states.value.chatScreenStateModel.currentChat,
             ),
+      actions: chatScreenBloc.states.value is LoadingChatScreenState
+          ? [
+              ShimmerLoader(
+                isLoading: true,
+                mode: themeData,
+                child: Container(
+                  width: 25,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+            ]
+          : [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(CupertinoIcons.videocam),
+              ),
+            ],
     );
   }
 }
@@ -61,7 +83,9 @@ class _ChatAppBarTitle extends StatelessWidget {
     if ((chat?.participants?.length ?? 0) > 1) {
       return Text(chat?.name ?? '');
     } else {
-      return Text(chat?.participants?.firstOrNull?.user?.name ?? chat?.participants?.firstOrNull?.user?.email ?? '-');
+      return Text(chat?.participants?.firstOrNull?.user?.name ??
+          chat?.participants?.firstOrNull?.user?.email ??
+          '-');
     }
   }
 }
