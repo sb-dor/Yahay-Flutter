@@ -7,7 +7,6 @@ import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
-import 'package:camera/camera.dart';
 import 'package:yahay/injections/injections.dart';
 
 class VideoChatStateModel {
@@ -34,13 +33,20 @@ class VideoChatStateModel {
 
   VideoChatEntity? get currentVideoChat => _videoChatEntities.firstOrNull;
 
-  Uint8List? _uInt8list;
+  Uint8List? _uInt8Image;
 
-  Uint8List? get uInt8List => _uInt8list;
+  Uint8List? get uInt8Image => _uInt8Image;
+
+  Timer? _timerForGettingFrame;
+
+  Timer? get timerForGettingFrame => _timerForGettingFrame;
+
+  void initTimer(Timer timer) {
+    _timerForGettingFrame = timer;
+  }
 
   void addToUInt8List(Uint8List list) {
-    if (_uInt8list != null) return;
-    _uInt8list = list;
+    _uInt8Image = list;
   }
 
   void addVideoChat(VideoChatEntity videoChatEntity) {
@@ -66,8 +72,10 @@ class VideoChatStateModel {
     _channelSubscription = null;
     _pusherChannelsClient = null;
     for (var each in _videoChatEntities) {
+      await each.cameraController.stopImageStream();
       await each.cameraController.dispose();
     }
+    _uInt8Image = null;
     _videoChatEntities.clear();
     _chat = null;
   }

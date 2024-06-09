@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
@@ -79,16 +80,22 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                         ),
                       ),
                     ),
-                    if (currentStateModel.uInt8List != null)
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        child: Container(
-                          width: 200,
-                          height: 200,
-                          child: Image.memory(currentStateModel.uInt8List!),
-                        ),
-                      )
+                    // if (currentStateModel.uInt8Image != null)
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: Image.memory(
+                        currentStateModel.uInt8Image ?? Uint8List.fromList([]),
+                        gaplessPlayback: true, // makes image show smoothly
+                        // frameBuilder: (context, child, frame, l) {
+                        //   return AnimatedSwitcher(
+                        //     duration: const Duration(milliseconds: 200),
+                        //     child: frame != null ? child : CircularProgressIndicator(),
+                        //   );
+                        // },
+                        errorBuilder: (context, ob, st) => const SizedBox(),
+                      ),
+                    )
                   ],
                 );
               }

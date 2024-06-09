@@ -47,7 +47,7 @@ class CameraHelperService {
     return Uint8List.fromList(img.encodeJpg(imgImage, quality: 80));
   }
 
-  Future<Uint8List?> convertYUV420toImage(CameraImage image) async {
+  Uint8List? convertYUV420toImage(CameraImage image) {
     try {
       final int width = image.width;
       final int height = image.height;
@@ -77,11 +77,11 @@ class CameraHelperService {
         }
       }
 
-      rgbImage = img.copyRotate(rgbImage, angle: -90);
+      rgbImage = img.copyRotate(rgbImage, angle: 90);
 
       return Uint8List.fromList(img.encodeJpg(rgbImage));
     } catch (e) {
-      print(">>>>>>>>>>>> ERROR:" + e.toString());
+      debugPrint(">>>>>>>>>>>> ERROR:$e");
     }
     return null;
   }

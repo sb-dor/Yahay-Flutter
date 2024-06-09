@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:video_player/video_player.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
@@ -75,7 +78,7 @@ class VideoChatFeatureBloc {
     final currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
     final cameraController = CameraController(
       _currentStateModel.cameraService.cameras[0],
-      ResolutionPreset.max,
+      ResolutionPreset.low,
     );
 
     _currentStateModel.initChannelName(chat);
@@ -94,12 +97,16 @@ class VideoChatFeatureBloc {
     // you have to call this function after
     // acception video call from the other side
     _currentStateModel.currentVideoChat?.cameraController.startImageStream((cameraImage) async {
+      // after specific time sending data
+      if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
+          _currentStateModel.timerForGettingFrame == null) {
+        _currentStateModel.initTimer(Timer(const Duration(milliseconds: 100), () async {
+          final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(cameraImage);
+          event.deleteThen?.add(VideoStreamHandlerEvent(null, deleteThen: utf8ListInt));
+        }));
+      }
       // cameraImage.
-      final utf8ListInt = await _currentStateModel.cameraService.convertYUV420toImage(cameraImage);
-      event.deleteThen?.add(VideoStreamHandlerEvent(null, deleteThen: utf8ListInt));
     });
-
-
 
     yield InitialVideoChatState(_currentStateModel);
   }
@@ -156,7 +163,7 @@ class VideoChatFeatureBloc {
   ) async* {
     // delete this logic. its just for check
     _currentStateModel.addToUInt8List(event.deleteThen!);
-    debugPrint("urfdata: ${_currentStateModel.uInt8List?.length}");
+    debugPrint("urfdata: ${_currentStateModel.uInt8Image?.length}");
     yield InitialVideoChatState(_currentStateModel);
   }
 }
