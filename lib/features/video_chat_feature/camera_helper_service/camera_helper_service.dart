@@ -47,58 +47,39 @@ class CameraHelperService {
     return Uint8List.fromList(img.encodeJpg(imgImage, quality: 80));
   }
 
-  Future<Uint8List?> convertYUV420toImage(CameraImage cameraImage) async {
+  Future<Uint8List?> convertYUV420toImage(CameraImage image) async {
     try {
-      final imageWidth = cameraImage.width;
-      final imageHeight = cameraImage.height;
+      final int width = image.width;
+      final int height = image.height;
 
-      final yBuffer = cameraImage.planes[0].bytes;
-      final uBuffer = cameraImage.planes[1].bytes;
-      final vBuffer = cameraImage.planes[2].bytes;
+      final int yRowStride = image.planes[0].bytesPerRow;
+      final int uvRowStride = image.planes[1].bytesPerRow;
+      final int uvPixelStride = image.planes[1].bytesPerPixel!;
 
-      final int yRowStride = cameraImage.planes[0].bytesPerRow;
-      final int yPixelStride = cameraImage.planes[0].bytesPerPixel!;
+      img.Image rgbImage = img.Image(width: width, height: height);
 
-      final int uvRowStride = cameraImage.planes[1].bytesPerRow;
-      final int uvPixelStride = cameraImage.planes[1].bytesPerPixel!;
+      for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+          final int yIndex = y * yRowStride + x;
+          final int uvIndex = (y >> 1) * uvRowStride + (x >> 1) * uvPixelStride;
 
-      final image = img.Image(width: imageWidth, height: imageHeight);
+          final int yValue = image.planes[0].bytes[yIndex];
+          final int uValue = image.planes[1].bytes[uvIndex];
+          final int vValue = image.planes[2].bytes[uvIndex];
 
-      for (int h = 0; h < imageHeight; h++) {
-        int uvh = (h / 2).floor();
+          final int r = (yValue + 1.402 * (vValue - 128)).clamp(0, 255).toInt();
+          final int g = (yValue - 0.344136 * (uValue - 128) - 0.714136 * (vValue - 128))
+              .clamp(0, 255)
+              .toInt();
+          final int b = (yValue + 1.772 * (uValue - 128)).clamp(0, 255).toInt();
 
-        for (int w = 0; w < imageWidth; w++) {
-          int uvw = (w / 2).floor();
-
-          final yIndex = (h * yRowStride) + (w * yPixelStride);
-
-          // Y plane should have positive values belonging to [0...255]
-          final int y = yBuffer[yIndex];
-
-          // U/V Values are subsampled i.e. each pixel in U/V chanel in a
-          // YUV_420 image act as chroma value for 4 neighbouring pixels
-          final int uvIndex = (uvh * uvRowStride) + (uvw * uvPixelStride);
-
-          // U/V values ideally fall under [-0.5, 0.5] range. To fit them into
-          // [0, 255] range they are scaled up and centered to 128.
-          // Operation below brings U/V values to [-128, 127].
-          final int u = uBuffer[uvIndex];
-          final int v = vBuffer[uvIndex];
-
-          // Compute RGB values per formula above.
-          int r = (y + v * 1436 / 1024 - 179).round();
-          int g = (y - u * 46549 / 131072 + 44 - v * 93604 / 131072 + 91).round();
-          int b = (y + u * 1814 / 1024 - 227).round();
-
-          r = r.clamp(0, 255);
-          g = g.clamp(0, 255);
-          b = b.clamp(0, 255);
-
-          image.setPixelRgb(w, h, r, g, b);
+          rgbImage.setPixel(x, y, img.ColorRgb8(r, g, b));
         }
       }
 
-      return Uint8List.fromList(img.encodeJpg(image));
+      rgbImage = img.copyRotate(rgbImage, angle: -90);
+
+      return Uint8List.fromList(img.encodeJpg(rgbImage));
     } catch (e) {
       print(">>>>>>>>>>>> ERROR:" + e.toString());
     }
