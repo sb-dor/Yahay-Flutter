@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
@@ -11,6 +12,10 @@ import 'package:yahay/injections/injections.dart';
 
 class VideoChatStateModel {
   final cameraService = snoopy<CameraHelperService>();
+
+  CameraController? _mainVideoStreamCameraController;
+
+  CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
 
   Chat? _chat;
 
@@ -31,8 +36,6 @@ class VideoChatStateModel {
 
   PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
 
-  VideoChatEntity? get currentVideoChat => _videoChatEntities.firstOrNull;
-
   Uint8List? _uInt8Image;
 
   Uint8List? get uInt8Image => _uInt8Image;
@@ -47,6 +50,11 @@ class VideoChatStateModel {
 
   void addToUInt8List(Uint8List list) {
     _uInt8Image = list;
+  }
+
+  Future<void> initMainCameraController(CameraController controller) async {
+    _mainVideoStreamCameraController = controller;
+    await _mainVideoStreamCameraController?.initialize();
   }
 
   void addVideoChat(VideoChatEntity videoChatEntity) {
@@ -71,10 +79,11 @@ class VideoChatStateModel {
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;
     _pusherChannelsClient = null;
-    for (var each in _videoChatEntities) {
-      await each.cameraController.stopImageStream();
-      await each.cameraController.dispose();
-    }
+    // for (var each in _videoChatEntities) {
+    //   await each.cameraController.stopImageStream();
+    //   await each.cameraController.dispose();
+    // }
+    _mainVideoStreamCameraController?.dispose();
     _uInt8Image = null;
     _videoChatEntities.clear();
     _chat = null;

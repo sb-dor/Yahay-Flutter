@@ -76,30 +76,21 @@ class VideoChatFeatureBloc {
     final chat = event.chat;
     if (chat == null) return;
     final currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
-    final cameraController = CameraController(
-      _currentStateModel.cameraService.cameras[0],
-      ResolutionPreset.low,
+    await _currentStateModel.initMainCameraController(
+      CameraController(
+        _currentStateModel.cameraService.cameras[0],
+        ResolutionPreset.low,
+      ),
     );
-
-    _currentStateModel.initChannelName(chat);
-
-    final videoChatEntity = VideoChatEntity(
-      user: currentUser,
-      cameraController: cameraController,
-      chat: chat,
-    );
-
-    _currentStateModel.addVideoChat(videoChatEntity);
-
-    await videoChatEntity.cameraController.initialize();
 
     // was just for check
     // you have to call this function after
     // acception video call from the other side
-    _currentStateModel.currentVideoChat?.cameraController.startImageStream((cameraImage) async {
+    _currentStateModel.mainVideoStreamCameraController?.startImageStream((cameraImage) async {
       // after specific time sending data
       if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
           _currentStateModel.timerForGettingFrame == null) {
+        // after every 100 millisecond we will send data to user through pusher
         _currentStateModel.initTimer(Timer(const Duration(milliseconds: 100), () async {
           final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(cameraImage);
           event.deleteThen?.add(VideoStreamHandlerEvent(null, deleteThen: utf8ListInt));

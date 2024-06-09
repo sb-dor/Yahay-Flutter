@@ -58,17 +58,15 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
             case ConnectionState.done:
               final currentState = snapshot.requireData;
               final currentStateModel = currentState.videoChatStateModel;
-              if (!(currentStateModel.currentVideoChat?.cameraController.value.isInitialized ??
+              if (!(currentStateModel.mainVideoStreamCameraController?.value.isInitialized ??
                       false) ||
-                  currentStateModel.currentVideoChat?.cameraController == null) {
+                  currentStateModel.mainVideoStreamCameraController == null) {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 return Stack(
                   children: [
                     Positioned.fill(
-                      child: Container(
-                        color: Colors.black,
-                      ),
+                      child: CameraPreview(currentStateModel.mainVideoStreamCameraController!),
                     ),
                     Positioned(
                       bottom: 30,
