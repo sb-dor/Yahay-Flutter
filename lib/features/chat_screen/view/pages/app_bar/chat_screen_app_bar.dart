@@ -66,10 +66,7 @@ class ChatScreenAppBar extends StatelessWidget {
                 onPressed: () {
                   AutoRouter.of(context).push(
                     VideoChatFeatureRoute(
-                      channelName: chatScreenBloc
-                              .states.value.chatScreenStateModel.currentChatFunctions
-                              ?.channelName() ??
-                          '',
+                      chat: chatScreenBloc.states.value.chatScreenStateModel.currentChat,
                     ),
                   );
                 },

@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_events.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_states.dart';
@@ -10,11 +11,11 @@ import 'widgets/call_button_widget.dart';
 
 @RoutePage()
 class VideoChatFeaturePage extends StatefulWidget {
-  final String channelName;
+  final Chat? chat;
 
   const VideoChatFeaturePage({
     super.key,
-    required this.channelName,
+    required this.chat,
   });
 
   @override
@@ -28,7 +29,10 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
   void initState() {
     super.initState();
     _videoChatFeatureBloc = snoopy<VideoChatFeatureBloc>();
-    _videoChatFeatureBloc.events.add(VideoChatInitFeatureEvent(widget.channelName));
+    _videoChatFeatureBloc.events.add(VideoChatInitFeatureEvent(
+      widget.chat,
+      deleteThen: _videoChatFeatureBloc.events,
+    ));
   }
 
   @override
@@ -61,7 +65,9 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                 return Stack(
                   children: [
                     Positioned.fill(
-                      child: CameraPreview(currentStateModel.currentVideoChat!.cameraController),
+                      child: Container(
+                        color: Colors.black,
+                      ),
                     ),
                     Positioned(
                       bottom: 30,
@@ -73,6 +79,16 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                         ),
                       ),
                     ),
+                    if (currentStateModel.uInt8List != null)
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: Container(
+                          width: 200,
+                          height: 200,
+                          child: Image.memory(currentStateModel.uInt8List!),
+                        ),
+                      )
                   ],
                 );
               }

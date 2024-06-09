@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
+import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_events.dart';
 
 class CallButtonWidget extends StatefulWidget {
   final VideoChatFeatureBloc videoChatBloc;
@@ -21,7 +22,9 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
       borderRadius: BorderRadius.circular(50),
       child: InkWell(
         borderRadius: BorderRadius.circular(50),
-        onTap: () {},
+        onTap: () {
+          widget.videoChatBloc.events.add(StartVideoChatEvent(widget.videoChatBloc.events));
+        },
         child: const SizedBox(
           width: 80,
           height: 80,

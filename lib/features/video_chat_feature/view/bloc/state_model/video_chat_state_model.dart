@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:typed_data';
 
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:camera/camera.dart';
@@ -10,9 +13,11 @@ import 'package:yahay/injections/injections.dart';
 class VideoChatStateModel {
   final cameraService = snoopy<CameraHelperService>();
 
-  String? _channelName;
+  Chat? _chat;
 
-  String? get channelName => _channelName;
+  Chat? get channelName => _chat;
+
+  ChatModel? get channelModel => ChatModel.fromEntity(_chat);
 
   final List<VideoChatEntity> _videoChatEntities = [];
 
@@ -29,6 +34,15 @@ class VideoChatStateModel {
 
   VideoChatEntity? get currentVideoChat => _videoChatEntities.firstOrNull;
 
+  Uint8List? _uInt8list;
+
+  Uint8List? get uInt8List => _uInt8list;
+
+  void addToUInt8List(Uint8List list) {
+    if (_uInt8list != null) return;
+    _uInt8list = list;
+  }
+
   void addVideoChat(VideoChatEntity videoChatEntity) {
     _videoChatEntities.add(videoChatEntity);
   }
@@ -41,8 +55,8 @@ class VideoChatStateModel {
     _pusherChannelsClient = pusherClient;
   }
 
-  void initChannelName(String channelName) {
-    _channelName = channelName;
+  void initChannelName(Chat? chat) {
+    _chat = chat;
   }
 
   void dispose() async {
@@ -55,6 +69,6 @@ class VideoChatStateModel {
       await each.cameraController.dispose();
     }
     _videoChatEntities.clear();
-    _channelName = null;
+    _chat = null;
   }
 }

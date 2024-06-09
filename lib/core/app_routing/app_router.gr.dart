@@ -62,7 +62,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: VideoChatFeaturePage(
           key: args.key,
-          channelName: args.channelName,
+          chat: args.chat,
         ),
       );
     },
@@ -186,13 +186,13 @@ class RegisterRoute extends PageRouteInfo<void> {
 class VideoChatFeatureRoute extends PageRouteInfo<VideoChatFeatureRouteArgs> {
   VideoChatFeatureRoute({
     Key? key,
-    required String channelName,
+    required Chat? chat,
     List<PageRouteInfo>? children,
   }) : super(
           VideoChatFeatureRoute.name,
           args: VideoChatFeatureRouteArgs(
             key: key,
-            channelName: channelName,
+            chat: chat,
           ),
           initialChildren: children,
         );
@@ -206,15 +206,15 @@ class VideoChatFeatureRoute extends PageRouteInfo<VideoChatFeatureRouteArgs> {
 class VideoChatFeatureRouteArgs {
   const VideoChatFeatureRouteArgs({
     this.key,
-    required this.channelName,
+    required this.chat,
   });
 
   final Key? key;
 
-  final String channelName;
+  final Chat? chat;
 
   @override
   String toString() {
-    return 'VideoChatFeatureRouteArgs{key: $key, channelName: $channelName}';
+    return 'VideoChatFeatureRouteArgs{key: $key, chat: $chat}';
   }
 }
