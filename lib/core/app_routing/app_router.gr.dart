@@ -56,6 +56,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const RegisterPage(),
       );
     },
+    VideoChatFeatureRoute.name: (routeData) {
+      final args = routeData.argsAs<VideoChatFeatureRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: VideoChatFeaturePage(
+          key: args.key,
+          channelName: args.channelName,
+        ),
+      );
+    },
   };
 }
 
@@ -169,4 +179,42 @@ class RegisterRoute extends PageRouteInfo<void> {
   static const String name = 'RegisterRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [VideoChatFeaturePage]
+class VideoChatFeatureRoute extends PageRouteInfo<VideoChatFeatureRouteArgs> {
+  VideoChatFeatureRoute({
+    Key? key,
+    required String channelName,
+    List<PageRouteInfo>? children,
+  }) : super(
+          VideoChatFeatureRoute.name,
+          args: VideoChatFeatureRouteArgs(
+            key: key,
+            channelName: channelName,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'VideoChatFeatureRoute';
+
+  static const PageInfo<VideoChatFeatureRouteArgs> page =
+      PageInfo<VideoChatFeatureRouteArgs>(name);
+}
+
+class VideoChatFeatureRouteArgs {
+  const VideoChatFeatureRouteArgs({
+    this.key,
+    required this.channelName,
+  });
+
+  final Key? key;
+
+  final String channelName;
+
+  @override
+  String toString() {
+    return 'VideoChatFeatureRouteArgs{key: $key, channelName: $channelName}';
+  }
 }

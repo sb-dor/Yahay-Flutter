@@ -30,6 +30,7 @@ abstract class Constants {
   static const String chatChannelName = "chat_channel_id_";
   static const String chatChannelUUID = "_uuid_";
   static const String chatChannelEventName = "chat_messages.event";
+  static const String chatVideoStreamEventName = "chat_video_stream.event";
 
   //
 

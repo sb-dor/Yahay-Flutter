@@ -8,6 +8,8 @@ import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_message.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
+import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 
 class ChatScreenStateModel {
   StreamSubscription<void>? _channelSubscription;
@@ -29,6 +31,10 @@ class ChatScreenStateModel {
   Chat? _currentChat;
 
   Chat? get currentChat => _currentChat;
+
+  ChatModel? get currentChatModel => ChatModel.fromEntity(_currentChat);
+
+  ChatFunctions? get currentChatFunctions => ChatFunctions.fromEntity(_currentChat);
 
   File? _pickedFile;
 

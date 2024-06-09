@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_usages/widgets/shimmer_loader.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
@@ -58,12 +59,21 @@ class ChatScreenAppBar extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
             ]
           : [
               IconButton(
-                onPressed: () {},
-                icon: Icon(CupertinoIcons.videocam),
+                onPressed: () {
+                  AutoRouter.of(context).push(
+                    VideoChatFeatureRoute(
+                      channelName: chatScreenBloc
+                              .states.value.chatScreenStateModel.currentChatFunctions
+                              ?.channelName() ??
+                          '',
+                    ),
+                  );
+                },
+                icon: const Icon(CupertinoIcons.videocam),
               ),
             ],
     );

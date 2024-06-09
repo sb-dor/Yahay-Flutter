@@ -11,3 +11,13 @@ class VideoChatInitFeatureEvent extends VideoChatFeatureEvents {
 
   const VideoChatInitFeatureEvent(this.channelName);
 }
+
+@immutable
+class StartVideoChatEvent extends VideoChatFeatureEvents {
+  const StartVideoChatEvent();
+}
+
+@immutable
+class FinishVideoChatEvent extends VideoChatFeatureEvents {
+  const FinishVideoChatEvent();
+}

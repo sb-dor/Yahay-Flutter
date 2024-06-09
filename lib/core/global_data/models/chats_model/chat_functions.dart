@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/core/global_data/models/chat_participant_model/chat_participant_model.dart';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 
 @immutable
 class ChatFunctions extends Chat {
@@ -39,5 +40,9 @@ class ChatFunctions extends Chat {
     if ((name ?? '').isEmpty) return '';
     if ((name?.length ?? 0) < 1) return name?[0] ?? '';
     return "${name?[0].toUpperCase()} ${name?[(name?.length ?? 0) - 1].toUpperCase()}";
+  }
+
+  String channelName() {
+    return "${Constants.chatChannelName}$id${Constants.chatChannelUUID}$uuid";
   }
 }

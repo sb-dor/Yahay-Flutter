@@ -1,17 +1,23 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:camera/camera.dart';
+import 'package:yahay/injections/injections.dart';
 
 class VideoChatStateModel {
-  VideoChatEntity? _videoChatEntity;
+  final cameraService = snoopy<CameraHelperService>();
 
-  VideoChatEntity? get videoChatEntity => _videoChatEntity;
+  String? _channelName;
 
-  CameraController? _cameraController;
+  String? get channelName => _channelName;
 
-  CameraController? get cameraController => _cameraController;
+  final List<VideoChatEntity> _videoChatEntities = [];
+
+  UnmodifiableListView<VideoChatEntity> get cameraControllers =>
+      UnmodifiableListView(_videoChatEntities);
 
   StreamSubscription<void>? _channelSubscription;
 
@@ -21,15 +27,13 @@ class VideoChatStateModel {
 
   PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
 
-  void initVideoEntity(VideoChatEntity entity) {
-    _videoChatEntity = entity;
+  VideoChatEntity? get currentVideoChat => _videoChatEntities.firstOrNull;
+
+  void addVideoChat(VideoChatEntity videoChatEntity) {
+    _videoChatEntities.add(videoChatEntity);
   }
 
-  void initCameraController(CameraController cameraController) {
-    _cameraController = cameraController;
-  }
-
-  void initChannelSubscription(StreamSubscription channelSubs) {
+  void initChannelSubscription(StreamSubscription<void>? channelSubs) {
     _channelSubscription = channelSubs;
   }
 
@@ -37,13 +41,20 @@ class VideoChatStateModel {
     _pusherChannelsClient = pusherClient;
   }
 
+  void initChannelName(String channelName) {
+    _channelName = channelName;
+  }
+
   void dispose() async {
-    await _cameraController?.dispose();
     await _channelSubscription?.cancel();
     await _pusherChannelsClient?.disconnect();
     _pusherChannelsClient?.dispose();
-    _cameraController = null;
     _channelSubscription = null;
     _pusherChannelsClient = null;
+    for (var each in _videoChatEntities) {
+      await each.cameraController.dispose();
+    }
+    _videoChatEntities.clear();
+    _channelName = null;
   }
 }

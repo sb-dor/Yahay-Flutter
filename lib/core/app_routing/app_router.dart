@@ -8,6 +8,7 @@ import 'package:yahay/features/chat_screen/view/pages/chat_screen.dart';
 import 'package:yahay/features/chats/view/pages/chats_page.dart';
 import 'package:yahay/features/home_page.dart';
 import 'package:yahay/features/loading_page.dart';
+import 'package:yahay/features/video_chat_feature/view/pages/video_chat_feature_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -37,7 +38,11 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(
           page: ChatRoute.page,
-          path: "/homepage/chat/screen"
-        )
+          path: "/homepage/chat/screen",
+        ),
+        AutoRoute(
+          page: VideoChatFeatureRoute.page,
+          path: '/videochat',
+        ),
       ];
 }

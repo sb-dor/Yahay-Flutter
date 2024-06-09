@@ -5,6 +5,8 @@ PODS:
   - AppAuth/Core (1.7.5)
   - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
+  - camera_avfoundation (0.0.1):
+    - Flutter
   - emoji_picker_flutter (0.0.1):
     - Flutter
   - FBAEMKit (16.3.1):
@@ -129,6 +131,7 @@ PODS:
   - Toast (4.1.1)
 
 DEPENDENCIES:
+  - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - emoji_picker_flutter (from `.symlinks/plugins/emoji_picker_flutter/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
@@ -170,6 +173,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  camera_avfoundation:
+    :path: ".symlinks/plugins/camera_avfoundation/ios"
   emoji_picker_flutter:
     :path: ".symlinks/plugins/emoji_picker_flutter/ios"
   firebase_core:
@@ -201,6 +206,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
+  camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
   emoji_picker_flutter: fe2e6151c5b548e975d546e6eeb567daf0962a58
   FBAEMKit: 6c7b5eb77c96861bb59e040842c6e55bf39512ce
   FBSDKCoreKit: 5e4dd478947ab1bcc887e8cfadeae0727af1a942
