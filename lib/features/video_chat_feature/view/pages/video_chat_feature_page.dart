@@ -32,7 +32,6 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
     _videoChatFeatureBloc = snoopy<VideoChatFeatureBloc>();
     _videoChatFeatureBloc.events.add(VideoChatInitFeatureEvent(
       widget.chat,
-      deleteThen: _videoChatFeatureBloc.events,
     ));
   }
 
@@ -66,7 +65,9 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                 return Stack(
                   children: [
                     Positioned.fill(
-                      child: CameraPreview(currentStateModel.mainVideoStreamCameraController!),
+                      child: CameraPreview(
+                        currentStateModel.mainVideoStreamCameraController!,
+                      ),
                     ),
                     Positioned(
                       bottom: 30,
@@ -79,21 +80,21 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                       ),
                     ),
                     // if (currentStateModel.uInt8Image != null)
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      child: Image.memory(
-                        currentStateModel.uInt8Image ?? Uint8List.fromList([]),
-                        gaplessPlayback: true, // makes image show smoothly
-                        // frameBuilder: (context, child, frame, l) {
-                        //   return AnimatedSwitcher(
-                        //     duration: const Duration(milliseconds: 200),
-                        //     child: frame != null ? child : CircularProgressIndicator(),
-                        //   );
-                        // },
-                        errorBuilder: (context, ob, st) => const SizedBox(),
-                      ),
-                    )
+                    // Positioned(
+                    //   bottom: 0,
+                    //   left: 0,
+                    //   child: Image.memory(
+                    //     currentStateModel.uInt8Image ?? Uint8List.fromList([]),
+                    //     gaplessPlayback: true, // makes image show smoothly
+                    //     // frameBuilder: (context, child, frame, l) {
+                    //     //   return AnimatedSwitcher(
+                    //     //     duration: const Duration(milliseconds: 200),
+                    //     //     child: frame != null ? child : CircularProgressIndicator(),
+                    //     //   );
+                    //     // },
+                    //     errorBuilder: (context, ob, st) => const SizedBox(),
+                    //   ),
+                    // )
                   ],
                 );
               }

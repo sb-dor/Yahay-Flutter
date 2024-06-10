@@ -10,9 +10,8 @@ class VideoChatFeatureEvents {
 @immutable
 class VideoChatInitFeatureEvent extends VideoChatFeatureEvents {
   final Chat? chat;
-  final Sink<VideoChatFeatureEvents>? deleteThen;
 
-  const VideoChatInitFeatureEvent(this.chat, {this.deleteThen});
+  const VideoChatInitFeatureEvent(this.chat);
 }
 
 @immutable
@@ -31,7 +30,6 @@ class FinishVideoChatEvent extends VideoChatFeatureEvents {
 @immutable
 class VideoStreamHandlerEvent extends VideoChatFeatureEvents {
   final ChannelReadEvent? pusherEvent;
-  final Uint8List? deleteThen;
 
-  const VideoStreamHandlerEvent(this.pusherEvent, {this.deleteThen});
+  const VideoStreamHandlerEvent(this.pusherEvent);
 }

@@ -1,16 +1,15 @@
 import 'dart:async';
-
 import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:video_player/video_player.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
-import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
+import 'package:yahay/features/video_chat_feature/domain/usecases/join_to_video_chat.dart';
+import 'package:yahay/features/video_chat_feature/domain/usecases/leave_video_chat.dart';
+import 'package:yahay/features/video_chat_feature/domain/usecases/stream_the_video.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/state_model/video_chat_state_model.dart';
 import 'package:yahay/injections/injections.dart';
 import 'video_chat_feature_events.dart';
@@ -18,6 +17,12 @@ import 'video_chat_feature_states.dart';
 
 @immutable
 class VideoChatFeatureBloc {
+  // useCases data
+  static late final JoinToVideoChat _joinToVideoChat;
+  static late final LeaveVideoChat _leaveVideoChat;
+  static late final StreamTheVideo _streamTheVideo;
+
+  //
   // in order to use in emitter function
   static late BehaviorSubject<VideoChatFeatureStates> _currentState;
   static late VideoChatStateModel _currentStateModel;
@@ -40,6 +45,12 @@ class VideoChatFeatureBloc {
   factory VideoChatFeatureBloc({
     required VideoChatFeatureRepo repo,
   }) {
+    // useCases registration
+    _joinToVideoChat = JoinToVideoChat(repo);
+    _leaveVideoChat = LeaveVideoChat(repo);
+    _streamTheVideo = StreamTheVideo(repo);
+
+    //
     final eventsHandler = BehaviorSubject<VideoChatFeatureEvents>();
 
     _currentStateModel = VideoChatStateModel();
@@ -74,30 +85,21 @@ class VideoChatFeatureBloc {
     VideoChatInitFeatureEvent event,
   ) async* {
     final chat = event.chat;
+
     if (chat == null) return;
+
     final currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
+
+    _currentStateModel.initChannelChat(chat);
+
+    _currentStateModel.initCurrentUser(currentUser);
+
     await _currentStateModel.initMainCameraController(
       CameraController(
         _currentStateModel.cameraService.cameras[0],
         ResolutionPreset.low,
       ),
     );
-
-    // was just for check
-    // you have to call this function after
-    // acception video call from the other side
-    _currentStateModel.mainVideoStreamCameraController?.startImageStream((cameraImage) async {
-      // after specific time sending data
-      if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
-          _currentStateModel.timerForGettingFrame == null) {
-        // after every 100 millisecond we will send data to user through pusher
-        _currentStateModel.initTimer(Timer(const Duration(milliseconds: 100), () async {
-          final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(cameraImage);
-          event.deleteThen?.add(VideoStreamHandlerEvent(null, deleteThen: utf8ListInt));
-        }));
-      }
-      // cameraImage.
-    });
 
     yield InitialVideoChatState(_currentStateModel);
   }
@@ -134,12 +136,27 @@ class VideoChatFeatureBloc {
       event.events.add(VideoStreamHandlerEvent(pusherEvent));
     });
 
-    // you have to use controller here
+    // was just for check
+    // you have to call this function after
+    // acception video call from the other side
+    _currentStateModel.mainVideoStreamCameraController?.startImageStream((cameraImage) async {
+      // after specific time sending data
+      if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
+          _currentStateModel.timerForGettingFrame == null) {
+        // after every 100 millisecond we will send data to user through pusher
+        _currentStateModel.initTimer(Timer(const Duration(milliseconds: 100), () async {
+          // convert each getting image stream to Uint8List and send to server
+          final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(cameraImage);
+          _sendDataToTheServer(utf8ListInt);
+        }));
+      }
+      // cameraImage.
+    });
+  }
 
-    // controller.startImageStream((cameraImage) {
-    //   final utf8ListInt = _currentStateModel.cameraService.convertImageToJpeg(cameraImage);
-    //   _currentStateModel.addToUInt8List(utf8ListInt);
-    // });
+  // function that sends image Uint8List to the server
+  static void _sendDataToTheServer(Uint8List? imageData) {
+    if (imageData == null) return;
   }
 
   //
@@ -152,9 +169,7 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _videoStreamHandlerEvent(
     VideoStreamHandlerEvent event,
   ) async* {
-    // delete this logic. its just for check
-    _currentStateModel.addToUInt8List(event.deleteThen!);
-    debugPrint("urfdata: ${_currentStateModel.uInt8Image?.length}");
+    // TODO : write a code to get data from server
     yield InitialVideoChatState(_currentStateModel);
   }
 }

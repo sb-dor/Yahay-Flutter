@@ -5,7 +5,9 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
+import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/injections/injections.dart';
@@ -23,10 +25,18 @@ class VideoChatStateModel {
 
   ChatModel? get channelModel => ChatModel.fromEntity(_chat);
 
+  User? _currentUser;
+
+  User? get currentUser => _currentUser;
+
+  UserModel? get currentUserModel => UserModel.fromEntity(_currentUser);
+
   final List<VideoChatEntity> _videoChatEntities = [];
 
-  UnmodifiableListView<VideoChatEntity> get cameraControllers =>
+  UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
       UnmodifiableListView(_videoChatEntities);
+
+  VideoChatEntity? get firstDataOfChatEntities => _videoChatEntities.firstOrNull;
 
   StreamSubscription<void>? _channelSubscription;
 
@@ -36,20 +46,12 @@ class VideoChatStateModel {
 
   PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
 
-  Uint8List? _uInt8Image;
-
-  Uint8List? get uInt8Image => _uInt8Image;
-
   Timer? _timerForGettingFrame;
 
   Timer? get timerForGettingFrame => _timerForGettingFrame;
 
   void initTimer(Timer timer) {
     _timerForGettingFrame = timer;
-  }
-
-  void addToUInt8List(Uint8List list) {
-    _uInt8Image = list;
   }
 
   Future<void> initMainCameraController(CameraController controller) async {
@@ -61,6 +63,8 @@ class VideoChatStateModel {
     _videoChatEntities.add(videoChatEntity);
   }
 
+  void initCurrentUser(User? user) => _currentUser = user;
+
   void initChannelSubscription(StreamSubscription<void>? channelSubs) {
     _channelSubscription = channelSubs;
   }
@@ -69,7 +73,7 @@ class VideoChatStateModel {
     _pusherChannelsClient = pusherClient;
   }
 
-  void initChannelName(Chat? chat) {
+  void initChannelChat(Chat? chat) {
     _chat = chat;
   }
 
@@ -79,12 +83,10 @@ class VideoChatStateModel {
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;
     _pusherChannelsClient = null;
-    // for (var each in _videoChatEntities) {
-    //   await each.cameraController.stopImageStream();
-    //   await each.cameraController.dispose();
-    // }
+    for (var each in _videoChatEntities) {
+      each.imageData = null;
+    }
     _mainVideoStreamCameraController?.dispose();
-    _uInt8Image = null;
     _videoChatEntities.clear();
     _chat = null;
   }
