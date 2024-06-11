@@ -22,6 +22,13 @@ class ChatModel extends Chat with _$ChatModel {
     @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
     @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
     @JsonKey(name: "messages") List<ChatMessageModel>? messages,
+    @JsonKey(
+      name: "video_chat_streaming",
+      includeFromJson: true,
+      includeToJson: false,
+      defaultValue: false,
+    )
+    bool? videoChatStreaming,
   }) = _ChatModel;
 
   factory ChatModel.fromJson(Map<String, Object?> json) => _$ChatModelFromJson(json);
@@ -39,6 +46,7 @@ class ChatModel extends Chat with _$ChatModel {
       lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
       participants: chat.participants?.map((e) => ChatParticipantModel.fromEntity(e)!).toList(),
       messages: chat.messages?.map((e) => ChatMessageModel.fromEntity(e)!).toList(),
+      videoChatStreaming: chat.videoChatStreaming,
     );
   }
 }

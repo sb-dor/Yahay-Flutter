@@ -9,8 +9,14 @@ class VideoChatFeatureRepoImpl implements VideoChatFeatureRepo {
   VideoChatFeatureRepoImpl(this._dataSource);
 
   @override
-  Future<bool> joinToChat(VideoChatEntity videoChatEntity) =>
-      _dataSource.joinToChat(videoChatEntity);
+  Future<bool> startVideoChat(VideoChatEntity videoChatEntity) {
+    // TODO: implement startVideoStream
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> videoChatEntrance(VideoChatEntity videoChatEntity) =>
+      _dataSource.videoChatEntrance(videoChatEntity);
 
   @override
   Future<bool> leaveTheChat(VideoChatEntity videoChatEntity) =>

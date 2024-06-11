@@ -19,7 +19,7 @@ import 'video_chat_feature_states.dart';
 @immutable
 class VideoChatFeatureBloc {
   // useCases data
-  static late JoinToVideoChat _joinToVideoChat;
+  static late VideoChatEntrance _joinToVideoChat;
   static late LeaveVideoChat _leaveVideoChat;
   static late StreamTheVideo _streamTheVideo;
 
@@ -47,7 +47,7 @@ class VideoChatFeatureBloc {
     required VideoChatFeatureRepo repo,
   }) {
     // useCases registration
-    _joinToVideoChat = JoinToVideoChat(repo);
+    _joinToVideoChat = VideoChatEntrance(repo);
     _leaveVideoChat = LeaveVideoChat(repo);
     _streamTheVideo = StreamTheVideo(repo);
 
@@ -113,7 +113,7 @@ class VideoChatFeatureBloc {
     yield LoadingVideoChatState(_currentStateModel);
 
     // send data to server in order to say that chat began
-    final resultOfJoining = await _joinToVideoChat.joinToVideoChat(
+    final resultOfJoining = await _joinToVideoChat.videoChatEntrance(
       VideoChatEntity(
         imageData: null,
         chat: _currentStateModel.chat,

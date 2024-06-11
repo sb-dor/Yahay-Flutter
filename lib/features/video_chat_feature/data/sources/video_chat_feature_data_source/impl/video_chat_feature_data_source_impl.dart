@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
-import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/features/video_chat_feature/data/models/video_chat_model.dart';
 import 'package:yahay/features/video_chat_feature/data/sources/video_chat_feature_data_source/video_chat_feature_data_source.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
@@ -15,9 +13,26 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   final _dioHelper = snoopy<DioSettings>();
 
   final joinChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
+  final startVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/start/videochat";
 
   @override
-  Future<bool> joinToChat(VideoChatEntity videoChatEntity) async {
+  Future<bool> startVideoChat(VideoChatEntity videoChatEntity) async {
+    try {
+      final response = await _dioHelper.dio.put(
+        startVideoChatPath,
+        data: VideoChatModel.fromEntity(videoChatEntity)?.toJson(),
+      );
+
+      // start from here tomorrow
+      return true;
+    } catch (e) {
+      debugPrint("start chat error is: $e");
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> videoChatEntrance(VideoChatEntity videoChatEntity) async {
     try {
       final response = await _dioHelper.dio.put(
         joinChatPath,

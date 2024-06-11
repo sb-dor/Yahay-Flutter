@@ -11,6 +11,7 @@ class Chat {
   final String? imageUrl;
   final String? createdAt;
   final String? updatedAt;
+  final bool? videoChatStreaming;
 
   //
   final ChatMessage? lastMessage;
@@ -28,5 +29,6 @@ class Chat {
     required this.lastMessage,
     required this.participants,
     required this.messages,
+    required this.videoChatStreaming,
   });
 }
