@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
+import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
 import 'package:yahay/features/video_chat_feature/domain/usecases/join_to_video_chat.dart';
 import 'package:yahay/features/video_chat_feature/domain/usecases/leave_video_chat.dart';
@@ -18,9 +19,9 @@ import 'video_chat_feature_states.dart';
 @immutable
 class VideoChatFeatureBloc {
   // useCases data
-  static late final JoinToVideoChat _joinToVideoChat;
-  static late final LeaveVideoChat _leaveVideoChat;
-  static late final StreamTheVideo _streamTheVideo;
+  static late JoinToVideoChat _joinToVideoChat;
+  static late LeaveVideoChat _leaveVideoChat;
+  static late StreamTheVideo _streamTheVideo;
 
   //
   // in order to use in emitter function
@@ -108,6 +109,19 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _startVideoChatEvent(
     StartVideoChatEvent event,
   ) async* {
+    // start to loading chat
+    yield LoadingVideoChatState(_currentStateModel);
+
+    // send data to server in order to say that chat began
+    final resultOfJoining = await _joinToVideoChat.joinToVideoChat(
+      VideoChatEntity(
+        imageData: null,
+        chat: _currentStateModel.chat,
+        user: _currentStateModel.currentUser,
+      ),
+    );
+
+    if (!resultOfJoining) return;
     // create only channel subscription
     // after successfully response we will send the data to the server
     _currentStateModel.initPusherChannelClient(
@@ -117,8 +131,12 @@ class VideoChatFeatureBloc {
       ),
     );
 
+    final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
+
+    debugPrint("channel name for video chat: $channelName");
+
     final channel = _currentStateModel.pusherChannelClient?.publicChannel(
-      "video_${_currentStateModel.channelName}",
+      channelName,
     );
 
     final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
@@ -171,5 +189,15 @@ class VideoChatFeatureBloc {
   ) async* {
     // TODO : write a code to get data from server
     yield InitialVideoChatState(_currentStateModel);
+  }
+
+  static Stream<VideoChatFeatureStates> _emitter() async* {
+    if (_currentState.value is InitialVideoChatState) {
+      yield InitialVideoChatState(_currentStateModel);
+    } else if (_currentState.value is LoadingVideoChatState) {
+      yield LoadingVideoChatState(_currentStateModel);
+    } else if (_currentState.value is ErrorVideoChatState) {
+      yield ErrorVideoChatState(_currentStateModel);
+    }
   }
 }

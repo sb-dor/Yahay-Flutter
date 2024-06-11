@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
+import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
@@ -21,9 +22,11 @@ class VideoChatStateModel {
 
   Chat? _chat;
 
-  Chat? get channelName => _chat;
+  Chat? get chat => _chat;
 
-  ChatModel? get channelModel => ChatModel.fromEntity(_chat);
+  ChatModel? get chatModel => ChatModel.fromEntity(_chat);
+
+  ChatFunctions? get chatFunctions => ChatFunctions.fromEntity(_chat);
 
   User? _currentUser;
 

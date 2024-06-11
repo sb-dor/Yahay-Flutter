@@ -6,7 +6,7 @@ import 'package:yahay/core/global_data/entities/user.dart';
 class VideoChatEntity {
   Uint8List? imageData;
   final String videoChatId; // for double security
-  final Chat chat;
+  final Chat? chat;
   final User? user;
 
   VideoChatEntity({

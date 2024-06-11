@@ -8,6 +8,17 @@ class VideoChatFeatureStates {
   const VideoChatFeatureStates(this.videoChatStateModel);
 }
 
+@immutable
 class InitialVideoChatState extends VideoChatFeatureStates {
   const InitialVideoChatState(super.videoChatStateModel);
+}
+
+@immutable
+class LoadingVideoChatState extends VideoChatFeatureStates {
+  const LoadingVideoChatState(super.videoChatStateModel);
+}
+
+@immutable
+class ErrorVideoChatState extends VideoChatFeatureStates {
+  const ErrorVideoChatState(super.videoChatStateModel);
 }
