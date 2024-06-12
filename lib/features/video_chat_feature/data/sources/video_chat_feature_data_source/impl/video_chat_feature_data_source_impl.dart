@@ -23,8 +23,19 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
         data: VideoChatModel.fromEntity(videoChatEntity)?.toJson(),
       );
 
+      debugPrint("start video chat response is: ${response.data}");
+
+      if (response.statusCode != HttpStatusCodes.success) return false;
+
+      Map<String, dynamic> json =
+          response.data is String ? jsonDecode(response.data) : response.data;
+
+      if (!json.containsKey("success")) return false;
+
+      if (bool.tryParse("${json['success']}") == null) return false;
+
       // start from here tomorrow
-      return true;
+      return bool.parse("${json['success']}");
     } catch (e) {
       debugPrint("start chat error is: $e");
       return false;

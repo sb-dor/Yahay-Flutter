@@ -8,7 +8,8 @@ import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dar
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
-import 'package:yahay/features/video_chat_feature/domain/usecases/join_to_video_chat.dart';
+import 'package:yahay/features/video_chat_feature/domain/usecases/start_video_chat.dart';
+import 'package:yahay/features/video_chat_feature/domain/usecases/video_chat_entrance.dart';
 import 'package:yahay/features/video_chat_feature/domain/usecases/leave_video_chat.dart';
 import 'package:yahay/features/video_chat_feature/domain/usecases/stream_the_video.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/state_model/video_chat_state_model.dart';
@@ -19,7 +20,8 @@ import 'video_chat_feature_states.dart';
 @immutable
 class VideoChatFeatureBloc {
   // useCases data
-  static late VideoChatEntrance _joinToVideoChat;
+  static late StartVideoChat _startVideoChat;
+  static late VideoChatEntrance _videoChatEntrance;
   static late LeaveVideoChat _leaveVideoChat;
   static late StreamTheVideo _streamTheVideo;
 
@@ -47,7 +49,8 @@ class VideoChatFeatureBloc {
     required VideoChatFeatureRepo repo,
   }) {
     // useCases registration
-    _joinToVideoChat = VideoChatEntrance(repo);
+    _startVideoChat = StartVideoChat(repo);
+    _videoChatEntrance = VideoChatEntrance(repo);
     _leaveVideoChat = LeaveVideoChat(repo);
     _streamTheVideo = StreamTheVideo(repo);
 
@@ -75,6 +78,8 @@ class VideoChatFeatureBloc {
       yield* _videoChatInitFeatureEvent(event);
     } else if (event is StartVideoChatEvent) {
       yield* _startVideoChatEvent(event);
+    } else if (event is VideoChatEntranceEvent) {
+      yield* _videoChatEntranceEvent(event);
     } else if (event is FinishVideoChatEvent) {
       yield* _finishVideoChatEvent(event);
     } else if (event is VideoStreamHandlerEvent) {
@@ -95,6 +100,14 @@ class VideoChatFeatureBloc {
 
     _currentStateModel.initCurrentUser(currentUser);
 
+    _currentStateModel.initCurrentVideoChatEntity(
+      VideoChatEntity(
+        imageData: null,
+        chat: _currentStateModel.chat,
+        user: _currentStateModel.currentUser,
+      ),
+    );
+
     await _currentStateModel.initMainCameraController(
       CameraController(
         _currentStateModel.cameraService.cameras[0],
@@ -109,19 +122,16 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _startVideoChatEvent(
     StartVideoChatEvent event,
   ) async* {
+    if (_currentStateModel.currentVideoChatEntity == null) return;
+
     // start to loading chat
     yield LoadingVideoChatState(_currentStateModel);
 
-    // send data to server in order to say that chat began
-    final resultOfJoining = await _joinToVideoChat.videoChatEntrance(
-      VideoChatEntity(
-        imageData: null,
-        chat: _currentStateModel.chat,
-        user: _currentStateModel.currentUser,
-      ),
+    final resultOfStart = await _startVideoChat.startVideoChat(
+      _currentStateModel.currentVideoChatEntity!,
     );
 
-    if (!resultOfJoining) return;
+    if (!resultOfStart) return;
     // create only channel subscription
     // after successfully response we will send the data to the server
     _currentStateModel.initPusherChannelClient(
@@ -172,9 +182,15 @@ class VideoChatFeatureBloc {
     });
   }
 
-  // function that sends image Uint8List to the server
-  static void _sendDataToTheServer(Uint8List? imageData) {
-    if (imageData == null) return;
+  // not starting video, this event is for someone who wants to participate to video chat
+  static Stream<VideoChatFeatureStates> _videoChatEntranceEvent(
+    VideoChatEntranceEvent event,
+  ) async* {
+    if (_currentStateModel.currentVideoChatEntity == null) return;
+    //
+    final resultOfJoining = await _videoChatEntrance.videoChatEntrance(
+      _currentStateModel.currentVideoChatEntity!,
+    );
   }
 
   //
@@ -184,6 +200,12 @@ class VideoChatFeatureBloc {
     //
   }
 
+  // function that sends image Uint8List to the server
+  static void _sendDataToTheServer(Uint8List? imageData) {
+    if (imageData == null) return;
+  }
+
+  // for handling others video chat data
   static Stream<VideoChatFeatureStates> _videoStreamHandlerEvent(
     VideoStreamHandlerEvent event,
   ) async* {

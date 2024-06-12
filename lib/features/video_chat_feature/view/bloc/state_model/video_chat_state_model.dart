@@ -34,12 +34,14 @@ class VideoChatStateModel {
 
   UserModel? get currentUserModel => UserModel.fromEntity(_currentUser);
 
+  VideoChatEntity? _currentVideoChatEntity;
+
+  VideoChatEntity? get currentVideoChatEntity => _currentVideoChatEntity;
+
   final List<VideoChatEntity> _videoChatEntities = [];
 
   UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
       UnmodifiableListView(_videoChatEntities);
-
-  VideoChatEntity? get firstDataOfChatEntities => _videoChatEntities.firstOrNull;
 
   StreamSubscription<void>? _channelSubscription;
 
@@ -78,6 +80,10 @@ class VideoChatStateModel {
 
   void initChannelChat(Chat? chat) {
     _chat = chat;
+  }
+
+  void initCurrentVideoChatEntity(VideoChatEntity entity) {
+    _currentVideoChatEntity = entity;
   }
 
   void dispose() async {

@@ -23,6 +23,11 @@ class StartVideoChatEvent extends VideoChatFeatureEvents {
 }
 
 @immutable
+class VideoChatEntranceEvent extends VideoChatFeatureEvents {
+  const VideoChatEntranceEvent();
+}
+
+@immutable
 class FinishVideoChatEvent extends VideoChatFeatureEvents {
   const FinishVideoChatEvent();
 }
