@@ -7,6 +7,13 @@ part 'chat_model.freezed.dart';
 
 part 'chat_model.g.dart';
 
+bool? _fromJsonVideoChatStreaming(dynamic json) {
+  if (json is int) {
+    return json == 1;
+  }
+  return json as bool?;
+}
+
 @freezed
 class ChatModel extends Chat with _$ChatModel {
   const factory ChatModel({
@@ -27,6 +34,7 @@ class ChatModel extends Chat with _$ChatModel {
       includeFromJson: true,
       includeToJson: false,
       defaultValue: false,
+      fromJson: _fromJsonVideoChatStreaming,
     )
     bool? videoChatStreaming,
   }) = _ChatModel;

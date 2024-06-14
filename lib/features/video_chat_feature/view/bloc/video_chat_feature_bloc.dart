@@ -41,6 +41,7 @@ class VideoChatFeatureBloc {
   }) : _states = states;
 
   void dispose() {
+    events.add(const FinishVideoChatEvent());
     events.close();
     _states.value.videoChatStateModel.dispose();
   }
@@ -198,6 +199,11 @@ class VideoChatFeatureBloc {
     FinishVideoChatEvent event,
   ) async* {
     //
+    if (_currentStateModel.currentVideoChatEntity == null) return;
+    final result = await _leaveVideoChat.leaveVideoChat(
+      _currentStateModel.currentVideoChatEntity!,
+    );
+
   }
 
   // function that sends image Uint8List to the server

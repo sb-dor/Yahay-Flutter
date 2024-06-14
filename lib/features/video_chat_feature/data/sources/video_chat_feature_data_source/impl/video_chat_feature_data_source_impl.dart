@@ -14,6 +14,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
 
   final joinChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
   final startVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/start/videochat";
+  final leaveVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
 
   @override
   Future<bool> startVideoChat(VideoChatEntity videoChatEntity) async {
@@ -69,9 +70,31 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   }
 
   @override
-  Future<bool> leaveTheChat(VideoChatEntity videoChatEntity) {
-    // TODO: implement leaveTheChat
-    throw UnimplementedError();
+  Future<bool> leaveTheChat(VideoChatEntity videoChatEntity) async {
+    try {
+
+      final response = await _dioHelper.dio.put(
+        leaveVideoChatPath,
+        data: VideoChatModel.fromEntity(videoChatEntity)?.toJson(),
+      );
+
+      debugPrint("joinToChat response is: ${response.data}");
+
+      if (response.statusCode != HttpStatusCodes.success) return false;
+
+      Map<String, dynamic> json =
+      response.data is String ? jsonDecode(response.data) : response.data;
+
+      if (!json.containsKey("success")) return false;
+
+      if (bool.tryParse("${json['success']}") == null) return false;
+
+      return bool.parse("${json['success']}");
+
+    } catch (e) {
+      debugPrint("leave the chat error is: $e");
+      return false;
+    }
   }
 
   @override

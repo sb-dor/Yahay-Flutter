@@ -42,7 +42,8 @@ mixin _$ChatModel {
       name: "video_chat_streaming",
       includeFromJson: true,
       includeToJson: false,
-      defaultValue: false)
+      defaultValue: false,
+      fromJson: _fromJsonVideoChatStreaming)
   bool? get videoChatStreaming => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -71,7 +72,8 @@ abstract class $ChatModelCopyWith<$Res> {
           name: "video_chat_streaming",
           includeFromJson: true,
           includeToJson: false,
-          defaultValue: false)
+          defaultValue: false,
+          fromJson: _fromJsonVideoChatStreaming)
       bool? videoChatStreaming});
 
   $ChatMessageModelCopyWith<$Res>? get lastMessage;
@@ -186,7 +188,8 @@ abstract class _$$ChatModelImplCopyWith<$Res>
           name: "video_chat_streaming",
           includeFromJson: true,
           includeToJson: false,
-          defaultValue: false)
+          defaultValue: false,
+          fromJson: _fromJsonVideoChatStreaming)
       bool? videoChatStreaming});
 
   @override
@@ -284,7 +287,8 @@ class _$ChatModelImpl implements _ChatModel {
           name: "video_chat_streaming",
           includeFromJson: true,
           includeToJson: false,
-          defaultValue: false)
+          defaultValue: false,
+          fromJson: _fromJsonVideoChatStreaming)
       this.videoChatStreaming})
       : _participants = participants,
         _messages = messages;
@@ -341,7 +345,8 @@ class _$ChatModelImpl implements _ChatModel {
       name: "video_chat_streaming",
       includeFromJson: true,
       includeToJson: false,
-      defaultValue: false)
+      defaultValue: false,
+      fromJson: _fromJsonVideoChatStreaming)
   final bool? videoChatStreaming;
 
   @override
@@ -421,7 +426,8 @@ abstract class _ChatModel implements ChatModel {
           name: "video_chat_streaming",
           includeFromJson: true,
           includeToJson: false,
-          defaultValue: false)
+          defaultValue: false,
+          fromJson: _fromJsonVideoChatStreaming)
       final bool? videoChatStreaming}) = _$ChatModelImpl;
 
   factory _ChatModel.fromJson(Map<String, dynamic> json) =
@@ -459,7 +465,8 @@ abstract class _ChatModel implements ChatModel {
       name: "video_chat_streaming",
       includeFromJson: true,
       includeToJson: false,
-      defaultValue: false)
+      defaultValue: false,
+      fromJson: _fromJsonVideoChatStreaming)
   bool? get videoChatStreaming;
   @override
   @JsonKey(ignore: true)
