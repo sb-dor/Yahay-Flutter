@@ -5,6 +5,9 @@ import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_events.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_states.dart';
+import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/double_camera_view_screen.dart';
+import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/multiple_camera_view.dart';
+import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/single_camera_view_screen.dart';
 import 'package:yahay/injections/injections.dart';
 
 import 'widgets/call_button_widget.dart';
@@ -63,11 +66,14 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
               } else {
                 return Stack(
                   children: [
-                    Positioned.fill(
-                      child: CameraPreview(
-                        currentStateModel.mainVideoStreamCameraController!,
-                      ),
-                    ),
+                    if (currentStateModel.videoChatEntities.isEmpty)
+                      SingleCameraViewScreen(
+                        videoChatBloc: _videoChatFeatureBloc,
+                      )
+                    else if (currentStateModel.videoChatEntities.length == 1)
+                      DoubleCameraViewScreen(videoChatBloc: _videoChatFeatureBloc)
+                    else if (currentStateModel.videoChatEntities.length > 1)
+                      const MultipleCameraView(),
                     Positioned(
                       bottom: 30,
                       left: 0,
@@ -78,22 +84,6 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                         ),
                       ),
                     ),
-                    // if (currentStateModel.uInt8Image != null)
-                    // Positioned(
-                    //   bottom: 0,
-                    //   left: 0,
-                    //   child: Image.memory(
-                    //     currentStateModel.uInt8Image ?? Uint8List.fromList([]),
-                    //     gaplessPlayback: true, // makes image show smoothly
-                    //     // frameBuilder: (context, child, frame, l) {
-                    //     //   return AnimatedSwitcher(
-                    //     //     duration: const Duration(milliseconds: 200),
-                    //     //     child: frame != null ? child : CircularProgressIndicator(),
-                    //     //   );
-                    //     // },
-                    //     errorBuilder: (context, ob, st) => const SizedBox(),
-                    //   ),
-                    // )
                   ],
                 );
               }

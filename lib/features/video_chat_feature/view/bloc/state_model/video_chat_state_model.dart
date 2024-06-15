@@ -58,6 +58,14 @@ class VideoChatStateModel {
 
   Timer? get timerForGettingFrame => _timerForGettingFrame;
 
+  bool _chatStarted = false;
+
+  bool get chatStarted => _chatStarted;
+
+  void startChat() => _chatStarted = true;
+
+  void finishChat() => _chatStarted = false;
+
   void initTimer(Timer timer) {
     _timerForGettingFrame = timer;
   }
@@ -127,5 +135,6 @@ class VideoChatStateModel {
     _mainVideoStreamCameraController?.dispose();
     _videoChatEntities.clear();
     _chat = null;
+    finishChat();
   }
 }

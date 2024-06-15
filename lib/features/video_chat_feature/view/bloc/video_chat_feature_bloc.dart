@@ -21,6 +21,9 @@ import 'video_chat_feature_states.dart';
 
 @immutable
 class VideoChatFeatureBloc {
+  // for using same event locally
+  static late Sink<VideoChatFeatureEvents> _events;
+
   // useCases data
   static late StartVideoChat _startVideoChat;
   static late VideoChatEntrance _videoChatEntrance;
@@ -28,7 +31,7 @@ class VideoChatFeatureBloc {
   static late StreamTheVideo _streamTheVideo;
 
   //
-  // in order to use in emitter function
+  // in order to use an emitter function
   static late BehaviorSubject<VideoChatFeatureStates> _currentState;
   static late VideoChatStateModel _currentStateModel;
 
@@ -60,6 +63,8 @@ class VideoChatFeatureBloc {
     //
     final eventsHandler = BehaviorSubject<VideoChatFeatureEvents>();
 
+    _events = eventsHandler;
+
     _currentStateModel = VideoChatStateModel();
 
     final states = eventsHandler.switchMap<VideoChatFeatureStates>((events) async* {
@@ -79,6 +84,8 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _eventHandler(VideoChatFeatureEvents event) async* {
     if (event is VideoChatInitFeatureEvent) {
       yield* _videoChatInitFeatureEvent(event);
+    } else if (event is InitMainCameraControllerEvent) {
+      yield* _initMainCameraControllerEvent(event);
     } else if (event is StartVideoChatEvent) {
       yield* _startVideoChatEvent(event);
     } else if (event is VideoChatEntranceEvent) {
@@ -111,12 +118,28 @@ class VideoChatFeatureBloc {
       ),
     );
 
+    yield* _initMainCameraControllerEvent(
+      InitMainCameraControllerEvent(_currentStateModel.cameraService.cameras.first),
+    );
+  }
+
+  static Stream<VideoChatFeatureStates> _initMainCameraControllerEvent(
+    InitMainCameraControllerEvent event,
+  ) async* {
     await _currentStateModel.initMainCameraController(
       CameraController(
-        _currentStateModel.cameraService.cameras[0],
+        event.cameraDescription,
         ResolutionPreset.low,
       ),
     );
+
+    if (_currentStateModel.chatStarted) {
+      _events.add(
+        const StartVideoChatEvent(
+          makeRequestToServer: false,
+        ),
+      );
+    }
 
     yield InitialVideoChatState(_currentStateModel);
   }
@@ -128,44 +151,52 @@ class VideoChatFeatureBloc {
     if (_currentStateModel.currentVideoChatEntity == null) return;
 
     // start to loading chat
-    yield LoadingVideoChatState(_currentStateModel);
+    yield InitialVideoChatState(_currentStateModel);
 
-    final resultOfStart = await _startVideoChat.startVideoChat(
-      _currentStateModel.currentVideoChatEntity!,
-    );
+    // -----------------
 
-    if (!resultOfStart) return;
-    // create only channel subscription
-    // after successfully response we will send the data to the server
-    _currentStateModel.initPusherChannelClient(
-      PusherChannelsClient.websocket(
-        options: snoopy<PusherClientService>().options,
-        connectionErrorHandler: (f, s, th) {},
-      ),
-    );
+    if (event.makeRequestToServer) {
+      //
+      final resultOfStart = await _startVideoChat.startVideoChat(
+        _currentStateModel.currentVideoChatEntity!,
+      );
 
-    final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
+      if (!resultOfStart) return;
 
-    debugPrint("channel name for video chat: $channelName");
+      _currentStateModel.startChat();
+      // create only channel subscription
+      // after successfully response we will send the data to the server
+      _currentStateModel.initPusherChannelClient(
+        PusherChannelsClient.websocket(
+          options: snoopy<PusherClientService>().options,
+          connectionErrorHandler: (f, s, th) {},
+        ),
+      );
 
-    final channel = _currentStateModel.pusherChannelClient?.publicChannel(
-      channelName,
-    );
+      final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
 
-    final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
-      (e) {
-        channel?.subscribeIfNotUnsubscribed();
-      },
-    );
+      debugPrint("channel name for video chat: $channelName");
 
-    _currentStateModel.initChannelSubscription(channelSubs);
+      final channel = _currentStateModel.pusherChannelClient?.publicChannel(
+        channelName,
+      );
 
-    await _currentStateModel.pusherChannelClient?.connect();
+      final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
+        (e) {
+          channel?.subscribeIfNotUnsubscribed();
+        },
+      );
 
-    channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
-      // TODO: handle event data by creating bloc event
-      event.events.add(VideoStreamHandlerEvent(pusherEvent));
-    });
+      _currentStateModel.initChannelSubscription(channelSubs);
+
+      await _currentStateModel.pusherChannelClient?.connect();
+
+      channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
+        // TODO: handle event data by creating bloc event
+        _events.add(VideoStreamHandlerEvent(pusherEvent));
+      });
+    }
+    // -------------------------------------------------
 
     // was just for check
     // you have to call this function after
@@ -229,7 +260,7 @@ class VideoChatFeatureBloc {
 
       // if the coming user data is our user
       // just break the code
-      if (participantModel.user?.id == _currentStateModel.currentUser?.id) return;
+      // if (participantModel.user?.id == _currentStateModel.currentUser?.id) return;
 
       // because of that the data from server is coming like list of dynamic
       // we convert that to list of integers

@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
@@ -15,11 +16,18 @@ class VideoChatInitFeatureEvent extends VideoChatFeatureEvents {
 }
 
 @immutable
+class InitMainCameraControllerEvent extends VideoChatFeatureEvents {
+  final CameraDescription cameraDescription;
+
+  const InitMainCameraControllerEvent(this.cameraDescription);
+}
+
+@immutable
 class StartVideoChatEvent extends VideoChatFeatureEvents {
   // sending current abstract event in order to work with
-  final Sink<VideoChatFeatureEvents> events;
+  final bool makeRequestToServer;
 
-  const StartVideoChatEvent(this.events);
+  const StartVideoChatEvent({this.makeRequestToServer = true});
 }
 
 @immutable
