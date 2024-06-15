@@ -52,7 +52,7 @@ class _LoadingMessagesWidgetState extends State<LoadingMessagesWidget> {
 class _RightWidget extends StatelessWidget {
   final AppThemeBloc appThemeBloc;
 
-  const _RightWidget({super.key, required this.appThemeBloc});
+  const _RightWidget({required this.appThemeBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class _RightWidget extends StatelessWidget {
 class _LeftWidget extends StatelessWidget {
   final AppThemeBloc appThemeBloc;
 
-  const _LeftWidget({super.key, required this.appThemeBloc});
+  const _LeftWidget({required this.appThemeBloc});
 
   @override
   Widget build(BuildContext context) {

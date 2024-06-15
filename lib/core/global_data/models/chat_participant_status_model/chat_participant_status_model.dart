@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_participant_status.dart';
-import 'package:yahay/core/global_data/models/chat_participant_model/chat_participant_model.dart';
 
 part 'chat_participant_status_model.freezed.dart';
 

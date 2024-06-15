@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:yahay/core/global_data/entities/user.dart';
 
 import 'state_model/add_contact_state_model.dart';
 

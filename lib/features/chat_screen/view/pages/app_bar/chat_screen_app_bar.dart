@@ -81,7 +81,6 @@ class _ChatAppBarTitle extends StatelessWidget {
   final Chat? chat;
 
   const _ChatAppBarTitle({
-    super.key,
     required this.chat,
   });
 

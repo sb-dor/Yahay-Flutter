@@ -1,7 +1,8 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_message.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';

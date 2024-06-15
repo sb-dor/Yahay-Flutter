@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Center(
         child: ElevatedButton(
             onPressed: () => _profileBloc.events.add(ProfileLogoutEvent()),
-            child: Icon(Icons.logout)),
+            child: const Icon(Icons.logout)),
       ),
     );
   }

@@ -22,6 +22,7 @@ ChatParticipantModel _$ChatParticipantModelFromJson(Map<String, dynamic> json) {
 mixin _$ChatParticipantModel {
   int? get id => throw _privateConstructorUsedError;
   UserModel? get user => throw _privateConstructorUsedError;
+  ChatModel? get chat => throw _privateConstructorUsedError;
   ChatParticipantStatusModel? get status => throw _privateConstructorUsedError;
   bool? get muted => throw _privateConstructorUsedError;
   @JsonKey(name: "participated_at")
@@ -42,11 +43,13 @@ abstract class $ChatParticipantModelCopyWith<$Res> {
   $Res call(
       {int? id,
       UserModel? user,
+      ChatModel? chat,
       ChatParticipantStatusModel? status,
       bool? muted,
       @JsonKey(name: "participated_at") String? participateAt});
 
   $UserModelCopyWith<$Res>? get user;
+  $ChatModelCopyWith<$Res>? get chat;
   $ChatParticipantStatusModelCopyWith<$Res>? get status;
 }
 
@@ -66,6 +69,7 @@ class _$ChatParticipantModelCopyWithImpl<$Res,
   $Res call({
     Object? id = freezed,
     Object? user = freezed,
+    Object? chat = freezed,
     Object? status = freezed,
     Object? muted = freezed,
     Object? participateAt = freezed,
@@ -79,6 +83,10 @@ class _$ChatParticipantModelCopyWithImpl<$Res,
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel?,
+      chat: freezed == chat
+          ? _value.chat
+          : chat // ignore: cast_nullable_to_non_nullable
+              as ChatModel?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -108,6 +116,18 @@ class _$ChatParticipantModelCopyWithImpl<$Res,
 
   @override
   @pragma('vm:prefer-inline')
+  $ChatModelCopyWith<$Res>? get chat {
+    if (_value.chat == null) {
+      return null;
+    }
+
+    return $ChatModelCopyWith<$Res>(_value.chat!, (value) {
+      return _then(_value.copyWith(chat: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $ChatParticipantStatusModelCopyWith<$Res>? get status {
     if (_value.status == null) {
       return null;
@@ -130,12 +150,15 @@ abstract class _$$ChatParticipantModelImplCopyWith<$Res>
   $Res call(
       {int? id,
       UserModel? user,
+      ChatModel? chat,
       ChatParticipantStatusModel? status,
       bool? muted,
       @JsonKey(name: "participated_at") String? participateAt});
 
   @override
   $UserModelCopyWith<$Res>? get user;
+  @override
+  $ChatModelCopyWith<$Res>? get chat;
   @override
   $ChatParticipantStatusModelCopyWith<$Res>? get status;
 }
@@ -153,6 +176,7 @@ class __$$ChatParticipantModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? user = freezed,
+    Object? chat = freezed,
     Object? status = freezed,
     Object? muted = freezed,
     Object? participateAt = freezed,
@@ -166,6 +190,10 @@ class __$$ChatParticipantModelImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel?,
+      chat: freezed == chat
+          ? _value.chat
+          : chat // ignore: cast_nullable_to_non_nullable
+              as ChatModel?,
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -188,6 +216,7 @@ class _$ChatParticipantModelImpl implements _ChatParticipantModel {
   const _$ChatParticipantModelImpl(
       {this.id,
       this.user,
+      this.chat,
       this.status,
       this.muted,
       @JsonKey(name: "participated_at") this.participateAt});
@@ -200,6 +229,8 @@ class _$ChatParticipantModelImpl implements _ChatParticipantModel {
   @override
   final UserModel? user;
   @override
+  final ChatModel? chat;
+  @override
   final ChatParticipantStatusModel? status;
   @override
   final bool? muted;
@@ -209,7 +240,7 @@ class _$ChatParticipantModelImpl implements _ChatParticipantModel {
 
   @override
   String toString() {
-    return 'ChatParticipantModel(id: $id, user: $user, status: $status, muted: $muted, participateAt: $participateAt)';
+    return 'ChatParticipantModel(id: $id, user: $user, chat: $chat, status: $status, muted: $muted, participateAt: $participateAt)';
   }
 
   @override
@@ -219,6 +250,7 @@ class _$ChatParticipantModelImpl implements _ChatParticipantModel {
             other is _$ChatParticipantModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.user, user) || other.user == user) &&
+            (identical(other.chat, chat) || other.chat == chat) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.muted, muted) || other.muted == muted) &&
             (identical(other.participateAt, participateAt) ||
@@ -228,7 +260,7 @@ class _$ChatParticipantModelImpl implements _ChatParticipantModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, user, status, muted, participateAt);
+      Object.hash(runtimeType, id, user, chat, status, muted, participateAt);
 
   @JsonKey(ignore: true)
   @override
@@ -250,6 +282,7 @@ abstract class _ChatParticipantModel implements ChatParticipantModel {
   const factory _ChatParticipantModel(
           {final int? id,
           final UserModel? user,
+          final ChatModel? chat,
           final ChatParticipantStatusModel? status,
           final bool? muted,
           @JsonKey(name: "participated_at") final String? participateAt}) =
@@ -262,6 +295,8 @@ abstract class _ChatParticipantModel implements ChatParticipantModel {
   int? get id;
   @override
   UserModel? get user;
+  @override
+  ChatModel? get chat;
   @override
   ChatParticipantStatusModel? get status;
   @override

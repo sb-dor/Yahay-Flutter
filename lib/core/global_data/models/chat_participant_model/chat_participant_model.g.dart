@@ -13,6 +13,9 @@ _$ChatParticipantModelImpl _$$ChatParticipantModelImplFromJson(
       user: json['user'] == null
           ? null
           : UserModel.fromJson(json['user'] as Map<String, dynamic>),
+      chat: json['chat'] == null
+          ? null
+          : ChatModel.fromJson(json['chat'] as Map<String, dynamic>),
       status: json['status'] == null
           ? null
           : ChatParticipantStatusModel.fromJson(
@@ -26,6 +29,7 @@ Map<String, dynamic> _$$ChatParticipantModelImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'user': instance.user,
+      'chat': instance.chat,
       'status': instance.status,
       'muted': instance.muted,
       'participated_at': instance.participateAt,

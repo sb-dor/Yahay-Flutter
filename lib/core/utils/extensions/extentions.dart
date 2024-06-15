@@ -10,3 +10,12 @@ extension NumEx on num {
     return num.parse(toStringAsFixed(2));
   }
 }
+
+extension ListExtensions<T> on List<T> {
+  (T, int index)? getValueAndIndexOrNull(bool Function(T element) test) {
+    for (int i = 0; i < length; i++) {
+      if (test(this[i])) return (this[i], i);
+    }
+    return null;
+  }
+}

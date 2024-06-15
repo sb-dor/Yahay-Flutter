@@ -177,7 +177,9 @@ class ChatScreenBloc {
   static void _removeAllTempCreatedChatsEvent(RemoveAllTempCreatedChatsEvent event) {
     try {
       _chatScreenChatUsecase.removeAllTempCreatedChats(chat: _currentStateModel.currentChat);
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("_removeAllTempCreatedChatsEvent error is: $e");
+    }
   }
 
   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatMessageEvent event) async* {
@@ -200,7 +202,9 @@ class ChatScreenBloc {
     try {
       _currentStateModel.changeEmojiPicker(value: event.value);
       yield* _emitter();
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("_chaneEmojiPicker error is: $e");
+    }
   }
 
   static Stream<ChatScreenStates> _emitter() async* {

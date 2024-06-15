@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -117,12 +116,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 60,
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            shape: MaterialStatePropertyAll(
+                            shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                            backgroundColor: const MaterialStatePropertyAll(Colors.blueAccent),
+                            backgroundColor: const WidgetStatePropertyAll(Colors.blueAccent),
                           ),
                           onPressed: () => _authBloc.events.add(
                             RegisterEvent(

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 
 abstract class VideoChatFeatureRepo {
@@ -12,5 +11,7 @@ abstract class VideoChatFeatureRepo {
   Future<bool> leaveTheChat(VideoChatEntity videoChatEntity);
 
   // streaming the video data feature
-  Future<void> streamTheVideo(Uint8List int8);
+  Future<void> streamTheVideo({
+    required VideoChatEntity videoChatEntity,
+  });
 }

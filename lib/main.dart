@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
-import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
 import 'package:yahay/injections/injections.dart';
@@ -60,7 +59,7 @@ class _YahayState extends State<Yahay> {
             GlobalCupertinoLocalizations.delegate,
           ],
           locale: const Locale("en"),
-          supportedLocales: [const Locale("ru"), const Locale("en")],
+          supportedLocales: const [Locale("ru"), Locale("en")],
           debugShowCheckedModeBanner: false,
           theme: themeStates.data,
           // if you will use the auto_route package in order to navigate between screens without context

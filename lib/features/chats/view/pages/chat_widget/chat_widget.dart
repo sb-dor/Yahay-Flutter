@@ -55,7 +55,6 @@ class _ChatMainImage extends StatelessWidget {
   final Chat? chat;
 
   const _ChatMainImage({
-    super.key,
     required this.chat,
   });
 
@@ -87,7 +86,7 @@ class _ChatMainImage extends StatelessWidget {
 class _ChatImageBuilder extends StatelessWidget {
   final String? path;
 
-  const _ChatImageBuilder({super.key, required this.path});
+  const _ChatImageBuilder({required this.path});
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +107,6 @@ class _ChatName extends StatelessWidget {
   final Chat? chat;
 
   const _ChatName({
-    super.key,
     required this.chat,
   });
 

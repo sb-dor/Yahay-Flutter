@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:typed_data';
-
 import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
@@ -9,12 +8,16 @@ import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
+import 'package:yahay/core/utils/extensions/extentions.dart';
+import 'package:yahay/core/utils/talker/talker_service.dart';
 import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/injections/injections.dart';
+import 'package:collection/collection.dart';
 
 class VideoChatStateModel {
   final cameraService = snoopy<CameraHelperService>();
+  final talker = TalkerService.instance.talker;
 
   CameraController? _mainVideoStreamCameraController;
 
@@ -68,6 +71,21 @@ class VideoChatStateModel {
     _videoChatEntities.add(videoChatEntity);
   }
 
+  void updateVideoChat(VideoChatEntity videoChatEntity, int index) {
+    _videoChatEntities[index] = videoChatEntity;
+  }
+
+  void checkVideoEntitiesBeforeAdding(VideoChatEntity videoChatEntity) {
+    final videoEntity = _videoChatEntities.getValueAndIndexOrNull((element) =>
+        element.chat?.uuid == videoChatEntity.chat?.uuid &&
+        element.user?.id == videoChatEntity.user?.id);
+    if (videoEntity == null) {
+      addVideoChat(videoChatEntity);
+    } else {
+      updateVideoChat(videoChatEntity, videoEntity.$2);
+    }
+  }
+
   void initCurrentUser(User? user) => _currentUser = user;
 
   void initChannelSubscription(StreamSubscription<void>? channelSubs) {
@@ -84,6 +102,17 @@ class VideoChatStateModel {
 
   void initCurrentVideoChatEntity(VideoChatEntity entity) {
     _currentVideoChatEntity = entity;
+  }
+
+  void addUint8ImageDataToCurrentVideoChatEntity(Uint8List data) {
+    // temp. if entity is null we will set new object to that entity
+    _currentVideoChatEntity ??= VideoChatEntity(
+      imageData: data,
+      chat: _chat,
+      user: _currentUser,
+    );
+    // update the image data
+    _currentVideoChatEntity?.imageData = data;
   }
 
   void dispose() async {

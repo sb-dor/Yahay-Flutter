@@ -49,6 +49,8 @@ class ProfileBloc {
   static Stream<ProfileStates> _profileLogoutEvent(ProfileLogoutEvent event) async* {
     try {
       snoopy<AuthBloc>().events.add(LogOutEvent());
-    } catch (e) {}
+    } catch (e) {
+      debugPrint("_profileLogoutEvent error is: $e");
+    }
   }
 }

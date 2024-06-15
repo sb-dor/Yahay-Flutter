@@ -41,7 +41,7 @@ class EmojiPickerHelper extends StatelessWidget {
           buttonColor: Colors.white,
           buttonIconColor: Colors.grey,
         ),
-        searchViewConfig: SearchViewConfig(
+        searchViewConfig: const SearchViewConfig(
           backgroundColor: Colors.white,
           buttonColor: Colors.grey,
         ),

@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_events.dart';
-import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
-import 'package:yahay/features/chat_screen/view/bloc/state_model/chat_screen_state_model.dart';
-import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
-import 'package:yahay/injections/injections.dart';
 
 class BottomChatWidget extends StatefulWidget {
   final ChatScreenBloc chatsBloc;

@@ -1,9 +1,11 @@
 import 'dart:convert';
-import 'dart:typed_data';
+import 'dart:developer';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
+import 'package:yahay/core/utils/talker/talker_service.dart';
 import 'package:yahay/features/video_chat_feature/data/models/video_chat_model.dart';
 import 'package:yahay/features/video_chat_feature/data/sources/video_chat_feature_data_source/video_chat_feature_data_source.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
@@ -11,16 +13,17 @@ import 'package:yahay/injections/injections.dart';
 
 class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   final _dioHelper = snoopy<DioSettings>();
-
-  final joinChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
-  final startVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/start/videochat";
-  final leaveVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
+  final _talker = TalkerService.instance.talker;
+  final _joinChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
+  final _startVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/start/videochat";
+  final _leaveVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
+  final _steamTheVideoPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/video/stream";
 
   @override
   Future<bool> startVideoChat(VideoChatEntity videoChatEntity) async {
     try {
       final response = await _dioHelper.dio.put(
-        startVideoChatPath,
+        _startVideoChatPath,
         data: VideoChatModel.fromEntity(videoChatEntity)?.toJson(),
       );
 
@@ -47,7 +50,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   Future<bool> videoChatEntrance(VideoChatEntity videoChatEntity) async {
     try {
       final response = await _dioHelper.dio.put(
-        joinChatPath,
+        _joinChatPath,
         data: VideoChatModel.fromEntity(videoChatEntity)?.toJson(),
       );
 
@@ -72,9 +75,8 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   @override
   Future<bool> leaveTheChat(VideoChatEntity videoChatEntity) async {
     try {
-
       final response = await _dioHelper.dio.put(
-        leaveVideoChatPath,
+        _leaveVideoChatPath,
         data: VideoChatModel.fromEntity(videoChatEntity)?.toJson(),
       );
 
@@ -83,14 +85,13 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
       if (response.statusCode != HttpStatusCodes.success) return false;
 
       Map<String, dynamic> json =
-      response.data is String ? jsonDecode(response.data) : response.data;
+          response.data is String ? jsonDecode(response.data) : response.data;
 
       if (!json.containsKey("success")) return false;
 
       if (bool.tryParse("${json['success']}") == null) return false;
 
       return bool.parse("${json['success']}");
-
     } catch (e) {
       debugPrint("leave the chat error is: $e");
       return false;
@@ -98,8 +99,21 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   }
 
   @override
-  Future<void> streamTheVideo(Uint8List int8) {
-    // TODO: implement streamTheVideo
-    throw UnimplementedError();
+  Future<void> streamTheVideo({
+    required VideoChatEntity videoChatEntity,
+  }) async {
+    try {
+      final jsonBody = VideoChatModel.fromEntity(videoChatEntity)?.toJson();
+      log("sending uint8list data: $jsonBody");
+
+      final response = await _dioHelper.dio.put(
+        _steamTheVideoPath,
+        data: jsonBody,
+      );
+
+      debugPrint("coming response from stream video: ${response.data}");
+    } on DioException catch (e) {
+      _talker.log("stream the video error is: ${e.response?.data}");
+    }
   }
 }

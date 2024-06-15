@@ -6,9 +6,6 @@ import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/user_model/user_functions.dart';
 import 'package:yahay/core/global_usages/widgets/image_loader/image_loaded.dart';
-import 'package:yahay/core/utils/global_context/global_context.dart';
-import 'package:yahay/features/chat_screen/view/pages/chat_screen.dart';
-import 'package:yahay/injections/injections.dart';
 
 class AddContactUserWidget extends StatelessWidget {
   final User user;

@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';

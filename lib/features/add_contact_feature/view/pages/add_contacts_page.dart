@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/core/global_usages/widgets/user_widgets/add_contact_user_widget.dart';
 import 'package:yahay/core/utils/extensions/extentions.dart';
