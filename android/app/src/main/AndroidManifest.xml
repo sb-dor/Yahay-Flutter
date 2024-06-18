@@ -12,7 +12,8 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="yahay">
+        android:label="yahay"
+        android:usesCleartextTraffic="true">
 
 
         <activity

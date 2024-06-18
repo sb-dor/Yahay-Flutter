@@ -47,7 +47,10 @@ class CameraHelperService {
     return Uint8List.fromList(img.encodeJpg(imgImage, quality: 80));
   }
 
-  Uint8List? convertYUV420toImage(CameraImage image) {
+  Uint8List? convertYUV420toImage(
+    CameraImage image, {
+    bool frontCamera = false,
+  }) {
     try {
       final int width = image.width;
       final int height = image.height;
@@ -77,7 +80,14 @@ class CameraHelperService {
         }
       }
 
-      rgbImage = img.copyRotate(rgbImage, angle: 90);
+      // if it's from camera rotate image -90 degrees
+      // to fix the front and back camera issue
+      if (frontCamera) {
+        rgbImage = img.copyRotate(rgbImage, angle: -90);
+      } else {
+        // if it's not rotate 90 degrees
+        rgbImage = img.copyRotate(rgbImage, angle: 90);
+      }
 
       return Uint8List.fromList(img.encodeJpg(rgbImage));
     } catch (e) {

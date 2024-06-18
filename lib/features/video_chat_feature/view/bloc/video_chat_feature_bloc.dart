@@ -208,7 +208,12 @@ class VideoChatFeatureBloc {
         // after every 100 millisecond we will send data to user through pusher
         _currentStateModel.initTimer(Timer(const Duration(milliseconds: 100), () async {
           // convert each getting image stream to Uint8List and send to server
-          final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(cameraImage);
+          final frontCamera = _currentStateModel.mainVideoStreamCameraController?.description ==
+              _currentStateModel.cameraService.cameras.first;
+          final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(
+            cameraImage,
+            frontCamera: frontCamera,
+          );
           _sendDataToTheServer(utf8ListInt);
         }));
       }

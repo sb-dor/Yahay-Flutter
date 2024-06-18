@@ -45,13 +45,17 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
                 final controller = _videoChatFeatureBloc
                     .states.value.videoChatStateModel.mainVideoStreamCameraController;
                 if (controller?.description.name == cameras.last.name) {
-                  _videoChatFeatureBloc.events.add(InitMainCameraControllerEvent(
-                    cameras.first,
-                  ));
+                  _videoChatFeatureBloc.events.add(
+                    InitMainCameraControllerEvent(
+                      cameras.first,
+                    ),
+                  );
                 } else {
-                  _videoChatFeatureBloc.events.add(InitMainCameraControllerEvent(
-                    cameras.last,
-                  ));
+                  _videoChatFeatureBloc.events.add(
+                    InitMainCameraControllerEvent(
+                      cameras.last,
+                    ),
+                  );
                 }
               }
             },

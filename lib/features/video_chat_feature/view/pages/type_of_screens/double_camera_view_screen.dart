@@ -38,7 +38,7 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
                     .states.value.videoChatStateModel.videoChatEntities.first.imageData!,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: CameraPreview(
                 _videoChatFeatureBloc

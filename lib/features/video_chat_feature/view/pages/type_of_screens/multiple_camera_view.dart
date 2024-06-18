@@ -10,6 +10,6 @@ class MultipleCameraView extends StatefulWidget {
 class _MultipleCameraViewState extends State<MultipleCameraView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }
