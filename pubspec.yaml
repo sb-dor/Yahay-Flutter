@@ -72,7 +72,8 @@ dependencies:
   camera: ^0.11.0+1
   image: ^4.2.0
   video_player: ^2.8.6
-  just_audio: ^0.9.38
+  flutter_sound: ^9.6.0
+  mic_stream: ^0.7.1+2
 
 
 dev_dependencies:

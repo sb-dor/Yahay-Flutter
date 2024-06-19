@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  audio_session:
-    dependency: transitive
-    description:
-      name: audio_session
-      sha256: a49af9981eec5d7cd73b37bacb6ee73f8143a6a9f9bd5b6021e6c346b9b6cf4e
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.19"
   auto_route:
     dependency: "direct main"
     description:
@@ -523,6 +515,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.19"
+  flutter_sound:
+    dependency: "direct main"
+    description:
+      name: flutter_sound
+      sha256: "1f40b26b92907a433afe877c927cd48f5a2e4d0f7188e5d39eb5756008aa51ab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.6.0"
+  flutter_sound_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_sound_platform_interface
+      sha256: "2e218521d8187b9a4c65063ad9c79bfe88119531ff68047a2eaa6b027cb276bb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.6.0"
+  flutter_sound_web:
+    dependency: transitive
+    description:
+      name: flutter_sound_web
+      sha256: "5013a15e4e69a4bdc8badd729130eef43c3305e30ba8e6933f863436ce969932"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.6.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -805,30 +821,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.8.0"
-  just_audio:
-    dependency: "direct main"
-    description:
-      name: just_audio
-      sha256: "5abfab1d199e01ab5beffa61b3e782350df5dad036cb8c83b79fa45fc656614e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.38"
-  just_audio_platform_interface:
-    dependency: transitive
-    description:
-      name: just_audio_platform_interface
-      sha256: "0243828cce503c8366cc2090cefb2b3c871aa8ed2f520670d76fd47aa1ab2790"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.3.0"
-  just_audio_web:
-    dependency: transitive
-    description:
-      name: just_audio_web
-      sha256: "0edb481ad4aa1ff38f8c40f1a3576013c3420bf6669b686fe661627d49bc606c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.11"
   leak_tracker:
     dependency: transitive
     description:
@@ -901,6 +893,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.0"
+  mic_stream:
+    dependency: "direct main"
+    description:
+      name: mic_stream
+      sha256: "1db1ec77bdd8ffc0d1c5cc606398612930312a96462220add5ea24aa9da73210"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.1+2"
   mime:
     dependency: transitive
     description:
@@ -917,6 +917,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.4"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -1125,6 +1133,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  provider:
+    dependency: transitive
+    description:
+      name: provider
+      sha256: c8a055ee5ce3fd98d6fc872478b03823ffdb448699c6ebdbbc71d59b596fd48c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
   pub_semver:
     dependency: transitive
     description:
@@ -1141,6 +1157,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.3"
+  recase:
+    dependency: transitive
+    description:
+      name: recase
+      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   rename:
     dependency: "direct main"
     description:

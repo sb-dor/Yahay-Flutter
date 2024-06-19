@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:mic_stream/mic_stream.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:yahay/core/global_data/models/chat_participant_model/chat_participant_model.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
@@ -157,68 +159,44 @@ class VideoChatFeatureBloc {
 
     if (event.makeRequestToServer) {
       //
-      final resultOfStart = await _startVideoChat.startVideoChat(
-        _currentStateModel.currentVideoChatEntity!,
-      );
-
-      if (!resultOfStart) return;
-
-      _currentStateModel.startChat();
-      // create only channel subscription
-      // after successfully response we will send the data to the server
-      _currentStateModel.initPusherChannelClient(
-        PusherChannelsClient.websocket(
-          options: snoopy<PusherClientService>().options,
-          connectionErrorHandler: (f, s, th) {},
-        ),
-      );
-
-      final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
-
-      debugPrint("channel name for video chat: $channelName");
-
-      final channel = _currentStateModel.pusherChannelClient?.publicChannel(
-        channelName,
-      );
-
-      final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
-        (e) {
-          channel?.subscribeIfNotUnsubscribed();
-        },
-      );
-
-      _currentStateModel.initChannelSubscription(channelSubs);
-
-      await _currentStateModel.pusherChannelClient?.connect();
-
-      channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
-        // TODO: handle event data by creating bloc event
-        _events.add(VideoStreamHandlerEvent(pusherEvent));
-      });
+      await _initVideoPusher();
     }
     // -------------------------------------------------
 
     // was just for check
     // you have to call this function after
     // acception video call from the other side
-    _currentStateModel.mainVideoStreamCameraController?.startImageStream((cameraImage) async {
-      // after specific time sending data
-      if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
-          _currentStateModel.timerForGettingFrame == null) {
-        // after every 100 millisecond we will send data to user through pusher
-        _currentStateModel.initTimer(Timer(const Duration(milliseconds: 100), () async {
-          // convert each getting image stream to Uint8List and send to server
-          final frontCamera = _currentStateModel.mainVideoStreamCameraController?.description ==
-              _currentStateModel.cameraService.cameras.first;
-          final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(
-            cameraImage,
-            frontCamera: frontCamera,
+    _currentStateModel.mainVideoStreamCameraController?.startImageStream(
+      (cameraImage) async {
+        // after specific time sending data
+        if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
+            _currentStateModel.timerForGettingFrame == null) {
+          // after every 100 millisecond we will send data to user through pusher
+
+          _currentStateModel.initTimer(
+            Timer(
+              const Duration(milliseconds: 100),
+              () async {
+                // convert each getting image stream to Uint8List and send to server
+                final frontCamera =
+                    _currentStateModel.mainVideoStreamCameraController?.description ==
+                        _currentStateModel.cameraService.cameras.first;
+                final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(
+                  cameraImage,
+                  frontCamera: frontCamera,
+                );
+                _sendDataToTheServer(utf8ListInt);
+              },
+            ),
           );
-          _sendDataToTheServer(utf8ListInt);
-        }));
-      }
-      // cameraImage.
-    });
+        }
+        // cameraImage.
+      },
+    );
+
+    // audio stream sender
+    // make this singleton
+    MicStream.microphone().listen((e) {});
   }
 
   // not starting video, this event is for someone who wants to participate to video chat
@@ -289,6 +267,47 @@ class VideoChatFeatureBloc {
       _currentStateModel.talker.error("_videoStreamHandlerEvent error is: Ï$e");
     }
     yield InitialVideoChatState(_currentStateModel);
+  }
+
+  static Future<void> _initVideoPusher() async {
+    final resultOfStart = await _startVideoChat.startVideoChat(
+      _currentStateModel.currentVideoChatEntity!,
+    );
+
+    if (!resultOfStart) return;
+
+    _currentStateModel.startChat();
+    // create only channel subscription
+    // after successfully response we will send the data to the server
+    _currentStateModel.initPusherChannelClient(
+      PusherChannelsClient.websocket(
+        options: snoopy<PusherClientService>().options,
+        connectionErrorHandler: (f, s, th) {},
+      ),
+    );
+
+    final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
+
+    debugPrint("channel name for video chat: $channelName");
+
+    final channel = _currentStateModel.pusherChannelClient?.publicChannel(
+      channelName,
+    );
+
+    final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
+      (e) {
+        channel?.subscribeIfNotUnsubscribed();
+      },
+    );
+
+    _currentStateModel.initChannelSubscription(channelSubs);
+
+    await _currentStateModel.pusherChannelClient?.connect();
+
+    channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
+      // TODO: handle event data by creating bloc event
+      _events.add(VideoStreamHandlerEvent(pusherEvent));
+    });
   }
 
 // static Stream<VideoChatFeatureStates> _emitter() async* {

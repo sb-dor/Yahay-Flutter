@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:flutter_sound/flutter_sound.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
@@ -22,6 +23,11 @@ class VideoChatStateModel {
   CameraController? _mainVideoStreamCameraController;
 
   CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
+
+  // already singleton
+  final FlutterSound _flutterSound = FlutterSound();
+
+  FlutterSound? get flutterSound => _flutterSound;
 
   Chat? _chat;
 
@@ -126,14 +132,14 @@ class VideoChatStateModel {
   void dispose() async {
     await _channelSubscription?.cancel();
     await _pusherChannelsClient?.disconnect();
+    await _mainVideoStreamCameraController?.dispose();
+    await _flutterSound.thePlayer.stopPlayer();
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;
     _pusherChannelsClient = null;
     for (var each in _videoChatEntities) {
       each.imageData = null;
     }
-    _mainVideoStreamCameraController?.dispose();
-    _videoChatEntities.clear();
     _chat = null;
     finishChat();
   }
