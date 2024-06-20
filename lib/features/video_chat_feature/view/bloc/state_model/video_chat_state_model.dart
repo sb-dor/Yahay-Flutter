@@ -24,11 +24,6 @@ class VideoChatStateModel {
 
   CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
 
-  // already singleton
-  final FlutterSound _flutterSound = FlutterSound();
-
-  FlutterSound? get flutterSound => _flutterSound;
-
   Chat? _chat;
 
   Chat? get chat => _chat;
@@ -59,6 +54,15 @@ class VideoChatStateModel {
   PusherChannelsClient? _pusherChannelsClient;
 
   PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
+
+  // already singleton
+  final FlutterSound _flutterSound = FlutterSound();
+
+  FlutterSound? get flutterSound => _flutterSound;
+
+  StreamSubscription<List<int>>? _audioStream;
+
+  StreamSubscription<List<int>>? get audioStream => _audioStream;
 
   Timer? _timerForGettingFrame;
 
@@ -110,6 +114,10 @@ class VideoChatStateModel {
     _pusherChannelsClient = pusherClient;
   }
 
+  void initAudioStreamSubscription(StreamSubscription<List<int>> subscription) {
+    _audioStream = subscription;
+  }
+
   void initChannelChat(Chat? chat) {
     _chat = chat;
   }
@@ -133,7 +141,8 @@ class VideoChatStateModel {
     await _channelSubscription?.cancel();
     await _pusherChannelsClient?.disconnect();
     await _mainVideoStreamCameraController?.dispose();
-    await _flutterSound.thePlayer.stopPlayer();
+    await _flutterSound.thePlayer.closePlayer();
+    await _audioStream?.cancel();
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;
     _pusherChannelsClient = null;

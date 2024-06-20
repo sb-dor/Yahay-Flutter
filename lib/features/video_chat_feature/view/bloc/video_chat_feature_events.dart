@@ -46,3 +46,11 @@ class VideoStreamHandlerEvent extends VideoChatFeatureEvents {
 
   const VideoStreamHandlerEvent(this.pusherEvent);
 }
+
+@immutable
+class AudioStreamHandlerEvent extends VideoChatFeatureEvents {
+  // temp for check
+  final Uint8List data;
+
+  const AudioStreamHandlerEvent(this.data);
+}

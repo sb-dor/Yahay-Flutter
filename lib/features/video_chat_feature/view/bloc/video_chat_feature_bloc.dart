@@ -166,37 +166,50 @@ class VideoChatFeatureBloc {
     // was just for check
     // you have to call this function after
     // acception video call from the other side
-    _currentStateModel.mainVideoStreamCameraController?.startImageStream(
-      (cameraImage) async {
-        // after specific time sending data
-        if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
-            _currentStateModel.timerForGettingFrame == null) {
-          // after every 100 millisecond we will send data to user through pusher
-
-          _currentStateModel.initTimer(
-            Timer(
-              const Duration(milliseconds: 100),
-              () async {
-                // convert each getting image stream to Uint8List and send to server
-                final frontCamera =
-                    _currentStateModel.mainVideoStreamCameraController?.description ==
-                        _currentStateModel.cameraService.cameras.first;
-                final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(
-                  cameraImage,
-                  frontCamera: frontCamera,
-                );
-                _sendDataToTheServer(utf8ListInt);
-              },
-            ),
-          );
-        }
-        // cameraImage.
-      },
-    );
+    // _currentStateModel.mainVideoStreamCameraController?.startImageStream(
+    //   (cameraImage) async {
+    //     // after specific time sending data
+    //     if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
+    //         _currentStateModel.timerForGettingFrame == null) {
+    //       // after every 100 millisecond we will send data to user through pusher
+    //
+    //       _currentStateModel.initTimer(
+    //         Timer(
+    //           const Duration(milliseconds: 100),
+    //           () async {
+    //             // convert each getting image stream to Uint8List and send to server
+    //             final frontCamera =
+    //                 _currentStateModel.mainVideoStreamCameraController?.description ==
+    //                     _currentStateModel.cameraService.cameras.first;
+    //             final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(
+    //               cameraImage,
+    //               frontCamera: frontCamera,
+    //             );
+    //             _sendDataToTheServer(utf8ListInt);
+    //           },
+    //         ),
+    //       );
+    //     }
+    //     // cameraImage.
+    //   },
+    // );
 
     // audio stream sender
     // make this singleton
-    MicStream.microphone().listen((e) {});
+    await _currentStateModel.flutterSound?.thePlayer.openPlayer();
+
+    // await _currentStateModel.flutterSound?.thePlayer.startPlayerFromStream(
+    //   codec: Codec.pcm16,
+    //   numChannels: 1,
+    //   sampleRate: 44100,
+    // );
+    Stream<List<int>> stream = MicStream.microphone(sampleRate: 44100);
+
+    StreamSubscription<List<int>> listener = stream.listen((data){
+      _micDataHandler(Uint8List.fromList(data));
+    });
+
+    _currentStateModel.initAudioStreamSubscription(listener);
   }
 
   // not starting video, this event is for someone who wants to participate to video chat
@@ -267,6 +280,12 @@ class VideoChatFeatureBloc {
       _currentStateModel.talker.error("_videoStreamHandlerEvent error is: Ï$e");
     }
     yield InitialVideoChatState(_currentStateModel);
+  }
+
+  // mic data handler
+  static void _micDataHandler(Uint8List data) async {
+    _currentStateModel.flutterSound?.thePlayer.feedFromStream(data);
+    debugPrint("audio data: time: ${DateTime.now()} | $data");
   }
 
   static Future<void> _initVideoPusher() async {
