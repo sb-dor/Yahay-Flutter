@@ -42,21 +42,21 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
               //   debugPrint("camera name: ${each.name}");
               // }
               if (cameras.length >= 2) {
-                final controller = _videoChatFeatureBloc
-                    .states.value.videoChatStateModel.mainVideoStreamCameraController;
-                if (controller?.description.name == cameras.last.name) {
-                  _videoChatFeatureBloc.events.add(
-                    InitMainCameraControllerEvent(
-                      cameras.first,
-                    ),
-                  );
-                } else {
-                  _videoChatFeatureBloc.events.add(
-                    InitMainCameraControllerEvent(
-                      cameras.last,
-                    ),
-                  );
-                }
+                // final controller = _videoChatFeatureBloc
+                //     .states.value.videoChatStateModel.mainVideoStreamCameraController;
+                // if (controller?.description.name == cameras.last.name) {
+                //   _videoChatFeatureBloc.events.add(
+                //     InitMainCameraControllerEvent(
+                //       cameras.first,
+                //     ),
+                //   );
+                // } else {
+                //   _videoChatFeatureBloc.events.add(
+                //     InitMainCameraControllerEvent(
+                //       cameras.last,
+                //     ),
+                //   );
+                // }
               }
             },
             child: const SizedBox(

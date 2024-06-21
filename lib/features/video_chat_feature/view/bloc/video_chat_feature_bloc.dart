@@ -120,6 +120,8 @@ class VideoChatFeatureBloc {
       ),
     );
 
+    await _currentStateModel.initLocalAndRemoteRenderer();
+
     yield* _initMainCameraControllerEvent(
       InitMainCameraControllerEvent(_currentStateModel.cameraService.cameras.first),
     );
@@ -128,12 +130,12 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _initMainCameraControllerEvent(
     InitMainCameraControllerEvent event,
   ) async* {
-    await _currentStateModel.initMainCameraController(
-      CameraController(
-        event.cameraDescription,
-        ResolutionPreset.low,
-      ),
-    );
+    // await _currentStateModel.initMainCameraController(
+    //   CameraController(
+    //     event.cameraDescription,
+    //     ResolutionPreset.low,
+    //   ),
+    // );
 
     if (_currentStateModel.chatStarted) {
       _events.add(
@@ -196,20 +198,20 @@ class VideoChatFeatureBloc {
 
     // audio stream sender
     // make this singleton
-    await _currentStateModel.flutterSound?.thePlayer.openPlayer();
+    // await _currentStateModel.flutterSound?.thePlayer.openPlayer();
 
     // await _currentStateModel.flutterSound?.thePlayer.startPlayerFromStream(
     //   codec: Codec.pcm16,
     //   numChannels: 1,
     //   sampleRate: 44100,
     // );
-    Stream<List<int>> stream = MicStream.microphone(sampleRate: 44100);
-
-    StreamSubscription<List<int>> listener = stream.listen((data){
-      _micDataHandler(Uint8List.fromList(data));
-    });
-
-    _currentStateModel.initAudioStreamSubscription(listener);
+    // Stream<List<int>> stream = MicStream.microphone(sampleRate: 44100);
+    //
+    // StreamSubscription<List<int>> listener = stream.listen((data){
+    //   _micDataHandler(Uint8List.fromList(data));
+    // });
+    //
+    // _currentStateModel.initAudioStreamSubscription(listener);
   }
 
   // not starting video, this event is for someone who wants to participate to video chat
@@ -283,10 +285,10 @@ class VideoChatFeatureBloc {
   }
 
   // mic data handler
-  static void _micDataHandler(Uint8List data) async {
-    _currentStateModel.flutterSound?.thePlayer.feedFromStream(data);
-    debugPrint("audio data: time: ${DateTime.now()} | $data");
-  }
+  // static void _micDataHandler(Uint8List data) async {
+  //   _currentStateModel.flutterSound?.thePlayer.feedFromStream(data);
+  //   debugPrint("audio data: time: ${DateTime.now()} | $data");
+  // }
 
   static Future<void> _initVideoPusher() async {
     final resultOfStart = await _startVideoChat.startVideoChat(

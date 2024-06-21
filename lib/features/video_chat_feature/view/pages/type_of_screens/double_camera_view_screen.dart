@@ -39,12 +39,12 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            Expanded(
-              child: CameraPreview(
-                _videoChatFeatureBloc
-                    .states.value.videoChatStateModel.mainVideoStreamCameraController!,
-              ),
-            ),
+            // Expanded(
+            //   child: CameraPreview(
+            //     _videoChatFeatureBloc
+            //         .states.value.videoChatStateModel.mainVideoStreamCameraController!,
+            //   ),
+            // ),
           ],
         ),
       ),

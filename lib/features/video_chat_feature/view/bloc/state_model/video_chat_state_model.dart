@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
@@ -11,6 +12,7 @@ import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/core/utils/extensions/extentions.dart';
 import 'package:yahay/core/utils/talker/talker_service.dart';
+import 'package:yahay/features/video_chat_feature/artc_signal_helper/rtc_signal_helper.dart';
 import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/injections/injections.dart';
@@ -20,9 +22,34 @@ class VideoChatStateModel {
   final cameraService = snoopy<CameraHelperService>();
   final talker = TalkerService.instance.talker;
 
-  CameraController? _mainVideoStreamCameraController;
+  Signaling? _signaling;
 
-  CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
+  Signaling? get signaling => _signaling;
+
+  RTCVideoRenderer? _localRenderer;
+
+  RTCVideoRenderer? _remoteRenderer;
+
+  RTCVideoRenderer? get localRenderer => _localRenderer;
+
+  RTCVideoRenderer? get removeRenderer => _remoteRenderer;
+
+  Future<void> initLocalAndRemoteRenderer() async {
+    _localRenderer = RTCVideoRenderer();
+    _remoteRenderer = RTCVideoRenderer();
+    await _localRenderer?.initialize();
+    await _remoteRenderer?.initialize();
+    _signaling = Signaling(
+      "serverUrl",
+      _localRenderer!,
+      _remoteRenderer!,
+    );
+    _signaling?.createOffer();
+  }
+
+  // CameraController? _mainVideoStreamCameraController;
+
+  // CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
 
   Chat? _chat;
 
@@ -56,13 +83,13 @@ class VideoChatStateModel {
   PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
 
   // already singleton
-  final FlutterSound _flutterSound = FlutterSound();
+  // final FlutterSound _flutterSound = FlutterSound();
 
-  FlutterSound? get flutterSound => _flutterSound;
+  // FlutterSound? get flutterSound => _flutterSound;
 
-  StreamSubscription<List<int>>? _audioStream;
+  // StreamSubscription<List<int>>? _audioStream;
 
-  StreamSubscription<List<int>>? get audioStream => _audioStream;
+  // StreamSubscription<List<int>>? get audioStream => _audioStream;
 
   Timer? _timerForGettingFrame;
 
@@ -80,10 +107,10 @@ class VideoChatStateModel {
     _timerForGettingFrame = timer;
   }
 
-  Future<void> initMainCameraController(CameraController controller) async {
-    _mainVideoStreamCameraController = controller;
-    await _mainVideoStreamCameraController?.initialize();
-  }
+  // Future<void> initMainCameraController(CameraController controller) async {
+  //   _mainVideoStreamCameraController = controller;
+  //   await _mainVideoStreamCameraController?.initialize();
+  // }
 
   void addVideoChat(VideoChatEntity videoChatEntity) {
     _videoChatEntities.add(videoChatEntity);
@@ -114,9 +141,9 @@ class VideoChatStateModel {
     _pusherChannelsClient = pusherClient;
   }
 
-  void initAudioStreamSubscription(StreamSubscription<List<int>> subscription) {
-    _audioStream = subscription;
-  }
+  // void initAudioStreamSubscription(StreamSubscription<List<int>> subscription) {
+  //   _audioStream = subscription;
+  // }
 
   void initChannelChat(Chat? chat) {
     _chat = chat;
@@ -140,9 +167,13 @@ class VideoChatStateModel {
   void dispose() async {
     await _channelSubscription?.cancel();
     await _pusherChannelsClient?.disconnect();
-    await _mainVideoStreamCameraController?.dispose();
-    await _flutterSound.thePlayer.closePlayer();
-    await _audioStream?.cancel();
+    // await _mainVideoStreamCameraController?.dispose();
+    // await _flutterSound.thePlayer.closePlayer();
+    // await _audioStream?.cancel();
+    await _localRenderer?.dispose();
+    await _remoteRenderer?.dispose();
+    _localRenderer = null;
+    _remoteRenderer = null;
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;
     _pusherChannelsClient = null;
