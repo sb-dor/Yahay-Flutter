@@ -37,27 +37,27 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
           child: InkWell(
             borderRadius: BorderRadius.circular(50),
             onTap: () async {
-              final cameras = snoopy<CameraHelperService>().cameras;
+              // final cameras = snoopy<CameraHelperService>().cameras;
               // for (var each in desc) {
               //   debugPrint("camera name: ${each.name}");
               // }
-              if (cameras.length >= 2) {
-                // final controller = _videoChatFeatureBloc
-                //     .states.value.videoChatStateModel.mainVideoStreamCameraController;
-                // if (controller?.description.name == cameras.last.name) {
-                //   _videoChatFeatureBloc.events.add(
-                //     InitMainCameraControllerEvent(
-                //       cameras.first,
-                //     ),
-                //   );
-                // } else {
-                //   _videoChatFeatureBloc.events.add(
-                //     InitMainCameraControllerEvent(
-                //       cameras.last,
-                //     ),
-                //   );
-                // }
-              }
+              // if (cameras.length >= 2) {
+              // final controller = _videoChatFeatureBloc
+              //     .states.value.videoChatStateModel.mainVideoStreamCameraController;
+              // if (controller?.description.name == cameras.last.name) {
+              //   _videoChatFeatureBloc.events.add(
+              //     InitMainCameraControllerEvent(
+              //       cameras.first,
+              //     ),
+              //   );
+              // } else {
+              //   _videoChatFeatureBloc.events.add(
+              //     InitMainCameraControllerEvent(
+              //       cameras.last,
+              //     ),
+              //   );
+              // }
+              // }
             },
             child: const SizedBox(
               width: 60,

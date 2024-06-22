@@ -10,6 +10,7 @@ class PusherClientService {
   PusherChannelsOptions get options => _options;
 
   Future<void> init() async {
+    // just for showing logs
     PusherChannelsPackageLogger.enableLogs();
 
     _options = PusherChannelsOptions.fromHost(

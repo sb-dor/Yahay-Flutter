@@ -70,3 +70,8 @@ for ios:
 
 for more information about facebook and google ath take a look to the
 android and ios folder -> AndroidManifest.xml and Info.plist
+
+
+all about implementation of webrtc you can find here:
+
+https://getstream.io/resources/projects/webrtc/platforms/flutter/

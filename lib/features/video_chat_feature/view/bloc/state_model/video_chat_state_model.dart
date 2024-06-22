@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:typed_data';
-import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
@@ -12,39 +10,21 @@ import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/core/utils/extensions/extentions.dart';
 import 'package:yahay/core/utils/talker/talker_service.dart';
-import 'package:yahay/features/video_chat_feature/artc_signal_helper/rtc_signal_helper.dart';
-import 'package:yahay/features/video_chat_feature/camera_helper_service/camera_helper_service.dart';
+import 'package:yahay/features/video_chat_feature/artc_signal_helper/webrtc_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
-import 'package:yahay/injections/injections.dart';
 import 'package:collection/collection.dart';
 
 class VideoChatStateModel {
-  final cameraService = snoopy<CameraHelperService>();
   final talker = TalkerService.instance.talker;
 
-  Signaling? _signaling;
+  WebRTCService? _webRTCService;
 
-  Signaling? get signaling => _signaling;
-
-  RTCVideoRenderer? _localRenderer;
-
-  RTCVideoRenderer? _remoteRenderer;
-
-  RTCVideoRenderer? get localRenderer => _localRenderer;
-
-  RTCVideoRenderer? get removeRenderer => _remoteRenderer;
+  WebRTCService? get webRTCService => _webRTCService;
 
   Future<void> initLocalAndRemoteRenderer() async {
-    _localRenderer = RTCVideoRenderer();
-    _remoteRenderer = RTCVideoRenderer();
-    await _localRenderer?.initialize();
-    await _remoteRenderer?.initialize();
-    _signaling = Signaling(
-      "serverUrl",
-      _localRenderer!,
-      _remoteRenderer!,
-    );
-    _signaling?.createOffer();
+    _webRTCService = WebRTCService();
+    await _webRTCService?.initRenderer();
+    await _webRTCService?.createOffer();
   }
 
   // CameraController? _mainVideoStreamCameraController;
@@ -170,10 +150,7 @@ class VideoChatStateModel {
     // await _mainVideoStreamCameraController?.dispose();
     // await _flutterSound.thePlayer.closePlayer();
     // await _audioStream?.cancel();
-    await _localRenderer?.dispose();
-    await _remoteRenderer?.dispose();
-    _localRenderer = null;
-    _remoteRenderer = null;
+    await _webRTCService?.leaveChat();
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;
     _pusherChannelsClient = null;

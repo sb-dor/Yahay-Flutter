@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:camera/camera.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:mic_stream/mic_stream.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:yahay/core/global_data/models/chat_participant_model/chat_participant_model.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
@@ -86,9 +83,11 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _eventHandler(VideoChatFeatureEvents event) async* {
     if (event is VideoChatInitFeatureEvent) {
       yield* _videoChatInitFeatureEvent(event);
-    } else if (event is InitMainCameraControllerEvent) {
-      yield* _initMainCameraControllerEvent(event);
-    } else if (event is StartVideoChatEvent) {
+    }
+    // else if (event is InitMainCameraControllerEvent) {
+    //   yield* _initMainCameraControllerEvent(event);
+    // }
+    else if (event is StartVideoChatEvent) {
       yield* _startVideoChatEvent(event);
     } else if (event is VideoChatEntranceEvent) {
       yield* _videoChatEntranceEvent(event);
@@ -123,12 +122,12 @@ class VideoChatFeatureBloc {
     await _currentStateModel.initLocalAndRemoteRenderer();
 
     yield* _initMainCameraControllerEvent(
-      InitMainCameraControllerEvent(_currentStateModel.cameraService.cameras.first),
+      // InitMainCameraControllerEvent(_currentStateModel.cameraService.cameras.first),
     );
   }
 
   static Stream<VideoChatFeatureStates> _initMainCameraControllerEvent(
-    InitMainCameraControllerEvent event,
+    // InitMainCameraControllerEvent event,
   ) async* {
     // await _currentStateModel.initMainCameraController(
     //   CameraController(
