@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
@@ -43,7 +44,15 @@ class ChatWidget extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            if (chat?.videoChatStreaming ?? false)
+              IconButton(
+                onPressed: () => [],
+                icon: const Icon(
+                  CupertinoIcons.videocam,
+                  color: Colors.green,
+                ),
+              ),
           ],
         ),
       ),
