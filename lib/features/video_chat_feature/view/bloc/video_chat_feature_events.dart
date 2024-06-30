@@ -23,10 +23,7 @@ class VideoChatInitFeatureEvent extends VideoChatFeatureEvents {
 
 @immutable
 class StartVideoChatEvent extends VideoChatFeatureEvents {
-  // sending current abstract event in order to work with
-  final bool makeRequestToServer;
-
-  const StartVideoChatEvent({this.makeRequestToServer = true});
+  const StartVideoChatEvent();
 }
 
 @immutable

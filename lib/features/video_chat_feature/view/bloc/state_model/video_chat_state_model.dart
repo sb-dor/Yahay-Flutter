@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:typed_data';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
@@ -17,25 +18,6 @@ import 'package:yahay/injections/injections.dart';
 
 class VideoChatStateModel {
   final talker = TalkerService.instance.talker;
-
-  final WebrtcLaravelHelper _webrtcLaravelHelper = snoopy<WebrtcLaravelHelper>();
-
-  WebrtcLaravelHelper get webrtcLaravelHelper => _webrtcLaravelHelper;
-
-  Future<void> initLocalRenderer() async {
-    _currentVideoChatEntity = VideoChatEntity(
-      videoRenderer: null,
-      chat: _chat,
-      user: _currentUser,
-    );
-    _currentVideoChatEntity?.videoRenderer = RTCVideoRenderer();
-    await _currentVideoChatEntity?.videoRenderer?.initialize();
-    await _webrtcLaravelHelper.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
-  }
-
-  // CameraController? _mainVideoStreamCameraController;
-
-  // CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
 
   Chat? _chat;
 
@@ -56,6 +38,26 @@ class VideoChatStateModel {
   VideoChatEntity? get currentVideoChatEntity => _currentVideoChatEntity;
 
   final List<VideoChatEntity> _videoChatEntities = [];
+
+  final WebrtcLaravelHelper _webrtcLaravelHelper = snoopy<WebrtcLaravelHelper>();
+
+  WebrtcLaravelHelper get webrtcLaravelHelper => _webrtcLaravelHelper;
+
+  Future<void> initLocalRenderer() async {
+    _currentVideoChatEntity = VideoChatEntity(
+      videoRenderer: null,
+      chat: _chat,
+      user: _currentUser,
+    );
+    _currentVideoChatEntity?.videoRenderer = RTCVideoRenderer();
+    await _currentVideoChatEntity?.videoRenderer?.initialize();
+    debugPrint("is current video chat empty: ${_currentVideoChatEntity}");
+    await _webrtcLaravelHelper.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
+  }
+
+  // CameraController? _mainVideoStreamCameraController;
+
+  // CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
 
   UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
       UnmodifiableListView(_videoChatEntities);
@@ -150,7 +152,7 @@ class VideoChatStateModel {
   //   _currentVideoChatEntity?.imageData = data;
   // }
 
-  void dispose() async {
+  Future<void> dispose() async {
     await _channelSubscription?.cancel();
     await _pusherChannelsClient?.disconnect();
     // await _mainVideoStreamCameraController?.dispose();

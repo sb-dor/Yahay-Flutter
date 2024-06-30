@@ -80,7 +80,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
         data: VideoChatModel.fromEntity(videoChatEntity)?.toJson(),
       );
 
-      debugPrint("joinToChat response is: ${response.data}");
+      debugPrint("leaveTheChat response is: ${response.data}");
 
       if (response.statusCode != HttpStatusCodes.success) return false;
 

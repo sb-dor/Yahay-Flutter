@@ -61,7 +61,7 @@ class WebrtcLaravelHelper {
 
   StreamSubscription<void>? callerStreamSubs; // same channel stream but accepts different data
 
-  Future<String> createRoom(RTCVideoRenderer remoteRenderer, VoidCallback setStateFunction) async {
+  Future<String> createRoom() async {
     try {
       //
       peerConnection = await createPeerConnection(configuration);
@@ -371,6 +371,7 @@ class WebrtcLaravelHelper {
     callerStreamSubs?.cancel();
     localStream!.dispose();
     remoteStream?.dispose();
+    localVideo.dispose();
   }
 
   void addIceCandidate(

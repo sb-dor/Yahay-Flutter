@@ -44,10 +44,8 @@ class VideoChatFeatureBloc {
     required BehaviorSubject<VideoChatFeatureStates> states,
   }) : _states = states;
 
-  void dispose() {
+  void dispose() async {
     events.add(const FinishVideoChatEvent());
-    events.close();
-    _states.value.videoChatStateModel.dispose();
   }
 
   factory VideoChatFeatureBloc({
@@ -83,11 +81,7 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _eventHandler(VideoChatFeatureEvents event) async* {
     if (event is VideoChatInitFeatureEvent) {
       yield* _videoChatInitFeatureEvent(event);
-    }
-    // else if (event is InitMainCameraControllerEvent) {
-    //   yield* _initMainCameraControllerEvent(event);
-    // }
-    else if (event is StartVideoChatEvent) {
+    } else if (event is StartVideoChatEvent) {
       yield* _startVideoChatEvent(event);
     } else if (event is VideoChatEntranceEvent) {
       yield* _videoChatEntranceEvent(event);
@@ -113,29 +107,6 @@ class VideoChatFeatureBloc {
 
     await _currentStateModel.initLocalRenderer();
 
-    yield* _initMainCameraControllerEvent(
-        // InitMainCameraControllerEvent(_currentStateModel.cameraService.cameras.first),
-        );
-  }
-
-  static Stream<VideoChatFeatureStates> _initMainCameraControllerEvent(
-      // InitMainCameraControllerEvent event,
-      ) async* {
-    // await _currentStateModel.initMainCameraController(
-    //   CameraController(
-    //     event.cameraDescription,
-    //     ResolutionPreset.low,
-    //   ),
-    // );
-
-    if (_currentStateModel.chatStarted) {
-      _events.add(
-        const StartVideoChatEvent(
-          makeRequestToServer: false,
-        ),
-      );
-    }
-
     yield InitialVideoChatState(_currentStateModel);
   }
 
@@ -146,15 +117,16 @@ class VideoChatFeatureBloc {
     if (_currentStateModel.currentVideoChatEntity == null) return;
 
     // start to loading chat
-    yield InitialVideoChatState(_currentStateModel);
 
-    // -----------------
+    final initResponse = await _initVideoPusher();
 
-    if (event.makeRequestToServer) {
-      //
-      // await _initVideoPusher();
-    }
+    if (!initResponse) return;
+
+    debugPrint("is still video chat empty: ${_currentStateModel.currentVideoChatEntity}");
+    // final roomId = _currentStateModel.webrtcLaravelHelper.createRoom();
     // -------------------------------------------------
+
+    yield InitialVideoChatState(_currentStateModel);
 
     // was just for check
     // you have to call this function after
@@ -222,9 +194,12 @@ class VideoChatFeatureBloc {
   ) async* {
     //
     if (_currentStateModel.currentVideoChatEntity == null) return;
+    debugPrint("sending data for leaving 2");
     final result = await _leaveVideoChat.leaveVideoChat(
       _currentStateModel.currentVideoChatEntity!,
     );
+    await _currentStateModel.dispose();
+    _events.close();
   }
 
   // function that sends image Uint8List to the server
@@ -281,45 +256,47 @@ class VideoChatFeatureBloc {
   //   debugPrint("audio data: time: ${DateTime.now()} | $data");
   // }
 
-  static Future<void> _initVideoPusher() async {
+  static Future<bool> _initVideoPusher() async {
     final resultOfStart = await _startVideoChat.startVideoChat(
       _currentStateModel.currentVideoChatEntity!,
     );
 
-    if (!resultOfStart) return;
+    if (!resultOfStart) return false;
 
     _currentStateModel.startChat();
+
+    return true;
     // create only channel subscription
     // after successfully response we will send the data to the server
-    _currentStateModel.initPusherChannelClient(
-      PusherChannelsClient.websocket(
-        options: snoopy<PusherClientService>().options,
-        connectionErrorHandler: (f, s, th) {},
-      ),
-    );
-
-    final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
-
-    debugPrint("channel name for video chat: $channelName");
-
-    final channel = _currentStateModel.pusherChannelClient?.publicChannel(
-      channelName,
-    );
-
-    final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
-      (e) {
-        channel?.subscribeIfNotUnsubscribed();
-      },
-    );
-
-    _currentStateModel.initChannelSubscription(channelSubs);
-
-    await _currentStateModel.pusherChannelClient?.connect();
-
-    channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
-      // TODO: handle event data by creating bloc event
-      _events.add(VideoStreamHandlerEvent(pusherEvent));
-    });
+    // _currentStateModel.initPusherChannelClient(
+    //   PusherChannelsClient.websocket(
+    //     options: snoopy<PusherClientService>().options,
+    //     connectionErrorHandler: (f, s, th) {},
+    //   ),
+    // );
+    //
+    // final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
+    //
+    // debugPrint("channel name for video chat: $channelName");
+    //
+    // final channel = _currentStateModel.pusherChannelClient?.publicChannel(
+    //   channelName,
+    // );
+    //
+    // final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
+    //   (e) {
+    //     channel?.subscribeIfNotUnsubscribed();
+    //   },
+    // );
+    //
+    // _currentStateModel.initChannelSubscription(channelSubs);
+    //
+    // await _currentStateModel.pusherChannelClient?.connect();
+    //
+    // channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
+    //   // TODO: handle event data by creating bloc event
+    //   _events.add(VideoStreamHandlerEvent(pusherEvent));
+    // });
   }
 
 // static Stream<VideoChatFeatureStates> _emitter() async* {
