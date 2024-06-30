@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
 
 class DoubleCameraViewScreen extends StatefulWidget {
@@ -30,20 +31,18 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
         child: Column(
           children: [
             Expanded(
-              child: Image.memory(
-                gaplessPlayback: true,
-                fit: BoxFit.contain,
+              child: RTCVideoView(
                 _videoChatFeatureBloc
-                    .states.value.videoChatStateModel.videoChatEntities.first.imageData!,
+                    .states.value.videoChatStateModel.videoChatEntities.first.videoRenderer!,
               ),
             ),
             const SizedBox(height: 10),
-            // Expanded(
-            //   child: CameraPreview(
-            //     _videoChatFeatureBloc
-            //         .states.value.videoChatStateModel.mainVideoStreamCameraController!,
-            //   ),
-            // ),
+            Expanded(
+              child: RTCVideoView(
+                _videoChatFeatureBloc
+                    .states.value.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
+              ),
+            ),
           ],
         ),
       ),

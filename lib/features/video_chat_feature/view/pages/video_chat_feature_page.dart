@@ -58,20 +58,19 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
             case ConnectionState.done:
               final currentState = snapshot.requireData;
               final currentStateModel = currentState.videoChatStateModel;
-              if (currentStateModel.webRTCService == null ||
-                  currentStateModel.webRTCService?.localRenderer == null) {
+              if (currentStateModel.currentVideoChatEntity?.videoRenderer == null) {
                 return const Center(child: CircularProgressIndicator());
               } else {
                 return Stack(
                   children: [
-                    // if (currentStateModel.videoChatEntities.isEmpty)
-                    SingleCameraViewScreen(
-                      videoChatBloc: _videoChatFeatureBloc,
-                    ),
-                    // else if (currentStateModel.videoChatEntities.length == 1)
-                    //   DoubleCameraViewScreen(videoChatBloc: _videoChatFeatureBloc)
-                    // else if (currentStateModel.videoChatEntities.length > 1)
-                    //   const MultipleCameraView(),
+                    if (currentStateModel.videoChatEntities.isEmpty)
+                      SingleCameraViewScreen(
+                        videoChatBloc: _videoChatFeatureBloc,
+                      )
+                    else if (currentStateModel.videoChatEntities.length == 1)
+                      DoubleCameraViewScreen(videoChatBloc: _videoChatFeatureBloc)
+                    else if (currentStateModel.videoChatEntities.length > 1)
+                      const MultipleCameraView(),
                     Positioned(
                       bottom: 30,
                       left: 0,

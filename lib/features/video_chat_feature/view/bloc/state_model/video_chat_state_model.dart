@@ -10,21 +10,27 @@ import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/core/utils/extensions/extentions.dart';
 import 'package:yahay/core/utils/talker/talker_service.dart';
-import 'package:yahay/features/video_chat_feature/artc_signal_helper/webrtc_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:collection/collection.dart';
+import 'package:yahay/features/video_chat_feature/webrtc_helper/webrtc_laravel_helper.dart';
+import 'package:yahay/injections/injections.dart';
 
 class VideoChatStateModel {
   final talker = TalkerService.instance.talker;
 
-  WebRTCService? _webRTCService;
+  final WebrtcLaravelHelper _webrtcLaravelHelper = snoopy<WebrtcLaravelHelper>();
 
-  WebRTCService? get webRTCService => _webRTCService;
+  WebrtcLaravelHelper get webrtcLaravelHelper => _webrtcLaravelHelper;
 
-  Future<void> initLocalAndRemoteRenderer() async {
-    _webRTCService = WebRTCService();
-    await _webRTCService?.initRenderer();
-    await _webRTCService?.createOffer();
+  Future<void> initLocalRenderer() async {
+    _currentVideoChatEntity = VideoChatEntity(
+      videoRenderer: null,
+      chat: _chat,
+      user: _currentUser,
+    );
+    _currentVideoChatEntity?.videoRenderer = RTCVideoRenderer();
+    await _currentVideoChatEntity?.videoRenderer?.initialize();
+    await _webrtcLaravelHelper.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
   }
 
   // CameraController? _mainVideoStreamCameraController;
@@ -129,20 +135,20 @@ class VideoChatStateModel {
     _chat = chat;
   }
 
-  void initCurrentVideoChatEntity(VideoChatEntity entity) {
-    _currentVideoChatEntity = entity;
-  }
+  // void initCurrentVideoChatEntity(VideoChatEntity entity) {
+  //   _currentVideoChatEntity = entity;
+  // }
 
-  void addUint8ImageDataToCurrentVideoChatEntity(Uint8List data) {
-    // temp. if entity is null we will set new object to that entity
-    _currentVideoChatEntity ??= VideoChatEntity(
-      imageData: data,
-      chat: _chat,
-      user: _currentUser,
-    );
-    // update the image data
-    _currentVideoChatEntity?.imageData = data;
-  }
+  // void addUint8ImageDataToCurrentVideoChatEntity(Uint8List data) {
+  //   // temp. if entity is null we will set new object to that entity
+  //   _currentVideoChatEntity ??= VideoChatEntity(
+  //     imageData: data,
+  //     chat: _chat,
+  //     user: _currentUser,
+  //   );
+  //   // update the image data
+  //   _currentVideoChatEntity?.imageData = data;
+  // }
 
   void dispose() async {
     await _channelSubscription?.cancel();
@@ -150,12 +156,15 @@ class VideoChatStateModel {
     // await _mainVideoStreamCameraController?.dispose();
     // await _flutterSound.thePlayer.closePlayer();
     // await _audioStream?.cancel();
-    await _webRTCService?.leaveChat();
+    if (_currentVideoChatEntity?.videoRenderer != null) {
+      await _webrtcLaravelHelper.hangUp(_currentVideoChatEntity!.videoRenderer!);
+    }
+    _currentVideoChatEntity = null;
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;
     _pusherChannelsClient = null;
     for (var each in _videoChatEntities) {
-      each.imageData = null;
+      each.videoRenderer = null;
     }
     _chat = null;
     finishChat();

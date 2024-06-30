@@ -4,7 +4,7 @@ import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_ent
 
 class VideoChatModel extends VideoChatEntity {
   VideoChatModel({
-    super.imageData,
+    super.videoRenderer,
     UserModel? user,
     ChatModel? chat,
   }) : super(user: user, chat: chat);
@@ -12,7 +12,7 @@ class VideoChatModel extends VideoChatEntity {
   static VideoChatModel? fromEntity(VideoChatEntity? entity) {
     if (entity == null) return null;
     return VideoChatModel(
-      imageData: entity.imageData,
+      videoRenderer: entity.videoRenderer,
       user: UserModel.fromEntity(entity.user),
       chat: ChatModel.fromEntity(entity.chat),
     );
@@ -20,7 +20,7 @@ class VideoChatModel extends VideoChatEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      "image_data": imageData,
+      // "image_data": videoRenderer,
       "user_id": user?.id,
       "chat_id": chat?.id,
       "chat_uuid": chat?.uuid,

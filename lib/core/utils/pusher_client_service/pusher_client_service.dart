@@ -20,4 +20,13 @@ class PusherClientService {
       key: _envHelper.dotEnv.get("PUSHER_APP_KEY"),
     );
   }
+
+  Future<PusherChannelsClient> subscriptionCreator() async {
+    final pusherChannelClient = PusherChannelsClient.websocket(
+      options: options,
+      connectionErrorHandler: (f, s, t) {},
+    );
+
+    return pusherChannelClient;
+  }
 }

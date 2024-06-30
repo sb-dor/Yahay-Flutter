@@ -111,24 +111,16 @@ class VideoChatFeatureBloc {
 
     _currentStateModel.initCurrentUser(currentUser);
 
-    _currentStateModel.initCurrentVideoChatEntity(
-      VideoChatEntity(
-        imageData: null,
-        chat: _currentStateModel.chat,
-        user: _currentStateModel.currentUser,
-      ),
-    );
-
-    await _currentStateModel.initLocalAndRemoteRenderer();
+    await _currentStateModel.initLocalRenderer();
 
     yield* _initMainCameraControllerEvent(
-      // InitMainCameraControllerEvent(_currentStateModel.cameraService.cameras.first),
-    );
+        // InitMainCameraControllerEvent(_currentStateModel.cameraService.cameras.first),
+        );
   }
 
   static Stream<VideoChatFeatureStates> _initMainCameraControllerEvent(
-    // InitMainCameraControllerEvent event,
-  ) async* {
+      // InitMainCameraControllerEvent event,
+      ) async* {
     // await _currentStateModel.initMainCameraController(
     //   CameraController(
     //     event.cameraDescription,
@@ -160,7 +152,7 @@ class VideoChatFeatureBloc {
 
     if (event.makeRequestToServer) {
       //
-      await _initVideoPusher();
+      // await _initVideoPusher();
     }
     // -------------------------------------------------
 
@@ -236,51 +228,51 @@ class VideoChatFeatureBloc {
   }
 
   // function that sends image Uint8List to the server
-  static void _sendDataToTheServer(Uint8List? imageData) async {
-    if (imageData == null || _currentStateModel.currentVideoChatEntity == null) return;
-    _currentStateModel.addUint8ImageDataToCurrentVideoChatEntity(imageData);
-    await _streamTheVideo.streamTheVideo(
-      videoChatEntity: _currentStateModel.currentVideoChatEntity!,
-    );
-  }
+  // static void _sendDataToTheServer(Uint8List? imageData) async {
+  //   if (imageData == null || _currentStateModel.currentVideoChatEntity == null) return;
+  //   _currentStateModel.addUint8ImageDataToCurrentVideoChatEntity(imageData);
+  //   await _streamTheVideo.streamTheVideo(
+  //     videoChatEntity: _currentStateModel.currentVideoChatEntity!,
+  //   );
+  // }
 
   // for handling others video chat data
   static Stream<VideoChatFeatureStates> _videoStreamHandlerEvent(
     VideoStreamHandlerEvent event,
   ) async* {
-    try {
-      Map<String, dynamic> jsonData = jsonDecode(event.pusherEvent?.data);
-
-      // get data from json
-      ChatParticipantModel participantModel =
-          ChatParticipantModel.fromJson(jsonData['chat_participant']);
-
-      // if the coming user data is our user
-      // just break the code
-      // if (participantModel.user?.id == _currentStateModel.currentUser?.id) return;
-
-      // because of that the data from server is coming like list of dynamic
-      // we convert that to list of integers
-      List<int> intList = List<int>.from(jsonData['video_stream_data']);
-
-      // and converting to uInt8List
-      Uint8List data = Uint8List.fromList(intList);
-
-      // creating the entity of what we have
-      VideoChatEntity entity = VideoChatEntity(
-        imageData: data,
-        chat: participantModel.chat,
-        user: participantModel.user,
-      );
-
-      // and set the data to list
-      _currentStateModel.checkVideoEntitiesBeforeAdding(
-        entity,
-      );
-    } catch (e) {
-      _currentStateModel.talker.error("_videoStreamHandlerEvent error is: Ï$e");
-    }
-    yield InitialVideoChatState(_currentStateModel);
+    // try {
+    //   Map<String, dynamic> jsonData = jsonDecode(event.pusherEvent?.data);
+    //
+    //   // get data from json
+    //   ChatParticipantModel participantModel =
+    //       ChatParticipantModel.fromJson(jsonData['chat_participant']);
+    //
+    //   // if the coming user data is our user
+    //   // just break the code
+    //   // if (participantModel.user?.id == _currentStateModel.currentUser?.id) return;
+    //
+    //   // because of that the data from server is coming like list of dynamic
+    //   // we convert that to list of integers
+    //   List<int> intList = List<int>.from(jsonData['video_stream_data']);
+    //
+    //   // and converting to uInt8List
+    //   Uint8List data = Uint8List.fromList(intList);
+    //
+    //   // creating the entity of what we have
+    //   // VideoChatEntity entity = VideoChatEntity(
+    //   //   videoRenderer: data,
+    //   //   chat: participantModel.chat,
+    //   //   user: participantModel.user,
+    //   // );
+    //
+    //   // and set the data to list
+    //   _currentStateModel.checkVideoEntitiesBeforeAdding(
+    //     entity,
+    //   );
+    // } catch (e) {
+    //   _currentStateModel.talker.error("_videoStreamHandlerEvent error is: Ï$e");
+    // }
+    // yield InitialVideoChatState(_currentStateModel);
   }
 
   // mic data handler
