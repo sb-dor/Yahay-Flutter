@@ -38,6 +38,8 @@ mixin _$ChatModel {
       throw _privateConstructorUsedError;
   @JsonKey(name: "messages")
   List<ChatMessageModel>? get messages => throw _privateConstructorUsedError;
+  @JsonKey(name: "chat_video_room")
+  RoomModel? get videoChatRoom => throw _privateConstructorUsedError;
   @JsonKey(
       name: "video_chat_streaming",
       includeFromJson: true,
@@ -68,6 +70,7 @@ abstract class $ChatModelCopyWith<$Res> {
       @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
       @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
       @JsonKey(name: "messages") List<ChatMessageModel>? messages,
+      @JsonKey(name: "chat_video_room") RoomModel? videoChatRoom,
       @JsonKey(
           name: "video_chat_streaming",
           includeFromJson: true,
@@ -77,6 +80,7 @@ abstract class $ChatModelCopyWith<$Res> {
       bool? videoChatStreaming});
 
   $ChatMessageModelCopyWith<$Res>? get lastMessage;
+  $RoomModelCopyWith<$Res>? get videoChatRoom;
 }
 
 /// @nodoc
@@ -102,6 +106,7 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
     Object? lastMessage = freezed,
     Object? participants = freezed,
     Object? messages = freezed,
+    Object? videoChatRoom = freezed,
     Object? videoChatStreaming = freezed,
   }) {
     return _then(_value.copyWith(
@@ -145,6 +150,10 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<ChatMessageModel>?,
+      videoChatRoom: freezed == videoChatRoom
+          ? _value.videoChatRoom
+          : videoChatRoom // ignore: cast_nullable_to_non_nullable
+              as RoomModel?,
       videoChatStreaming: freezed == videoChatStreaming
           ? _value.videoChatStreaming
           : videoChatStreaming // ignore: cast_nullable_to_non_nullable
@@ -161,6 +170,18 @@ class _$ChatModelCopyWithImpl<$Res, $Val extends ChatModel>
 
     return $ChatMessageModelCopyWith<$Res>(_value.lastMessage!, (value) {
       return _then(_value.copyWith(lastMessage: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $RoomModelCopyWith<$Res>? get videoChatRoom {
+    if (_value.videoChatRoom == null) {
+      return null;
+    }
+
+    return $RoomModelCopyWith<$Res>(_value.videoChatRoom!, (value) {
+      return _then(_value.copyWith(videoChatRoom: value) as $Val);
     });
   }
 }
@@ -184,6 +205,7 @@ abstract class _$$ChatModelImplCopyWith<$Res>
       @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
       @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
       @JsonKey(name: "messages") List<ChatMessageModel>? messages,
+      @JsonKey(name: "chat_video_room") RoomModel? videoChatRoom,
       @JsonKey(
           name: "video_chat_streaming",
           includeFromJson: true,
@@ -194,6 +216,8 @@ abstract class _$$ChatModelImplCopyWith<$Res>
 
   @override
   $ChatMessageModelCopyWith<$Res>? get lastMessage;
+  @override
+  $RoomModelCopyWith<$Res>? get videoChatRoom;
 }
 
 /// @nodoc
@@ -217,6 +241,7 @@ class __$$ChatModelImplCopyWithImpl<$Res>
     Object? lastMessage = freezed,
     Object? participants = freezed,
     Object? messages = freezed,
+    Object? videoChatRoom = freezed,
     Object? videoChatStreaming = freezed,
   }) {
     return _then(_$ChatModelImpl(
@@ -260,6 +285,10 @@ class __$$ChatModelImplCopyWithImpl<$Res>
           ? _value._messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<ChatMessageModel>?,
+      videoChatRoom: freezed == videoChatRoom
+          ? _value.videoChatRoom
+          : videoChatRoom // ignore: cast_nullable_to_non_nullable
+              as RoomModel?,
       videoChatStreaming: freezed == videoChatStreaming
           ? _value.videoChatStreaming
           : videoChatStreaming // ignore: cast_nullable_to_non_nullable
@@ -283,6 +312,7 @@ class _$ChatModelImpl implements _ChatModel {
       @JsonKey(name: "participants")
       final List<ChatParticipantModel>? participants,
       @JsonKey(name: "messages") final List<ChatMessageModel>? messages,
+      @JsonKey(name: "chat_video_room") this.videoChatRoom,
       @JsonKey(
           name: "video_chat_streaming",
           includeFromJson: true,
@@ -341,6 +371,9 @@ class _$ChatModelImpl implements _ChatModel {
   }
 
   @override
+  @JsonKey(name: "chat_video_room")
+  final RoomModel? videoChatRoom;
+  @override
   @JsonKey(
       name: "video_chat_streaming",
       includeFromJson: true,
@@ -351,7 +384,7 @@ class _$ChatModelImpl implements _ChatModel {
 
   @override
   String toString() {
-    return 'ChatModel(id: $id, uuid: $uuid, name: $name, description: $description, imageUrl: $imageUrl, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage, participants: $participants, messages: $messages, videoChatStreaming: $videoChatStreaming)';
+    return 'ChatModel(id: $id, uuid: $uuid, name: $name, description: $description, imageUrl: $imageUrl, createdAt: $createdAt, updatedAt: $updatedAt, lastMessage: $lastMessage, participants: $participants, messages: $messages, videoChatRoom: $videoChatRoom, videoChatStreaming: $videoChatStreaming)';
   }
 
   @override
@@ -375,6 +408,8 @@ class _$ChatModelImpl implements _ChatModel {
             const DeepCollectionEquality()
                 .equals(other._participants, _participants) &&
             const DeepCollectionEquality().equals(other._messages, _messages) &&
+            (identical(other.videoChatRoom, videoChatRoom) ||
+                other.videoChatRoom == videoChatRoom) &&
             (identical(other.videoChatStreaming, videoChatStreaming) ||
                 other.videoChatStreaming == videoChatStreaming));
   }
@@ -393,6 +428,7 @@ class _$ChatModelImpl implements _ChatModel {
       lastMessage,
       const DeepCollectionEquality().hash(_participants),
       const DeepCollectionEquality().hash(_messages),
+      videoChatRoom,
       videoChatStreaming);
 
   @JsonKey(ignore: true)
@@ -422,6 +458,7 @@ abstract class _ChatModel implements ChatModel {
       @JsonKey(name: "participants")
       final List<ChatParticipantModel>? participants,
       @JsonKey(name: "messages") final List<ChatMessageModel>? messages,
+      @JsonKey(name: "chat_video_room") final RoomModel? videoChatRoom,
       @JsonKey(
           name: "video_chat_streaming",
           includeFromJson: true,
@@ -460,6 +497,9 @@ abstract class _ChatModel implements ChatModel {
   @override
   @JsonKey(name: "messages")
   List<ChatMessageModel>? get messages;
+  @override
+  @JsonKey(name: "chat_video_room")
+  RoomModel? get videoChatRoom;
   @override
   @JsonKey(
       name: "video_chat_streaming",

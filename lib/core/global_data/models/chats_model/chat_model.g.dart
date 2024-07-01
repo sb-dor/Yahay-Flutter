@@ -25,6 +25,9 @@ _$ChatModelImpl _$$ChatModelImplFromJson(Map<String, dynamic> json) =>
       messages: (json['messages'] as List<dynamic>?)
           ?.map((e) => ChatMessageModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      videoChatRoom: json['chat_video_room'] == null
+          ? null
+          : RoomModel.fromJson(json['chat_video_room'] as Map<String, dynamic>),
       videoChatStreaming: json['video_chat_streaming'] == null
           ? false
           : _fromJsonVideoChatStreaming(json['video_chat_streaming']),
@@ -42,4 +45,5 @@ Map<String, dynamic> _$$ChatModelImplToJson(_$ChatModelImpl instance) =>
       'chat_last_message': instance.lastMessage,
       'participants': instance.participants,
       'messages': instance.messages,
+      'chat_video_room': instance.videoChatRoom,
     };

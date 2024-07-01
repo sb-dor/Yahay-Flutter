@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:talker/talker.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
@@ -120,7 +121,7 @@ class ChatsBloc {
     try {
       final data = event.event?.data;
 
-      TalkerService.instance.talker.log("$data");
+      TalkerService.instance.talker.log("$data", logLevel: LogLevel.info,);
 
       Map<String, dynamic> json = data is String
           ? jsonDecode(data)
@@ -130,7 +131,9 @@ class ChatsBloc {
 
       ChatModel chat = ChatModel.fromJson(json['chat']);
 
-      debugPrint("is this chat: ${chat.lastMessage?.message}");
+      debugPrint("is this chat: ${chat.videoChatRoom}");
+
+      // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
       _currentStateModel.addChat(chat);
 

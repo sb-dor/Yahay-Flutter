@@ -36,12 +36,12 @@ class FinishVideoChatEvent extends VideoChatFeatureEvents {
   const FinishVideoChatEvent();
 }
 
-@immutable
-class VideoStreamHandlerEvent extends VideoChatFeatureEvents {
-  final ChannelReadEvent? pusherEvent;
-
-  const VideoStreamHandlerEvent(this.pusherEvent);
-}
+// @immutable
+// class VideoStreamHandlerEvent extends VideoChatFeatureEvents {
+//   final ChannelReadEvent? pusherEvent;
+//
+//   const VideoStreamHandlerEvent(this.pusherEvent);
+// }
 
 @immutable
 class AudioStreamHandlerEvent extends VideoChatFeatureEvents {

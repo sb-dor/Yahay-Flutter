@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/core/global_data/models/chat_participant_model/chat_participant_model.dart';
+import 'package:yahay/core/global_data/models/room_models/room_model.dart';
 
 part 'chat_model.freezed.dart';
 
@@ -31,6 +32,7 @@ class ChatModel extends Chat with _$ChatModel {
     @JsonKey(name: "chat_last_message") ChatMessageModel? lastMessage,
     @JsonKey(name: "participants") List<ChatParticipantModel>? participants,
     @JsonKey(name: "messages") List<ChatMessageModel>? messages,
+    @JsonKey(name: "chat_video_room") RoomModel? videoChatRoom,
     @JsonKey(
       name: "video_chat_streaming",
       includeFromJson: true,

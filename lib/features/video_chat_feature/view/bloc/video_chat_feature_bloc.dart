@@ -87,8 +87,6 @@ class VideoChatFeatureBloc {
       yield* _videoChatEntranceEvent(event);
     } else if (event is FinishVideoChatEvent) {
       yield* _finishVideoChatEvent(event);
-    } else if (event is VideoStreamHandlerEvent) {
-      yield* _videoStreamHandlerEvent(event);
     }
   }
 
@@ -122,8 +120,12 @@ class VideoChatFeatureBloc {
 
     if (!initResponse) return;
 
-    debugPrint("is still video chat empty: ${_currentStateModel.currentVideoChatEntity}");
-    // final roomId = _currentStateModel.webrtcLaravelHelper.createRoom();
+
+    final roomId = await _currentStateModel.webrtcLaravelHelper.createRoom(
+      _currentStateModel.chat,
+    );
+
+    debugPrint("creating room id: $roomId");
     // -------------------------------------------------
 
     yield InitialVideoChatState(_currentStateModel);
@@ -212,43 +214,43 @@ class VideoChatFeatureBloc {
   // }
 
   // for handling others video chat data
-  static Stream<VideoChatFeatureStates> _videoStreamHandlerEvent(
-    VideoStreamHandlerEvent event,
-  ) async* {
-    // try {
-    //   Map<String, dynamic> jsonData = jsonDecode(event.pusherEvent?.data);
-    //
-    //   // get data from json
-    //   ChatParticipantModel participantModel =
-    //       ChatParticipantModel.fromJson(jsonData['chat_participant']);
-    //
-    //   // if the coming user data is our user
-    //   // just break the code
-    //   // if (participantModel.user?.id == _currentStateModel.currentUser?.id) return;
-    //
-    //   // because of that the data from server is coming like list of dynamic
-    //   // we convert that to list of integers
-    //   List<int> intList = List<int>.from(jsonData['video_stream_data']);
-    //
-    //   // and converting to uInt8List
-    //   Uint8List data = Uint8List.fromList(intList);
-    //
-    //   // creating the entity of what we have
-    //   // VideoChatEntity entity = VideoChatEntity(
-    //   //   videoRenderer: data,
-    //   //   chat: participantModel.chat,
-    //   //   user: participantModel.user,
-    //   // );
-    //
-    //   // and set the data to list
-    //   _currentStateModel.checkVideoEntitiesBeforeAdding(
-    //     entity,
-    //   );
-    // } catch (e) {
-    //   _currentStateModel.talker.error("_videoStreamHandlerEvent error is: Ï$e");
-    // }
-    // yield InitialVideoChatState(_currentStateModel);
-  }
+  // static Stream<VideoChatFeatureStates> _videoStreamHandlerEvent(
+  //   VideoStreamHandlerEvent event,
+  // ) async* {
+  // try {
+  //   Map<String, dynamic> jsonData = jsonDecode(event.pusherEvent?.data);
+  //
+  //   // get data from json
+  //   ChatParticipantModel participantModel =
+  //       ChatParticipantModel.fromJson(jsonData['chat_participant']);
+  //
+  //   // if the coming user data is our user
+  //   // just break the code
+  //   // if (participantModel.user?.id == _currentStateModel.currentUser?.id) return;
+  //
+  //   // because of that the data from server is coming like list of dynamic
+  //   // we convert that to list of integers
+  //   List<int> intList = List<int>.from(jsonData['video_stream_data']);
+  //
+  //   // and converting to uInt8List
+  //   Uint8List data = Uint8List.fromList(intList);
+  //
+  //   // creating the entity of what we have
+  //   // VideoChatEntity entity = VideoChatEntity(
+  //   //   videoRenderer: data,
+  //   //   chat: participantModel.chat,
+  //   //   user: participantModel.user,
+  //   // );
+  //
+  //   // and set the data to list
+  //   _currentStateModel.checkVideoEntitiesBeforeAdding(
+  //     entity,
+  //   );
+  // } catch (e) {
+  //   _currentStateModel.talker.error("_videoStreamHandlerEvent error is: Ï$e");
+  // }
+  // yield InitialVideoChatState(_currentStateModel);
+  // }
 
   // mic data handler
   // static void _micDataHandler(Uint8List data) async {

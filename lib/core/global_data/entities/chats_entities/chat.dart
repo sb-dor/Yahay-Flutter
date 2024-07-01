@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_message.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_participant.dart';
+import 'package:yahay/core/global_data/entities/chats_entities/room.dart';
 
 @immutable
 class Chat {
@@ -17,6 +18,7 @@ class Chat {
   final ChatMessage? lastMessage;
   final List<ChatParticipant>? participants;
   final List<ChatMessage>? messages;
+  final Room? videoChatRoom;
 
   const Chat({
     required this.id,
@@ -30,5 +32,6 @@ class Chat {
     required this.participants,
     required this.messages,
     required this.videoChatStreaming,
+    required this.videoChatRoom,
   });
 }

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/video_chat_feature/data/models/candidate_model/candidate_model.dart';
@@ -61,7 +62,7 @@ class WebrtcLaravelHelper {
 
   StreamSubscription<void>? callerStreamSubs; // same channel stream but accepts different data
 
-  Future<String> createRoom() async {
+  Future<String> createRoom(Chat? chat) async {
     try {
       //
       peerConnection = await createPeerConnection(configuration);
@@ -84,6 +85,7 @@ class WebrtcLaravelHelper {
         '$_url/create-room',
         data: {
           'offer': offer.toMap(),
+          "chat_id" : chat?.id,
         },
       );
 

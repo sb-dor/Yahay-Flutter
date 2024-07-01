@@ -18,6 +18,7 @@ class ChatFunctions extends Chat {
     required super.participants,
     required super.messages,
     required super.videoChatStreaming,
+    required super.videoChatRoom,
   });
 
   static ChatFunctions? fromEntity(Chat? chat) {
@@ -34,6 +35,7 @@ class ChatFunctions extends Chat {
       participants: chat.participants?.map((e) => ChatParticipantModel.fromEntity(e)!).toList(),
       messages: chat.messages?.map((e) => ChatMessageModel.fromEntity(e)!).toList(),
       videoChatStreaming: chat.videoChatStreaming,
+      videoChatRoom: chat.videoChatRoom,
     );
   }
 
