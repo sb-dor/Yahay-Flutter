@@ -51,7 +51,6 @@ class VideoChatStateModel {
     );
     _currentVideoChatEntity?.videoRenderer = RTCVideoRenderer();
     await _currentVideoChatEntity?.videoRenderer?.initialize();
-    debugPrint("is current video chat empty: $_currentVideoChatEntity");
     await _webrtcLaravelHelper.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
   }
 
@@ -168,6 +167,7 @@ class VideoChatStateModel {
     for (var each in _videoChatEntities) {
       each.videoRenderer = null;
     }
+    _videoChatEntities.clear();
     _chat = null;
     finishChat();
   }

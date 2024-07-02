@@ -1,5 +1,6 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 
 @immutable
@@ -36,6 +37,13 @@ class FinishVideoChatEvent extends VideoChatFeatureEvents {
   const FinishVideoChatEvent();
 }
 
+@immutable
+class OnAddRemoteRendererStreamEvent extends VideoChatFeatureEvents {
+  final MediaStream mediaStream;
+
+  const OnAddRemoteRendererStreamEvent(this.mediaStream);
+}
+
 // @immutable
 // class VideoStreamHandlerEvent extends VideoChatFeatureEvents {
 //   final ChannelReadEvent? pusherEvent;
@@ -43,10 +51,10 @@ class FinishVideoChatEvent extends VideoChatFeatureEvents {
 //   const VideoStreamHandlerEvent(this.pusherEvent);
 // }
 
-@immutable
-class AudioStreamHandlerEvent extends VideoChatFeatureEvents {
-  // temp for check
-  final Uint8List data;
-
-  const AudioStreamHandlerEvent(this.data);
-}
+// @immutable
+// class AudioStreamHandlerEvent extends VideoChatFeatureEvents {
+//   // temp for check
+//   final Uint8List data;
+//
+//   const AudioStreamHandlerEvent(this.data);
+// }

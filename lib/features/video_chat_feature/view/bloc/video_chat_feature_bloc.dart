@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:yahay/core/global_data/models/chat_participant_model/chat_participant_model.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
@@ -87,6 +88,8 @@ class VideoChatFeatureBloc {
       yield* _videoChatEntranceEvent(event);
     } else if (event is FinishVideoChatEvent) {
       yield* _finishVideoChatEvent(event);
+    } else if (event is OnAddRemoteRendererStreamEvent) {
+      yield* _onAddRemoteRendererStreamEvent(event);
     }
   }
 
@@ -104,6 +107,11 @@ class VideoChatFeatureBloc {
     _currentStateModel.initCurrentUser(currentUser);
 
     await _currentStateModel.initLocalRenderer();
+
+    // in order to listen that someone from other side connected to your data
+    _currentStateModel.webrtcLaravelHelper.onAddRemoteStream = ((stream) async {
+      _events.add(OnAddRemoteRendererStreamEvent(stream));
+    });
 
     yield InitialVideoChatState(_currentStateModel);
   }
@@ -193,7 +201,6 @@ class VideoChatFeatureBloc {
 
     await _currentStateModel.webrtcLaravelHelper.joinRoom(
       room.id.toString(),
-      _currentStateModel.currentVideoChatEntity!.videoRenderer!,
     );
 
     yield InitialVideoChatState(_currentStateModel);
@@ -310,6 +317,20 @@ class VideoChatFeatureBloc {
     //   // TODO: handle event data by creating bloc event
     //   _events.add(VideoStreamHandlerEvent(pusherEvent));
     // });
+  }
+
+  static Stream<VideoChatFeatureStates> _onAddRemoteRendererStreamEvent(
+    OnAddRemoteRendererStreamEvent event,
+  ) async* {
+    final videoChatEntity = VideoChatEntity(
+      videoRenderer: RTCVideoRenderer(),
+      chat: _currentStateModel.chat,
+      user: null,
+    );
+    await videoChatEntity.videoRenderer?.initialize();
+    videoChatEntity.videoRenderer?.srcObject = event.mediaStream;
+    _currentStateModel.addVideoChat(videoChatEntity);
+    yield InitialVideoChatState(_currentStateModel);
   }
 
 // static Stream<VideoChatFeatureStates> _emitter() async* {

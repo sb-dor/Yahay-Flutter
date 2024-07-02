@@ -196,7 +196,7 @@ class WebrtcLaravelHelper {
     }
   }
 
-  Future<void> joinRoom(String roomId, RTCVideoRenderer remoteVideo) async {
+  Future<void> joinRoom(String roomId) async {
     // try {
 
     // for getting room configuration

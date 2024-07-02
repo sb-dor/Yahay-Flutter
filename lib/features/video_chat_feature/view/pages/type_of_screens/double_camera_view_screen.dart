@@ -32,6 +32,7 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
           children: [
             Expanded(
               child: RTCVideoView(
+                objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
                 _videoChatFeatureBloc
                     .states.value.videoChatStateModel.videoChatEntities.first.videoRenderer!,
               ),
@@ -39,8 +40,10 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
             const SizedBox(height: 10),
             Expanded(
               child: RTCVideoView(
+                objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
                 _videoChatFeatureBloc
                     .states.value.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
+                mirror: true,
               ),
             ),
           ],
