@@ -20,9 +20,9 @@ InnerCandidateModel _$InnerCandidateModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$InnerCandidateModel {
-  String get candidate => throw _privateConstructorUsedError;
-  String get sdpMid => throw _privateConstructorUsedError;
-  int get sdpMLineIndex => throw _privateConstructorUsedError;
+  String? get candidate => throw _privateConstructorUsedError;
+  String? get sdpMid => throw _privateConstructorUsedError;
+  int? get sdpMLineIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $InnerCandidateModelCopyWith<$Res> {
           InnerCandidateModel value, $Res Function(InnerCandidateModel) then) =
       _$InnerCandidateModelCopyWithImpl<$Res, InnerCandidateModel>;
   @useResult
-  $Res call({String candidate, String sdpMid, int sdpMLineIndex});
+  $Res call({String? candidate, String? sdpMid, int? sdpMLineIndex});
 }
 
 /// @nodoc
@@ -52,23 +52,23 @@ class _$InnerCandidateModelCopyWithImpl<$Res, $Val extends InnerCandidateModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? candidate = null,
-    Object? sdpMid = null,
-    Object? sdpMLineIndex = null,
+    Object? candidate = freezed,
+    Object? sdpMid = freezed,
+    Object? sdpMLineIndex = freezed,
   }) {
     return _then(_value.copyWith(
-      candidate: null == candidate
+      candidate: freezed == candidate
           ? _value.candidate
           : candidate // ignore: cast_nullable_to_non_nullable
-              as String,
-      sdpMid: null == sdpMid
+              as String?,
+      sdpMid: freezed == sdpMid
           ? _value.sdpMid
           : sdpMid // ignore: cast_nullable_to_non_nullable
-              as String,
-      sdpMLineIndex: null == sdpMLineIndex
+              as String?,
+      sdpMLineIndex: freezed == sdpMLineIndex
           ? _value.sdpMLineIndex
           : sdpMLineIndex // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$InnerCandidateModelImplCopyWith<$Res>
       __$$InnerCandidateModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String candidate, String sdpMid, int sdpMLineIndex});
+  $Res call({String? candidate, String? sdpMid, int? sdpMLineIndex});
 }
 
 /// @nodoc
@@ -95,23 +95,23 @@ class __$$InnerCandidateModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? candidate = null,
-    Object? sdpMid = null,
-    Object? sdpMLineIndex = null,
+    Object? candidate = freezed,
+    Object? sdpMid = freezed,
+    Object? sdpMLineIndex = freezed,
   }) {
     return _then(_$InnerCandidateModelImpl(
-      candidate: null == candidate
+      candidate: freezed == candidate
           ? _value.candidate
           : candidate // ignore: cast_nullable_to_non_nullable
-              as String,
-      sdpMid: null == sdpMid
+              as String?,
+      sdpMid: freezed == sdpMid
           ? _value.sdpMid
           : sdpMid // ignore: cast_nullable_to_non_nullable
-              as String,
-      sdpMLineIndex: null == sdpMLineIndex
+              as String?,
+      sdpMLineIndex: freezed == sdpMLineIndex
           ? _value.sdpMLineIndex
           : sdpMLineIndex // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -128,11 +128,11 @@ class _$InnerCandidateModelImpl implements _InnerCandidateModel {
       _$$InnerCandidateModelImplFromJson(json);
 
   @override
-  final String candidate;
+  final String? candidate;
   @override
-  final String sdpMid;
+  final String? sdpMid;
   @override
-  final int sdpMLineIndex;
+  final int? sdpMLineIndex;
 
   @override
   String toString() {
@@ -173,19 +173,19 @@ class _$InnerCandidateModelImpl implements _InnerCandidateModel {
 
 abstract class _InnerCandidateModel implements InnerCandidateModel {
   const factory _InnerCandidateModel(
-      {required final String candidate,
-      required final String sdpMid,
-      required final int sdpMLineIndex}) = _$InnerCandidateModelImpl;
+      {required final String? candidate,
+      required final String? sdpMid,
+      required final int? sdpMLineIndex}) = _$InnerCandidateModelImpl;
 
   factory _InnerCandidateModel.fromJson(Map<String, dynamic> json) =
       _$InnerCandidateModelImpl.fromJson;
 
   @override
-  String get candidate;
+  String? get candidate;
   @override
-  String get sdpMid;
+  String? get sdpMid;
   @override
-  int get sdpMLineIndex;
+  int? get sdpMLineIndex;
   @override
   @JsonKey(ignore: true)
   _$$InnerCandidateModelImplCopyWith<_$InnerCandidateModelImpl> get copyWith =>

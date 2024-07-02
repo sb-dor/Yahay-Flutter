@@ -47,7 +47,13 @@ class ChatWidget extends StatelessWidget {
             ),
             if (chat?.videoChatStreaming ?? false)
               IconButton(
-                onPressed: () => [],
+                onPressed: () {
+                  AutoRouter.of(context).push(
+                    VideoChatFeatureRoute(
+                      chat: chat,
+                    ),
+                  );
+                },
                 icon: const Icon(
                   CupertinoIcons.videocam,
                   color: Colors.green,

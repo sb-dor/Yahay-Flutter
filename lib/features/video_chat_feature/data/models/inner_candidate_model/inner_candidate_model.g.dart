@@ -9,9 +9,9 @@ part of 'inner_candidate_model.dart';
 _$InnerCandidateModelImpl _$$InnerCandidateModelImplFromJson(
         Map<String, dynamic> json) =>
     _$InnerCandidateModelImpl(
-      candidate: json['candidate'] as String,
-      sdpMid: json['sdpMid'] as String,
-      sdpMLineIndex: (json['sdpMLineIndex'] as num).toInt(),
+      candidate: json['candidate'] as String?,
+      sdpMid: json['sdpMid'] as String?,
+      sdpMLineIndex: (json['sdpMLineIndex'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$InnerCandidateModelImplToJson(

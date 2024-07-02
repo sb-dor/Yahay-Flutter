@@ -59,6 +59,7 @@ class ChatModel extends Chat with _$ChatModel {
       participants: chat.participants?.map((e) => ChatParticipantModel.fromEntity(e)!).toList(),
       messages: chat.messages?.map((e) => ChatMessageModel.fromEntity(e)!).toList(),
       videoChatStreaming: chat.videoChatStreaming,
+      videoChatRoom: RoomModel.fromEntity(chat.videoChatRoom),
     );
   }
 }

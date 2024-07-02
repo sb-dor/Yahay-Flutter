@@ -154,9 +154,9 @@ class WebrtcLaravelHelper {
 
               for (final each in candidates) {
                 await peerConnection?.addCandidate(RTCIceCandidate(
-                  each.candidate.candidate,
-                  each.candidate.sdpMid,
-                  each.candidate.sdpMLineIndex,
+                  each.candidate?.candidate,
+                  each.candidate?.sdpMid,
+                  each.candidate?.sdpMLineIndex,
                 ));
               }
               setSetStateCallback?.call();
@@ -291,9 +291,9 @@ class WebrtcLaravelHelper {
 
     for (final each in candidates) {
       await peerConnection?.addCandidate(RTCIceCandidate(
-        each.candidate.candidate,
-        each.candidate.sdpMid,
-        each.candidate.sdpMLineIndex,
+        each.candidate?.candidate,
+        each.candidate?.sdpMid,
+        each.candidate?.sdpMLineIndex,
       ));
     }
 
@@ -346,9 +346,9 @@ class WebrtcLaravelHelper {
 
   // close all
   Future<void> hangUp(
-    RTCVideoRenderer localVideo,
+    RTCVideoRenderer? localVideo,
   ) async {
-    localVideo.srcObject!.getTracks().forEach(((track) async => await track.stop()));
+    localVideo?.srcObject?.getTracks().forEach(((track) async => await track.stop()));
 
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) async => await track.stop());
@@ -356,6 +356,9 @@ class WebrtcLaravelHelper {
     if (peerConnection != null) peerConnection!.close();
 
     if (roomId != null) {
+      // if you will write a code here in order to close calling
+      // don't forget to remove a function that puts closing of chat in bloc
+
       // write code for turning off the conversation
 
       // var db = FirebaseFirestore.instance;
@@ -373,7 +376,7 @@ class WebrtcLaravelHelper {
     callerStreamSubs?.cancel();
     localStream!.dispose();
     remoteStream?.dispose();
-    localVideo.dispose();
+    localVideo?.dispose();
   }
 
   void addIceCandidate(

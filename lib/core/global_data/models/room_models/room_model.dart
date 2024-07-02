@@ -19,4 +19,17 @@ class RoomModel extends Room with _$RoomModel {
   }) = _RoomModel;
 
   factory RoomModel.fromJson(Map<String, Object?> json) => _$RoomModelFromJson(json);
+
+  static RoomModel? fromEntity(Room? room) {
+    if (room == null) return null;
+    return RoomModel(
+      id: room.id,
+      chatId: room.chatId,
+      chat: ChatModel.fromEntity(room.chat),
+      offer: room.offer,
+      answer: room.answer,
+      createdAt: room.createdAt,
+      updatedAt: room.updatedAt,
+    );
+  }
 }

@@ -120,7 +120,6 @@ class VideoChatFeatureBloc {
 
     if (!initResponse) return;
 
-
     final roomId = await _currentStateModel.webrtcLaravelHelper.createRoom(
       _currentStateModel.chat,
     );
@@ -183,11 +182,21 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _videoChatEntranceEvent(
     VideoChatEntranceEvent event,
   ) async* {
-    if (_currentStateModel.currentVideoChatEntity == null) return;
     //
+    final room = _currentStateModel.chat?.videoChatRoom;
+
+    if (room == null) return;
+
     final resultOfJoining = await _videoChatEntrance.videoChatEntrance(
       _currentStateModel.currentVideoChatEntity!,
     );
+
+    await _currentStateModel.webrtcLaravelHelper.joinRoom(
+      room.id.toString(),
+      _currentStateModel.currentVideoChatEntity!.videoRenderer!,
+    );
+
+    yield InitialVideoChatState(_currentStateModel);
   }
 
   //
@@ -196,9 +205,11 @@ class VideoChatFeatureBloc {
   ) async* {
     //
     if (_currentStateModel.currentVideoChatEntity == null) return;
-    debugPrint("sending data for leaving 2");
     final result = await _leaveVideoChat.leaveVideoChat(
       _currentStateModel.currentVideoChatEntity!,
+    );
+    await _currentStateModel.webrtcLaravelHelper.hangUp(
+      _currentStateModel.currentVideoChatEntity?.videoRenderer,
     );
     await _currentStateModel.dispose();
     _events.close();

@@ -20,12 +20,14 @@ CandidateModel _$CandidateModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CandidateModel {
-  int get id => throw _privateConstructorUsedError;
-  int get roomId => throw _privateConstructorUsedError;
-  InnerCandidateModel get candidate => throw _privateConstructorUsedError;
-  String get role => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get updatedAt => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: "room_id")
+  int? get roomId => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _fromJsonInnerCandidate)
+  InnerCandidateModel? get candidate => throw _privateConstructorUsedError;
+  String? get role => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,14 +42,15 @@ abstract class $CandidateModelCopyWith<$Res> {
       _$CandidateModelCopyWithImpl<$Res, CandidateModel>;
   @useResult
   $Res call(
-      {int id,
-      int roomId,
-      InnerCandidateModel candidate,
-      String role,
-      DateTime createdAt,
-      DateTime updatedAt});
+      {int? id,
+      @JsonKey(name: "room_id") int? roomId,
+      @JsonKey(fromJson: _fromJsonInnerCandidate)
+      InnerCandidateModel? candidate,
+      String? role,
+      DateTime? createdAt,
+      DateTime? updatedAt});
 
-  $InnerCandidateModelCopyWith<$Res> get candidate;
+  $InnerCandidateModelCopyWith<$Res>? get candidate;
 }
 
 /// @nodoc
@@ -63,45 +66,49 @@ class _$CandidateModelCopyWithImpl<$Res, $Val extends CandidateModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? roomId = null,
-    Object? candidate = null,
-    Object? role = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? id = freezed,
+    Object? roomId = freezed,
+    Object? candidate = freezed,
+    Object? role = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      roomId: null == roomId
+              as int?,
+      roomId: freezed == roomId
           ? _value.roomId
           : roomId // ignore: cast_nullable_to_non_nullable
-              as int,
-      candidate: null == candidate
+              as int?,
+      candidate: freezed == candidate
           ? _value.candidate
           : candidate // ignore: cast_nullable_to_non_nullable
-              as InnerCandidateModel,
-      role: null == role
+              as InnerCandidateModel?,
+      role: freezed == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
+              as String?,
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: null == updatedAt
+              as DateTime?,
+      updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $InnerCandidateModelCopyWith<$Res> get candidate {
-    return $InnerCandidateModelCopyWith<$Res>(_value.candidate, (value) {
+  $InnerCandidateModelCopyWith<$Res>? get candidate {
+    if (_value.candidate == null) {
+      return null;
+    }
+
+    return $InnerCandidateModelCopyWith<$Res>(_value.candidate!, (value) {
       return _then(_value.copyWith(candidate: value) as $Val);
     });
   }
@@ -116,15 +123,16 @@ abstract class _$$CandidateModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id,
-      int roomId,
-      InnerCandidateModel candidate,
-      String role,
-      DateTime createdAt,
-      DateTime updatedAt});
+      {int? id,
+      @JsonKey(name: "room_id") int? roomId,
+      @JsonKey(fromJson: _fromJsonInnerCandidate)
+      InnerCandidateModel? candidate,
+      String? role,
+      DateTime? createdAt,
+      DateTime? updatedAt});
 
   @override
-  $InnerCandidateModelCopyWith<$Res> get candidate;
+  $InnerCandidateModelCopyWith<$Res>? get candidate;
 }
 
 /// @nodoc
@@ -138,38 +146,38 @@ class __$$CandidateModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? roomId = null,
-    Object? candidate = null,
-    Object? role = null,
-    Object? createdAt = null,
-    Object? updatedAt = null,
+    Object? id = freezed,
+    Object? roomId = freezed,
+    Object? candidate = freezed,
+    Object? role = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_$CandidateModelImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      roomId: null == roomId
+              as int?,
+      roomId: freezed == roomId
           ? _value.roomId
           : roomId // ignore: cast_nullable_to_non_nullable
-              as int,
-      candidate: null == candidate
+              as int?,
+      candidate: freezed == candidate
           ? _value.candidate
           : candidate // ignore: cast_nullable_to_non_nullable
-              as InnerCandidateModel,
-      role: null == role
+              as InnerCandidateModel?,
+      role: freezed == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
+              as String?,
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      updatedAt: null == updatedAt
+              as DateTime?,
+      updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
     ));
   }
 }
@@ -179,8 +187,8 @@ class __$$CandidateModelImplCopyWithImpl<$Res>
 class _$CandidateModelImpl implements _CandidateModel {
   const _$CandidateModelImpl(
       {required this.id,
-      required this.roomId,
-      required this.candidate,
+      @JsonKey(name: "room_id") required this.roomId,
+      @JsonKey(fromJson: _fromJsonInnerCandidate) required this.candidate,
       required this.role,
       required this.createdAt,
       required this.updatedAt});
@@ -189,17 +197,19 @@ class _$CandidateModelImpl implements _CandidateModel {
       _$$CandidateModelImplFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
-  final int roomId;
+  @JsonKey(name: "room_id")
+  final int? roomId;
   @override
-  final InnerCandidateModel candidate;
+  @JsonKey(fromJson: _fromJsonInnerCandidate)
+  final InnerCandidateModel? candidate;
   @override
-  final String role;
+  final String? role;
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @override
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   @override
   String toString() {
@@ -244,28 +254,31 @@ class _$CandidateModelImpl implements _CandidateModel {
 
 abstract class _CandidateModel implements CandidateModel {
   const factory _CandidateModel(
-      {required final int id,
-      required final int roomId,
-      required final InnerCandidateModel candidate,
-      required final String role,
-      required final DateTime createdAt,
-      required final DateTime updatedAt}) = _$CandidateModelImpl;
+      {required final int? id,
+      @JsonKey(name: "room_id") required final int? roomId,
+      @JsonKey(fromJson: _fromJsonInnerCandidate)
+      required final InnerCandidateModel? candidate,
+      required final String? role,
+      required final DateTime? createdAt,
+      required final DateTime? updatedAt}) = _$CandidateModelImpl;
 
   factory _CandidateModel.fromJson(Map<String, dynamic> json) =
       _$CandidateModelImpl.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
-  int get roomId;
+  @JsonKey(name: "room_id")
+  int? get roomId;
   @override
-  InnerCandidateModel get candidate;
+  @JsonKey(fromJson: _fromJsonInnerCandidate)
+  InnerCandidateModel? get candidate;
   @override
-  String get role;
+  String? get role;
   @override
-  DateTime get createdAt;
+  DateTime? get createdAt;
   @override
-  DateTime get updatedAt;
+  DateTime? get updatedAt;
   @override
   @JsonKey(ignore: true)
   _$$CandidateModelImplCopyWith<_$CandidateModelImpl> get copyWith =>
