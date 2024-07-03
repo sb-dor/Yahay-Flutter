@@ -374,10 +374,15 @@ class WebrtcLaravelHelper {
     }
 
     calleeStreamSubs?.cancel();
+    calleeStreamSubs = null;
     callerStreamSubs?.cancel();
+    callerStreamSubs = null;
     localStream?.dispose();
+    localStream = null;
     remoteStream?.dispose();
+    remoteStream = null;
     localVideo?.dispose();
+    localVideo = null;
   }
 
   void addIceCandidate(
