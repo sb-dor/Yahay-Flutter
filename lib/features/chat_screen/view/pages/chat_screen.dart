@@ -77,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: ChatScreenAppBar(
                   chatScreenBloc: _chatScreenBloc,
                   themeData: _appThemeBloc.theme.value,
+                  chat: widget.chat,
                 ),
               ),
               body: ShimmerLoader(

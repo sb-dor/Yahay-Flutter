@@ -11,11 +11,13 @@ import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
 class ChatScreenAppBar extends StatelessWidget {
   final ThemeData themeData;
   final ChatScreenBloc chatScreenBloc;
+  final Chat? chat;
 
   const ChatScreenAppBar({
     super.key,
     required this.chatScreenBloc,
     required this.themeData,
+    required this.chat,
   });
 
   @override
@@ -70,7 +72,10 @@ class ChatScreenAppBar extends StatelessWidget {
                     ),
                   );
                 },
-                icon: const Icon(CupertinoIcons.videocam),
+                icon: Icon(
+                  CupertinoIcons.videocam,
+                  color: chat?.videoChatRoom != null ? Colors.green : null,
+                ),
               ),
             ],
     );

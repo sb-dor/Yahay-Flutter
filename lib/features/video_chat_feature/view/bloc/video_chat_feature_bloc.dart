@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -328,6 +329,8 @@ class VideoChatFeatureBloc {
       user: null,
     );
     await videoChatEntity.videoRenderer?.initialize();
+    videoChatEntity.videoRenderer?.srcObject =
+        await createLocalMediaStream('key${Random().nextInt(100)}');
     videoChatEntity.videoRenderer?.srcObject = event.mediaStream;
     _currentStateModel.addVideoChat(videoChatEntity);
     yield InitialVideoChatState(_currentStateModel);
