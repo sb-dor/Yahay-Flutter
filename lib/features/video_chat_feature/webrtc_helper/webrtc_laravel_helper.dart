@@ -197,7 +197,7 @@ class WebrtcLaravelHelper {
   }
 
   Future<void> joinRoom(String roomId) async {
-    // try {
+    try {
 
     // for getting room configuration
     var responseForRemoteConfig = await _dioHelper.dio.post(
@@ -324,9 +324,9 @@ class WebrtcLaravelHelper {
     ///
     ///
 
-    // } catch (e) {
-    //   debugPrint("is any error in join room: $e");
-    // }
+    } catch (e) {
+      debugPrint("is any error in join room: $e");
+    }
   }
 
   Future<void> openUserMedia(
@@ -339,6 +339,7 @@ class WebrtcLaravelHelper {
     });
 
     localVideo.srcObject = stream;
+
     localStream = stream;
 
     // remoteVideo.srcObject = await createLocalMediaStream('key'); // was removed temporary
@@ -374,7 +375,7 @@ class WebrtcLaravelHelper {
 
     calleeStreamSubs?.cancel();
     callerStreamSubs?.cancel();
-    localStream!.dispose();
+    localStream?.dispose();
     remoteStream?.dispose();
     localVideo?.dispose();
   }

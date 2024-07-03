@@ -45,11 +45,10 @@ class VideoChatStateModel {
 
   Future<void> initLocalRenderer() async {
     _currentVideoChatEntity = VideoChatEntity(
-      videoRenderer: null,
+      videoRenderer: RTCVideoRenderer(),
       chat: _chat,
       user: _currentUser,
     );
-    _currentVideoChatEntity?.videoRenderer = RTCVideoRenderer();
     await _currentVideoChatEntity?.videoRenderer?.initialize();
     await _webrtcLaravelHelper.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
   }
@@ -165,6 +164,7 @@ class VideoChatStateModel {
     _channelSubscription = null;
     _pusherChannelsClient = null;
     for (var each in _videoChatEntities) {
+      await each.videoRenderer?.dispose();
       each.videoRenderer = null;
     }
     _videoChatEntities.clear();

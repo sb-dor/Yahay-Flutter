@@ -109,11 +109,6 @@ class VideoChatFeatureBloc {
 
     await _currentStateModel.initLocalRenderer();
 
-    // in order to listen that someone from other side connected to your data
-    _currentStateModel.webrtcLaravelHelper.onAddRemoteStream = ((stream) async {
-      _events.add(OnAddRemoteRendererStreamEvent(stream));
-    });
-
     yield InitialVideoChatState(_currentStateModel);
   }
 
@@ -132,6 +127,11 @@ class VideoChatFeatureBloc {
     final roomId = await _currentStateModel.webrtcLaravelHelper.createRoom(
       _currentStateModel.chat,
     );
+
+    // in order to listen that someone from other side connected to your data
+    _currentStateModel.webrtcLaravelHelper.onAddRemoteStream = ((stream) async {
+      _events.add(OnAddRemoteRendererStreamEvent(stream));
+    });
 
     debugPrint("creating room id: $roomId");
     // -------------------------------------------------
@@ -199,6 +199,8 @@ class VideoChatFeatureBloc {
     final resultOfJoining = await _videoChatEntrance.videoChatEntrance(
       _currentStateModel.currentVideoChatEntity!,
     );
+
+    debugPrint("setting room id is: ${room.id}");
 
     await _currentStateModel.webrtcLaravelHelper.joinRoom(
       room.id.toString(),
@@ -323,17 +325,28 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _onAddRemoteRendererStreamEvent(
     OnAddRemoteRendererStreamEvent event,
   ) async* {
-    final videoChatEntity = VideoChatEntity(
-      videoRenderer: RTCVideoRenderer(),
-      chat: _currentStateModel.chat,
-      user: null,
-    );
-    await videoChatEntity.videoRenderer?.initialize();
-    videoChatEntity.videoRenderer?.srcObject =
-        await createLocalMediaStream('key${Random().nextInt(100)}');
-    videoChatEntity.videoRenderer?.srcObject = event.mediaStream;
-    _currentStateModel.addVideoChat(videoChatEntity);
-    yield InitialVideoChatState(_currentStateModel);
+    try {
+      final videoChatEntity = VideoChatEntity(
+        videoRenderer: RTCVideoRenderer(),
+        chat: _currentStateModel.chat,
+        user: null,
+      );
+      await videoChatEntity.videoRenderer?.initialize();
+      videoChatEntity.videoRenderer?.srcObject =
+          await createLocalMediaStream('key${Random().nextInt(100)}');
+      videoChatEntity.videoRenderer?.srcObject = event.mediaStream;
+      _currentStateModel.addVideoChat(videoChatEntity);
+      yield InitialVideoChatState(_currentStateModel);
+    } catch (e) {
+      debugPrint("getting error in stream handler: $e");
+    }
+
+    // for switching camera
+    // Helper.switchCamera(
+    //   _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0],
+    //   null,
+    //   _currentStateModel.webrtcLaravelHelper.localStream,
+    // );
   }
 
 // static Stream<VideoChatFeatureStates> _emitter() async* {

@@ -16,6 +16,7 @@ class SingleCameraViewScreen extends StatelessWidget {
       child: RTCVideoView(
         objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
         filterQuality: FilterQuality.none,
+        mirror: true,
         videoChatBloc.states.value.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
       ),
     );
