@@ -85,7 +85,7 @@ class WebrtcLaravelHelper {
         '$_url/create-room',
         data: {
           'offer': offer.toMap(),
-          "chat_id" : chat?.id,
+          "chat_id": chat?.id,
         },
       );
 
@@ -198,132 +198,130 @@ class WebrtcLaravelHelper {
 
   Future<void> joinRoom(String roomId) async {
     try {
-
-    // for getting room configuration
-    var responseForRemoteConfig = await _dioHelper.dio.post(
-      '$_url/join-room',
-      data: {
-        'roomId': roomId,
-      },
-    );
-
-    peerConnection = await createPeerConnection(configuration);
-
-    registerPeerConnectionListeners();
-
-    localStream?.getTracks().forEach((track) {
-      peerConnection?.addTrack(track, localStream!);
-    });
-
-    peerConnection!.onIceCandidate = (RTCIceCandidate? candidate) {
-      if (candidate == null) {
-        return;
-      }
-      addIceCandidate(candidate, roomId, 'callee');
-    };
-
-    peerConnection?.onTrack = (RTCTrackEvent event) {
-      event.streams[0].getTracks().forEach((track) {
-        remoteStream?.addTrack(track);
-      });
-    };
-
-    var data = responseForRemoteConfig.data is String
-        ? jsonDecode(responseForRemoteConfig.data)
-        : responseForRemoteConfig.data;
-
-    var offer = data['offer'];
-
-    String sdp = offer['sdp'] + "\n";
-    String type = offer['type'];
-
-    if (sdp.isEmpty || type.isEmpty) {
-      throw Exception('SDP or Type is empty');
-    }
-
-    // sdp = sdp.replaceAll("\r\na=extmap-allow-mixed", "");
-
-    RTCSessionDescription remoteDescription = RTCSessionDescription(sdp, type);
-
-    try {
-      await peerConnection?.setRemoteDescription(remoteDescription);
-      debugPrint("remote description successfully added");
-    } catch (e) {
-      debugPrint("peer connection set remote desc failed: $e");
-    }
-
-    try {
-      var answer = await peerConnection!.createAnswer();
-
-      await peerConnection!.setLocalDescription(answer);
-
-      var response = await _dioHelper.dio.post(
+      // for getting room configuration
+      var responseForRemoteConfig = await _dioHelper.dio.post(
         '$_url/join-room',
         data: {
           'roomId': roomId,
-          'answer': answer.toMap(),
         },
       );
-    } catch (e) {
-      debugPrint("creating answer error is: $e");
-    }
 
-    // Create an answer
-    ///
-    ///
-    ///
-    ///
-    ///
-    ///
+      peerConnection = await createPeerConnection(configuration);
 
-    // get candidates data before listening them
-    final responseCandidates = await _dioHelper.dio.get(
-      "$_url/get-ice-candidates/$roomId/caller",
-    );
+      registerPeerConnectionListeners();
 
-    Map<String, dynamic> mapOfData = responseCandidates.data is String
-        ? jsonDecode(responseCandidates.data)
-        : responseCandidates.data;
-    //
-    List<dynamic> listOfCandidates = mapOfData['candidates'];
+      localStream?.getTracks().forEach((track) {
+        peerConnection?.addTrack(track, localStream!);
+      });
 
-    List<Candidate> candidates = listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
+      peerConnection!.onIceCandidate = (RTCIceCandidate? candidate) {
+        if (candidate == null) {
+          return;
+        }
+        addIceCandidate(candidate, roomId, 'callee');
+      };
 
-    for (final each in candidates) {
-      await peerConnection?.addCandidate(RTCIceCandidate(
-        each.candidate?.candidate,
-        each.candidate?.sdpMid,
-        each.candidate?.sdpMLineIndex,
-      ));
-    }
+      peerConnection?.onTrack = (RTCTrackEvent event) {
+        event.streams[0].getTracks().forEach((track) {
+          remoteStream?.addTrack(track);
+        });
+      };
 
-    //
-    final pusherService = await snoopy<PusherClientService>().subscriptionCreator();
+      var data = responseForRemoteConfig.data is String
+          ? jsonDecode(responseForRemoteConfig.data)
+          : responseForRemoteConfig.data;
 
-    final channel = pusherService.publicChannel(Constants.webRtcChannelName);
+      var offer = data['offer'];
 
-    callerStreamSubs = pusherService.onConnectionEstablished.listen((e) {
-      channel.subscribeIfNotUnsubscribed();
-    });
+      String sdp = offer['sdp'] + "\n";
+      String type = offer['type'];
 
-    channel.bind(Constants.webRtcChannelEventName).listen((e) async {
-      // code here tomorrow
-      Map<String, dynamic> data = e.data is String ? jsonDecode(e.toString()) : e.data;
+      if (sdp.isEmpty || type.isEmpty) {
+        throw Exception('SDP or Type is empty');
+      }
 
-      if (data.containsKey("candidate") && data.containsKey("role") && data['role'] == 'caller') {
-        peerConnection?.addCandidate(RTCIceCandidate(
-          data['candidate']['candidate'],
-          data['candidate']['sdpMid'],
-          data['candidate']['sdpMLineIndex'],
+      // sdp = sdp.replaceAll("\r\na=extmap-allow-mixed", "");
+
+      RTCSessionDescription remoteDescription = RTCSessionDescription(sdp, type);
+
+      try {
+        await peerConnection?.setRemoteDescription(remoteDescription);
+        debugPrint("remote description successfully added");
+      } catch (e) {
+        debugPrint("peer connection set remote desc failed: $e");
+      }
+
+      try {
+        var answer = await peerConnection!.createAnswer();
+
+        await peerConnection!.setLocalDescription(answer);
+
+        var response = await _dioHelper.dio.post(
+          '$_url/join-room',
+          data: {
+            'roomId': roomId,
+            'answer': answer.toMap(),
+          },
+        );
+      } catch (e) {
+        debugPrint("creating answer error is: $e");
+      }
+
+      // Create an answer
+      ///
+      ///
+      ///
+      ///
+      ///
+      ///
+
+      // get candidates data before listening them
+      final responseCandidates = await _dioHelper.dio.get(
+        "$_url/get-ice-candidates/$roomId/caller",
+      );
+
+      Map<String, dynamic> mapOfData = responseCandidates.data is String
+          ? jsonDecode(responseCandidates.data)
+          : responseCandidates.data;
+      //
+      List<dynamic> listOfCandidates = mapOfData['candidates'];
+
+      List<Candidate> candidates = listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
+
+      for (final each in candidates) {
+        await peerConnection?.addCandidate(RTCIceCandidate(
+          each.candidate?.candidate,
+          each.candidate?.sdpMid,
+          each.candidate?.sdpMLineIndex,
         ));
       }
-    });
 
-    ///
-    ///
-    ///
-    ///
+      //
+      final pusherService = await snoopy<PusherClientService>().subscriptionCreator();
 
+      final channel = pusherService.publicChannel(Constants.webRtcChannelName);
+
+      callerStreamSubs = pusherService.onConnectionEstablished.listen((e) {
+        channel.subscribeIfNotUnsubscribed();
+      });
+
+      channel.bind(Constants.webRtcChannelEventName).listen((e) async {
+        // code here tomorrow
+        Map<String, dynamic> data = e.data is String ? jsonDecode(e.toString()) : e.data;
+
+        if (data.containsKey("candidate") && data.containsKey("role") && data['role'] == 'caller') {
+          peerConnection?.addCandidate(RTCIceCandidate(
+            data['candidate']['candidate'],
+            data['candidate']['sdpMid'],
+            data['candidate']['sdpMLineIndex'],
+          ));
+        }
+      });
+
+      ///
+      ///
+      ///
+      ///
     } catch (e) {
       debugPrint("is any error in join room: $e");
     }
@@ -354,7 +352,8 @@ class WebrtcLaravelHelper {
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) async => await track.stop());
     }
-    if (peerConnection != null) peerConnection!.close();
+
+    peerConnection?.close();
 
     if (roomId != null) {
       // if you will write a code here in order to close calling
