@@ -14,9 +14,9 @@ abstract class VideoChatBlocInj {
     //
     // await snoopy<CameraHelperService>().initCameras();
 
-    snoopy.registerLazySingleton(
-      () => WebrtcLaravelHelper(),
-    );
+    // snoopy.registerLazySingleton(
+    //   () => WebrtcLaravelHelper(),
+    // );
 
     snoopy.registerLazySingleton<VideoChatFeatureDataSource>(
       () => VideoChatFeatureDataSourceImpl(),
