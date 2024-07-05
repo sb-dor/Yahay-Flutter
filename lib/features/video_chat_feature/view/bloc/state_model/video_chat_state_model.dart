@@ -37,18 +37,21 @@ class VideoChatStateModel {
 
   final List<VideoChatEntity> _videoChatEntities = [];
 
-  final WebrtcLaravelHelper _webrtcLaravelHelper = snoopy<WebrtcLaravelHelper>();
+  WebrtcLaravelHelper? _webrtcLaravelHelper;
 
-  WebrtcLaravelHelper get webrtcLaravelHelper => _webrtcLaravelHelper;
+  WebrtcLaravelHelper? get webrtcLaravelHelper => _webrtcLaravelHelper;
 
   Future<void> initLocalRenderer() async {
+
+    _webrtcLaravelHelper = WebrtcLaravelHelper();
+
     _currentVideoChatEntity = VideoChatEntity(
       videoRenderer: RTCVideoRenderer(),
       chat: _chat,
       user: _currentUser,
     );
     await _currentVideoChatEntity?.videoRenderer?.initialize();
-    await _webrtcLaravelHelper.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
+    await _webrtcLaravelHelper?.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
   }
 
   // CameraController? _mainVideoStreamCameraController;
@@ -155,8 +158,9 @@ class VideoChatStateModel {
     // await _flutterSound.thePlayer.closePlayer();
     // await _audioStream?.cancel();
     if (_currentVideoChatEntity?.videoRenderer != null) {
-      await _webrtcLaravelHelper.hangUp(_currentVideoChatEntity!.videoRenderer!);
+      await _webrtcLaravelHelper?.hangUp(_currentVideoChatEntity!.videoRenderer!);
     }
+    _webrtcLaravelHelper = null;
     _currentVideoChatEntity = null;
     _pusherChannelsClient?.dispose();
     _channelSubscription = null;

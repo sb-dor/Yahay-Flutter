@@ -104,7 +104,7 @@ class VideoChatFeatureBloc {
     await _currentStateModel.initLocalRenderer();
 
     // in order to listen that someone from other side connected to your data
-    _currentStateModel.webrtcLaravelHelper.onAddRemoteStream = ((stream) async {
+    _currentStateModel.webrtcLaravelHelper?.onAddRemoteStream = ((stream) async {
       _events.add(OnAddRemoteRendererStreamEvent(stream));
     });
 
@@ -124,7 +124,7 @@ class VideoChatFeatureBloc {
 
     if (!initResponse) return;
 
-    final roomId = await _currentStateModel.webrtcLaravelHelper.createRoom(
+    final roomId = await _currentStateModel.webrtcLaravelHelper?.createRoom(
       _currentStateModel.chat,
     );
 
@@ -197,7 +197,7 @@ class VideoChatFeatureBloc {
 
     debugPrint("setting room id is: ${room.id}");
 
-    await _currentStateModel.webrtcLaravelHelper.joinRoom(
+    await _currentStateModel.webrtcLaravelHelper?.joinRoom(
       room.id.toString(),
     );
 
@@ -213,7 +213,7 @@ class VideoChatFeatureBloc {
     final result = await _leaveVideoChat.leaveVideoChat(
       _currentStateModel.currentVideoChatEntity!,
     );
-    await _currentStateModel.webrtcLaravelHelper.hangUp(
+    await _currentStateModel.webrtcLaravelHelper?.hangUp(
       _currentStateModel.currentVideoChatEntity?.videoRenderer,
     );
     await _currentStateModel.dispose();
