@@ -199,7 +199,10 @@ class ChatScreenBloc {
         ChatModel chat = ChatModel.fromJson(messageJson['chat']);
         final currentChatFromModel = ChatModel.fromEntity(_currentStateModel.currentChat);
         _currentStateModel.setChat(
-          currentChatFromModel?.copyWith(videoChatRoom: chat.videoChatRoom),
+          currentChatFromModel?.copyWith(
+            videoChatRoom: chat.videoChatRoom,
+            videoChatStreaming: chat.videoChatStreaming,
+          ),
           setChatMessages: false,
         );
         debugPrint("chat has chat room 2: ${_currentStateModel.currentChat?.videoChatRoom}");
