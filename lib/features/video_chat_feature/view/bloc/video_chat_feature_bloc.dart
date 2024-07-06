@@ -224,6 +224,7 @@ class VideoChatFeatureBloc {
     final result = await _leaveVideoChat.leaveVideoChat(
       _currentStateModel.currentVideoChatEntity!,
     );
+    debugPrint("leave video chat data: $result");
     await _currentStateModel.webrtcLaravelHelper?.hangUp(
       _currentStateModel.currentVideoChatEntity?.videoRenderer,
     );
