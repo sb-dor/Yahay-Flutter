@@ -7,6 +7,7 @@ import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_s
 import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/double_camera_view_screen.dart';
 import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/multiple_camera_view.dart';
 import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/single_camera_view_screen.dart';
+import 'package:yahay/features/video_chat_feature/view/pages/widgets/hang_up_buttons_widget.dart';
 import 'package:yahay/injections/injections.dart';
 
 import 'widgets/call_button_widget.dart';
@@ -76,9 +77,11 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                       left: 0,
                       right: 0,
                       child: Center(
-                        child: CallButtonWidget(
-                          videoChatBloc: _videoChatFeatureBloc,
-                        ),
+                        child: currentStateModel.chatStarted
+                            ? HangUpButtonsWidget(videoChatBloc: _videoChatFeatureBloc)
+                            : CallButtonWidget(
+                                videoChatBloc: _videoChatFeatureBloc,
+                              ),
                       ),
                     ),
                   ],

@@ -43,6 +43,12 @@ class OnAddRemoteRendererStreamEvent extends VideoChatFeatureEvents {
   const OnAddRemoteRendererStreamEvent(this.mediaStream);
 }
 
+@immutable
+class SwitchCameraStreamEvent extends VideoChatFeatureEvents {}
+
+@immutable
+class TurnMicOffAndOnEvent extends VideoChatFeatureEvents {}
+
 // @immutable
 // class VideoStreamHandlerEvent extends VideoChatFeatureEvents {
 //   final ChannelReadEvent? pusherEvent;

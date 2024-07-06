@@ -331,6 +331,7 @@ class WebrtcLaravelHelper {
     RTCVideoRenderer localVideo,
     // RTCVideoRenderer remoteVideo, // was removed temporary
   ) async {
+    //
     var stream = await navigator.mediaDevices.getUserMedia({
       'video': true,
       'audio': true, // set false in the future

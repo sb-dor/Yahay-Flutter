@@ -67,9 +67,9 @@
     <key>NSMicrophoneUsageDescription</key>
     <string>For getting audio bytes for video chat</string>
     <key>NSCameraUsageDescription</key>
-    <string>your usage description here</string>
+    <string>Video chat camera usage</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>your usage description here</string>
+    <string>Video chat camera and audio usage</string>
     <key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>

@@ -17,6 +17,33 @@ import 'package:yahay/injections/injections.dart';
 class VideoChatStateModel {
   final talker = TalkerService.instance.talker;
 
+  UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
+      UnmodifiableListView(_videoChatEntities);
+
+  StreamSubscription<void>? _channelSubscription;
+
+  StreamSubscription<void>? get channelSubscription => _channelSubscription;
+
+  PusherChannelsClient? _pusherChannelsClient;
+
+  PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
+
+  Timer? _timerForGettingFrame;
+
+  Timer? get timerForGettingFrame => _timerForGettingFrame;
+
+  bool _chatStarted = false;
+
+  bool get chatStarted => _chatStarted;
+
+  bool _hasAudio = true;
+
+  bool _hasVideo = true;
+
+  bool get hasAudio => _hasAudio;
+
+  bool get hasVideo => _hasVideo;
+
   Chat? _chat;
 
   Chat? get chat => _chat;
@@ -42,7 +69,7 @@ class VideoChatStateModel {
   WebrtcLaravelHelper? get webrtcLaravelHelper => _webrtcLaravelHelper;
 
   Future<void> initLocalRenderer() async {
-
+    // helper initialization first
     _webrtcLaravelHelper = WebrtcLaravelHelper();
 
     _currentVideoChatEntity = VideoChatEntity(
@@ -50,41 +77,13 @@ class VideoChatStateModel {
       chat: _chat,
       user: _currentUser,
     );
+
+    // init the video renderer
     await _currentVideoChatEntity?.videoRenderer?.initialize();
+
+    // after video render initialization open the media
     await _webrtcLaravelHelper?.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
   }
-
-  // CameraController? _mainVideoStreamCameraController;
-
-  // CameraController? get mainVideoStreamCameraController => _mainVideoStreamCameraController;
-
-  UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
-      UnmodifiableListView(_videoChatEntities);
-
-  StreamSubscription<void>? _channelSubscription;
-
-  StreamSubscription<void>? get channelSubscription => _channelSubscription;
-
-  PusherChannelsClient? _pusherChannelsClient;
-
-  PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
-
-  // already singleton
-  // final FlutterSound _flutterSound = FlutterSound();
-
-  // FlutterSound? get flutterSound => _flutterSound;
-
-  // StreamSubscription<List<int>>? _audioStream;
-
-  // StreamSubscription<List<int>>? get audioStream => _audioStream;
-
-  Timer? _timerForGettingFrame;
-
-  Timer? get timerForGettingFrame => _timerForGettingFrame;
-
-  bool _chatStarted = false;
-
-  bool get chatStarted => _chatStarted;
 
   void startChat() => _chatStarted = true;
 
@@ -93,11 +92,6 @@ class VideoChatStateModel {
   void initTimer(Timer timer) {
     _timerForGettingFrame = timer;
   }
-
-  // Future<void> initMainCameraController(CameraController controller) async {
-  //   _mainVideoStreamCameraController = controller;
-  //   await _mainVideoStreamCameraController?.initialize();
-  // }
 
   void addVideoChat(VideoChatEntity videoChatEntity) {
     _videoChatEntities.add(videoChatEntity);
@@ -128,35 +122,17 @@ class VideoChatStateModel {
     _pusherChannelsClient = pusherClient;
   }
 
-  // void initAudioStreamSubscription(StreamSubscription<List<int>> subscription) {
-  //   _audioStream = subscription;
-  // }
-
   void initChannelChat(Chat? chat) {
     _chat = ChatModel.fromEntity(chat)?.copyWith();
   }
 
-  // void initCurrentVideoChatEntity(VideoChatEntity entity) {
-  //   _currentVideoChatEntity = entity;
-  // }
+  void changeHasAudio({bool? value}) => _hasAudio = value ?? !_hasAudio;
 
-  // void addUint8ImageDataToCurrentVideoChatEntity(Uint8List data) {
-  //   // temp. if entity is null we will set new object to that entity
-  //   _currentVideoChatEntity ??= VideoChatEntity(
-  //     imageData: data,
-  //     chat: _chat,
-  //     user: _currentUser,
-  //   );
-  //   // update the image data
-  //   _currentVideoChatEntity?.imageData = data;
-  // }
+  void changeHasVideo({bool? value}) => _hasVideo = value ?? !_hasVideo;
 
   Future<void> dispose() async {
     await _channelSubscription?.cancel();
     await _pusherChannelsClient?.disconnect();
-    // await _mainVideoStreamCameraController?.dispose();
-    // await _flutterSound.thePlayer.closePlayer();
-    // await _audioStream?.cancel();
     if (_currentVideoChatEntity?.videoRenderer != null) {
       await _webrtcLaravelHelper?.hangUp(_currentVideoChatEntity!.videoRenderer!);
     }

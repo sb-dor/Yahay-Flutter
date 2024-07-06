@@ -85,6 +85,10 @@ class VideoChatFeatureBloc {
       yield* _finishVideoChatEvent(event);
     } else if (event is OnAddRemoteRendererStreamEvent) {
       yield* _onAddRemoteRendererStreamEvent(event);
+    } else if (event is SwitchCameraStreamEvent) {
+      yield* _switchCameraStreamEvent(event);
+    } else if (event is TurnMicOffAndOnEvent) {
+      yield* _turnMicOffAndOnEvent(event);
     }
   }
 
@@ -107,7 +111,6 @@ class VideoChatFeatureBloc {
     _currentStateModel.webrtcLaravelHelper?.onAddRemoteStream = ((stream) async {
       _events.add(OnAddRemoteRendererStreamEvent(stream));
     });
-
 
     yield InitialVideoChatState(_currentStateModel);
   }
@@ -194,8 +197,6 @@ class VideoChatFeatureBloc {
     final resultOfJoining = await _videoChatEntrance.videoChatEntrance(
       _currentStateModel.currentVideoChatEntity!,
     );
-
-    debugPrint("setting room id is: ${room.id}");
 
     await _currentStateModel.webrtcLaravelHelper?.joinRoom(
       room.id.toString(),
@@ -338,11 +339,29 @@ class VideoChatFeatureBloc {
     }
 
     // for switching camera
-    // Helper.switchCamera(
-    //   _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0],
-    //   null,
-    //   _currentStateModel.webrtcLaravelHelper.localStream,
-    // );
+  }
+
+  static Stream<VideoChatFeatureStates> _switchCameraStreamEvent(
+    SwitchCameraStreamEvent event,
+  ) async* {
+    Helper.switchCamera(
+      _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0],
+      null,
+      _currentStateModel.webrtcLaravelHelper?.localStream,
+    );
+  }
+
+  static Stream<VideoChatFeatureStates> _turnMicOffAndOnEvent(
+    TurnMicOffAndOnEvent event,
+  ) async* {
+    _currentStateModel.changeHasAudio();
+
+    Helper.setMicrophoneMute(
+      _currentStateModel.hasAudio,
+      _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getAudioTracks()[0],
+    );
+
+    yield InitialVideoChatState(_currentStateModel);
   }
 
 // static Stream<VideoChatFeatureStates> _emitter() async* {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/state_model/video_chat_state_model.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
@@ -29,97 +30,79 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Material(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(50),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(50),
-            onTap: () async {
-              // final cameras = snoopy<CameraHelperService>().cameras;
-              // for (var each in desc) {
-              //   debugPrint("camera name: ${each.name}");
-              // }
-              // if (cameras.length >= 2) {
-              // final controller = _videoChatFeatureBloc
-              //     .states.value.videoChatStateModel.mainVideoStreamCameraController;
-              // if (controller?.description.name == cameras.last.name) {
-              //   _videoChatFeatureBloc.events.add(
-              //     InitMainCameraControllerEvent(
-              //       cameras.first,
-              //     ),
-              //   );
-              // } else {
-              //   _videoChatFeatureBloc.events.add(
-              //     InitMainCameraControllerEvent(
-              //       cameras.last,
-              //     ),
-              //   );
-              // }
-              // }
-            },
-            child: const SizedBox(
-              width: 60,
-              height: 60,
-              child: Center(
-                child: Icon(
-                  Icons.cameraswitch,
-                  size: 35,
+        Column(
+          children: [
+            Material(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(50),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(50),
+                onTap: () async {
+                  Navigator.pop(context);
+                },
+                child: const SizedBox(
+                  width: 90,
+                  height: 90,
+                  child: Center(
+                    child: Icon(
+                      CupertinoIcons.phone_down,
+                      size: 35,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+            const SizedBox(height: 10),
+            const Text(
+              "Decline",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 1.5
+              ),
+            ),
+          ],
         ),
-        Material(
-          color: (_videoChatStateModel.chat?.videoChatRoom != null &&
-                  !_videoChatStateModel.chatStarted)
-              ? Colors.blue
-              : _videoChatStateModel.chatStarted
-                  ? Colors.red
-                  : Colors.green,
-          borderRadius: BorderRadius.circular(50),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(50),
-            onTap: () {
-              if (_videoChatStateModel.chat?.videoChatRoom != null &&
-                  !_videoChatStateModel.chatStarted) {
-                _videoChatFeatureBloc.events.add(const VideoChatEntranceEvent());
-              } else if (_videoChatFeatureBloc.states.value.videoChatStateModel.chatStarted) {
-                // when you dispose main stream page
-                // it automatically finishes the chat.
-                // I wrote dispose code in main screen's dispose method
-                Navigator.pop(context);
-              } else {
-                _videoChatFeatureBloc.events.add(const StartVideoChatEvent());
-              }
-            },
-            child: const SizedBox(
-              width: 90,
-              height: 90,
-              child: Center(
-                child: Icon(
-                  Icons.call,
-                  size: 35,
+        Column(
+          children: [
+            Material(
+              color: _videoChatStateModel.chat?.videoChatRoom != null ? Colors.blue : Colors.green,
+              borderRadius: BorderRadius.circular(50),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(50),
+                onTap: () {
+                  if (_videoChatStateModel.chat?.videoChatRoom != null) {
+                    _videoChatFeatureBloc.events.add(const VideoChatEntranceEvent());
+                  } else {
+                    _videoChatFeatureBloc.events.add(const StartVideoChatEvent());
+                  }
+                },
+                child: const SizedBox(
+                  width: 90,
+                  height: 90,
+                  child: Center(
+                    child: Icon(
+                      Icons.call,
+                      size: 35,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        Material(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(50),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(50),
-            onTap: () {},
-            child: const SizedBox(
-              width: 60,
-              height: 60,
-              child: Center(
-                child: Icon(Icons.call),
+            const SizedBox(height: 10),
+            Text(
+              _videoChatStateModel.chat?.videoChatRoom != null ? "Accept" : "Call",
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.5
               ),
             ),
-          ),
+          ],
         ),
       ],
     );
