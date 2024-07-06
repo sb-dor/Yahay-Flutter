@@ -90,8 +90,9 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
                 },
                 icon: Icon(
                   CupertinoIcons.videocam,
-                  color:
-                      _chatScreenStateModel.currentChat?.videoChatRoom != null ? Colors.green : null,
+                  color: (_chatScreenStateModel.currentChat?.videoChatStreaming ?? false)
+                      ? Colors.green
+                      : null,
                 ),
               ),
             ],
