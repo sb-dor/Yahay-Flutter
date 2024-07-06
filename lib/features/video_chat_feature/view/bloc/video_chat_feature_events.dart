@@ -47,7 +47,14 @@ class OnAddRemoteRendererStreamEvent extends VideoChatFeatureEvents {
 class SwitchCameraStreamEvent extends VideoChatFeatureEvents {}
 
 @immutable
-class TurnMicOffAndOnEvent extends VideoChatFeatureEvents {}
+class TurnMicOffAndOnEvent extends VideoChatFeatureEvents {
+  final bool change;
+
+  const TurnMicOffAndOnEvent({this.change = true});
+}
+
+@immutable
+class TurnCameraOffAndEvent extends VideoChatFeatureEvents {}
 
 // @immutable
 // class VideoStreamHandlerEvent extends VideoChatFeatureEvents {

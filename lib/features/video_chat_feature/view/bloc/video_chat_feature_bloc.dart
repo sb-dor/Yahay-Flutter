@@ -87,6 +87,8 @@ class VideoChatFeatureBloc {
       yield* _onAddRemoteRendererStreamEvent(event);
     } else if (event is SwitchCameraStreamEvent) {
       yield* _switchCameraStreamEvent(event);
+    } else if (event is TurnCameraOffAndEvent) {
+      yield* _turnCameraOffAndEvent(event);
     } else if (event is TurnMicOffAndOnEvent) {
       yield* _turnMicOffAndOnEvent(event);
     }
@@ -198,9 +200,17 @@ class VideoChatFeatureBloc {
       _currentStateModel.currentVideoChatEntity!,
     );
 
+    _currentStateModel.startChat();
+
     await _currentStateModel.webrtcLaravelHelper?.joinRoom(
       room.id.toString(),
     );
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _events.add(const TurnMicOffAndOnEvent(change: false));
+    });
+
+    debugPrint("chat started or not: ${_currentStateModel.chatStarted}");
 
     yield InitialVideoChatState(_currentStateModel);
   }
@@ -344,20 +354,38 @@ class VideoChatFeatureBloc {
   static Stream<VideoChatFeatureStates> _switchCameraStreamEvent(
     SwitchCameraStreamEvent event,
   ) async* {
+    _currentStateModel.switchCamera();
+
     Helper.switchCamera(
       _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0],
       null,
       _currentStateModel.webrtcLaravelHelper?.localStream,
     );
+
+    yield InitialVideoChatState(_currentStateModel);
+  }
+
+  //
+  static Stream<VideoChatFeatureStates> _turnCameraOffAndEvent(
+    TurnCameraOffAndEvent event,
+  ) async* {
+    _currentStateModel.changeHasVideo();
+
+    final videoTrack =
+        _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0];
+
+    videoTrack.enabled = _currentStateModel.hasVideo;
+
+    yield InitialVideoChatState(_currentStateModel);
   }
 
   static Stream<VideoChatFeatureStates> _turnMicOffAndOnEvent(
     TurnMicOffAndOnEvent event,
   ) async* {
-    _currentStateModel.changeHasAudio();
+    if (event.change) _currentStateModel.changeHasAudio();
 
     Helper.setMicrophoneMute(
-      _currentStateModel.hasAudio,
+      !_currentStateModel.hasAudio,
       _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getAudioTracks()[0],
     );
 

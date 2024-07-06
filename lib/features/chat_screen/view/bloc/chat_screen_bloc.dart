@@ -187,12 +187,25 @@ class ChatScreenBloc {
     try {
       Map<String, dynamic> messageJson = jsonDecode(event.event?.data ?? '');
 
-      if (messageJson.containsKey('message')) {
+      if (messageJson.containsKey('message') && messageJson['message'] != null) {
         ChatMessageModel message =
             ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
         _currentStateModel.addMessage(message);
-        yield* _emitter();
       }
+
+      // find problem here
+      if (messageJson.containsKey('chat') && messageJson['chat'] != null) {
+        debugPrint("chat has chat room: ${_currentStateModel.currentChat?.videoChatRoom}");
+        ChatModel chat = ChatModel.fromJson(messageJson['chat']);
+        final currentChatFromModel = ChatModel.fromEntity(_currentStateModel.currentChat);
+        _currentStateModel.setChat(
+          currentChatFromModel?.copyWith(videoChatRoom: chat.videoChatRoom),
+          setChatMessages: false,
+        );
+        debugPrint("chat has chat room 2: ${_currentStateModel.currentChat?.videoChatRoom}");
+      }
+
+      yield* _emitter();
     } catch (e) {
       yield ErrorChatScreenState(_currentStateModel);
     }

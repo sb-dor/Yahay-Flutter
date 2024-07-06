@@ -75,8 +75,10 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
                 borderRadius: BorderRadius.circular(50),
                 onTap: () {
                   if (_videoChatStateModel.chat?.videoChatRoom != null) {
+                    debugPrint("working22  here");
                     _videoChatFeatureBloc.events.add(const VideoChatEntranceEvent());
                   } else {
+                    debugPrint("working11  here");
                     _videoChatFeatureBloc.events.add(const StartVideoChatEvent());
                   }
                 },

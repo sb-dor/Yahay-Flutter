@@ -40,9 +40,13 @@ class VideoChatStateModel {
 
   bool _hasVideo = true;
 
+  bool _cameraSwitched = false;
+
   bool get hasAudio => _hasAudio;
 
   bool get hasVideo => _hasVideo;
+
+  bool get cameraSwitched => _cameraSwitched;
 
   Chat? _chat;
 
@@ -129,6 +133,8 @@ class VideoChatStateModel {
   void changeHasAudio({bool? value}) => _hasAudio = value ?? !_hasAudio;
 
   void changeHasVideo({bool? value}) => _hasVideo = value ?? !_hasVideo;
+
+  void switchCamera({bool? value}) => _cameraSwitched = value ?? !_cameraSwitched;
 
   Future<void> dispose() async {
     await _channelSubscription?.cancel();

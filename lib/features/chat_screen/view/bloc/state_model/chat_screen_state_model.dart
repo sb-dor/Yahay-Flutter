@@ -50,10 +50,10 @@ class ChatScreenStateModel {
 
   bool get showEmojiPicker => _showEmojiPicker;
 
-  void setChat(Chat? chat) {
+  void setChat(Chat? chat, {bool setChatMessages = true}) {
     if (chat == null) return;
     _currentChat = chat;
-    _messages.addAll((chat.messages ?? []).reversed.toList());
+    if (setChatMessages) _messages.addAll((chat.messages ?? []).reversed.toList());
   }
 
   void setToFile(File? file) => _pickedFile = file;

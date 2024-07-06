@@ -7,8 +7,9 @@ import 'package:yahay/core/global_usages/widgets/shimmer_loader.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_events.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
+import 'package:yahay/features/chat_screen/view/bloc/state_model/chat_screen_state_model.dart';
 
-class ChatScreenAppBar extends StatelessWidget {
+class ChatScreenAppBar extends StatefulWidget {
   final ThemeData themeData;
   final ChatScreenBloc chatScreenBloc;
   final Chat? chat;
@@ -21,20 +22,35 @@ class ChatScreenAppBar extends StatelessWidget {
   });
 
   @override
+  State<ChatScreenAppBar> createState() => _ChatScreenAppBarState();
+}
+
+class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
+  late final ChatScreenBloc _chatScreenBloc;
+  late final ChatScreenStateModel _chatScreenStateModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _chatScreenBloc = widget.chatScreenBloc;
+    _chatScreenStateModel = widget.chatScreenBloc.states.value.chatScreenStateModel;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       scrolledUnderElevation: 0.0,
       leading: IconButton(
         onPressed: () {
-          chatScreenBloc.events.add(RemoveAllTempCreatedChatsEvent());
+          _chatScreenBloc.events.add(RemoveAllTempCreatedChatsEvent());
           AutoRouter.of(context).maybePop();
         },
         icon: const Icon(CupertinoIcons.back),
       ),
-      title: chatScreenBloc.states.value is LoadingChatScreenState
+      title: _chatScreenBloc.states.value is LoadingChatScreenState
           ? ShimmerLoader(
               isLoading: true,
-              mode: themeData,
+              mode: widget.themeData,
               child: Container(
                 width: MediaQuery.of(context).size.width / 2,
                 height: 20,
@@ -45,13 +61,13 @@ class ChatScreenAppBar extends StatelessWidget {
               ),
             )
           : _ChatAppBarTitle(
-              chat: chatScreenBloc.states.value.chatScreenStateModel.currentChat,
+              chat: _chatScreenStateModel.currentChat,
             ),
-      actions: chatScreenBloc.states.value is LoadingChatScreenState
+      actions: _chatScreenBloc.states.value is LoadingChatScreenState
           ? [
               ShimmerLoader(
                 isLoading: true,
-                mode: themeData,
+                mode: widget.themeData,
                 child: Container(
                   width: 25,
                   height: 25,
@@ -68,13 +84,14 @@ class ChatScreenAppBar extends StatelessWidget {
                 onPressed: () {
                   AutoRouter.of(context).push(
                     VideoChatFeatureRoute(
-                      chat: chatScreenBloc.states.value.chatScreenStateModel.currentChat,
+                      chat: _chatScreenStateModel.currentChat,
                     ),
                   );
                 },
                 icon: Icon(
                   CupertinoIcons.videocam,
-                  color: chat?.videoChatRoom != null ? Colors.green : null,
+                  color:
+                      _chatScreenStateModel.currentChat?.videoChatRoom != null ? Colors.green : null,
                 ),
               ),
             ],
