@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_events.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/sheet_opener/telegram_sheet_opener.dart';
 
 class BottomChatWidget extends StatefulWidget {
   final ChatScreenBloc chatsBloc;
@@ -103,7 +104,9 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                     bottom: -1,
                     right: 0,
                     child: IconButton(
-                      onPressed: () => [],
+                      onPressed: () {
+                        TelegramSheetOpener.telegramSheetOpener(context);
+                      },
                       icon: const FaIcon(FontAwesomeIcons.paste),
                     ),
                   )
