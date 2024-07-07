@@ -47,6 +47,7 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
                 child: Icon(
                   CupertinoIcons.switch_camera,
                   size: 35,
+                  color: Colors.black,
                 ),
               ),
             ),
