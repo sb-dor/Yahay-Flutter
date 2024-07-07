@@ -21,7 +21,7 @@ class EmojiPickerHelper extends StatelessWidget {
       onBackspacePressed: () {
         // Do something when the user taps the backspace button (optional)
         // Set it to null to hide the Backspace-Button
-        chatScreenBloc.events.add(ChaneEmojiPicker(value: false));
+        chatScreenBloc.events.add(ChangeEmojiPicker(value: false));
       },
       textEditingController: chatScreenBloc.states.value.chatScreenStateModel.messageController,
       // pass here the same [TextEditingController] that is connected to your input field, usually a [TextFormField]
