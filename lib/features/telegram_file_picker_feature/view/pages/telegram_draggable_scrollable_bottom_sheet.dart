@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_gallery_file_picker_screen.dart';
+import 'package:yahay/injections/injections.dart';
 
 class TelegramDraggableScrollableBottomSheet extends StatefulWidget {
   const TelegramDraggableScrollableBottomSheet({super.key});
@@ -11,12 +14,21 @@ class TelegramDraggableScrollableBottomSheet extends StatefulWidget {
 
 class _TelegramDraggableScrollableBottomSheetState
     extends State<TelegramDraggableScrollableBottomSheet> {
+  late final TelegramFilePickerBloc _telegramFilePickerBloc;
   final DraggableScrollableController _draggableScrollableController =
       DraggableScrollableController();
 
   @override
+  void initState() {
+    super.initState();
+    _telegramFilePickerBloc = snoopy<TelegramFilePickerBloc>();
+    _telegramFilePickerBloc.events.add(InitAllPicturesEvent());
+  }
+
+  @override
   void dispose() {
     _draggableScrollableController.dispose();
+    _telegramFilePickerBloc.dispose();
     super.dispose();
   }
 
@@ -29,6 +41,7 @@ class _TelegramDraggableScrollableBottomSheetState
       expand: false,
       builder: (context, scrollController) {
         return TelegramGalleryFilePickerScreen(
+          telegramFilePickerBloc: _telegramFilePickerBloc,
           parentScrollController: scrollController,
         );
       },
