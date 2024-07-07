@@ -74,7 +74,7 @@ class ChatScreenBloc {
       yield* _handleChatScreenEvent(event);
     } else if (event is SendMessageEvent) {
       yield* _sendMessageEvent();
-    } else if (event is ChaneEmojiPicker) {
+    } else if (event is ChangeEmojiPicker) {
       yield* _chaneEmojiPicker(event);
     } else if (event is RemoveAllTempCreatedChatsEvent) {
       _removeAllTempCreatedChatsEvent(event);
@@ -214,7 +214,9 @@ class ChatScreenBloc {
     }
   }
 
-  static Stream<ChatScreenStates> _chaneEmojiPicker(ChaneEmojiPicker event) async* {
+  static Stream<ChatScreenStates> _chaneEmojiPicker(
+    ChangeEmojiPicker event,
+  ) async* {
     try {
       _currentStateModel.changeEmojiPicker(value: event.value);
       yield* _emitter();

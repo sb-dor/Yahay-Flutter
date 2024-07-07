@@ -42,8 +42,13 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
       scrolledUnderElevation: 0.0,
       leading: IconButton(
         onPressed: () {
-          _chatScreenBloc.events.add(RemoveAllTempCreatedChatsEvent());
           AutoRouter.of(context).maybePop();
+          Future.delayed(const Duration(milliseconds: 10), () {
+            if (!_chatScreenStateModel.showEmojiPicker) {
+              _chatScreenBloc.events.add(RemoveAllTempCreatedChatsEvent());
+              AutoRouter.of(context).maybePop();
+            }
+          });
         },
         icon: const Icon(CupertinoIcons.back),
       ),

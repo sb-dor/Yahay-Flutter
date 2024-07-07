@@ -51,11 +51,11 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                         controller: _chatsBloc.states.value.chatScreenStateModel.messageController,
                         textInputAction: TextInputAction.newline,
                         onTap: () {
-                          _chatsBloc.events.add(ChaneEmojiPicker(value: false));
+                          _chatsBloc.events.add(ChangeEmojiPicker(value: false));
                         },
                         focusNode: _focusNode,
                         onTapOutside: (v) {
-                          _chatsBloc.events.add(ChaneEmojiPicker(value: false));
+                          _chatsBloc.events.add(ChangeEmojiPicker(value: false));
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onChanged: (v) {
@@ -87,7 +87,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                   child: IconButton(
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
-                      _chatsBloc.events.add(ChaneEmojiPicker());
+                      _chatsBloc.events.add(ChangeEmojiPicker());
                     },
                     icon: Icon(
                       Icons.emoji_emotions_outlined,
