@@ -6,6 +6,7 @@ import 'package:yahay/injections/blocs_inj/auth_inj/auth_inj.dart';
 import 'package:yahay/injections/blocs_inj/chat_screen_bloc_inj/chat_screen_bloc_inj.dart';
 import 'package:yahay/injections/blocs_inj/chats_bloc_inj/chats_bloc_inj.dart';
 import 'package:yahay/injections/blocs_inj/profile_bloc_inj/profile_bloc_inj.dart';
+import 'package:yahay/injections/blocs_inj/telegram_file_picker_inj/telegram_file_picker_inj.dart';
 import 'package:yahay/injections/blocs_inj/video_chat_bloc_inj/video_chat_bloc_inj.dart';
 import 'package:yahay/injections/utils_inj/utils_inj.dart';
 
@@ -35,5 +36,7 @@ abstract class Injections {
     await ProfileBlocInj.profileBlocInj();
 
     await VideoChatBlocInj.videochatBlocInj();
+
+    await TelegramFilePickerInj.telegramFilePickerInj();
   }
 }

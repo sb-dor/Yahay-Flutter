@@ -8,9 +8,7 @@ import 'package:yahay/injections/injections.dart';
 
 abstract class VideoChatBlocInj {
   static Future<void> videochatBlocInj() async {
-    // snoopy.registerLazySingleton<CameraHelperService>(
-    //   () => CameraHelperService(),
-    // );
+
     //
     // await snoopy<CameraHelperService>().initCameras();
 

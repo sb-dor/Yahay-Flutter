@@ -64,6 +64,10 @@
     </array>
 
 
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Your app needs access to the photo library to display images.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Your app needs access to add photos to the library.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>For getting audio bytes for video chat</string>
     <key>NSCameraUsageDescription</key>
