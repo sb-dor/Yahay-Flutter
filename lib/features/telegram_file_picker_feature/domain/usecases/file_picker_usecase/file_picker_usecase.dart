@@ -19,23 +19,31 @@ class FilePickerUseCase {
 
       List<File> mediaPath = [];
 
-      var images = await PhotoManager.getAssetPathList();
+      var images = await PhotoManager.getAssetListRange(
+        start: 0,
+        end: 100,
+      );
 
-      for (final pathEntity in images) {
-        // Get the assets in the current album
-        List<AssetEntity> assets = await pathEntity.getAssetListRange(
-          start: 0,
-          end: await pathEntity.assetCountAsync,
-        );
+      // for (final pathEntity in images) {
+      //   // Get the assets in the current album
+      //   List<AssetEntity> assets = await pathEntity.getAssetListRange(
+      //     start: 0,
+      //     end: await pathEntity.assetCountAsync,
+      //   );
 
-        for (final asset in assets) {
-          // Get the file path of the asset
-          File? file = await asset.file;
-          if (file != null) {
+      for (final asset in images) {
+        // Get the file path of the asset
+        File? file = await asset.file;
+        if (file != null) {
+          final kb = file.lengthSync() / 1024;
+          final mb = kb / 1024;
+          debugPrint("file mb sise: $mb");
+          if (mb > 1 && mb < 20) {
             mediaPath.add(file);
           }
         }
       }
+      // }
 
       mediaPath = await snoopy<ReusableGlobalFunctions>().removeDuplicatesFromList<File>(
         list: mediaPath,

@@ -1,6 +1,13 @@
+import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:video_player/video_player.dart';
+import 'package:yahay/core/utils/reusables/reusable_global_functions.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
+import 'package:yahay/injections/injections.dart';
 
 class TelegramGalleryFilePickerScreen extends StatefulWidget {
   final TelegramFilePickerBloc telegramFilePickerBloc;
@@ -17,35 +24,118 @@ class TelegramGalleryFilePickerScreen extends StatefulWidget {
 }
 
 class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePickerScreen> {
-  late final TelegramFilePickerStateModel _telegramFilePickerStateModel;
+  late final TelegramFilePickerBloc _telegramFilePickerBloc;
 
   @override
   void initState() {
     super.initState();
-    _telegramFilePickerStateModel =
-        widget.telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
+    _telegramFilePickerBloc = widget.telegramFilePickerBloc;
   }
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(10),
-      controller: widget.parentScrollController,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        childAspectRatio: 1.2,
-        crossAxisSpacing: 7,
-        mainAxisSpacing: 7,
-      ),
-      itemCount: _telegramFilePickerStateModel.galleryPathFiles.length,
-      itemBuilder: (BuildContext context, int index) {
-        final item = _telegramFilePickerStateModel.galleryPathFiles[index];
-        return Container(
-          child: Image.file(
-            item.file!,
-            fit: BoxFit.cover,
-          ),
-        );
+    return StreamBuilder(
+      stream: _telegramFilePickerBloc.states,
+      builder: (context, snap) {
+        switch (snap.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return Align(alignment: Alignment.topCenter, child: const LinearProgressIndicator());
+          case ConnectionState.active:
+          case ConnectionState.done:
+            final currentStateModel = snap.requireData.telegramFilePickerStateModel;
+            return GridView.builder(
+              padding: const EdgeInsets.all(10),
+              controller: widget.parentScrollController,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1.1,
+                crossAxisSpacing: 7,
+                mainAxisSpacing: 7,
+              ),
+              itemCount: currentStateModel.galleryPathPagination.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = currentStateModel.galleryPathPagination[index];
+                if (item.cameraController != null &&
+                    (item.cameraController?.value.isInitialized ?? false)) {
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CameraPreview(
+                            item.cameraController!,
+                          ),
+                        ),
+                      ),
+                      const Positioned.fill(
+                        child: Center(
+                          child: Icon(
+                            CupertinoIcons.camera_fill,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else if (item.videoPlayerController != null) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: VideoPlayer(
+                            item.videoPlayerController!,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 5,
+                          left: 5,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(
+                                0.4,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.play_arrow,
+                                  size: 15,
+                                ),
+                                const SizedBox(width: 2),
+                                Text(
+                                  snoopy<ReusableGlobalFunctions>().getNormalDuration(
+                                    item.videoPlayerController?.value.duration,
+                                  ),
+                                  style: GoogleFonts.aBeeZee(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                } else if (item.file != null) {
+                  return Container(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        item.file!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
+            );
+        }
       },
     );
   }
