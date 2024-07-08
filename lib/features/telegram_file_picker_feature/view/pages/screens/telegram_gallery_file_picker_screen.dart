@@ -53,9 +53,9 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                 crossAxisSpacing: 7,
                 mainAxisSpacing: 7,
               ),
-              itemCount: currentStateModel.galleryPathPagination.length,
+              itemCount: currentStateModel.galleryPathFiles.length,
               itemBuilder: (BuildContext context, int index) {
-                final item = currentStateModel.galleryPathPagination[index];
+                final item = currentStateModel.galleryPathFiles[index];
                 if (item.cameraController != null &&
                     (item.cameraController?.value.isInitialized ?? false)) {
                   return Stack(
