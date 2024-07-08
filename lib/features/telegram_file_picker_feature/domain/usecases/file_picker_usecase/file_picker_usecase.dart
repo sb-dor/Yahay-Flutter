@@ -9,15 +9,15 @@ import 'package:yahay/injections/injections.dart';
 class FilePickerUseCase {
   final _permissions = snoopy<PermissionsService>();
 
-  Future<List<File>> getAllImagesAndVideos() async {
+  Stream<File?> getAllImagesAndVideos() async* {
     try {
       final externalStoragePermission = await _permissions.manageExternalStoragePermission();
 
       final storagePermission = await _permissions.storagePermission();
 
-      if (!externalStoragePermission && !storagePermission) return <File>[];
+      if (!externalStoragePermission && !storagePermission) yield null;
 
-      List<File> mediaPath = [];
+      // List<File> mediaPath = [];
 
       var images = await PhotoManager.getAssetListRange(
         start: 0,
@@ -38,22 +38,22 @@ class FilePickerUseCase {
           final kb = file.lengthSync() / 1024;
           final mb = kb / 1024;
           debugPrint("file mb sise: $mb");
-          if (mb > 1 && mb < 20) {
-            mediaPath.add(file);
+          if (mb < 20) {
+            yield file;
           }
         }
       }
       // }
 
-      mediaPath = await snoopy<ReusableGlobalFunctions>().removeDuplicatesFromList<File>(
-        list: mediaPath,
-        test: (el, el2) => el.path == el2.path,
-      );
+      // mediaPath = await snoopy<ReusableGlobalFunctions>().removeDuplicatesFromList<File>(
+      //   list: mediaPath,
+      //   test: (el, el2) => el.path == el2.path,
+      // );
 
-      return mediaPath;
+      // return mediaPath;
     } catch (e) {
       debugPrint("getAllImagesAndVideos error is: $e");
-      return <File>[];
+      // return <File>[];
     }
   }
 }
