@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:video_player/video_player.dart';
-import 'package:yahay/core/utils/reusables/reusable_global_functions.dart';
-import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
+import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/injections/injections.dart';
@@ -30,6 +29,18 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
   void initState() {
     super.initState();
     _telegramFilePickerBloc = widget.telegramFilePickerBloc;
+    widget.parentScrollController.addListener(() {
+      if (widget.parentScrollController.offset == widget.parentScrollController.position.maxScrollExtent) {
+        // pagination here
+        _telegramFilePickerBloc.events.add(ImagesAndVideoPaginationEvent());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -40,11 +51,12 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
         switch (snap.connectionState) {
           case ConnectionState.none:
           case ConnectionState.waiting:
-            return Align(alignment: Alignment.topCenter, child: const LinearProgressIndicator());
+            return const Align(alignment: Alignment.topCenter, child: LinearProgressIndicator());
           case ConnectionState.active:
           case ConnectionState.done:
             final currentStateModel = snap.requireData.telegramFilePickerStateModel;
             return GridView.builder(
+              physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
               padding: const EdgeInsets.all(10),
               controller: widget.parentScrollController,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -53,9 +65,9 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                 crossAxisSpacing: 7,
                 mainAxisSpacing: 7,
               ),
-              itemCount: currentStateModel.galleryPathFiles.length,
+              itemCount: currentStateModel.galleryPathPagination.length,
               itemBuilder: (BuildContext context, int index) {
-                final item = currentStateModel.galleryPathFiles[index];
+                final item = currentStateModel.galleryPathPagination[index];
                 if (item.cameraController != null &&
                     (item.cameraController?.value.isInitialized ?? false)) {
                   return Stack(
@@ -85,8 +97,17 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                     child: Stack(
                       children: [
                         Positioned.fill(
-                          child: VideoPlayer(
-                            item.videoPlayerController!,
+                          child: SizedBox.expand(
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: SizedBox(
+                                width: item.videoPlayerController!.value.size.width,
+                                height: item.videoPlayerController!.value.size.height,
+                                child: VideoPlayer(
+                                  item.videoPlayerController!,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         Positioned(
@@ -121,13 +142,11 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                     ),
                   );
                 } else if (item.file != null) {
-                  return Container(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.file(
-                        item.file!,
-                        fit: BoxFit.cover,
-                      ),
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.file(
+                      item.file!,
+                      fit: BoxFit.cover,
                     ),
                   );
                 } else {

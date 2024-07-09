@@ -2,9 +2,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
+import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
-import 'package:yahay/core/utils/reusables/reusable_global_functions.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/file_picker_usecase/file_picker_usecase.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
@@ -70,6 +70,8 @@ class TelegramFilePickerBloc {
       yield* _closePopupEvent(event);
     } else if (event is FileStreamHandlerEvent) {
       yield* _fileStreamHandlerEvent(event);
+    } else if (event is ImagesAndVideoPaginationEvent) {
+      yield* _imagesAndVideoPaginationEvent();
     }
   }
 
@@ -87,7 +89,7 @@ class TelegramFilePickerBloc {
 
         await fileModel.controllerInit();
 
-        _currentStateModel.setGalleryPathFiles(fileModel);
+        _currentStateModel.addOnStreamOfValuesInPaginationList(fileModel);
       }
 
       _currentStateModel.initFileStreamData(
@@ -95,7 +97,9 @@ class TelegramFilePickerBloc {
           (value) {
             _events.add(FileStreamHandlerEvent(value));
           },
-        ),
+        )..onDone(() {
+            //
+          }),
       );
 
       // final listForPagination = snoopy<ListPaginationChecker>().paginateList(
@@ -130,16 +134,34 @@ class TelegramFilePickerBloc {
       // put it inside whole list
       // and should check the pagination list until specific length
       // and keep pushing that file inside that pagination list
-      // until specific length of pagination
+      // until list reaches specific length of pagination
       final model = TelegramFileImageModel(
         file: event.file,
         videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
             ? VideoPlayerController.file(event.file!)
             : null,
       );
+
+      if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
+
       _currentStateModel.setGalleryPathFiles(model);
+
+      _currentStateModel.addOnStreamOfValuesInPaginationList(model);
+
       yield GalleryFilePickerState(_currentStateModel);
     }
+  }
+
+  //
+  static Stream<TelegramFilePickerStates> _imagesAndVideoPaginationEvent() async* {
+    final tempList = snoopy<ListPaginationChecker>().paginateList(
+      wholeList: _currentStateModel.galleryPathFiles,
+      currentList: _currentStateModel.galleryPathPagination,
+    );
+
+    _currentStateModel.addToPagination(tempList);
+
+    yield GalleryFilePickerState(_currentStateModel);
   }
 
   //
@@ -165,5 +187,13 @@ class TelegramFilePickerBloc {
     _currentStateModel.closeStreamSubs();
     _currentStateModel.clearAllGalleryPath();
     _currentStateModel.clearAllGalleryPaginationPath();
+  }
+
+  //
+  // emitter
+  static Stream<TelegramFilePickerStates> _emitter() async* {
+    if (_currentState.value is GalleryFilePickerState) {
+      yield GalleryFilePickerState(_currentStateModel);
+    }
   }
 }

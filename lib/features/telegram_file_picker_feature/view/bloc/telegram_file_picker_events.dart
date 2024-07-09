@@ -14,3 +14,5 @@ class FileStreamHandlerEvent extends TelegramFilePickerEvents {
 
   FileStreamHandlerEvent(this.file);
 }
+
+class ImagesAndVideoPaginationEvent extends TelegramFilePickerEvents {}

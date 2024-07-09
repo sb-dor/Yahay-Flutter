@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 
 class TelegramFilePickerStateModel {
@@ -25,6 +26,11 @@ class TelegramFilePickerStateModel {
   void clearAllGalleryPath() => _galleryPathFiles.clear();
 
   void clearAllGalleryPaginationPath() => _galleryPathPagination.clear();
+
+  void addOnStreamOfValuesInPaginationList(TelegramFileImageEntity value) {
+    if (_galleryPathPagination.length >= Constants.perPage) return;
+    _galleryPathPagination.add(value);
+  }
 
   void addToPagination(List<TelegramFileImageEntity> list) => _galleryPathPagination.addAll(list);
 
