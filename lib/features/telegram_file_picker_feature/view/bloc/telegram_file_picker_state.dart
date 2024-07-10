@@ -12,3 +12,11 @@ abstract class TelegramFilePickerStates {
 class GalleryFilePickerState extends TelegramFilePickerStates {
   const GalleryFilePickerState(super.telegramFilePickerStateModel);
 }
+
+class FilesPickerState extends TelegramFilePickerStates {
+  const FilesPickerState(super.telegramFilePickerStateModel);
+}
+
+class MusicFilesPickerState extends TelegramFilePickerStates {
+  const MusicFilesPickerState(super.telegramFilePickerStateModel);
+}

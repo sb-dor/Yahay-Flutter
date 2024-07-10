@@ -194,6 +194,10 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _emitter() async* {
     if (_currentState.value is GalleryFilePickerState) {
       yield GalleryFilePickerState(_currentStateModel);
-    }
+    } else if (_currentState.value is FilesPickerState) {
+      yield FilesPickerState(_currentStateModel);
+    } else if (_currentState.value is MusicFilesPickerState) {
+      yield MusicFilesPickerState(_currentStateModel);
+      }
   }
 }
