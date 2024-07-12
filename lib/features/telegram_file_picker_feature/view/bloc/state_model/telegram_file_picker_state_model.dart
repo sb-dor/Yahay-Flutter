@@ -23,7 +23,13 @@ class TelegramFilePickerStateModel {
 
   void setGalleryPathFiles(TelegramFileImageEntity value) => _galleryPathFiles.add(value);
 
-  void clearAllGalleryPath() => _galleryPathFiles.clear();
+  void clearAllGalleryPath({bool clearAll = true}) {
+    if (_galleryPathFiles.isNotEmpty && !clearAll) {
+      _galleryPathFiles.removeRange(1, _galleryPathFiles.length);
+    } else {
+      _galleryPathFiles.clear();
+    }
+  }
 
   void clearAllGalleryPaginationPath() => _galleryPathPagination.clear();
 

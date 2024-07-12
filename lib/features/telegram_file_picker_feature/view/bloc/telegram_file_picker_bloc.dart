@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
@@ -66,6 +67,10 @@ class TelegramFilePickerBloc {
   ) async* {
     if (event is InitAllPicturesEvent) {
       yield* _initAllPicturesEvent(event);
+    } else if (event is InitAllFilesEvent) {
+      yield* _initAllFilesEvent(event);
+    } else if (event is InitAllMusicsEvent) {
+      yield* _initAllMusicsEvent(event);
     } else if (event is ClosePopupEvent) {
       yield* _closePopupEvent(event);
     } else if (event is FileStreamHandlerEvent) {
@@ -78,6 +83,9 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _initAllPicturesEvent(
     InitAllPicturesEvent event,
   ) async* {
+    _currentStateModel.clearAllGalleryPath(clearAll: false);
+    _currentStateModel.clearAllGalleryPaginationPath();
+
     try {
       if (_currentStateModel.galleryPathFiles.isEmpty) {
         final TelegramFileImageModel fileModel = TelegramFileImageModel(
@@ -90,6 +98,12 @@ class TelegramFilePickerBloc {
         await fileModel.controllerInit();
 
         _currentStateModel.addOnStreamOfValuesInPaginationList(fileModel);
+      } else {
+        debugPrint(
+            "setting models length: ${_currentStateModel.galleryPathFiles.first.cameraController != null}");
+        _currentStateModel.addOnStreamOfValuesInPaginationList(
+          _currentStateModel.galleryPathFiles.first,
+        );
       }
 
       _currentStateModel.initFileStreamData(
@@ -99,29 +113,26 @@ class TelegramFilePickerBloc {
           },
         )..onDone(() {
             //
+            debugPrint("im done!");
           }),
       );
-
-      // final listForPagination = snoopy<ListPaginationChecker>().paginateList(
-      //   wholeList: _currentStateModel.galleryPathFiles,
-      //   currentList: _currentStateModel.galleryPathPagination,
-      // );
-      //
-      // debugPrint("test list length: ${listForPagination.length}");
-      //
-      // for (final each in listForPagination) {
-      //   if (each.videoPlayerController != null) {
-      //     await each.videoPlayerController?.initialize();
-      //   }
-      // }
-      //
-      // _currentStateModel.addToPagination(listForPagination);
 
       yield GalleryFilePickerState(_currentStateModel);
     } catch (e) {
       debugPrint("ini all pictures event is: $e");
     }
   }
+
+  //
+
+  static Stream<TelegramFilePickerStates> _initAllFilesEvent(
+    InitAllFilesEvent event,
+  ) async* {}
+
+  //
+  static Stream<TelegramFilePickerStates> _initAllMusicsEvent(
+    InitAllMusicsEvent event,
+  ) async* {}
 
   //
   static Stream<TelegramFilePickerStates> _fileStreamHandlerEvent(
@@ -172,17 +183,13 @@ class TelegramFilePickerBloc {
       _currentStateModel.galleryPathFiles.firstOrNull?.cameraController?.dispose();
     }
     for (final each in _currentStateModel.galleryPathFiles) {
-      if (each.videoPlayerController != null) {
-        each.videoPlayerController?.dispose();
-      }
+      each.videoPlayerController?.dispose();
     }
     if (_currentStateModel.galleryPathPagination.firstOrNull?.cameraController != null) {
       _currentStateModel.galleryPathPagination.firstOrNull?.cameraController?.dispose();
     }
     for (final each in _currentStateModel.galleryPathPagination) {
-      if (each.videoPlayerController != null) {
-        each.videoPlayerController?.dispose();
-      }
+      each.videoPlayerController?.dispose();
     }
     _currentStateModel.closeStreamSubs();
     _currentStateModel.clearAllGalleryPath();
@@ -198,6 +205,6 @@ class TelegramFilePickerBloc {
       yield FilesPickerState(_currentStateModel);
     } else if (_currentState.value is MusicFilesPickerState) {
       yield MusicFilesPickerState(_currentStateModel);
-      }
+    }
   }
 }
