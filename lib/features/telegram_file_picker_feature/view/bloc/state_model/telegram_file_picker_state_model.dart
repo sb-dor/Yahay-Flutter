@@ -31,7 +31,13 @@ class TelegramFilePickerStateModel {
     }
   }
 
-  void clearAllGalleryPaginationPath() => _galleryPathPagination.clear();
+  void clearAllGalleryPaginationPath({bool clearAll = true}) {
+    if (_galleryPathPagination.isNotEmpty && !clearAll) {
+      _galleryPathPagination.removeRange(1, _galleryPathPagination.length);
+    } else {
+      _galleryPathPagination.clear();
+    }
+  }
 
   void addOnStreamOfValuesInPaginationList(TelegramFileImageEntity value) {
     if (_galleryPathPagination.length >= Constants.perPage) return;
