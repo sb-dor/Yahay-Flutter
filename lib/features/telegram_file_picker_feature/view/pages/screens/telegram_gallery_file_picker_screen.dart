@@ -124,64 +124,90 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                       ],
                     );
                   } else if (item.videoPlayerController != null) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: SizedBox.expand(
-                              child: FittedBox(
-                                fit: BoxFit.cover,
-                                child: SizedBox(
-                                  width: item.videoPlayerController!.value.size.width,
-                                  height: item.videoPlayerController!.value.size.height,
-                                  child: VideoPlayer(
-                                    item.videoPlayerController!,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 5,
-                            left: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(
-                                  0.4,
-                                ),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.play_arrow,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(width: 2),
-                                  Text(
-                                    snoopy<ReusableGlobalFunctions>().getNormalDuration(
-                                      item.videoPlayerController?.value.duration,
+                    return AnimatedPadding(
+                      duration: const Duration(milliseconds: 100),
+                      padding: currentStateModel.isFileInsidePickedFiles(item)
+                          ? const EdgeInsets.all(10)
+                          : EdgeInsets.zero,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: SizedBox.expand(
+                                child: FittedBox(
+                                  fit: BoxFit.cover,
+                                  child: SizedBox(
+                                    width: item.videoPlayerController!.value.size.width,
+                                    height: item.videoPlayerController!.value.size.height,
+                                    child: VideoPlayer(
+                                      item.videoPlayerController!,
                                     ),
-                                    style: GoogleFonts.aBeeZee(fontSize: 12),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                          )
-                        ],
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: IconButton(
+                                onPressed: () =>
+                                    _telegramFilePickerBloc.events.add(SelectGalleryFileEvent(item)),
+                                icon: currentStateModel.isFileInsidePickedFiles(item)
+                                    ? const Icon(Icons.check_circle)
+                                    : const Icon(Icons.circle_outlined),
+                                color: currentStateModel.isFileInsidePickedFiles(item)
+                                    ? Colors.blue
+                                    : Colors.white,
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 5,
+                              left: 5,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(
+                                    0.4,
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.play_arrow,
+                                      size: 15,
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Text(
+                                      snoopy<ReusableGlobalFunctions>().getNormalDuration(
+                                        item.videoPlayerController?.value.duration,
+                                      ),
+                                      style: GoogleFonts.aBeeZee(fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   } else if (item.file != null) {
                     return Stack(
                       children: [
                         Positioned.fill(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.file(
-                              item.file!,
-                              fit: BoxFit.cover,
+                          child: AnimatedPadding(
+                            duration: const Duration(milliseconds: 100),
+                            padding: currentStateModel.isFileInsidePickedFiles(item)
+                                ? const EdgeInsets.all(10)
+                                : EdgeInsets.zero,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.file(
+                                item.file!,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
@@ -192,7 +218,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                             onPressed: () =>
                                 _telegramFilePickerBloc.events.add(SelectGalleryFileEvent(item)),
                             icon: currentStateModel.isFileInsidePickedFiles(item)
-                                ? const Icon(Icons.circle)
+                                ? const Icon(Icons.check_circle)
                                 : const Icon(Icons.circle_outlined),
                             color: currentStateModel.isFileInsidePickedFiles(item)
                                 ? Colors.blue
