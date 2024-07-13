@@ -84,7 +84,7 @@ class TelegramFilePickerBloc {
     InitAllPicturesEvent event,
   ) async* {
     _currentStateModel.clearAllGalleryPath(clearAll: false);
-    _currentStateModel.clearAllGalleryPaginationPath();
+    _currentStateModel.clearAllGalleryPaginationPath(clearAll: false);
 
     try {
       if (_currentStateModel.galleryPathFiles.isEmpty) {
