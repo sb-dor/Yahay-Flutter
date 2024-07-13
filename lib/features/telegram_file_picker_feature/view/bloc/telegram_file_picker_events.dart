@@ -8,10 +8,16 @@ abstract class TelegramFilePickerEvents {
   const TelegramFilePickerEvents();
 }
 
+@immutable
+class JustEmitStateEvent extends TelegramFilePickerEvents {
+  const JustEmitStateEvent();
+}
+
 //
 @immutable
 class InitAllPicturesEvent extends TelegramFilePickerEvents {
   final bool clearAll;
+
   const InitAllPicturesEvent(this.clearAll);
 }
 
@@ -23,6 +29,13 @@ class InitAllFilesEvent extends TelegramFilePickerEvents {
 @immutable
 class InitAllMusicsEvent extends TelegramFilePickerEvents {
   const InitAllMusicsEvent();
+}
+
+@immutable
+class OpenHideBottomTelegramButtonEvent extends TelegramFilePickerEvents {
+  final bool value;
+
+  const OpenHideBottomTelegramButtonEvent(this.value);
 }
 
 //

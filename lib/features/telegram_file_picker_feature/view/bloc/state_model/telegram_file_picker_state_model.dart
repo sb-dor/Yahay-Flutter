@@ -28,7 +28,26 @@ class TelegramFilePickerStateModel {
 
   StreamSubscription<File?>? get fileStreamData => _fileStreamData;
 
+  bool _openBottomSectionButton = true;
+
+  bool get openBottomSectionButton => _openBottomSectionButton;
+
+  Timer? _openButtonSectionTimer;
+
+  Timer? get openButtonSectionTimer => _openButtonSectionTimer;
+
   void setGalleryPathFiles(TelegramFileImageEntity value) => _galleryPathFiles.add(value);
+
+  void setOpenButtonSectionTimer(Timer? timer) {
+    if ((_openButtonSectionTimer?.isActive ?? false)) {
+      _openButtonSectionTimer?.cancel();
+    }
+    _openButtonSectionTimer = timer;
+  }
+
+  void setValueToOpenButtonSectionButton(bool value) {
+    _openBottomSectionButton = value;
+  }
 
   void clearAllGalleryPath({bool clearAll = true}) {
     if (_galleryPathFiles.isNotEmpty && !clearAll) {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +30,7 @@ class TelegramFilePickerBloc {
   BehaviorSubject<TelegramFilePickerStates> get states => _states;
 
   void dispose() {
-    events.add(ClosePopupEvent());
+    events.add(const ClosePopupEvent());
   }
 
   const TelegramFilePickerBloc._({
@@ -65,7 +67,9 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _streamHandler(
     TelegramFilePickerEvents event,
   ) async* {
-    if (event is InitAllPicturesEvent) {
+    if (event is JustEmitStateEvent) {
+      yield* _emitter();
+    } else if (event is InitAllPicturesEvent) {
       yield* _initAllPicturesEvent(event);
     } else if (event is InitAllFilesEvent) {
       yield* _initAllFilesEvent(event);
@@ -73,6 +77,8 @@ class TelegramFilePickerBloc {
       yield* _initAllMusicsEvent(event);
     } else if (event is ClosePopupEvent) {
       yield* _closePopupEvent(event);
+    } else if (event is OpenHideBottomTelegramButtonEvent) {
+      yield* _openHideBottomTelegramButtonEvent(event);
     } else if (event is FileStreamHandlerEvent) {
       yield* _fileStreamHandlerEvent(event);
     } else if (event is ImagesAndVideoPaginationEvent) {
@@ -135,6 +141,21 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _initAllMusicsEvent(
     InitAllMusicsEvent event,
   ) async* {}
+
+  static Stream<TelegramFilePickerStates> _openHideBottomTelegramButtonEvent(
+    OpenHideBottomTelegramButtonEvent event,
+  ) async* {
+    if ((_currentStateModel.openButtonSectionTimer?.isActive ?? false)) {
+      _currentStateModel.openButtonSectionTimer?.cancel();
+    }
+    _currentStateModel.setOpenButtonSectionTimer(Timer(
+      const Duration(milliseconds: 350),
+      () {
+        _currentStateModel.setValueToOpenButtonSectionButton(event.value);
+        _events.add(const JustEmitStateEvent());
+      },
+    ));
+  }
 
   //
   static Stream<TelegramFilePickerStates> _fileStreamHandlerEvent(
@@ -204,6 +225,8 @@ class TelegramFilePickerBloc {
     _currentStateModel.clearAllGalleryPath();
     _currentStateModel.clearAllGalleryPaginationPath();
   }
+
+  //
 
   //
   // emitter
