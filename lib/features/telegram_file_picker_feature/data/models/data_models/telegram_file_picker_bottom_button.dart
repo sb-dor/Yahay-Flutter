@@ -22,7 +22,7 @@ class TelegramFilePickerBottomButton {
         children: [
           GestureDetector(
             onTap: () {
-              _telegramBloc.events.add(InitAllPicturesEvent());
+              _telegramBloc.events.add(const InitAllPicturesEvent(false));
             },
             child: Container(
               width: 60,

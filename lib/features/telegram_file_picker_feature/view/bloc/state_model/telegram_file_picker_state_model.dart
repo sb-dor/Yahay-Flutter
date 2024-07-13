@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
+import 'package:collection/collection.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
+import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 
 class TelegramFilePickerStateModel {
@@ -9,9 +11,7 @@ class TelegramFilePickerStateModel {
 
   final List<TelegramFileImageEntity> _galleryPathPagination = [];
 
-  StreamSubscription<File?>? _fileStreamData;
-
-  StreamSubscription<File?>? get fileStreamData => _fileStreamData;
+  final List<TelegramFileImageEntity> _pickedFiles = [];
 
   UnmodifiableListView<TelegramFileImageEntity> get galleryPathFiles => UnmodifiableListView(
         _galleryPathFiles,
@@ -20,6 +20,13 @@ class TelegramFilePickerStateModel {
   UnmodifiableListView<TelegramFileImageEntity> get galleryPathPagination => UnmodifiableListView(
         _galleryPathPagination,
       );
+
+  List<TelegramFileImageEntity?> get clonedPickedFiles =>
+      _pickedFiles.map((e) => TelegramFileImageModel.fromEntity(e)).toList();
+
+  StreamSubscription<File?>? _fileStreamData;
+
+  StreamSubscription<File?>? get fileStreamData => _fileStreamData;
 
   void setGalleryPathFiles(TelegramFileImageEntity value) => _galleryPathFiles.add(value);
 
@@ -49,4 +56,17 @@ class TelegramFilePickerStateModel {
   void initFileStreamData(StreamSubscription<File?> stream) => _fileStreamData = stream;
 
   void closeStreamSubs() => _fileStreamData?.cancel();
+
+  void removeOrAddEntity(TelegramFileImageEntity? value) {
+    if (value == null) return;
+    final findEntity = _pickedFiles.firstWhereOrNull((el) => el.uuid == value.uuid);
+    if (findEntity != null) {
+      _pickedFiles.removeWhere((el) => el.uuid == value.uuid);
+    } else {
+      _pickedFiles.add(value);
+    }
+  }
+
+  bool isFileInsidePickedFiles(TelegramFileImageEntity? value) =>
+      _pickedFiles.any((el) => el.uuid == value?.uuid);
 }

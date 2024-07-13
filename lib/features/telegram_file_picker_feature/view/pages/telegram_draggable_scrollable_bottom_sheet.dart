@@ -23,7 +23,7 @@ class _TelegramDraggableScrollableBottomSheetState
   void initState() {
     super.initState();
     _telegramFilePickerBloc = snoopy<TelegramFilePickerBloc>();
-    _telegramFilePickerBloc.events.add(InitAllPicturesEvent());
+    _telegramFilePickerBloc.events.add(const InitAllPicturesEvent(true));
   }
 
   @override

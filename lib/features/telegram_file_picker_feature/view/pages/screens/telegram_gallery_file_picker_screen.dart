@@ -30,9 +30,10 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
     super.initState();
     _telegramFilePickerBloc = widget.telegramFilePickerBloc;
     widget.parentScrollController.addListener(() {
-      if (widget.parentScrollController.offset == widget.parentScrollController.position.maxScrollExtent) {
+      if (widget.parentScrollController.offset ==
+          widget.parentScrollController.position.maxScrollExtent) {
         // pagination here
-        _telegramFilePickerBloc.events.add(ImagesAndVideoPaginationEvent());
+        _telegramFilePickerBloc.events.add(const ImagesAndVideoPaginationEvent());
       }
     });
   }
@@ -142,12 +143,32 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                     ),
                   );
                 } else if (item.file != null) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.file(
-                      item.file!,
-                      fit: BoxFit.cover,
-                    ),
+                  return Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.file(
+                            item.file!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: IconButton(
+                          onPressed: () =>
+                              _telegramFilePickerBloc.events.add(SelectGalleryFileEvent(item)),
+                          icon: currentStateModel.isFileInsidePickedFiles(item)
+                              ? Icon(Icons.circle)
+                              : Icon(Icons.circle_outlined),
+                          color: currentStateModel.isFileInsidePickedFiles(item)
+                              ? Colors.blue
+                              : Colors.white,
+                        ),
+                      ),
+                    ],
                   );
                 } else {
                   return const SizedBox();

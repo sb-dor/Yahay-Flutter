@@ -77,6 +77,8 @@ class TelegramFilePickerBloc {
       yield* _fileStreamHandlerEvent(event);
     } else if (event is ImagesAndVideoPaginationEvent) {
       yield* _imagesAndVideoPaginationEvent();
+    } else if (event is SelectGalleryFileEvent) {
+      yield* _selectGalleryFileEvent(event);
     }
   }
 
@@ -173,6 +175,13 @@ class TelegramFilePickerBloc {
     _currentStateModel.addToPagination(tempList);
 
     yield GalleryFilePickerState(_currentStateModel);
+  }
+
+  static Stream<TelegramFilePickerStates> _selectGalleryFileEvent(
+    SelectGalleryFileEvent event,
+  ) async* {
+    _currentStateModel.removeOrAddEntity(event.telegramFileImageEntity);
+    yield* _emitter();
   }
 
   //

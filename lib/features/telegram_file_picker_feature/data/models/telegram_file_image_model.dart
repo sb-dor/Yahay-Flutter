@@ -11,4 +11,14 @@ class TelegramFileImageModel extends TelegramFileImageEntity {
   Future<void> controllerInit() async {
     await cameraController?.initialize();
   }
+
+  static TelegramFileImageModel? fromEntity(TelegramFileImageEntity? entity) {
+    if (entity == null) return null;
+    return TelegramFileImageModel(
+      file: entity.file,
+      cameraController: entity.cameraController,
+      videoPlayerController: entity.videoPlayerController,
+      selected: entity.selected,
+    );
+  }
 }
