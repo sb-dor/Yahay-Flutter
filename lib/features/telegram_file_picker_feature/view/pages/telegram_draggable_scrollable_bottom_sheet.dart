@@ -35,27 +35,41 @@ class _TelegramDraggableScrollableBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      controller: _draggableScrollableController,
-      initialChildSize: 0.5,
-      minChildSize: 0.3,
-      expand: false,
-      builder: (context, scrollController) {
-        return Stack(
-          children: [
-            TelegramGalleryFilePickerScreen(
-              telegramFilePickerBloc: _telegramFilePickerBloc,
-              parentScrollController: scrollController,
-            ),
-            const AnimatedPositioned(
-              duration: Duration(milliseconds: 350),
-              bottom: 0,
-              right: 0,
-              left: 0,
-              child: TelegramBottomPickerButton(),
-            ),
-          ],
-        );
+    return StreamBuilder(
+      stream: _telegramFilePickerBloc.states,
+      builder: (context, snap) {
+        switch (snap.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return const SizedBox();
+          case ConnectionState.active:
+          case ConnectionState.done:
+            final currentStateModel = snap.requireData.telegramFilePickerStateModel;
+            return DraggableScrollableSheet(
+              controller: _draggableScrollableController,
+              initialChildSize: 0.5,
+              minChildSize: 0.3,
+              expand: false,
+              builder: (context, scrollController) {
+                return Stack(
+                  children: [
+                    TelegramGalleryFilePickerScreen(
+                      telegramFilePickerBloc: _telegramFilePickerBloc,
+                      parentScrollController: scrollController,
+                    ),
+                    AnimatedPositioned(
+                      curve: Curves.fastOutSlowIn,
+                      duration: const Duration(milliseconds: 1000),
+                      bottom: currentStateModel.openBottomSectionButton ? 0 : -200,
+                      right: 0,
+                      left: 0,
+                      child: const TelegramBottomPickerButton(),
+                    ),
+                  ],
+                );
+              },
+            );
+        }
       },
     );
   }
