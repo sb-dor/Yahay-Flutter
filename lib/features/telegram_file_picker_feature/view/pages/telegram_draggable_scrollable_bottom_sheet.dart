@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/bottom_picker_button/telegram_bottom_picker_button.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_files_picker_screen/telegram_files_picker_screen.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_gallery_file_picker_screen.dart';
 import 'package:yahay/injections/injections.dart';
 
@@ -53,10 +55,16 @@ class _TelegramDraggableScrollableBottomSheetState
               builder: (context, scrollController) {
                 return Stack(
                   children: [
-                    TelegramGalleryFilePickerScreen(
-                      telegramFilePickerBloc: _telegramFilePickerBloc,
-                      parentScrollController: scrollController,
-                    ),
+                    if (snap.requireData is GalleryFilePickerState)
+                      TelegramGalleryFilePickerScreen(
+                        telegramFilePickerBloc: _telegramFilePickerBloc,
+                        parentScrollController: scrollController,
+                      )
+                    else if (snap.requireData is FilesPickerState)
+                      TelegramFilesPickerScreen(
+                        telegramFilePickerBloc: _telegramFilePickerBloc,
+                        parentScrollController: scrollController,
+                      ),
                     AnimatedPositioned(
                       curve: Curves.fastOutSlowIn,
                       duration: const Duration(milliseconds: 1000),

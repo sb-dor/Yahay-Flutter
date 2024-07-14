@@ -135,7 +135,9 @@ class TelegramFilePickerBloc {
 
   static Stream<TelegramFilePickerStates> _initAllFilesEvent(
     InitAllFilesEvent event,
-  ) async* {}
+  ) async* {
+    yield FilesPickerState(_currentStateModel);
+  }
 
   //
   static Stream<TelegramFilePickerStates> _initAllMusicsEvent(
