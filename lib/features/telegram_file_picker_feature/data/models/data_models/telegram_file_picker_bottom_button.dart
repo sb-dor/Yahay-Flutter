@@ -53,7 +53,9 @@ class TelegramFilePickerBottomButton {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              _telegramBloc.events.add(const InitAllFilesEvent());
+            },
             child: Container(
               width: 60,
               height: 60,
