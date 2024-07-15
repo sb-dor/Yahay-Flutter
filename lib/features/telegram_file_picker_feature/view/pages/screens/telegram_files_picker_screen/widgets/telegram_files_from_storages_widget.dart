@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yahay/features/telegram_file_picker_feature/data/models/data_models/telegram_storage_file_picker_data_model.dart';
 
 class TelegramFilesFromStoragesWidget extends StatefulWidget {
   const TelegramFilesFromStoragesWidget({super.key});
@@ -18,136 +19,56 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
       ),
       child: Column(
         children: [
-          IntrinsicHeight(
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.green,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.storage,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
+          ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(height: 15),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: TelegramStorageFilePickerDataModel.data.length,
+            itemBuilder: (context, index) {
+              final item = TelegramStorageFilePickerDataModel.data[index];
+              return IntrinsicHeight(
+                child: GestureDetector(
+                  onTap: item.onTap,
+                  child: Row(
                     children: [
-                      Text(
-                        "Internal Storage",
-                        style: GoogleFonts.aBeeZee(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: item.iconBackgroundColor,
+                        ),
+                        child: Center(
+                          child: item.icon,
                         ),
                       ),
-                      Text(
-                        "Browse your file system",
-                        style: GoogleFonts.aBeeZee(
-                          fontSize: 16,
-                          color: Colors.grey,
+                      const SizedBox(width: 15),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              item.title,
+                              style: GoogleFonts.aBeeZee(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              item.content,
+                              style: GoogleFonts.aBeeZee(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            )
+                          ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 15),
-          IntrinsicHeight(
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.blue,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.folder,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Yahay",
-                        style: GoogleFonts.aBeeZee(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        "Browse the app's folder",
-                        style: GoogleFonts.aBeeZee(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 15),
-          IntrinsicHeight(
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.amber,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.folder,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Gallery",
-                        style: GoogleFonts.aBeeZee(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        "Gallery",
-                        style: GoogleFonts.aBeeZee(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           ),
         ],
       ),

@@ -9,6 +9,7 @@ import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dar
 import 'package:yahay/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/repo/telegram_file_picker_repo.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/file_picker_usecase/file_picker_usecase.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/injections/injections.dart';
@@ -38,8 +39,10 @@ class TelegramFilePickerBloc {
     required BehaviorSubject<TelegramFilePickerStates> states,
   }) : _states = states;
 
-  factory TelegramFilePickerBloc() {
-    _filePickerUseCase = FilePickerUseCase();
+  factory TelegramFilePickerBloc(
+    TelegramFilePickerRepo telegramFilePickerRepo,
+  ) {
+    _filePickerUseCase = FilePickerUseCase(telegramFilePickerRepo);
     //
     _currentStateModel = TelegramFilePickerStateModel();
 
