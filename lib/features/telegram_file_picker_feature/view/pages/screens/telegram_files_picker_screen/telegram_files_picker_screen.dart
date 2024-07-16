@@ -16,14 +16,14 @@ class TelegramFilesPickerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          TelegramFilesFromStoragesWidget(),
-          SizedBox(height: 15),
-          TelegramResentFilesFromStorageWidget(),
-        ],
-      ),
+    return Column(
+      children: [
+        const TelegramFilesFromStoragesWidget(),
+        const SizedBox(height: 15),
+        TelegramResentFilesFromStorageWidget(
+          telegramFilePickerBloc: telegramFilePickerBloc,
+        ),
+      ],
     );
   }
 }

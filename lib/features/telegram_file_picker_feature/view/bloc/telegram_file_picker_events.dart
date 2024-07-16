@@ -53,6 +53,13 @@ class FileStreamHandlerEvent extends TelegramFilePickerEvents {
 }
 
 @immutable
+class RecentFileStreamHandlerEvent extends TelegramFilePickerEvents {
+  final File? file;
+
+  const RecentFileStreamHandlerEvent(this.file);
+}
+
+@immutable
 class ImagesAndVideoPaginationEvent extends TelegramFilePickerEvents {
   const ImagesAndVideoPaginationEvent();
 }

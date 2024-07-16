@@ -13,7 +13,12 @@ class FilePickerUseCase {
   FilePickerUseCase(this._filePickerRepo);
 
   //
-  Stream<File?> getAllImagesAndVideos() async* {
+  Stream<File?> getRecentImagesAndVideos() async* {
+    yield* _filePickerRepo.getRecentImagesAndVideos();
+  }
+
+  //
+  Stream<File?> downloadsPathFilesData() async* {
     yield* _filePickerRepo.getRecentFiles();
   }
 }
