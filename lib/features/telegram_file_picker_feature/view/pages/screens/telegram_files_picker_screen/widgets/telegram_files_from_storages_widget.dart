@@ -32,9 +32,10 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(15),
+                        width: 50,
+                        height: 50,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(100),
                           color: item.iconBackgroundColor,
                         ),
                         child: Center(

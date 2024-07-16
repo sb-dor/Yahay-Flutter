@@ -16,7 +16,8 @@ class TelegramFilesPickerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      controller: parentScrollController,
       children: [
         const TelegramFilesFromStoragesWidget(),
         const SizedBox(height: 15),
