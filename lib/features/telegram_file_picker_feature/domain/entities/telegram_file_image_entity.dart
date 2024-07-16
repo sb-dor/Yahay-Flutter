@@ -9,12 +9,14 @@ class TelegramFileImageEntity {
   File? file;
   CameraController? cameraController;
   VideoPlayerController? videoPlayerController;
+  String? fileName;
   bool selected;
 
   TelegramFileImageEntity({
     this.file,
     this.cameraController,
     this.videoPlayerController,
+    this.fileName,
     this.selected = false,
   }) : uuid = const Uuid().v4();
 }

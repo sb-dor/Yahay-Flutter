@@ -5,6 +5,7 @@ class TelegramFileImageModel extends TelegramFileImageEntity {
     super.file,
     super.cameraController,
     super.videoPlayerController,
+    super.fileName,
     super.selected,
   });
 
@@ -18,6 +19,7 @@ class TelegramFileImageModel extends TelegramFileImageEntity {
       file: entity.file,
       cameraController: entity.cameraController,
       videoPlayerController: entity.videoPlayerController,
+      fileName: entity.fileName,
       selected: entity.selected,
     );
   }

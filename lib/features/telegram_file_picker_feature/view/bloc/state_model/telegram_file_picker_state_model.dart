@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
@@ -11,14 +13,30 @@ class TelegramFilePickerStateModel {
 
   final List<TelegramFileImageEntity> _galleryPathPagination = [];
 
+  final List<TelegramFileImageEntity> _recentFiles = [];
+
+  final List<TelegramFileImageEntity> _recentFilesPagination = [];
+
   final List<TelegramFileImageEntity> _pickedFiles = [];
 
-  UnmodifiableListView<TelegramFileImageEntity> get galleryPathFiles => UnmodifiableListView(
+  UnmodifiableListView<TelegramFileImageEntity> get galleryPathFiles =>
+      UnmodifiableListView(
         _galleryPathFiles,
       );
 
-  UnmodifiableListView<TelegramFileImageEntity> get galleryPathPagination => UnmodifiableListView(
+  UnmodifiableListView<TelegramFileImageEntity> get galleryPathPagination =>
+      UnmodifiableListView(
         _galleryPathPagination,
+      );
+
+  UnmodifiableListView<TelegramFileImageEntity> get recentFiles =>
+      UnmodifiableListView(
+        _recentFiles,
+      );
+
+  UnmodifiableListView<TelegramFileImageEntity> get recentFilesPagination =>
+      UnmodifiableListView(
+        _recentFilesPagination,
       );
 
   List<TelegramFileImageEntity?> get clonedPickedFiles =>
@@ -27,6 +45,10 @@ class TelegramFilePickerStateModel {
   StreamSubscription<File?>? _fileStreamData;
 
   StreamSubscription<File?>? get fileStreamData => _fileStreamData;
+
+  StreamSubscription<File?>? _recentFileData;
+
+  StreamSubscription<File?>? get recentFileData => _recentFileData;
 
   bool _openBottomSectionButton = true;
 
@@ -70,11 +92,23 @@ class TelegramFilePickerStateModel {
     _galleryPathPagination.add(value);
   }
 
+  void addToRecentFiles(TelegramFileImageEntity value) {
+    _recentFiles.add(value);
+    if (_recentFilesPagination.length < Constants.perPage) {
+      _recentFilesPagination.add(value);
+    }
+  }
+
   void addToPagination(List<TelegramFileImageEntity> list) => _galleryPathPagination.addAll(list);
 
   void initFileStreamData(StreamSubscription<File?> stream) => _fileStreamData = stream;
 
-  void closeStreamSubs() => _fileStreamData?.cancel();
+  void initRecentFileStreamData(StreamSubscription<File?> stream) => _recentFileData = stream;
+
+  void closeAllStreamSubs() {
+    _fileStreamData?.cancel();
+    _recentFileData?.cancel();
+  }
 
   void removeOrAddEntity(TelegramFileImageEntity? value) {
     if (value == null) return;
@@ -88,4 +122,13 @@ class TelegramFilePickerStateModel {
 
   bool isFileInsidePickedFiles(TelegramFileImageEntity? value) =>
       _pickedFiles.any((el) => el.uuid == value?.uuid);
+
+  String? getFileBaseName(File? file) {
+    try {
+      return basename(file!.path);
+    } catch (e) {
+      debugPrint("get file base name error is: $e");
+      return null;
+    }
+  }
 }

@@ -14,7 +14,7 @@ mixin class RecentFileMixin {
 
       final storagePermission = await _permissions.storagePermission();
 
-      if (!externalStoragePermission && !storagePermission) yield null;
+      if (!externalStoragePermission && !storagePermission) return;
 
       var images = await PhotoManager.getAssetListRange(
         start: 0,

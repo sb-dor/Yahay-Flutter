@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
@@ -84,6 +85,8 @@ class TelegramFilePickerBloc {
       yield* _openHideBottomTelegramButtonEvent(event);
     } else if (event is FileStreamHandlerEvent) {
       yield* _fileStreamHandlerEvent(event);
+    } else if (event is RecentFileStreamHandlerEvent) {
+      yield* _recentFileStreamHandlerEvent(event);
     } else if (event is ImagesAndVideoPaginationEvent) {
       yield* _imagesAndVideoPaginationEvent();
     } else if (event is SelectGalleryFileEvent) {
@@ -118,7 +121,7 @@ class TelegramFilePickerBloc {
       }
 
       _currentStateModel.initFileStreamData(
-        _filePickerUseCase.getAllImagesAndVideos().listen(
+        _filePickerUseCase.getRecentImagesAndVideos().listen(
           (value) {
             _events.add(FileStreamHandlerEvent(value));
           },
@@ -139,6 +142,12 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _initAllFilesEvent(
     InitAllFilesEvent event,
   ) async* {
+    _currentStateModel.initFileStreamData(
+      _filePickerUseCase.downloadsPathFilesData().listen((e) {
+        _events.add(RecentFileStreamHandlerEvent(e));
+      }),
+    );
+
     yield FilesPickerState(_currentStateModel);
   }
 
@@ -192,6 +201,27 @@ class TelegramFilePickerBloc {
   }
 
   //
+  static Stream<TelegramFilePickerStates> _recentFileStreamHandlerEvent(
+    RecentFileStreamHandlerEvent event,
+  ) async* {
+    if (event.file != null) {
+      final model = TelegramFileImageModel(
+        file: event.file,
+        videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
+            ? VideoPlayerController.file(event.file!)
+            : null,
+        fileName: basename(event.file!.path),
+      );
+
+      if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
+
+      _currentStateModel.addToRecentFiles(model);
+
+      yield* _emitter();
+    }
+  }
+
+  //
   static Stream<TelegramFilePickerStates> _imagesAndVideoPaginationEvent() async* {
     final tempList = snoopy<ListPaginationChecker>().paginateList(
       wholeList: _currentStateModel.galleryPathFiles,
@@ -226,7 +256,7 @@ class TelegramFilePickerBloc {
     for (final each in _currentStateModel.galleryPathPagination) {
       each.videoPlayerController?.dispose();
     }
-    _currentStateModel.closeStreamSubs();
+    _currentStateModel.closeAllStreamSubs();
     _currentStateModel.clearAllGalleryPath();
     _currentStateModel.clearAllGalleryPaginationPath();
   }
