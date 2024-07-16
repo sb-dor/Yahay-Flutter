@@ -7,6 +7,7 @@ import 'package:video_player/video_player.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 import 'package:yahay/injections/injections.dart';
 
 class TelegramGalleryFilePickerScreen extends StatefulWidget {
@@ -33,7 +34,8 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
     final currentStateModel = _telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==
-          widget.parentScrollController.position.maxScrollExtent) {
+              widget.parentScrollController.position.maxScrollExtent &&
+          _telegramFilePickerBloc.states.value is GalleryFilePickerState) {
         // pagination here
         _telegramFilePickerBloc.events.add(const ImagesAndVideoPaginationEvent());
 
@@ -151,8 +153,8 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                               right: 0,
                               top: 0,
                               child: IconButton(
-                                onPressed: () =>
-                                    _telegramFilePickerBloc.events.add(SelectGalleryFileEvent(item)),
+                                onPressed: () => _telegramFilePickerBloc.events
+                                    .add(SelectGalleryFileEvent(item)),
                                 icon: currentStateModel.isFileInsidePickedFiles(item)
                                     ? const Icon(Icons.check_circle)
                                     : const Icon(Icons.circle_outlined),

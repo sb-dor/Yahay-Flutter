@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
@@ -31,7 +33,7 @@ class _TelegramResentFilesFromStorageWidgetState
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
         color: Colors.blueGrey.shade900.withOpacity(0.5),
       ),
@@ -49,36 +51,42 @@ class _TelegramResentFilesFromStorageWidgetState
           const SizedBox(height: 15),
           //
           // here should be the list of only files not images or videos
-          ListView.builder(
-            physics: const AlwaysScrollableScrollPhysics(),
+          ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(height: 20),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: _telegramFilePickerStateModel.recentFilesPagination.length,
             itemBuilder: (context, index) {
               final item = _telegramFilePickerStateModel.recentFilesPagination[index];
-              return Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
+              return IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration:  BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          item.fileName ?? '-',
-                          style: GoogleFonts.aBeeZee(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        )
-                      ],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.fileName ?? '-',
+                            style: GoogleFonts.aBeeZee(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),

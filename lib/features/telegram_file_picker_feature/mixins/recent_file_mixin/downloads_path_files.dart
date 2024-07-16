@@ -14,15 +14,17 @@ mixin class DownloadsPathFiles {
     String dirType = DownloadDirectoryTypes.downloads,
   }) async* {
     try {
-      final externalStoragePermission = await _permissions.manageExternalStoragePermission();
-
-      final storagePermission = await _permissions.storagePermission();
-
-      if (!externalStoragePermission && !storagePermission) return;
+      // final externalStoragePermission = await _permissions.manageExternalStoragePermission();
+      //
+      // final storagePermission = await _permissions.storagePermission();
+      //
+      // if (!externalStoragePermission && !storagePermission) return;
 
       Directory? downloadsDirectory = await DownloadsPath.downloadsDirectory(
         dirType: dirType,
       );
+
+      debugPrint("downloades dir: $downloadsDirectory");
 
       if (downloadsDirectory == null) return;
 

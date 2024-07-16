@@ -196,7 +196,7 @@ class TelegramFilePickerBloc {
 
       _currentStateModel.addOnStreamOfValuesInPaginationList(model);
 
-      yield GalleryFilePickerState(_currentStateModel);
+      yield* _emitter();
     }
   }
 
