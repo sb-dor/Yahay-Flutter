@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
@@ -100,6 +101,9 @@ class TelegramFilePickerBloc {
     _currentStateModel.clearAllGalleryPath(clearAll: false);
     _currentStateModel.clearAllGalleryPaginationPath(clearAll: false);
 
+    debugPrint("length of gallery: ${_currentStateModel.galleryPathFiles.length}");
+    debugPrint("length of gallery pag: ${_currentStateModel.galleryPathPagination.length}");
+
     try {
       if (_currentStateModel.galleryPathFiles.isEmpty) {
         final TelegramFileImageModel fileModel = TelegramFileImageModel(
@@ -111,14 +115,21 @@ class TelegramFilePickerBloc {
 
         await fileModel.controllerInit();
 
-        _currentStateModel.addOnStreamOfValuesInPaginationList(fileModel);
+        yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
+          fileModel,
+          emitter: _emitter(),
+        );
       } else {
         debugPrint(
             "setting models length: ${_currentStateModel.galleryPathFiles.first.cameraController != null}");
-        _currentStateModel.addOnStreamOfValuesInPaginationList(
+        yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
           _currentStateModel.galleryPathFiles.first,
+          emitter: _emitter(),
         );
       }
+
+      debugPrint("length of gallery: ${_currentStateModel.galleryPathFiles.length}");
+      debugPrint("length of gallery pag: ${_currentStateModel.galleryPathPagination.length}");
 
       _currentStateModel.initFileStreamData(
         _filePickerUseCase.getRecentImagesAndVideos().listen(
@@ -188,15 +199,21 @@ class TelegramFilePickerBloc {
         videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
             ? VideoPlayerController.file(event.file!)
             : null,
+        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
+            ? await VideoThumbnail.thumbnailData(video: event.file!.path)
+            : null,
       );
 
-      if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
+      // if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
 
       _currentStateModel.setGalleryPathFiles(model);
 
-      _currentStateModel.addOnStreamOfValuesInPaginationList(model);
+      yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
+        model,
+        emitter: _emitter(),
+      );
 
-      yield* _emitter();
+      // yield* _emitter();
     }
   }
 
@@ -211,9 +228,12 @@ class TelegramFilePickerBloc {
             ? VideoPlayerController.file(event.file!)
             : null,
         fileName: basename(event.file!.path),
+        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
+            ? await VideoThumbnail.thumbnailData(video: event.file!.path)
+            : null,
       );
 
-      if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
+      // if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
 
       _currentStateModel.addToRecentFiles(model);
 

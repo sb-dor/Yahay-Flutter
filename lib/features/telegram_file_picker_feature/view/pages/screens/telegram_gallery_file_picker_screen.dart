@@ -109,8 +109,14 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                         Positioned.fill(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: CameraPreview(
-                              item.cameraController!,
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: CameraPreview(
+                                  item.cameraController!,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -125,7 +131,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                         ),
                       ],
                     );
-                  } else if (item.videoPlayerController != null) {
+                  } else if (item.videoPlayerController != null &&  item.videoPreview != null) {
                     return AnimatedPadding(
                       duration: const Duration(milliseconds: 100),
                       padding: currentStateModel.isFileInsidePickedFiles(item)
@@ -136,17 +142,9 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                         child: Stack(
                           children: [
                             Positioned.fill(
-                              child: SizedBox.expand(
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  child: SizedBox(
-                                    width: item.videoPlayerController!.value.size.width,
-                                    height: item.videoPlayerController!.value.size.height,
-                                    child: VideoPlayer(
-                                      item.videoPlayerController!,
-                                    ),
-                                  ),
-                                ),
+                              child: Image.memory(
+                                item.videoPreview!,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             Positioned(
@@ -209,6 +207,11 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                               child: Image.file(
                                 item.file!,
                                 fit: BoxFit.cover,
+                                gaplessPlayback: true,
+                                // width: 85.0,
+                                // height: 85.0,
+                                // cacheWidth: 300,
+                                // cacheHeight: 300,
                               ),
                             ),
                           ),

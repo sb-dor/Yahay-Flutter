@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 
 class TelegramFilePickerStateModel {
   final List<TelegramFileImageEntity> _galleryPathFiles = [];
@@ -19,23 +20,19 @@ class TelegramFilePickerStateModel {
 
   final List<TelegramFileImageEntity> _pickedFiles = [];
 
-  UnmodifiableListView<TelegramFileImageEntity> get galleryPathFiles =>
-      UnmodifiableListView(
+  UnmodifiableListView<TelegramFileImageEntity> get galleryPathFiles => UnmodifiableListView(
         _galleryPathFiles,
       );
 
-  UnmodifiableListView<TelegramFileImageEntity> get galleryPathPagination =>
-      UnmodifiableListView(
+  UnmodifiableListView<TelegramFileImageEntity> get galleryPathPagination => UnmodifiableListView(
         _galleryPathPagination,
       );
 
-  UnmodifiableListView<TelegramFileImageEntity> get recentFiles =>
-      UnmodifiableListView(
+  UnmodifiableListView<TelegramFileImageEntity> get recentFiles => UnmodifiableListView(
         _recentFiles,
       );
 
-  UnmodifiableListView<TelegramFileImageEntity> get recentFilesPagination =>
-      UnmodifiableListView(
+  UnmodifiableListView<TelegramFileImageEntity> get recentFilesPagination => UnmodifiableListView(
         _recentFilesPagination,
       );
 
@@ -87,9 +84,13 @@ class TelegramFilePickerStateModel {
     }
   }
 
-  void addOnStreamOfValuesInPaginationList(TelegramFileImageEntity value) {
+  Stream<TelegramFilePickerStates> addOnStreamOfValuesInPaginationList(
+    TelegramFileImageEntity value, {
+    Stream<TelegramFilePickerStates>? emitter,
+  }) async* {
     if (_galleryPathPagination.length >= Constants.perPage) return;
     _galleryPathPagination.add(value);
+    if(emitter != null) yield* emitter;
   }
 
   void addToRecentFiles(TelegramFileImageEntity value) {
