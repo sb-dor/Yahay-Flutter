@@ -53,27 +53,29 @@ class _TelegramDraggableScrollableBottomSheetState
               minChildSize: 0.3,
               expand: false,
               builder: (context, scrollController) {
-                return Stack(
-                  children: [
-                    if (snap.requireData is GalleryFilePickerState)
-                      TelegramGalleryFilePickerScreen(
-                        telegramFilePickerBloc: _telegramFilePickerBloc,
-                        parentScrollController: scrollController,
-                      )
-                    else if (snap.requireData is FilesPickerState)
-                      TelegramFilesPickerScreen(
-                        telegramFilePickerBloc: _telegramFilePickerBloc,
-                        parentScrollController: scrollController,
+                return SafeArea(
+                  child: Stack(
+                    children: [
+                      if (snap.requireData is GalleryFilePickerState)
+                        TelegramGalleryFilePickerScreen(
+                          telegramFilePickerBloc: _telegramFilePickerBloc,
+                          parentScrollController: scrollController,
+                        )
+                      else if (snap.requireData is FilesPickerState)
+                        TelegramFilesPickerScreen(
+                          telegramFilePickerBloc: _telegramFilePickerBloc,
+                          parentScrollController: scrollController,
+                        ),
+                      AnimatedPositioned(
+                        curve: Curves.fastOutSlowIn,
+                        duration: const Duration(milliseconds: 1000),
+                        bottom: currentStateModel.openBottomSectionButton ? 0 : -200,
+                        right: 0,
+                        left: 0,
+                        child: const TelegramBottomPickerButton(),
                       ),
-                    AnimatedPositioned(
-                      curve: Curves.fastOutSlowIn,
-                      duration: const Duration(milliseconds: 1000),
-                      bottom: currentStateModel.openBottomSectionButton ? 0 : -200,
-                      right: 0,
-                      left: 0,
-                      child: const TelegramBottomPickerButton(),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             );
