@@ -102,6 +102,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                 itemCount: currentStateModel.galleryPathPagination.length,
                 itemBuilder: (BuildContext context, int index) {
                   final item = currentStateModel.galleryPathPagination[index];
+
                   if (item.cameraController != null &&
                       (item.cameraController?.value.isInitialized ?? false)) {
                     return Stack(
@@ -131,7 +132,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                         ),
                       ],
                     );
-                  } else if (item.videoPlayerController != null &&  item.videoPreview != null) {
+                  } else if (item.videoPlayerController != null && item.videoPreview != null) {
                     return AnimatedPadding(
                       duration: const Duration(milliseconds: 100),
                       padding: currentStateModel.isFileInsidePickedFiles(item)

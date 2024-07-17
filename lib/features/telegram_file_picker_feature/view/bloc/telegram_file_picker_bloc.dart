@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
@@ -206,6 +207,15 @@ class TelegramFilePickerBloc {
 
       // if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
 
+      if (model.videoPlayerController == null && model.videoPreview == null) {
+        if (_currentStateModel.context.mounted) {
+          precacheImage(
+            FileImage(event.file!),
+            _currentStateModel.context,
+          );
+        }
+      }
+
       _currentStateModel.setGalleryPathFiles(model);
 
       yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
@@ -234,6 +244,15 @@ class TelegramFilePickerBloc {
       );
 
       // if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
+
+      if (model.videoPlayerController == null && model.videoPreview == null) {
+        if (_currentStateModel.context.mounted) {
+          precacheImage(
+            FileImage(event.file!),
+            _currentStateModel.context,
+          );
+        }
+      }
 
       _currentStateModel.addToRecentFiles(model);
 
