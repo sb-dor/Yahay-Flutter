@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -39,12 +40,17 @@ mixin class RecentFileMixin {
           final mb = kb / 1024;
           debugPrint("file mb sise: $mb");
           if (mb < 20) {
-            if (_reusableFunctions.isVideoFile(file.path)) {
-              yield file;
-              continue;
-            }
+            // if (_reusableFunctions.isVideoFile(file.path)) {
+            //   yield file;
+            //   continue;
+            // }
             // final compressedFile = _compressedFile(file);
-            if (_context.mounted) precacheImage(FileImage(file), _context);
+            // if (_context.mounted) precacheImage(FileImage(file), _context);
+            await DefaultCacheManager().putFile(
+              file.path,
+              file.readAsBytesSync(),
+              maxAge: const Duration(days: 1),
+            );
             yield file;
           }
         }
@@ -55,24 +61,24 @@ mixin class RecentFileMixin {
     }
   }
 
-  Future<File?> _compressedFile(File? file) async {
-    if (file == null) return null;
-
-    final tempDir = await getTemporaryDirectory();
-    final filePath = file.absolute.path;
-    final fileName = path.basename(filePath);
-    final outPath = path.join(tempDir.path, 'compressed_$fileName');
-
-    final res = await FlutterImageCompress.compressAndGetFile(
-      file.path,
-      outPath,
-      quality: 30,
-    );
-
-    final fileFromCompressedImage = File(res?.path ?? '');
-
-    if (!fileFromCompressedImage.existsSync()) return null;
-
-    return fileFromCompressedImage;
-  }
+// Future<File?> _compressedFile(File? file) async {
+//   if (file == null) return null;
+//
+//   final tempDir = await getTemporaryDirectory();
+//   final filePath = file.absolute.path;
+//   final fileName = path.basename(filePath);
+//   final outPath = path.join(tempDir.path, 'compressed_$fileName');
+//
+//   final res = await FlutterImageCompress.compressAndGetFile(
+//     file.path,
+//     outPath,
+//     quality: 30,
+//   );
+//
+//   final fileFromCompressedImage = File(res?.path ?? '');
+//
+//   if (!fileFromCompressedImage.existsSync()) return null;
+//
+//   return fileFromCompressedImage;
+// }
 }

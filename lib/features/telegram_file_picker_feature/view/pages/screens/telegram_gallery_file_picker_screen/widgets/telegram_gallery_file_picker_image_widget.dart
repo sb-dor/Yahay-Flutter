@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
@@ -33,6 +36,38 @@ class _TelegramGalleryFilePickerImageWidgetState
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        // Positioned.fill(
+        //   child: FutureBuilder<File>(
+        //     future: DefaultCacheManager().getSingleFile(widget.item.file!.path),
+        //     builder: (context, snapshot) {
+        //       if (snapshot.connectionState == ConnectionState.waiting) {
+        //         return const CircularProgressIndicator();
+        //       } else if (snapshot.hasError || !snapshot.hasData) {
+        //         debugPrint("error image is: ${snapshot.error}");
+        //         return const Icon(Icons.error);
+        //       } else {
+        //         return AnimatedPadding(
+        //           duration: const Duration(milliseconds: 100),
+        //           padding: _currentStateModel.isFileInsidePickedFiles(widget.item)
+        //               ? const EdgeInsets.all(10)
+        //               : EdgeInsets.zero,
+        //           child: ClipRRect(
+        //             borderRadius: BorderRadius.circular(10),
+        //             child: Image.file(
+        //               snapshot.data!,
+        //               fit: BoxFit.cover,
+        //               gaplessPlayback: true,
+        //               // width: 85.0,
+        //               // height: 85.0,
+        //               // cacheWidth: 300,
+        //               // cacheHeight: 300,
+        //             ),
+        //           ),
+        //         );
+        //       }
+        //     },
+        //   ),
+        // ),
         Positioned.fill(
           child: AnimatedPadding(
             duration: const Duration(milliseconds: 100),

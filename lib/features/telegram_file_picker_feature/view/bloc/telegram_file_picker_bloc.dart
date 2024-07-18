@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
@@ -196,7 +197,7 @@ class TelegramFilePickerBloc {
       // and keep pushing that file inside that pagination list
       // until list reaches specific length of pagination
       final model = TelegramFileImageModel(
-        file: event.file,
+        file: await DefaultCacheManager().getSingleFile(event.file!.path),
         videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
             ? VideoPlayerController.file(event.file!)
             : null,
@@ -283,6 +284,7 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _closePopupEvent(
     ClosePopupEvent event,
   ) async* {
+    await DefaultCacheManager().emptyCache();
     if (_currentStateModel.galleryPathFiles.firstOrNull?.cameraController != null) {
       _currentStateModel.galleryPathFiles.firstOrNull?.cameraController?.dispose();
     }
