@@ -1,12 +1,22 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
+import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
 import 'package:yahay/injections/injections.dart';
+import 'package:path/path.dart' as path;
+
+mixin class CompressImage {}
 
 mixin class RecentFileMixin {
   final _permissions = snoopy<PermissionsService>();
+
+  final _context = snoopy<GlobalContext>().globalContext.currentContext!;
+
+  final _reusableFunctions = snoopy<ReusableGlobalFunctions>();
 
   Stream<File?> getAllImagesAndVideos() async* {
     try {
@@ -29,6 +39,12 @@ mixin class RecentFileMixin {
           final mb = kb / 1024;
           debugPrint("file mb sise: $mb");
           if (mb < 20) {
+            if (_reusableFunctions.isVideoFile(file.path)) {
+              yield file;
+              continue;
+            }
+            // final compressedFile = _compressedFile(file);
+            if (_context.mounted) precacheImage(FileImage(file), _context);
             yield file;
           }
         }
@@ -37,5 +53,26 @@ mixin class RecentFileMixin {
       debugPrint("getAllImagesAndVideos error is: $e");
       // return <File>[];
     }
+  }
+
+  Future<File?> _compressedFile(File? file) async {
+    if (file == null) return null;
+
+    final tempDir = await getTemporaryDirectory();
+    final filePath = file.absolute.path;
+    final fileName = path.basename(filePath);
+    final outPath = path.join(tempDir.path, 'compressed_$fileName');
+
+    final res = await FlutterImageCompress.compressAndGetFile(
+      file.path,
+      outPath,
+      quality: 30,
+    );
+
+    final fileFromCompressedImage = File(res?.path ?? '');
+
+    if (!fileFromCompressedImage.existsSync()) return null;
+
+    return fileFromCompressedImage;
   }
 }

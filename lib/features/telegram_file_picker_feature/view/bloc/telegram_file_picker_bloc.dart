@@ -209,10 +209,10 @@ class TelegramFilePickerBloc {
 
       if (model.videoPlayerController == null && model.videoPreview == null) {
         if (_currentStateModel.context.mounted) {
-          precacheImage(
-            FileImage(event.file!),
-            _currentStateModel.context,
-          );
+          // precacheImage(
+          //   FileImage(event.file!),
+          //   _currentStateModel.context,
+          // );
         }
       }
 
@@ -247,10 +247,10 @@ class TelegramFilePickerBloc {
 
       if (model.videoPlayerController == null && model.videoPreview == null) {
         if (_currentStateModel.context.mounted) {
-          precacheImage(
-            FileImage(event.file!),
-            _currentStateModel.context,
-          );
+          // precacheImage(
+          //   FileImage(event.file!),
+          //   _currentStateModel.context,
+          // );
         }
       }
 
