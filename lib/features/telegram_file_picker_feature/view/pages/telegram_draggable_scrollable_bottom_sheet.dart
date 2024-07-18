@@ -4,7 +4,7 @@ import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_f
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/bottom_picker_button/telegram_bottom_picker_button.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_files_picker_screen/telegram_files_picker_screen.dart';
-import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_gallery_file_picker_screen.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker_screen.dart';
 import 'package:yahay/injections/injections.dart';
 
 class TelegramDraggableScrollableBottomSheet extends StatefulWidget {
