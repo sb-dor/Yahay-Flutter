@@ -92,6 +92,8 @@ class TelegramFilePickerBloc {
       yield* _recentFileStreamHandlerEvent(event);
     } else if (event is ImagesAndVideoPaginationEvent) {
       yield* _imagesAndVideoPaginationEvent();
+    } else if (event is RecentFilesPaginationEvent) {
+      yield* _recentFilesPaginationEvent(event);
     } else if (event is SelectGalleryFileEvent) {
       yield* _selectGalleryFileEvent(event);
     }
@@ -275,13 +277,26 @@ class TelegramFilePickerBloc {
 
     _currentStateModel.addToPagination(tempList);
 
-    yield GalleryFilePickerState(_currentStateModel);
+    yield* _emitter();
   }
 
   static Stream<TelegramFilePickerStates> _selectGalleryFileEvent(
     SelectGalleryFileEvent event,
   ) async* {
     _currentStateModel.removeOrAddEntity(event.telegramFileImageEntity);
+    yield* _emitter();
+  }
+
+  static Stream<TelegramFilePickerStates> _recentFilesPaginationEvent(
+    RecentFilesPaginationEvent event,
+  ) async* {
+    final tempList = snoopy<ListPaginationChecker>().paginateList(
+      wholeList: _currentStateModel.recentFiles,
+      currentList: _currentStateModel.recentFilesPagination,
+    );
+
+    _currentStateModel.addToRecentFilesPagination(tempList);
+
     yield* _emitter();
   }
 

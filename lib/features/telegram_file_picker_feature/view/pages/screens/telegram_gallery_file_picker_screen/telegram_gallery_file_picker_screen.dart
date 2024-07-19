@@ -59,6 +59,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
 
   @override
   void dispose() {
+    debugPrint("disposing gallery screen");
     // _scrollController.dispose();
     super.dispose();
   }
