@@ -100,6 +100,9 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _initAllPicturesEvent(
     InitAllPicturesEvent event,
   ) async* {
+    if (event.controller != null) {
+      _currentStateModel.initDragScrollController(event.controller!);
+    }
     _currentStateModel.clearAllGalleryPath(clearAll: false);
     _currentStateModel.clearAllGalleryPaginationPath(clearAll: false);
 
@@ -155,6 +158,8 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _initAllFilesEvent(
     InitAllFilesEvent event,
   ) async* {
+    _currentStateModel.clearRecentFiles();
+    _currentStateModel.clearRecentPagFiles();
     _currentStateModel.initFileStreamData(
       _filePickerUseCase.downloadsPathFilesData().listen((e) {
         _events.add(RecentFileStreamHandlerEvent(e));
@@ -303,6 +308,15 @@ class TelegramFilePickerBloc {
   }
 
   //
+  void resetDragScrollSheet() {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _currentStateModel.draggableScrollableController?.animateTo(
+        0.5,
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    });
+  }
 
   //
   // emitter

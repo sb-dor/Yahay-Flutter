@@ -13,6 +13,19 @@ class ReusableGlobalFunctions {
     '.mpg'
   ];
 
+  final _imageExtensions = [
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.gif',
+    '.bmp',
+    '.tiff',
+    '.tif',
+    '.webp',
+    '.ico',
+    '.heic'
+  ];
+
   /// Removes duplicate elements from a list based on a custom test function.
   ///
   /// This function iterates through the provided list and removes elements that
@@ -74,6 +87,13 @@ class ReusableGlobalFunctions {
 
     // Check if the file extension is in the list of video extensions
     return _videoExtensions.contains(extension);
+  }
+
+  bool isImageFile(String image) {
+    //
+    String extension = path.extension(image).toLowerCase();
+
+    return _imageExtensions.contains(extension);
   }
 
   //

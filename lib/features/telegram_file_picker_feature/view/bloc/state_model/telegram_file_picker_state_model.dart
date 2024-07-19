@@ -15,6 +15,11 @@ class TelegramFilePickerStateModel {
   //
   BuildContext get context => snoopy<GlobalContext>().globalContext.currentContext!;
 
+  DraggableScrollableController? _draggableScrollableController;
+
+  DraggableScrollableController? get draggableScrollableController =>
+      _draggableScrollableController;
+
   final List<TelegramFileImageEntity> _galleryPathFiles = [];
 
   final List<TelegramFileImageEntity> _galleryPathPagination = [];
@@ -60,6 +65,9 @@ class TelegramFilePickerStateModel {
 
   Timer? get openButtonSectionTimer => _openButtonSectionTimer;
 
+  void initDragScrollController(DraggableScrollableController controller) =>
+      _draggableScrollableController = controller;
+
   void setGalleryPathFiles(TelegramFileImageEntity value) => _galleryPathFiles.add(value);
 
   void setOpenButtonSectionTimer(Timer? timer) {
@@ -88,6 +96,10 @@ class TelegramFilePickerStateModel {
       _galleryPathPagination.clear();
     }
   }
+
+  void clearRecentFiles() => _recentFiles.clear();
+
+  void clearRecentPagFiles() => _recentFilesPagination.clear();
 
   Stream<TelegramFilePickerStates> addOnStreamOfValuesInPaginationList(
     TelegramFileImageEntity value, {
