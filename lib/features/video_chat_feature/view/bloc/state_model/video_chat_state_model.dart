@@ -12,7 +12,6 @@ import 'package:yahay/core/utils/talker/talker_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:collection/collection.dart';
 import 'package:yahay/features/video_chat_feature/webrtc_helper/webrtc_laravel_helper.dart';
-import 'package:yahay/injections/injections.dart';
 
 class VideoChatStateModel {
   final talker = TalkerService.instance.talker;

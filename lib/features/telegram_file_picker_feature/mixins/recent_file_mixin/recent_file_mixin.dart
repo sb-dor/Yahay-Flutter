@@ -1,14 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
-import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
 import 'package:yahay/injections/injections.dart';
-import 'package:path/path.dart' as path;
 
 mixin class CompressImage {}
 

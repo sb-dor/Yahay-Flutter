@@ -1,9 +1,6 @@
 import 'dart:async';
-
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
@@ -304,7 +301,7 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _closePopupEvent(
     ClosePopupEvent event,
   ) async* {
-    await DefaultCacheManager().emptyCache();
+    // await DefaultCacheManager().emptyCache();
     if (_currentStateModel.galleryPathFiles.firstOrNull?.cameraController != null) {
       _currentStateModel.galleryPathFiles.firstOrNull?.cameraController?.dispose();
     }

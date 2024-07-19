@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:lecle_downloads_path_provider/constants/downloads_directory_type.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
 import 'package:yahay/injections/injections.dart';
