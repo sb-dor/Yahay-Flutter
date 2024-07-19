@@ -148,7 +148,7 @@ class _TelegramResentFilesFromStorageWidgetState
 class _VideoItem extends StatelessWidget {
   final TelegramFileImageEntity item;
 
-  const _VideoItem({super.key, required this.item});
+  const _VideoItem({required this.item});
 
   @override
   Widget build(BuildContext context) {

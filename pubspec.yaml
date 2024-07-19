@@ -68,17 +68,16 @@ dependencies:
   talker: ^4.2.0
   uuid: ^4.4.0
   emoji_picker_flutter: ^2.2.0
+  flutter_image_compress: ^2.3.0
 
   # for video streaming
   flutter_webrtc: ^0.11.1
 
   # for file picker feature
   photo_manager: ^3.2.0
-  image_picker: ^1.1.2
   camera: ^0.11.0+1
   video_player: ^2.9.1
   video_thumbnail: ^0.5.3
-  flutter_image_compress: ^2.3.0
   flutter_cache_manager: ^3.3.1
 
 

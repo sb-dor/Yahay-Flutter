@@ -1,14 +1,8 @@
-import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:video_player/video_player.dart';
-import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
-import 'package:yahay/injections/injections.dart';
 
 import 'widgets/telegram_gallery_file_picker_camera_widget.dart';
 import 'widgets/telegram_gallery_file_picker_image_widget.dart';

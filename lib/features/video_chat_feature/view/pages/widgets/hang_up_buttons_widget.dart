@@ -97,7 +97,7 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
           child: InkWell(
             borderRadius: BorderRadius.circular(50),
             onTap: () {
-              _videoChatFeatureBloc.events.add(TurnMicOffAndOnEvent());
+              _videoChatFeatureBloc.events.add(const TurnMicOffAndOnEvent());
             },
             child: SizedBox(
               width: 60,
