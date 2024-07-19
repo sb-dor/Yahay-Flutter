@@ -119,6 +119,9 @@ class TelegramFilePickerStateModel {
 
   void addToPagination(List<TelegramFileImageEntity> list) => _galleryPathPagination.addAll(list);
 
+  void addToRecentFilesPagination(List<TelegramFileImageEntity> list) =>
+      _recentFilesPagination.addAll(list);
+
   void initFileStreamData(StreamSubscription<File?> stream) => _fileStreamData = stream;
 
   void initRecentFileStreamData(StreamSubscription<File?> stream) => _recentFileData = stream;
