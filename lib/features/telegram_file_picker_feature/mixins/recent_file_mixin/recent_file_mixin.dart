@@ -15,9 +15,9 @@ mixin class CompressImage {}
 mixin class RecentFileMixin {
   final _permissions = snoopy<PermissionsService>();
 
-  final _context = snoopy<GlobalContext>().globalContext.currentContext!;
+  // final _context = snoopy<GlobalContext>().globalContext.currentContext!;
 
-  final _reusableFunctions = snoopy<ReusableGlobalFunctions>();
+  // final _reusableFunctions = snoopy<ReusableGlobalFunctions>();
 
   Stream<File?> getAllImagesAndVideos() async* {
     try {

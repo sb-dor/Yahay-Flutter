@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 
@@ -17,8 +18,12 @@ class JustEmitStateEvent extends TelegramFilePickerEvents {
 @immutable
 class InitAllPicturesEvent extends TelegramFilePickerEvents {
   final bool clearAll;
+  final DraggableScrollableController? controller;
 
-  const InitAllPicturesEvent(this.clearAll);
+  const InitAllPicturesEvent(
+    this.clearAll, {
+    this.controller,
+  });
 }
 
 @immutable

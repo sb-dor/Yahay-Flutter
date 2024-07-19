@@ -22,7 +22,12 @@ class TelegramFilePickerBottomButton {
         children: [
           GestureDetector(
             onTap: () {
-              _telegramBloc.events.add(const InitAllPicturesEvent(false));
+              _telegramBloc.events.add(
+                const InitAllPicturesEvent(
+                  false,
+                ),
+              );
+              _telegramBloc.resetDragScrollSheet();
             },
             child: Container(
               width: 60,
@@ -55,6 +60,7 @@ class TelegramFilePickerBottomButton {
           GestureDetector(
             onTap: () {
               _telegramBloc.events.add(const InitAllFilesEvent());
+              _telegramBloc.resetDragScrollSheet();
             },
             child: Container(
               width: 60,
@@ -85,7 +91,9 @@ class TelegramFilePickerBottomButton {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              _telegramBloc.resetDragScrollSheet();
+            },
             child: Container(
               width: 60,
               height: 60,

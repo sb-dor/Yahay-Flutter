@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 
@@ -65,7 +66,7 @@ class _TelegramResentFilesFromStorageWidgetState
                     Container(
                       width: 50,
                       height: 50,
-                      decoration:  BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Colors.amber,
                         borderRadius: BorderRadius.circular(50),
                       ),
@@ -74,6 +75,7 @@ class _TelegramResentFilesFromStorageWidgetState
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             item.fileName ?? '-',
@@ -81,7 +83,15 @@ class _TelegramResentFilesFromStorageWidgetState
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                             ),
-                          )
+                          ),
+                          Text(
+                            TelegramFileImageModel.fromEntity(item)?.fileSize() ?? '',
+                            style: GoogleFonts.aBeeZee(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ],
                       ),
                     ),
