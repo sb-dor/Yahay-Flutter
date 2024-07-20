@@ -7,15 +7,9 @@ name: Dart
 
 on:
   push:
-<<<<<<< HEAD
     branches: [ "master", "dev" ]
   pull_request:
     branches: [ "master" , "dev" ]
-=======
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
->>>>>>> e718688 (Create dart.yml)
 
 jobs:
   build-android:
@@ -26,13 +20,9 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-<<<<<<< HEAD
-          flutter-version: 3.22.1
-=======
-          flutter-version: "3.3.4"
->>>>>>> e718688 (Create dart.yml)
+          flutter-version: 3.19.0
       - run: flutter pub get
-      # - run: flutter test
+      - run: flutter test
       - run: flutter build apk
       - run: flutter build appbundle
 
@@ -44,11 +34,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-<<<<<<< HEAD
           channel: stable
-=======
-          flutter-version: "3.3.4"
->>>>>>> e718688 (Create dart.yml)
       - run: flutter pub get
-      # - run: flutter test
+      - run: flutter test
       - run: flutter build ios --release --no-codesign
