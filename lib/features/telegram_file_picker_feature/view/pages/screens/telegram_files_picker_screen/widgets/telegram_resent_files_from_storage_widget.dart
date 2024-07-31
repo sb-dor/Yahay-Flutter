@@ -63,6 +63,7 @@ class _TelegramResentFilesFromStorageWidgetState
             itemCount: _telegramFilePickerStateModel.recentFilesPagination.length,
             itemBuilder: (context, index) {
               final item = _telegramFilePickerStateModel.recentFilesPagination[index];
+              debugPrint("telegram file picker state model recent files length: ${_telegramFilePickerStateModel.recentFilesPagination.length}");
               return IntrinsicHeight(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
