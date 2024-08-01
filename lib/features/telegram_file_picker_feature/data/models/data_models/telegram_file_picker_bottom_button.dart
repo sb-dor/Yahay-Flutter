@@ -26,6 +26,9 @@ class TelegramFilePickerBottomButton {
                   false,
                 ),
               );
+
+              _telegramBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
+
               _telegramBloc.resetDragScrollSheet();
             },
             child: Container(

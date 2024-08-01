@@ -165,7 +165,11 @@ class TelegramFilePickerBloc {
       }),
     );
 
-    yield FilesPickerState(_currentStateModel);
+    if (event.initFilePickerState) {
+      yield FilesPickerState(_currentStateModel);
+    } else {
+      _emitter();
+    }
   }
 
   //
