@@ -28,7 +28,9 @@ class InitAllPicturesEvent extends TelegramFilePickerEvents {
 
 @immutable
 class InitAllFilesEvent extends TelegramFilePickerEvents {
-  const InitAllFilesEvent();
+  final bool initFilePickerState;
+
+  const InitAllFilesEvent({this.initFilePickerState = true});
 }
 
 @immutable
