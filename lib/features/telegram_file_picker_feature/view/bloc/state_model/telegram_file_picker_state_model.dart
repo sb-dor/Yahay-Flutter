@@ -7,6 +7,7 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_with_compressed_and_original_path_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 import 'package:yahay/injections/injections.dart';
 
@@ -48,13 +49,14 @@ class TelegramFilePickerStateModel {
   List<TelegramFileImageEntity?> get clonedPickedFiles =>
       _pickedFiles.map((e) => TelegramFileImageModel.fromEntity(e)).toList();
 
-  StreamSubscription<File?>? _fileStreamData;
+  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? _fileStreamData;
 
-  StreamSubscription<File?>? get fileStreamData => _fileStreamData;
+  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? get fileStreamData => _fileStreamData;
 
-  StreamSubscription<File?>? _recentFileData;
+  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? _recentFileData;
 
-  StreamSubscription<File?>? get recentFileData => _recentFileData;
+  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? get recentFileData =>
+      _recentFileData;
 
   bool _openBottomSectionButton = true;
 
@@ -121,9 +123,15 @@ class TelegramFilePickerStateModel {
   void addToRecentFilesPagination(List<TelegramFileImageEntity> list) =>
       _recentFilesPagination.addAll(list);
 
-  void initFileStreamData(StreamSubscription<File?> stream) => _fileStreamData = stream;
+  void initFileStreamData(
+    StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?> stream,
+  ) =>
+      _fileStreamData = stream;
 
-  void initRecentFileStreamData(StreamSubscription<File?> stream) => _recentFileData = stream;
+  void initRecentFileStreamData(
+    StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?> stream,
+  ) =>
+      _recentFileData = stream;
 
   void closeAllStreamSubs() {
     _fileStreamData?.cancel();

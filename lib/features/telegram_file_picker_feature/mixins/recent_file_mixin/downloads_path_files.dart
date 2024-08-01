@@ -4,11 +4,15 @@ import 'dart:isolate';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lecle_downloads_path_provider/constants/downloads_directory_type.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
+import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_with_compressed_and_original_path_model.dart';
 import 'package:yahay/injections/injections.dart';
 
 mixin class DownloadsPathFiles {
@@ -16,7 +20,7 @@ mixin class DownloadsPathFiles {
 
   // final _reusables = snoopy<ReusableGlobalFunctions>();
 
-  Stream<File?> downloadsPathFilesData({
+  Stream<TelegramFileImageWithCompressedAndOriginalPathModel?> downloadsPathFilesData({
     String dirType = DownloadDirectoryTypes.downloads,
   }) async* {
     try {
@@ -49,7 +53,7 @@ mixin class DownloadsPathFiles {
       Isolate.spawn(_fileFinder, sendingList);
 
       await for (final each in sendingPort) {
-        if (each is File) {
+        if (each is TelegramFileImageWithCompressedAndOriginalPathModel) {
           yield each;
         } else if (each == null) {
           break; // null indicates the end of the processing
@@ -61,7 +65,6 @@ mixin class DownloadsPathFiles {
       debugPrint("downloadsPathFilesData error is: $e");
     }
   }
-
 
   static Future<void> _fileFinder(List<dynamic> args) async {
     final SendPort receivingPort = args[0];
@@ -76,7 +79,6 @@ mixin class DownloadsPathFiles {
       );
     }
 
-
     final defaultCacheManager = DefaultCacheManager();
 
     final reusables = GetIt.instance.get<ReusableGlobalFunctions>();
@@ -89,16 +91,34 @@ mixin class DownloadsPathFiles {
       if (FileSystemEntity.isFileSync(entity.path)) {
         final file = File(entity.path);
         if (reusables.isImageFile(file.path)) {
-          final fileBytes = await file.readAsBytes();
+          // final fileBytes = await file.readAsBytes();
           // await defaultCacheManager.putFile(
           //   file.path,
           //   fileBytes,
           //   maxAge: const Duration(days: 1),
           // );
-          receivingPort.send(file);
+          final compressedFile = await compressedImageFile(file);
+          receivingPort.send(compressedFile);
         }
       }
     }
   }
-}
 
+  static Future<TelegramFileImageWithCompressedAndOriginalPathModel?> compressedImageFile(
+    File file,
+  ) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempPath = "${tempDir.path}/compressed_${basenameWithoutExtension(file.path)}.jpg";
+    final resultCompressedFile = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      tempPath,
+      quality: 60,
+    );
+    if (resultCompressedFile == null) return null;
+    final result = TelegramFileImageWithCompressedAndOriginalPathModel(
+      File(resultCompressedFile.path),
+      originalPath: file.path,
+    );
+    return result;
+  }
+}

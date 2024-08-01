@@ -13,6 +13,8 @@ class TelegramFileImageEntity {
   String? fileName;
   bool selected;
 
+  String? originalImagePath;
+
   TelegramFileImageEntity({
     this.file,
     this.cameraController,
@@ -20,5 +22,6 @@ class TelegramFileImageEntity {
     this.videoPreview,
     this.fileName,
     this.selected = false,
+    this.originalImagePath,
   }) : uuid = const Uuid().v4();
 }
