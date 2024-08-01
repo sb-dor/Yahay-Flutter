@@ -201,7 +201,7 @@ class TelegramFilePickerBloc {
       // and keep pushing that file inside that pagination list
       // until list reaches specific length of pagination
       final model = TelegramFileImageModel(
-        file: await DefaultCacheManager().getSingleFile(event.file!.file.path),
+        file: event.file!.file,
         videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
             ? VideoPlayerController.file(event.file!.file)
             : null,
