@@ -159,7 +159,7 @@ class TelegramFilePickerBloc {
   ) async* {
     _currentStateModel.clearRecentFiles();
     _currentStateModel.clearRecentPagFiles();
-    _currentStateModel.initFileStreamData(
+    _currentStateModel.initRecentFileStreamData(
       _filePickerUseCase.downloadsPathFilesData().listen((e) {
         _events.add(RecentFileStreamHandlerEvent(e));
       }),
@@ -192,7 +192,7 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _fileStreamHandlerEvent(
     FileStreamHandlerEvent event,
   ) async* {
-    if (event.file != null) {
+    if (event.file != null && event.file?.file != null) {
       // it's not paginating logic
       // that is why this function should get stream of file
       // any time when it comes and
@@ -201,12 +201,12 @@ class TelegramFilePickerBloc {
       // and keep pushing that file inside that pagination list
       // until list reaches specific length of pagination
       final model = TelegramFileImageModel(
-        file: await DefaultCacheManager().getSingleFile(event.file!.path),
-        videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
-            ? VideoPlayerController.file(event.file!)
+        file: await DefaultCacheManager().getSingleFile(event.file!.file.path),
+        videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+            ? VideoPlayerController.file(event.file!.file)
             : null,
-        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
-            ? await VideoThumbnail.thumbnailData(video: event.file!.path)
+        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+            ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
             : null,
       );
 
@@ -236,15 +236,15 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _recentFileStreamHandlerEvent(
     RecentFileStreamHandlerEvent event,
   ) async* {
-    if (event.file != null) {
+    if (event.file != null && event.file?.file != null) {
       final model = TelegramFileImageModel(
-        file: event.file,
-        videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
-            ? VideoPlayerController.file(event.file!)
+        file: event.file?.file,
+        videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+            ? VideoPlayerController.file(event.file!.file)
             : null,
-        fileName: basename(event.file!.path),
-        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.path)
-            ? await VideoThumbnail.thumbnailData(video: event.file!.path)
+        fileName: basename(event.file!.file.path),
+        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+            ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
             : null,
       );
 
