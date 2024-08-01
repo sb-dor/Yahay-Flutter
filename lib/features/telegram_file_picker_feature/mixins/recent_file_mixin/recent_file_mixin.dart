@@ -11,10 +11,13 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
+import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_with_compressed_and_original_path_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_asset_entity.dart';
 import 'package:yahay/injections/injections.dart';
+
+import 'package:path/path.dart' as p;
 
 mixin class CompressImage {}
 
@@ -93,13 +96,15 @@ mixin class RecentFileMixin {
     final List<TelegramFileImageAssetEntity> images =
         dList.map((e) => TelegramFileImageAssetEntity.fromJson(e)).toList();
 
+    final tempPath = await getTemporaryDirectory();
+
     for (final asset in images) {
       // Get the file path of the asset
       File file = File(asset.imagePath);
       if (file.existsSync()) {
         final kb = file.lengthSync() / 1024;
         final mb = kb / 1024;
-        debugPrint("file mb sise: $mb");
+        // debugPrint("file mb sise: $mb");
         if (mb < 20) {
           // if (_reusableFunctions.isVideoFile(file.path)) {
           //   yield file;
@@ -113,7 +118,11 @@ mixin class RecentFileMixin {
           //   maxAge: const Duration(days: 1),
           // );
           if (reusables.isImageFile(asset.imagePath)) {
-            final compressedFile = await compressedImageFile(file);
+            final compressedFile = await ImageCompressor.compressedImageFile(
+              file: file,
+              directoryPath: tempPath.path,
+              quality: 30,
+            );
 
             sendPort.send(compressedFile);
           } else {
@@ -122,24 +131,6 @@ mixin class RecentFileMixin {
         }
       }
     }
-  }
-
-  static Future<TelegramFileImageWithCompressedAndOriginalPathModel?> compressedImageFile(
-    File file,
-  ) async {
-    final tempDir = await getApplicationCacheDirectory();
-    final tempPath = "${tempDir.path}/compressed_${basenameWithoutExtension(file.path)}.jpg";
-    final resultCompressedFile = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path,
-      tempPath,
-      quality: 60,
-    );
-    if (resultCompressedFile == null) return null;
-    final result = TelegramFileImageWithCompressedAndOriginalPathModel(
-      File(resultCompressedFile.path),
-      originalPath: file.path,
-    );
-    return result;
   }
 
 // Future<File?> _compressedFile(File? file) async {

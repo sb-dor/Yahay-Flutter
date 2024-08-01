@@ -1,0 +1,32 @@
+import 'dart:io';
+
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:path/path.dart';
+import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_with_compressed_and_original_path_model.dart';
+
+abstract final class ImageCompressor {
+  static Future<TelegramFileImageWithCompressedAndOriginalPathModel?> compressedImageFile({
+    required File file,
+    required String? directoryPath,
+    int quality = 60,
+    CompressFormat format = CompressFormat.jpeg,
+  }) async {
+    String imagePath = '$directoryPath/${basenameWithoutExtension(file.path)}_temp.${format.name}';
+
+    final XFile? compressedImage = await FlutterImageCompress.compressAndGetFile(
+      file.path,
+      imagePath,
+      quality: quality,
+      format: format,
+    );
+
+    if (compressedImage == null) {
+      throw ("Failed to compress the image");
+    }
+    final result = TelegramFileImageWithCompressedAndOriginalPathModel(
+      File(compressedImage.path),
+      originalPath: file.path,
+    );
+    return result;
+  }
+}

@@ -11,6 +11,7 @@ import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
+import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_with_compressed_and_original_path_model.dart';
 import 'package:yahay/injections/injections.dart';
@@ -79,9 +80,11 @@ mixin class DownloadsPathFiles {
       );
     }
 
-    final defaultCacheManager = DefaultCacheManager();
+    // final defaultCacheManager = DefaultCacheManager();
 
     final reusables = GetIt.instance.get<ReusableGlobalFunctions>();
+
+    final directoryPath = await getTemporaryDirectory();
 
     if (directory == null) return;
     await for (final entity in directory.list(recursive: false, followLinks: false)) {
@@ -97,28 +100,13 @@ mixin class DownloadsPathFiles {
           //   fileBytes,
           //   maxAge: const Duration(days: 1),
           // );
-          final compressedFile = await compressedImageFile(file);
+          final compressedFile = await ImageCompressor.compressedImageFile(
+            file: file,
+            directoryPath: directoryPath.path,
+          );
           receivingPort.send(compressedFile);
         }
       }
     }
-  }
-
-  static Future<TelegramFileImageWithCompressedAndOriginalPathModel?> compressedImageFile(
-    File file,
-  ) async {
-    final tempDir = await getTemporaryDirectory();
-    final tempPath = "${tempDir.path}/compressed_${basenameWithoutExtension(file.path)}.jpg";
-    final resultCompressedFile = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path,
-      tempPath,
-      quality: 60,
-    );
-    if (resultCompressedFile == null) return null;
-    final result = TelegramFileImageWithCompressedAndOriginalPathModel(
-      File(resultCompressedFile.path),
-      originalPath: file.path,
-    );
-    return result;
   }
 }
