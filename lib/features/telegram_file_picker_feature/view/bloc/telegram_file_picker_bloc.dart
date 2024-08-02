@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:video_player/video_player.dart';
@@ -97,6 +97,8 @@ class TelegramFilePickerBloc {
       yield* _recentFilesPaginationEvent(event);
     } else if (event is SelectGalleryFileEvent) {
       yield* _selectGalleryFileEvent(event);
+    } else if (event is BrowseInternalStorageAndSelectFilesEvent) {
+      yield* _browseInternalStorageAndSelectFilesEvent(event);
     }
   }
 
@@ -330,6 +332,14 @@ class TelegramFilePickerBloc {
         curve: Curves.fastOutSlowIn,
       );
     });
+  }
+
+  //
+  static Stream<TelegramFilePickerStates> _browseInternalStorageAndSelectFilesEvent(
+    BrowseInternalStorageAndSelectFilesEvent event,
+  ) async* {
+    final imagePicker = ImagePicker();
+    final files = await imagePicker.pickMultipleMedia();
   }
 
   //
