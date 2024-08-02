@@ -29,7 +29,7 @@ class _TelegramDraggableScrollableBottomSheetState
       true,
       controller: _draggableScrollableController,
     ));
-    _telegramFilePickerBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
+    // _telegramFilePickerBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
   }
 
   @override

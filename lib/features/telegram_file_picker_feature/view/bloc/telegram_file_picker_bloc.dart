@@ -75,8 +75,12 @@ class TelegramFilePickerBloc {
       yield* _emitter();
     } else if (event is InitAllPicturesEvent) {
       yield* _initAllPicturesEvent(event);
+    } else if (event is ChangeStateToAllPicturesEvent) {
+      yield GalleryFilePickerState(_currentStateModel);
     } else if (event is InitAllFilesEvent) {
       yield* _initAllFilesEvent(event);
+    } else if (event is ChangeStateToAllFilesState) {
+      yield FilesPickerState(_currentStateModel);
     } else if (event is InitAllMusicsEvent) {
       yield* _initAllMusicsEvent(event);
     } else if (event is ClosePopupEvent) {
@@ -105,9 +109,6 @@ class TelegramFilePickerBloc {
     _currentStateModel.clearAllGalleryPath(clearAll: false);
     _currentStateModel.clearAllGalleryPaginationPath(clearAll: false);
 
-    debugPrint("length of gallery: ${_currentStateModel.galleryPathFiles.length}");
-    debugPrint("length of gallery pag: ${_currentStateModel.galleryPathPagination.length}");
-
     try {
       if (_currentStateModel.galleryPathFiles.isEmpty) {
         final TelegramFileImageModel fileModel = TelegramFileImageModel(
@@ -124,16 +125,11 @@ class TelegramFilePickerBloc {
           emitter: _emitter(),
         );
       } else {
-        debugPrint(
-            "setting models length: ${_currentStateModel.galleryPathFiles.first.cameraController != null}");
         yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
           _currentStateModel.galleryPathFiles.first,
           emitter: _emitter(),
         );
       }
-
-      debugPrint("length of gallery: ${_currentStateModel.galleryPathFiles.length}");
-      debugPrint("length of gallery pag: ${_currentStateModel.galleryPathPagination.length}");
 
       _currentStateModel.initFileStreamData(
         _filePickerUseCase.getRecentImagesAndVideos().listen(
@@ -145,6 +141,8 @@ class TelegramFilePickerBloc {
             debugPrint("im done!");
           }),
       );
+
+      _events.add(const InitAllFilesEvent(initFilePickerState: false));
 
       yield GalleryFilePickerState(_currentStateModel);
     } catch (e) {
@@ -168,7 +166,7 @@ class TelegramFilePickerBloc {
     if (event.initFilePickerState) {
       yield FilesPickerState(_currentStateModel);
     } else {
-      _emitter();
+      yield* _emitter();
     }
   }
 
