@@ -3,12 +3,9 @@ import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lecle_downloads_path_provider/constants/downloads_directory_type.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
@@ -69,7 +66,7 @@ mixin class DownloadsPathFiles {
 
   static Future<void> _fileFinder(List<dynamic> args) async {
     final SendPort receivingPort = args[0];
-    final Directory? directory = Directory(args[1]);
+    final Directory directory = Directory(args[1]);
     final rootIsolateToken = args[2] as RootIsolateToken;
 
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
@@ -85,8 +82,6 @@ mixin class DownloadsPathFiles {
     final reusables = GetIt.instance.get<ReusableGlobalFunctions>();
 
     final directoryPath = await getTemporaryDirectory();
-
-    if (directory == null) return;
     await for (final entity in directory.list(recursive: false, followLinks: false)) {
       if (FileSystemEntity.isDirectorySync(entity.path)) {
         await _fileFinder([receivingPort, entity.path, rootIsolateToken]);

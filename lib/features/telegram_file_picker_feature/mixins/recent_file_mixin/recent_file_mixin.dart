@@ -1,13 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get_it/get_it.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
@@ -17,7 +13,6 @@ import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_asset_entity.dart';
 import 'package:yahay/injections/injections.dart';
 
-import 'package:path/path.dart' as p;
 
 mixin class CompressImage {}
 

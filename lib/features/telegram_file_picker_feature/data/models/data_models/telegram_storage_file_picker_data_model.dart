@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/injections/injections.dart';
 
 class TelegramStorageFilePickerDataModel {
@@ -29,7 +30,9 @@ class TelegramStorageFilePickerDataModel {
       ),
       title: "Internal Storage",
       content: "Browse your file system",
-      onTap: () {},
+      onTap: () {
+        _telegramBloc.events.add(const BrowseInternalStorageAndSelectFilesEvent());
+      },
     ),
     TelegramStorageFilePickerDataModel(
       iconBackgroundColor: Colors.blue,

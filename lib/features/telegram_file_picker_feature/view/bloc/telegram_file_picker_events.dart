@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
@@ -92,4 +90,9 @@ final class SelectGalleryFileEvent extends TelegramFilePickerEvents {
 @immutable
 final class RecentFilesPaginationEvent extends TelegramFilePickerEvents {
   const RecentFilesPaginationEvent();
+}
+
+//
+final class BrowseInternalStorageAndSelectFilesEvent extends TelegramFilePickerEvents {
+  const BrowseInternalStorageAndSelectFilesEvent();
 }
