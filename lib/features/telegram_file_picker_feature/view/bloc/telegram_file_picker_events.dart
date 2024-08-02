@@ -1,22 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_with_compressed_and_original_path_entity.dart';
 
 @immutable
-abstract class TelegramFilePickerEvents {
+abstract base class TelegramFilePickerEvents {
   const TelegramFilePickerEvents();
 }
 
 @immutable
-class JustEmitStateEvent extends TelegramFilePickerEvents {
+final class JustEmitStateEvent extends TelegramFilePickerEvents {
   const JustEmitStateEvent();
 }
 
 //
 @immutable
-class InitAllPicturesEvent extends TelegramFilePickerEvents {
+final class InitAllPicturesEvent extends TelegramFilePickerEvents {
   final bool clearAll;
   final DraggableScrollableController? controller;
 
@@ -27,19 +28,29 @@ class InitAllPicturesEvent extends TelegramFilePickerEvents {
 }
 
 @immutable
-class InitAllFilesEvent extends TelegramFilePickerEvents {
+final class ChangeStateToAllPicturesEvent extends TelegramFilePickerEvents {
+  const ChangeStateToAllPicturesEvent();
+}
+
+@immutable
+final class InitAllFilesEvent extends TelegramFilePickerEvents {
   final bool initFilePickerState;
 
   const InitAllFilesEvent({this.initFilePickerState = true});
 }
 
 @immutable
-class InitAllMusicsEvent extends TelegramFilePickerEvents {
+final class ChangeStateToAllFilesState extends TelegramFilePickerEvents {
+  const ChangeStateToAllFilesState();
+}
+
+@immutable
+final class InitAllMusicsEvent extends TelegramFilePickerEvents {
   const InitAllMusicsEvent();
 }
 
 @immutable
-class OpenHideBottomTelegramButtonEvent extends TelegramFilePickerEvents {
+final class OpenHideBottomTelegramButtonEvent extends TelegramFilePickerEvents {
   final bool value;
 
   const OpenHideBottomTelegramButtonEvent(this.value);
@@ -48,37 +59,37 @@ class OpenHideBottomTelegramButtonEvent extends TelegramFilePickerEvents {
 //
 // gallery section's functions
 @immutable
-class ClosePopupEvent extends TelegramFilePickerEvents {
+final class ClosePopupEvent extends TelegramFilePickerEvents {
   const ClosePopupEvent();
 }
 
 @immutable
-class FileStreamHandlerEvent extends TelegramFilePickerEvents {
+final class FileStreamHandlerEvent extends TelegramFilePickerEvents {
   final TelegramFileImageWithCompressedAndOriginalPathEntity? file;
 
   const FileStreamHandlerEvent(this.file);
 }
 
 @immutable
-class RecentFileStreamHandlerEvent extends TelegramFilePickerEvents {
+final class RecentFileStreamHandlerEvent extends TelegramFilePickerEvents {
   final TelegramFileImageWithCompressedAndOriginalPathEntity? file;
 
   const RecentFileStreamHandlerEvent(this.file);
 }
 
 @immutable
-class ImagesAndVideoPaginationEvent extends TelegramFilePickerEvents {
+final class ImagesAndVideoPaginationEvent extends TelegramFilePickerEvents {
   const ImagesAndVideoPaginationEvent();
 }
 
 @immutable
-class SelectGalleryFileEvent extends TelegramFilePickerEvents {
+final class SelectGalleryFileEvent extends TelegramFilePickerEvents {
   final TelegramFileImageEntity? telegramFileImageEntity;
 
   const SelectGalleryFileEvent(this.telegramFileImageEntity);
 }
 
 @immutable
-class RecentFilesPaginationEvent extends TelegramFilePickerEvents {
+final class RecentFilesPaginationEvent extends TelegramFilePickerEvents {
   const RecentFilesPaginationEvent();
 }

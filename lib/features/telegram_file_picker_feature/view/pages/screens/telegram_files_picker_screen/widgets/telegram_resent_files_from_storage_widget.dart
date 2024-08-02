@@ -46,7 +46,7 @@ class _TelegramResentFilesFromStorageWidgetState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recent files",
+            "Recent downloaded files",
             style: GoogleFonts.aBeeZee(
               fontSize: 16,
               fontWeight: FontWeight.w500,
