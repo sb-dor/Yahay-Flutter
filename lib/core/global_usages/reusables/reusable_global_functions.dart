@@ -27,14 +27,6 @@ class ReusableGlobalFunctions {
     '.heic'
   ];
 
-  final _foldersName = [
-    "${Constants.appName} Audio",
-    "${Constants.appName} Documents",
-    "${Constants.appName} Files",
-    "${Constants.appName} Images",
-    "${Constants.appName} Videos",
-  ];
-
   /// Removes duplicate elements from a list based on a custom test function.
   ///
   /// This function iterates through the provided list and removes elements that
