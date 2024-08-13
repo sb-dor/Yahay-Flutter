@@ -1,4 +1,5 @@
 import 'package:path/path.dart' as path;
+import 'package:yahay/core/global_usages/constants/constants.dart';
 
 class ReusableGlobalFunctions {
   final _videoExtensions = [
@@ -24,6 +25,14 @@ class ReusableGlobalFunctions {
     '.webp',
     '.ico',
     '.heic'
+  ];
+
+  final _foldersName = [
+    "${Constants.appName} Audio",
+    "${Constants.appName} Documents",
+    "${Constants.appName} Files",
+    "${Constants.appName} Images",
+    "${Constants.appName} Videos",
   ];
 
   /// Removes duplicate elements from a list based on a custom test function.

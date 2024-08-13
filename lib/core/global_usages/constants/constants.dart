@@ -1,4 +1,5 @@
 abstract class Constants {
+  static const String appName = "Yahay";
   // integers
   static const int perPage = 30;
 
