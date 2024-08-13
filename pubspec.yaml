@@ -94,9 +94,10 @@ dev_dependencies:
   freezed: ^2.5.2
   auto_route_generator: ^8.0.0
   package_info_plus: any
-  wakelock_windows: any
-  win32: any
+#  wakelock_windows: any
+  win32: ^5.5.4
   build_runner: ^2.4.9
+  pinenacl: ^0.6.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

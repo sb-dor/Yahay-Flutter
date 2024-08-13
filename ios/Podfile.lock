@@ -65,6 +65,11 @@ PODS:
   - flutter_facebook_auth (6.0.4):
     - FBSDKLoginKit (~> 16.3.1)
     - Flutter
+  - flutter_image_compress_common (1.0.0):
+    - Flutter
+    - Mantle
+    - SDWebImage
+    - SDWebImageWebPCoder
   - flutter_webrtc (0.11.0):
     - Flutter
     - WebRTC-SDK (= 125.6422.02)
@@ -112,6 +117,21 @@ PODS:
     - Flutter
   - lecle_downloads_path_provider (0.0.1):
     - Flutter
+  - libwebp (1.3.2):
+    - libwebp/demux (= 1.3.2)
+    - libwebp/mux (= 1.3.2)
+    - libwebp/sharpyuv (= 1.3.2)
+    - libwebp/webp (= 1.3.2)
+  - libwebp/demux (1.3.2):
+    - libwebp/webp
+  - libwebp/mux (1.3.2):
+    - libwebp/demux
+  - libwebp/sharpyuv (1.3.2)
+  - libwebp/webp (1.3.2):
+    - libwebp/sharpyuv
+  - Mantle (2.2.0):
+    - Mantle/extobjc (= 2.2.0)
+  - Mantle/extobjc (2.2.0)
   - nanopb (2.30910.0):
     - nanopb/decode (= 2.30910.0)
     - nanopb/encode (= 2.30910.0)
@@ -130,6 +150,12 @@ PODS:
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
+  - SDWebImage (5.19.4):
+    - SDWebImage/Core (= 5.19.4)
+  - SDWebImage/Core (5.19.4)
+  - SDWebImageWebPCoder (0.14.6):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.17)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -140,6 +166,9 @@ PODS:
   - video_player_avfoundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - video_thumbnail (0.0.1):
+    - Flutter
+    - libwebp
   - WebRTC-SDK (125.6422.02)
 
 DEPENDENCIES:
@@ -149,6 +178,7 @@ DEPENDENCIES:
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - Flutter (from `Flutter`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
+  - flutter_image_compress_common (from `.symlinks/plugins/flutter_image_compress_common/ios`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - gal (from `.symlinks/plugins/gal/darwin`)
@@ -162,6 +192,7 @@ DEPENDENCIES:
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/darwin`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
+  - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
 
 SPEC REPOS:
   trunk:
@@ -183,9 +214,13 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - libwebp
+    - Mantle
     - nanopb
     - PromisesObjC
     - PromisesSwift
+    - SDWebImage
+    - SDWebImageWebPCoder
     - Toast
     - WebRTC-SDK
 
@@ -202,6 +237,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_facebook_auth:
     :path: ".symlinks/plugins/flutter_facebook_auth/ios"
+  flutter_image_compress_common:
+    :path: ".symlinks/plugins/flutter_image_compress_common/ios"
   flutter_webrtc:
     :path: ".symlinks/plugins/flutter_webrtc/ios"
   fluttertoast:
@@ -228,6 +265,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/darwin"
   video_player_avfoundation:
     :path: ".symlinks/plugins/video_player_avfoundation/darwin"
+  video_thumbnail:
+    :path: ".symlinks/plugins/video_thumbnail/ios"
 
 SPEC CHECKSUMS:
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
@@ -249,6 +288,7 @@ SPEC CHECKSUMS:
   FirebaseSessions: 2fdf949f9e58295a57703ae8f2efc44f9fa3aa16
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_facebook_auth: c8700ab1770f3d8e5e7456220e4f3bbcdb831454
+  flutter_image_compress_common: ec1d45c362c9d30a3f6a0426c297f47c52007e3e
   flutter_webrtc: 76cc6996bc9562799a239c94c560d6348ba34ce5
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   gal: 61e868295d28fe67ffa297fae6dacebf56fd53e1
@@ -258,8 +298,10 @@ SPEC CHECKSUMS:
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 8000756fc1c19d2e5697b90311f7832d2e33f6cd
-  image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
+  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   lecle_downloads_path_provider: b24e71004ad61a26c7e4422373627acdb01d9251
+  libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
@@ -267,10 +309,13 @@ SPEC CHECKSUMS:
   photo_manager: ff695c7a1dd5bc379974953a2b5c0a293f7c4c8a
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
+  SDWebImage: 066c47b573f408f18caa467d71deace7c0f8280d
+  SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
+  video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
   WebRTC-SDK: 5319b8964f453c5ea6030d93c345082c4f40aa1c
 
 PODFILE CHECKSUM: 4a34f2a7453090eeeb342bde9003c9d9593cf26e

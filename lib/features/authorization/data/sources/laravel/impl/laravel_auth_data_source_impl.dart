@@ -33,7 +33,8 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       Map<String, dynamic> json =
           response.data is String ? jsonDecode(response.data) : response.data;
 
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse) &&
+          json[HttpStatusCodes.serverSuccessResponse] == false) {
         return null;
       }
 

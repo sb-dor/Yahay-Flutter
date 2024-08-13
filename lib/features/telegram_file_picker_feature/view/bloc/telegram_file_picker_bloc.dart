@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -340,6 +341,13 @@ class TelegramFilePickerBloc {
   ) async* {
     final imagePicker = ImagePicker();
     final files = await imagePicker.pickMultipleMedia();
+    if (files.isEmpty) return;
+    // convert this files into
+    final convertedData = files.map((e) => TelegramFileImageModel(file: File(e.path))).toList();
+    for (final each in convertedData) {
+      _currentStateModel.removeOrAddEntity(each);
+    }
+    _emitter();
   }
 
   //
