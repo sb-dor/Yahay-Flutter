@@ -7,10 +7,7 @@ abstract final class TelegramAppFolderSheetOpener {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.96,
-          child: const TelegramBrowseAppFolderScreen(),
-        );
+        return const TelegramBrowseAppFolderScreen();
       },
     );
   }

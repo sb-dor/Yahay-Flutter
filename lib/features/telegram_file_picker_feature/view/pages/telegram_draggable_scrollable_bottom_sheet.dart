@@ -29,6 +29,13 @@ class _TelegramDraggableScrollableBottomSheetState
       true,
       controller: _draggableScrollableController,
     ));
+    Future.delayed(const Duration(milliseconds: 350), () {
+      _telegramFilePickerBloc.events.add(
+        const OpenHideBottomTelegramButtonEvent(
+          true,
+        ),
+      );
+    });
     // _telegramFilePickerBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
   }
 
@@ -54,6 +61,7 @@ class _TelegramDraggableScrollableBottomSheetState
             return DraggableScrollableSheet(
               controller: _draggableScrollableController,
               initialChildSize: 0.5,
+              maxChildSize: 0.96,
               minChildSize: 0.3,
               expand: false,
               builder: (context, scrollController) {
