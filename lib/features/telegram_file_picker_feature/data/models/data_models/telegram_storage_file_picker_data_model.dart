@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yahay/core/app_routing/app_router.dart';
+import 'package:yahay/core/utils/global_context/global_context.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/sheet_opener/telegram_app_folder_sheet_opener.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/injections/injections.dart';
@@ -20,7 +23,7 @@ class TelegramStorageFilePickerDataModel {
 
   static final _telegramBloc = snoopy<TelegramFilePickerBloc>();
 
-  static List<TelegramStorageFilePickerDataModel> data = [
+  static final List<TelegramStorageFilePickerDataModel> data = [
     TelegramStorageFilePickerDataModel(
       iconBackgroundColor: Colors.green,
       icon: const Icon(
@@ -43,7 +46,11 @@ class TelegramStorageFilePickerDataModel {
       ),
       title: "Yahay",
       content: "Browse the app's folder",
-      onTap: () {},
+      onTap: () async {
+        await TelegramAppFolderSheetOpener.openSheet(
+          snoopy<AppRouter>().navigatorKey.currentContext!,
+        );
+      },
     ),
     TelegramStorageFilePickerDataModel(
       iconBackgroundColor: Colors.amber,

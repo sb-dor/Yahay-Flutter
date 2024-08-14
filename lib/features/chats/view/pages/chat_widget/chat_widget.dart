@@ -8,6 +8,7 @@ import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/global_usages/widgets/image_loader/image_loaded.dart';
 import 'package:yahay/core/global_usages/widgets/splash_button_clicker.dart';
+import 'package:yahay/injections/injections.dart';
 
 class ChatWidget extends StatelessWidget {
   final Chat? chat;

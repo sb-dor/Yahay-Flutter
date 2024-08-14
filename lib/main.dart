@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
-import 'package:yahay/core/utils/folder_creator/folder_creator.dart';
+import 'package:yahay/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
@@ -29,7 +29,7 @@ class Yahay extends StatefulWidget {
   State<Yahay> createState() => _YahayState();
 }
 
-class _YahayState extends State<Yahay> {
+class _YahayState extends State<Yahay> with FolderCreator {
   late final AppThemeBloc _appThemeBloc;
   late final AuthBloc _authBloc;
 
@@ -52,7 +52,7 @@ class _YahayState extends State<Yahay> {
       return true;
     };
 
-    await FolderCreator.instance.createFolders();
+    await createFolders();
   }
 
   @override

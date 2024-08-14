@@ -6,14 +6,15 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/injections/injections.dart';
 
-class FolderCreator {
-  static FolderCreator? _instance;
-
-  static FolderCreator get instance => _instance ??= FolderCreator._();
-
+mixin class FolderCreator {
+  // static FolderCreator? _instance;
+  //
+  // static FolderCreator get instance => _instance ??= FolderCreator._();
+  //
   final SharedPreferHelper _sharedPreferHelper = snoopy<SharedPreferHelper>();
 
-  FolderCreator._();
+  //
+  // FolderCreator._();
 
   //
   void folderCreator({required String path}) {
@@ -31,6 +32,8 @@ class FolderCreator {
     "${Constants.appName} Images",
     "${Constants.appName} Videos",
   ];
+
+  List<String> get foldersName => _foldersName;
 
   Future<void> createFolders() async {
     final isFoldersAlreadyCreated = _sharedPreferHelper.getBoolByKey(
