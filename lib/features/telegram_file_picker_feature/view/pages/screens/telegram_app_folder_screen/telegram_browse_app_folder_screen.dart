@@ -29,52 +29,11 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         const SizedBox(height: 20),
-        GestureDetector(
+        _TelegramFolderWidget(
           onTap: () {
             _telegramFilePickerBloc.events.add(const SelectScreenForFilesPickerScreenEvent(0));
           },
-          child: Container(
-            color: Colors.transparent,
-            child: IntrinsicHeight(
-              child: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Center(
-                      child: Icon(Icons.folder),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "...",
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          "Folder",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          title: "...",
         ),
         const SizedBox(height: 20),
         ListView.separated(
@@ -83,54 +42,73 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
           physics: const NeverScrollableScrollPhysics(),
           itemCount: foldersName.length,
           itemBuilder: (context, index) {
-            return GestureDetector(
+            return _TelegramFolderWidget(
               onTap: () {},
-              child: Container(
-                color: Colors.transparent,
-                child: IntrinsicHeight(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: const Center(
-                          child: Icon(Icons.folder),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "${foldersName[index]}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                            const Text(
-                              "Folder",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              title: foldersName[index],
             );
           },
         ),
       ],
+    );
+  }
+}
+
+class _TelegramFolderWidget extends StatelessWidget {
+  final VoidCallback onTap;
+  final String title;
+
+  const _TelegramFolderWidget({
+    super.key,
+    required this.onTap,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        color: Colors.transparent,
+        child: IntrinsicHeight(
+          child: Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: const Center(
+                  child: Icon(Icons.folder),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    const Text(
+                      "Folder",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
