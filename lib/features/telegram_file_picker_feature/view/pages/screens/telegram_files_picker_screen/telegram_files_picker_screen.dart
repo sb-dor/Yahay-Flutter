@@ -4,6 +4,7 @@ import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_f
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_app_folder_screen.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_folder_data_screen.dart';
 
 import 'widgets/telegram_files_from_storages_widget.dart';
 import 'widgets/telegram_resent_files_from_storage_widget.dart';
@@ -24,12 +25,6 @@ class TelegramFilesPickerScreen extends StatefulWidget {
 
 class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
   late final TelegramFilePickerBloc _telegramFilePickerBloc;
-  int selectedScreen = 0;
-  final List<Widget> widgetsForChangeScreen = const [
-    SizedBox(), // sizedBox is just a temp widget for indexing
-    TelegramBrowseAppFolderScreen(),
-    TelegramBrowseAppFolderScreen(),
-  ];
 
   @override
   void initState() {
@@ -75,41 +70,110 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
         }
         return true;
       },
-      child: ListView(
-        controller: widget.parentScrollController,
-        children: [
-          StreamBuilder(
-            stream: _telegramFilePickerBloc.states,
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return const SizedBox();
-                case ConnectionState.active:
-                case ConnectionState.done:
-                  final state = snapshot.requireData;
-                  if (state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 0) {
-                    return ListView(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        const TelegramFilesFromStoragesWidget(),
-                        const SizedBox(height: 15),
-                        TelegramResentFilesFromStorageWidget(
-                          telegramFilePickerBloc: widget.telegramFilePickerBloc,
+      child: StreamBuilder(
+        stream: _telegramFilePickerBloc.states,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return const SizedBox();
+            case ConnectionState.active:
+            case ConnectionState.done:
+              final state = snapshot.requireData;
+              return ListView(
+                controller: widget.parentScrollController,
+                children: [
+                  Visibility(
+                    visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 0,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    child: AnimatedSlide(
+                      curve: Curves.fastOutSlowIn,
+                      duration: const Duration(milliseconds: 300),
+                      offset: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 0
+                          ? Offset.zero
+                          : const Offset(1, 0),
+                      child: AnimatedOpacity(
+                        opacity:
+                            state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 0
+                                ? 1
+                                : 0,
+                        duration: const Duration(seconds: 1),
+                        child: ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: [
+                            const TelegramFilesFromStoragesWidget(),
+                            const SizedBox(height: 15),
+                            TelegramResentFilesFromStorageWidget(
+                              telegramFilePickerBloc: widget.telegramFilePickerBloc,
+                            ),
+                          ],
                         ),
-                      ],
-                    );
-                  } else if (state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                      1) {
-                    return const TelegramBrowseAppFolderScreen();
-                  } else {
-                    return const SizedBox();
-                  }
-              }
-            },
-          ),
-        ],
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    maintainAnimation: true,
+                    maintainState: true,
+                    visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 1,
+                    child: PopScope(
+                      canPop: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 1
+                          ? false
+                          : true,
+                      onPopInvokedWithResult: (v, r) {
+                        _telegramFilePickerBloc.events
+                            .add(const SelectScreenForFilesPickerScreenEvent(0));
+                      },
+                      child: AnimatedSlide(
+                        curve: Curves.fastOutSlowIn,
+                        duration: const Duration(milliseconds: 300),
+                        offset:
+                            state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 1
+                                ? Offset.zero
+                                : const Offset(1, 0),
+                        child: AnimatedOpacity(
+                            opacity:
+                                state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                        1
+                                    ? 1
+                                    : 0,
+                            duration: const Duration(seconds: 1),
+                            child: const TelegramBrowseAppFolderScreen()),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    child: PopScope(
+                      canPop: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 2
+                          ? false
+                          : true,
+                      onPopInvokedWithResult: (v, r) {
+                        _telegramFilePickerBloc.events
+                            .add(const SelectScreenForFilesPickerScreenEvent(0));
+                      },
+                      child: AnimatedSlide(
+                        curve: Curves.fastOutSlowIn,
+                        duration: const Duration(milliseconds: 300),
+                        offset:
+                            state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 2
+                                ? Offset.zero
+                                : const Offset(1, 0),
+                        child: AnimatedOpacity(
+                            opacity:
+                                state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                        2
+                                    ? 1
+                                    : 0,
+                            duration: const Duration(seconds: 1),
+                            child: const TelegramBrowseFolderDataScreen()),
+                      ),
+                    ),
+                  ),
+                ], //TelegramBrowseFolderDataScreen
+              );
+          }
+        },
       ),
     );
   }
