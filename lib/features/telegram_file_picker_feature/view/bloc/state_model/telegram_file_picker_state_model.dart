@@ -51,7 +51,8 @@ class TelegramFilePickerStateModel {
 
   StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? _fileStreamData;
 
-  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? get fileStreamData => _fileStreamData;
+  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? get fileStreamData =>
+      _fileStreamData;
 
   StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? _recentFileData;
 
@@ -65,6 +66,14 @@ class TelegramFilePickerStateModel {
   Timer? _openButtonSectionTimer;
 
   Timer? get openButtonSectionTimer => _openButtonSectionTimer;
+
+  int _filePickerScreenSelectedScreen = 0;
+
+  int get filePickerScreenSelectedScreen => _filePickerScreenSelectedScreen;
+
+  void selectScreen(int screen) {
+    _filePickerScreenSelectedScreen = screen;
+  }
 
   void initDragScrollController(DraggableScrollableController controller) =>
       _draggableScrollableController = controller;

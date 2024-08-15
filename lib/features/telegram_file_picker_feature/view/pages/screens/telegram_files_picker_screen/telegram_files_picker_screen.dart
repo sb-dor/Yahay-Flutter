@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_app_folder_screen.dart';
 
 import 'widgets/telegram_files_from_storages_widget.dart';
 import 'widgets/telegram_resent_files_from_storage_widget.dart';
@@ -23,6 +24,12 @@ class TelegramFilesPickerScreen extends StatefulWidget {
 
 class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
   late final TelegramFilePickerBloc _telegramFilePickerBloc;
+  int selectedScreen = 0;
+  final List<Widget> widgetsForChangeScreen = const [
+    SizedBox(), // sizedBox is just a temp widget for indexing
+    TelegramBrowseAppFolderScreen(),
+    TelegramBrowseAppFolderScreen(),
+  ];
 
   @override
   void initState() {
@@ -71,10 +78,36 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
       child: ListView(
         controller: widget.parentScrollController,
         children: [
-          const TelegramFilesFromStoragesWidget(),
-          const SizedBox(height: 15),
-          TelegramResentFilesFromStorageWidget(
-            telegramFilePickerBloc: widget.telegramFilePickerBloc,
+          StreamBuilder(
+            stream: _telegramFilePickerBloc.states,
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return const SizedBox();
+                case ConnectionState.active:
+                case ConnectionState.done:
+                  final state = snapshot.requireData;
+                  if (state.telegramFilePickerStateModel.filePickerScreenSelectedScreen == 0) {
+                    return ListView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        const TelegramFilesFromStoragesWidget(),
+                        const SizedBox(height: 15),
+                        TelegramResentFilesFromStorageWidget(
+                          telegramFilePickerBloc: widget.telegramFilePickerBloc,
+                        ),
+                      ],
+                    );
+                  } else if (state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                      1) {
+                    return const TelegramBrowseAppFolderScreen();
+                  } else {
+                    return const SizedBox();
+                  }
+              }
+            },
           ),
         ],
       ),

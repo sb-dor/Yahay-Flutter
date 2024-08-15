@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/data_models/telegram_storage_file_picker_data_model.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_app_folder_screen.dart';
 
 class TelegramFilesFromStoragesWidget extends StatefulWidget {
-  const TelegramFilesFromStoragesWidget({super.key});
+  const TelegramFilesFromStoragesWidget({
+    super.key,
+  });
 
   @override
   State<TelegramFilesFromStoragesWidget> createState() => _TelegramFilesFromStoragesWidgetState();
@@ -29,43 +32,46 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
               return IntrinsicHeight(
                 child: GestureDetector(
                   onTap: item.onTap,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: item.iconBackgroundColor,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: item.iconBackgroundColor,
+                          ),
+                          child: Center(
+                            child: item.icon,
+                          ),
                         ),
-                        child: Center(
-                          child: item.icon,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              item.title,
-                              style: GoogleFonts.aBeeZee(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                item.title,
+                                style: GoogleFonts.aBeeZee(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                            ),
-                            Text(
-                              item.content,
-                              style: GoogleFonts.aBeeZee(
-                                fontSize: 16,
-                                color: Colors.grey,
-                              ),
-                            )
-                          ],
+                              Text(
+                                item.content,
+                                style: GoogleFonts.aBeeZee(
+                                  fontSize: 16,
+                                  color: Colors.grey,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );

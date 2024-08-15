@@ -96,3 +96,9 @@ final class RecentFilesPaginationEvent extends TelegramFilePickerEvents {
 final class BrowseInternalStorageAndSelectFilesEvent extends TelegramFilePickerEvents {
   const BrowseInternalStorageAndSelectFilesEvent();
 }
+
+final class SelectScreenForFilesPickerScreenEvent extends TelegramFilePickerEvents {
+  final int screen;
+
+  const SelectScreenForFilesPickerScreenEvent(this.screen);
+}

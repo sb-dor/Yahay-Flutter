@@ -100,6 +100,8 @@ class TelegramFilePickerBloc {
       yield* _selectGalleryFileEvent(event);
     } else if (event is BrowseInternalStorageAndSelectFilesEvent) {
       yield* _browseInternalStorageAndSelectFilesEvent(event);
+    } else if (event is SelectScreenForFilesPickerScreenEvent) {
+      yield* _selectScreenForFilesPickerScreenEvent(event);
     }
   }
 
@@ -347,7 +349,14 @@ class TelegramFilePickerBloc {
     for (final each in convertedData) {
       _currentStateModel.removeOrAddEntity(each);
     }
-    _emitter();
+   yield* _emitter();
+  }
+
+  static Stream<TelegramFilePickerStates> _selectScreenForFilesPickerScreenEvent(
+    SelectScreenForFilesPickerScreenEvent event,
+  ) async* {
+    _currentStateModel.selectScreen(event.screen);
+   yield* _emitter();
   }
 
   //

@@ -47,9 +47,7 @@ class TelegramStorageFilePickerDataModel {
       title: "Yahay",
       content: "Browse the app's folder",
       onTap: () async {
-        await TelegramAppFolderSheetOpener.openSheet(
-          snoopy<AppRouter>().navigatorKey.currentContext!,
-        );
+        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(1));
       },
     ),
     TelegramStorageFilePickerDataModel(
@@ -61,7 +59,9 @@ class TelegramStorageFilePickerDataModel {
       ),
       title: "Gallery",
       content: "To send images without compression",
-      onTap: () {},
+      onTap: () {
+        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(2));
+      },
     ),
   ];
 }
