@@ -13,9 +13,6 @@ import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_asset_entity.dart';
 import 'package:yahay/injections/injections.dart';
 
-
-mixin class CompressImage {}
-
 mixin class RecentFileMixin {
   final _permissions = snoopy<PermissionsService>();
 
