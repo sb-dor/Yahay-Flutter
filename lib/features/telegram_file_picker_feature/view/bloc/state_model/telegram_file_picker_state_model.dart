@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_with_compressed_and_original_path_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
@@ -67,11 +68,12 @@ class TelegramFilePickerStateModel {
 
   Timer? get openButtonSectionTimer => _openButtonSectionTimer;
 
-  int _filePickerScreenSelectedScreen = 0;
+  TelegramFileFolderEnum _filePickerScreenSelectedScreen =
+      TelegramFileFolderEnum.recentDownloadsScreen;
 
-  int get filePickerScreenSelectedScreen => _filePickerScreenSelectedScreen;
+  TelegramFileFolderEnum get filePickerScreenSelectedScreen => _filePickerScreenSelectedScreen;
 
-  void selectScreen(int screen) {
+  void selectScreen(TelegramFileFolderEnum screen) {
     _filePickerScreenSelectedScreen = screen;
   }
 

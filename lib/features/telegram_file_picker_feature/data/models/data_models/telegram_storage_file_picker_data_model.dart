@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/sheet_opener/telegram_app_folder_sheet_opener.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
@@ -47,7 +48,8 @@ class TelegramStorageFilePickerDataModel {
       title: "Yahay",
       content: "Browse the app's folder",
       onTap: () async {
-        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(1));
+        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(
+            TelegramFileFolderEnum.browseTheAppsFolder));
       },
     ),
     TelegramStorageFilePickerDataModel(
@@ -60,7 +62,8 @@ class TelegramStorageFilePickerDataModel {
       title: "Gallery",
       content: "To send images without compression",
       onTap: () {
-        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(2));
+        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(
+            TelegramFileFolderEnum.browseTheGalleryFolder));
       },
     ),
   ];

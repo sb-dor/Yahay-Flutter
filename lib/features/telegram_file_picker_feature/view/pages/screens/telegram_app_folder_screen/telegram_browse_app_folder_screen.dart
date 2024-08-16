@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
@@ -33,7 +34,8 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
         const SizedBox(height: 20),
         TelegramFolderWidget(
           onTap: () {
-            _telegramFilePickerBloc.events.add(const SelectScreenForFilesPickerScreenEvent(0));
+            _telegramFilePickerBloc.events.add(const SelectScreenForFilesPickerScreenEvent(
+                TelegramFileFolderEnum.recentDownloadsScreen));
           },
           title: "...",
         ),
@@ -45,7 +47,16 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
           itemCount: foldersName.length,
           itemBuilder: (context, index) {
             return TelegramFolderWidget(
-              onTap: () {},
+              onTap: () {
+                // init here for folder data
+                // _telegramFilePickerBloc.events.add(data);
+                //
+                _telegramFilePickerBloc.events.add(
+                  const SelectScreenForFilesPickerScreenEvent(
+                    TelegramFileFolderEnum.browseTheFolder,
+                  ),
+                );
+              },
               title: foldersName[index],
             );
           },
