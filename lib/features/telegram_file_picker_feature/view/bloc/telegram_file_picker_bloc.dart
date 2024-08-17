@@ -372,6 +372,7 @@ class TelegramFilePickerBloc {
   ) async* {
     if (event.path == null) return;
     _currentStateModel.setPathForGettingImagesFrom(event.path);
+    _events.add(const GetSpecificFolderDataEvent());
     yield* _emitter();
   }
 
@@ -380,7 +381,6 @@ class TelegramFilePickerBloc {
     GetSpecificFolderDataEvent event,
   ) async* {
     if (_currentStateModel.getPathForGettingImagesFrom == null) return;
-
     _currentStateModel.clearSpecificFolderData();
     _currentStateModel.closeSpecificFolderDataStream();
     _currentStateModel.initSpecificFolderDataStream(
@@ -388,6 +388,7 @@ class TelegramFilePickerBloc {
           .getSpecificFolderData(_currentStateModel.getPathForGettingImagesFrom!)
           .listen(
         (data) {
+          debugPrint("coming file: ${data?.file}");
           _events.add(SpecificFolderDataStreamHandlerEvent(data));
         },
       ),

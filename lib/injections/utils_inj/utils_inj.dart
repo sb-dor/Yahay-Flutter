@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/camera_helper_service/camera_helper_service.dart';
+import 'package:yahay/core/utils/debug_image_creator_in_apps_folder/debug_image_creator_in_apps_folder.dart';
 import 'package:yahay/core/utils/dotenv/dotenv.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
@@ -51,5 +53,10 @@ abstract class UtilsInj {
     await snoopy<CameraHelperService>().initCameras();
 
     //
+    if (kDebugMode) {
+      snoopy.registerLazySingleton<DebugImageCreatorInAppsFolder>(
+        () => DebugImageCreatorInAppsFolder(),
+      );
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:isolate';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
@@ -53,7 +54,9 @@ mixin class AppStorageFileMixin {
       return;
     }
 
-    final reusables = snoopy<ReusableGlobalFunctions>();
+    GetIt.instance.registerSingleton(ReusableGlobalFunctions());
+
+    final reusables = GetIt.I.get<ReusableGlobalFunctions>();
 
     final tempPath = await getTemporaryDirectory();
 

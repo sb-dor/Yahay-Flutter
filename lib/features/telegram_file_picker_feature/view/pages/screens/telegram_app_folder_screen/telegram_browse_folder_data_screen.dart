@@ -24,7 +24,6 @@ class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDat
   void initState() {
     super.initState();
     _telegramFilePickerBloc = snoopy<TelegramFilePickerBloc>();
-    _telegramFilePickerBloc.events.add(const GetSpecificFolderDataEvent());
   }
 
   @override

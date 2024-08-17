@@ -51,16 +51,20 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
           itemBuilder: (context, index) {
             return TelegramFolderWidget(
               onTap: () async {
-                final dir = await getApplicationDir();
-                // init here for folder data
-                _telegramFilePickerBloc.events.add(
-                  SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
-                );
-
                 //
                 _telegramFilePickerBloc.events.add(
                   const SelectScreenForFilesPickerScreenEvent(
                     TelegramFileFolderEnum.browseTheFolder,
+                  ),
+                );
+
+                final dir = "${(await getApplicationDir())?.path}/${foldersName[index]}";
+
+                debugPrint("clicking path: $dir");
+                // init here for folder data
+                _telegramFilePickerBloc.events.add(
+                  SetSpecificFolderPathInOrderToGetDataFromThereEvent(
+                    dir,
                   ),
                 );
               },

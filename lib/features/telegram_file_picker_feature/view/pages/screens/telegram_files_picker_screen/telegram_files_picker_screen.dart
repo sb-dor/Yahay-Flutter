@@ -185,11 +185,6 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           duration: const Duration(seconds: 1),
                           child: TelegramBrowseFolderDataScreen(
                             onBackFolder: () async {
-                              final dir = await getApplicationDir();
-                              // init here for folder data
-                              _telegramFilePickerBloc.events.add(
-                                SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
-                              );
 
                               _telegramFilePickerBloc.events.add(
                                 const SelectScreenForFilesPickerScreenEvent(
@@ -233,11 +228,6 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           duration: const Duration(seconds: 1),
                           child: TelegramBrowseFolderDataScreen(
                             onBackFolder: () async {
-                              final dir = await getApplicationDir();
-                              // init here for folder data
-                              _telegramFilePickerBloc.events.add(
-                                SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
-                              );
 
                               _telegramFilePickerBloc.events.add(
                                 const SelectScreenForFilesPickerScreenEvent(

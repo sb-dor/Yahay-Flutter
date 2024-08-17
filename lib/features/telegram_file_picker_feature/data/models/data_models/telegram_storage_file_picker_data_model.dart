@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yahay/core/app_routing/app_router.dart';
-import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
-import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/sheet_opener/telegram_app_folder_sheet_opener.dart';
+import 'package:yahay/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/injections/injections.dart';
@@ -64,7 +62,13 @@ class TelegramStorageFilePickerDataModel {
       ),
       title: "Gallery",
       content: "To send images without compression",
-      onTap: () {
+      onTap: () async {
+        final dir = await FolderCreator.getApplicationDirStatic();
+        // init here for folder data
+        _telegramBloc.events.add(
+          SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
+        );
+
         _telegramBloc.events.add(
           const SelectScreenForFilesPickerScreenEvent(
             TelegramFileFolderEnum.browseTheGalleryFolder,

@@ -10,6 +10,7 @@ import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
 import 'package:yahay/injections/injections.dart';
+import 'core/utils/debug_image_creator_in_apps_folder/debug_image_creator_in_apps_folder.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -53,6 +54,10 @@ class _YahayState extends State<Yahay> with FolderCreator {
     };
 
     await createFolders();
+
+    if (kDebugMode) {
+      await snoopy<DebugImageCreatorInAppsFolder>().createImagesInAppsFolder();
+    }
   }
 
   @override
