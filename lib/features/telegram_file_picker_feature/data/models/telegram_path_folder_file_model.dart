@@ -1,4 +1,4 @@
-import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_with_compressed_and_original_path_entity.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
 
 final class TelegramPathFolderFileModel extends TelegramPathFolderFile {
   TelegramPathFolderFileModel(
@@ -8,6 +8,7 @@ final class TelegramPathFolderFileModel extends TelegramPathFolderFile {
     super.isImage,
     super.isVideo,
     super.fileExtension,
+    super.fileName,
   });
 
   TelegramPathFolderFileModel? fromEntity(
@@ -21,6 +22,7 @@ final class TelegramPathFolderFileModel extends TelegramPathFolderFile {
       isImage: entity.isImage,
       isVideo: entity.isVideo,
       fileExtension: entity.fileExtension,
+      fileName: entity.fileName,
     );
   }
 }

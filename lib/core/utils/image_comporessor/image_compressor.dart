@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart';
-import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_with_compressed_and_original_path_model.dart';
+import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_path_folder_file_model.dart';
 
 abstract final class ImageCompressor {
   static Future<TelegramPathFolderFileModel?> compressedImageFile({

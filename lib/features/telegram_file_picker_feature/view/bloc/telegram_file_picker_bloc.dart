@@ -11,6 +11,7 @@ import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dar
 import 'package:yahay/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/repo/telegram_file_picker_repo.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/file_picker_usecase/file_picker_usecase.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
@@ -102,6 +103,10 @@ class TelegramFilePickerBloc {
       yield* _browseInternalStorageAndSelectFilesEvent(event);
     } else if (event is SelectScreenForFilesPickerScreenEvent) {
       yield* _selectScreenForFilesPickerScreenEvent(event);
+    } else if (event is GetSpecificFolderDataEvent) {
+      yield* _getSpecificFolderDataEvent(event);
+    } else if (event is SpecificFolderDataStreamHandlerEvent) {
+      yield* _specificFolderDataStreamHandlerEvent(event);
     }
   }
 
@@ -349,14 +354,49 @@ class TelegramFilePickerBloc {
     for (final each in convertedData) {
       _currentStateModel.removeOrAddEntity(each);
     }
-   yield* _emitter();
+    yield* _emitter();
   }
 
   static Stream<TelegramFilePickerStates> _selectScreenForFilesPickerScreenEvent(
     SelectScreenForFilesPickerScreenEvent event,
   ) async* {
     _currentStateModel.selectScreen(event.screen);
-   yield* _emitter();
+    yield* _emitter();
+  }
+
+  //
+  static Stream<TelegramFilePickerStates> _getSpecificFolderDataEvent(
+    GetSpecificFolderDataEvent event,
+  ) async* {
+    if (event.path == null) return;
+
+    _currentStateModel.clearSpecificFolderData();
+    _currentStateModel.closeSpecificFolderDataStream();
+    _currentStateModel.initSpecificFolderDataStream(
+      _filePickerUseCase.getSpecificFolderData(event.path!).listen(
+        (data) {
+          _events.add(SpecificFolderDataStreamHandlerEvent(data));
+        },
+      ),
+    );
+  }
+
+  //
+  static Stream<TelegramFilePickerStates> _specificFolderDataStreamHandlerEvent(
+    SpecificFolderDataStreamHandlerEvent event,
+  ) async* {
+    if (event.file == null) return;
+    final value = TelegramFileImageEntity(
+      file: event.file!.file,
+      videoPlayerController:
+          event.file!.isVideo ? VideoPlayerController.file(event.file!.file) : null,
+      videoPreview: event.file!.isVideo
+          ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
+          : null,
+      fileName: event.file!.fileName,
+    );
+    _currentStateModel.addToFolderDataList(value);
+    yield* _emitter();
   }
 
   //

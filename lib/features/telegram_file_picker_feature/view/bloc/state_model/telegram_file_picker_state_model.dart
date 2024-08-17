@@ -8,7 +8,7 @@ import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
-import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_with_compressed_and_original_path_entity.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 import 'package:yahay/injections/injections.dart';
 
@@ -31,6 +31,10 @@ class TelegramFilePickerStateModel {
 
   final List<TelegramFileImageEntity> _pickedFiles = [];
 
+  final List<TelegramFileImageEntity> _specificFolderFilesAll = [];
+
+  final List<TelegramFileImageEntity> _specificFolderFilesPagination = [];
+
   UnmodifiableListView<TelegramFileImageEntity> get galleryPathFiles => UnmodifiableListView(
         _galleryPathFiles,
       );
@@ -47,18 +51,25 @@ class TelegramFilePickerStateModel {
         _recentFilesPagination,
       );
 
+  UnmodifiableListView<TelegramFileImageEntity> get specificFolderFilesPagination =>
+      UnmodifiableListView(
+        _specificFolderFilesPagination,
+      );
+
   List<TelegramFileImageEntity?> get clonedPickedFiles =>
       _pickedFiles.map((e) => TelegramFileImageModel.fromEntity(e)).toList();
 
   StreamSubscription<TelegramPathFolderFile?>? _fileStreamData;
 
-  StreamSubscription<TelegramPathFolderFile?>? get fileStreamData =>
-      _fileStreamData;
+  StreamSubscription<TelegramPathFolderFile?>? get fileStreamData => _fileStreamData;
 
   StreamSubscription<TelegramPathFolderFile?>? _recentFileData;
 
-  StreamSubscription<TelegramPathFolderFile?>? get recentFileData =>
-      _recentFileData;
+  StreamSubscription<TelegramPathFolderFile?>? get recentFileData => _recentFileData;
+
+  StreamSubscription<TelegramPathFolderFile?>? _specificFolderData;
+
+  StreamSubscription<TelegramPathFolderFile?>? get specificFolderData => _specificFolderData;
 
   bool _openBottomSectionButton = true;
 
@@ -113,6 +124,11 @@ class TelegramFilePickerStateModel {
 
   void clearRecentPagFiles() => _recentFilesPagination.clear();
 
+  void clearSpecificFolderData() {
+    _specificFolderFilesAll.clear();
+    _specificFolderFilesPagination.clear();
+  }
+
   Stream<TelegramFilePickerStates> addOnStreamOfValuesInPaginationList(
     TelegramFileImageEntity value, {
     Stream<TelegramFilePickerStates>? emitter,
@@ -125,6 +141,13 @@ class TelegramFilePickerStateModel {
   void addToRecentFiles(TelegramFileImageEntity value) {
     _recentFiles.add(value);
     if (_recentFilesPagination.length < Constants.perPage) {
+      _recentFilesPagination.add(value);
+    }
+  }
+
+  void addToFolderDataList(TelegramFileImageEntity value) {
+    _specificFolderFilesAll.add(value);
+    if (_specificFolderFilesPagination.length < Constants.perPage) {
       _recentFilesPagination.add(value);
     }
   }
@@ -143,6 +166,15 @@ class TelegramFilePickerStateModel {
     StreamSubscription<TelegramPathFolderFile?> stream,
   ) =>
       _recentFileData = stream;
+
+  void initSpecificFolderDataStream(
+    StreamSubscription<TelegramPathFolderFile?> stream,
+  ) =>
+      _specificFolderData = stream;
+
+  Future<void> closeSpecificFolderDataStream() async {
+    await _specificFolderData?.cancel();
+  }
 
   void closeAllStreamSubs() {
     _fileStreamData?.cancel();

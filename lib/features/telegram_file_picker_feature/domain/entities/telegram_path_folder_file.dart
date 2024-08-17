@@ -2,11 +2,12 @@ import 'dart:io';
 
 base class TelegramPathFolderFile {
   final File file;
-  final String? originalPath;
-  final bool isFolder;
-  final bool isImage;
-  final bool isVideo;
-  final String? fileExtension;
+  String? originalPath;
+  bool isFolder;
+  bool isImage;
+  bool isVideo;
+  String? fileExtension;
+  String? fileName;
 
   TelegramPathFolderFile(
     this.file, {
@@ -15,5 +16,6 @@ base class TelegramPathFolderFile {
     this.isImage = false,
     this.isVideo = false,
     this.fileExtension,
+    this.fileName,
   });
 }

@@ -10,7 +10,7 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
-import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_with_compressed_and_original_path_model.dart';
+import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_path_folder_file_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_asset_entity.dart';
 import 'package:yahay/injections/injections.dart';
 

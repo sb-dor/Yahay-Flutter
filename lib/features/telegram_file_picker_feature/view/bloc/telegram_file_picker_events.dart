@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
-import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_with_compressed_and_original_path_entity.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
 
 @immutable
 abstract base class TelegramFilePickerEvents {
@@ -94,12 +94,29 @@ final class RecentFilesPaginationEvent extends TelegramFilePickerEvents {
 }
 
 //
+@immutable
 final class BrowseInternalStorageAndSelectFilesEvent extends TelegramFilePickerEvents {
   const BrowseInternalStorageAndSelectFilesEvent();
 }
 
+@immutable
 final class SelectScreenForFilesPickerScreenEvent extends TelegramFilePickerEvents {
   final TelegramFileFolderEnum screen;
 
   const SelectScreenForFilesPickerScreenEvent(this.screen);
+}
+
+//
+@immutable
+final class GetSpecificFolderDataEvent extends TelegramFilePickerEvents {
+  final String? path;
+
+  const GetSpecificFolderDataEvent(this.path);
+}
+
+@immutable
+final class SpecificFolderDataStreamHandlerEvent extends TelegramFilePickerEvents {
+  final TelegramPathFolderFile? file;
+
+  const SpecificFolderDataStreamHandlerEvent(this.file);
 }
