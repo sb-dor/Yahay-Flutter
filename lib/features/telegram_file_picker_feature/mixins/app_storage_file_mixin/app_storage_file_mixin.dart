@@ -67,15 +67,19 @@ mixin class AppStorageFileMixin {
         TelegramPathFolderFileModel? model = TelegramPathFolderFileModel(
           File(each.path),
           fileExtension: p.extension(each.path),
-          fileName: p.basenameWithoutExtension(each.path),
+          fileName: p.basename(each.path),
         );
 
         if (FileSystemEntity.isDirectorySync(each.path)) {
           model.isFolder = true;
         } else if (reusables.isImageFile(each.path)) {
-          model = await ImageCompressor.compressedImageFile(
+          model = (await ImageCompressor.compressedImageFile(
             file: model.file,
             directoryPath: tempPath.path,
+          ))
+              ?.clone(
+            fileExtension: model.fileExtension,
+            fileName: model.fileName,
           );
         } else if (reusables.isVideoFile(each.path)) {
           model.isVideo = true;

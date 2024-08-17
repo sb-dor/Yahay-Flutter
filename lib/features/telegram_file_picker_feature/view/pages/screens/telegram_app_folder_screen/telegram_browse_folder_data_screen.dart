@@ -38,6 +38,7 @@ class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDat
           onTap: widget.onBackFolder,
           title: "...",
         ),
+        const SizedBox(height: 20),
         StreamBuilder(
           stream: _telegramFilePickerBloc.states,
           builder: (context, snapshot) {

@@ -388,7 +388,6 @@ class TelegramFilePickerBloc {
           .getSpecificFolderData(_currentStateModel.getPathForGettingImagesFrom!)
           .listen(
         (data) {
-          debugPrint("coming file: ${data?.file}");
           _events.add(SpecificFolderDataStreamHandlerEvent(data));
         },
       ),
@@ -400,6 +399,8 @@ class TelegramFilePickerBloc {
     SpecificFolderDataStreamHandlerEvent event,
   ) async* {
     if (event.file == null) return;
+    debugPrint("coming file 2: ${event.file?.file}");
+
     final value = TelegramFileImageEntity(
       file: event.file!.file,
       videoPlayerController:

@@ -148,7 +148,7 @@ class TelegramFilePickerStateModel {
   void addToFolderDataList(TelegramFileImageEntity value) {
     _specificFolderFilesAll.add(value);
     if (_specificFolderFilesPagination.length < Constants.perPage) {
-      _recentFilesPagination.add(value);
+      _specificFolderFilesPagination.add(value);
     }
   }
 

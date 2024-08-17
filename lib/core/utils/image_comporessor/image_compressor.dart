@@ -28,6 +28,7 @@ abstract final class ImageCompressor {
       originalPath: file.path,
       isImage: true,
     );
+
     return result;
   }
 }

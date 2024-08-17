@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
 
 final class TelegramPathFolderFileModel extends TelegramPathFolderFile {
@@ -10,6 +12,25 @@ final class TelegramPathFolderFileModel extends TelegramPathFolderFile {
     super.fileExtension,
     super.fileName,
   });
+
+  TelegramPathFolderFileModel clone({
+    File? file,
+    String? originalPath,
+    bool? isFolder,
+    bool? isImage,
+    bool? isVideo,
+    String? fileExtension,
+    String? fileName,
+  }) =>
+      TelegramPathFolderFileModel(
+        file ?? this.file,
+        originalPath: originalPath ?? this.originalPath,
+        isFolder: isFolder ?? this.isFolder,
+        isImage: isImage ?? this.isImage,
+        isVideo: isVideo ?? this.isVideo,
+        fileExtension: fileExtension ?? this.fileExtension,
+        fileName: fileName ?? this.fileName,
+      );
 
   TelegramPathFolderFileModel? fromEntity(
     TelegramPathFolderFile? entity,
