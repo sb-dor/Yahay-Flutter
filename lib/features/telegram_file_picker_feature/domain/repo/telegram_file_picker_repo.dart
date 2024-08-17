@@ -4,11 +4,11 @@ import 'package:yahay/features/telegram_file_picker_feature/domain/entities/tele
 // classes only can "implement"
 abstract interface class TelegramFilePickerRepo {
   // for getting recent files -> images and videos
-  Stream<TelegramFileImageWithCompressedAndOriginalPathEntity?> getRecentImagesAndVideos();
+  Stream<TelegramPathFolderFile?> getRecentImagesAndVideos();
 
   // for getting all download's path files here
-  Stream<TelegramFileImageWithCompressedAndOriginalPathEntity?> getRecentFiles();
+  Stream<TelegramPathFolderFile?> getRecentFiles();
 
   // for getting specific app folder data, does not matter what
-  Stream<TelegramFileImageWithCompressedAndOriginalPathEntity?> getSpecificFolderData(String path);
+  Stream<TelegramPathFolderFile?> getSpecificFolderData(String path);
 }

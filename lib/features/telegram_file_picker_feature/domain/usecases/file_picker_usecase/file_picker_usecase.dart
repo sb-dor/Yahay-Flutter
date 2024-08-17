@@ -8,12 +8,12 @@ class FilePickerUseCase {
   FilePickerUseCase(this._filePickerRepo);
 
   //
-  Stream<TelegramFileImageWithCompressedAndOriginalPathEntity?> getRecentImagesAndVideos() async* {
+  Stream<TelegramPathFolderFile?> getRecentImagesAndVideos() async* {
     yield* _filePickerRepo.getRecentImagesAndVideos();
   }
 
   //
-  Stream<TelegramFileImageWithCompressedAndOriginalPathEntity?> downloadsPathFilesData() async* {
+  Stream<TelegramPathFolderFile?> downloadsPathFilesData() async* {
     yield* _filePickerRepo.getRecentFiles();
   }
 }

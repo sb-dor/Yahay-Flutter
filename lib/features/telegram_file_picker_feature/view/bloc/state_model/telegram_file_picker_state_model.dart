@@ -50,14 +50,14 @@ class TelegramFilePickerStateModel {
   List<TelegramFileImageEntity?> get clonedPickedFiles =>
       _pickedFiles.map((e) => TelegramFileImageModel.fromEntity(e)).toList();
 
-  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? _fileStreamData;
+  StreamSubscription<TelegramPathFolderFile?>? _fileStreamData;
 
-  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? get fileStreamData =>
+  StreamSubscription<TelegramPathFolderFile?>? get fileStreamData =>
       _fileStreamData;
 
-  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? _recentFileData;
+  StreamSubscription<TelegramPathFolderFile?>? _recentFileData;
 
-  StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?>? get recentFileData =>
+  StreamSubscription<TelegramPathFolderFile?>? get recentFileData =>
       _recentFileData;
 
   bool _openBottomSectionButton = true;
@@ -135,12 +135,12 @@ class TelegramFilePickerStateModel {
       _recentFilesPagination.addAll(list);
 
   void initFileStreamData(
-    StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?> stream,
+    StreamSubscription<TelegramPathFolderFile?> stream,
   ) =>
       _fileStreamData = stream;
 
   void initRecentFileStreamData(
-    StreamSubscription<TelegramFileImageWithCompressedAndOriginalPathEntity?> stream,
+    StreamSubscription<TelegramPathFolderFile?> stream,
   ) =>
       _recentFileData = stream;
 

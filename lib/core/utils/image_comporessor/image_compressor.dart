@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_with_compressed_and_original_path_model.dart';
 
 abstract final class ImageCompressor {
-  static Future<TelegramFileImageWithCompressedAndOriginalPathModel?> compressedImageFile({
+  static Future<TelegramPathFolderFileModel?> compressedImageFile({
     required File file,
     required String? directoryPath,
     int quality = 60,
@@ -23,9 +23,10 @@ abstract final class ImageCompressor {
     if (compressedImage == null) {
       throw ("Failed to compress the image");
     }
-    final result = TelegramFileImageWithCompressedAndOriginalPathModel(
+    final result = TelegramPathFolderFileModel(
       File(compressedImage.path),
       originalPath: file.path,
+      isImage: true,
     );
     return result;
   }

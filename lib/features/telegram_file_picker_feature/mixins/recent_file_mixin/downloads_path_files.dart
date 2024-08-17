@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:lecle_downloads_path_provider/constants/downloads_directory_type.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
@@ -18,7 +19,7 @@ mixin class DownloadsPathFiles {
 
   // final _reusables = snoopy<ReusableGlobalFunctions>();
 
-  Stream<TelegramFileImageWithCompressedAndOriginalPathModel?> downloadsPathFilesData({
+  Stream<TelegramPathFolderFileModel?> downloadsPathFilesData({
     String dirType = DownloadDirectoryTypes.downloads,
   }) async* {
     try {
@@ -51,9 +52,10 @@ mixin class DownloadsPathFiles {
       Isolate.spawn(_fileFinder, sendingList);
 
       await for (final each in sendingPort) {
-        if (each is TelegramFileImageWithCompressedAndOriginalPathModel) {
+        if (each is TelegramPathFolderFileModel) {
           yield each;
-        } else if (each == null) {
+        } else if (each is String && each == Constants.killIsolate) {
+          sendingPort.close();
           break; // null indicates the end of the processing
         }
       }
@@ -103,5 +105,7 @@ mixin class DownloadsPathFiles {
         }
       }
     }
+
+    receivingPort.send(Constants.killIsolate);
   }
 }

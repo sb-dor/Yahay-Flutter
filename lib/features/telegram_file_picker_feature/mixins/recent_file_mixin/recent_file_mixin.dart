@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
@@ -20,7 +21,7 @@ mixin class RecentFileMixin {
 
   // final _reusableFunctions = snoopy<ReusableGlobalFunctions>();
 
-  Stream<TelegramFileImageWithCompressedAndOriginalPathModel?> getAllImagesAndVideos() async* {
+  Stream<TelegramPathFolderFileModel?> getAllImagesAndVideos() async* {
     try {
       final externalStoragePermission = await _permissions.manageExternalStoragePermission();
 
@@ -62,8 +63,11 @@ mixin class RecentFileMixin {
       ]);
 
       await for (final each in receivePort) {
-        if (each is TelegramFileImageWithCompressedAndOriginalPathModel) {
+        if (each is TelegramPathFolderFileModel) {
           yield each;
+        } else if (each is String && each == Constants.killIsolate) {
+          receivePort.close();
+          break;
         }
       }
     } catch (e) {
@@ -125,6 +129,8 @@ mixin class RecentFileMixin {
         }
       }
     }
+
+    sendPort.send(Constants.killIsolate);
   }
 
 // Future<File?> _compressedFile(File? file) async {

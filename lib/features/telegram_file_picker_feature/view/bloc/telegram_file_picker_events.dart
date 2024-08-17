@@ -64,14 +64,14 @@ final class ClosePopupEvent extends TelegramFilePickerEvents {
 
 @immutable
 final class FileStreamHandlerEvent extends TelegramFilePickerEvents {
-  final TelegramFileImageWithCompressedAndOriginalPathEntity? file;
+  final TelegramPathFolderFile? file;
 
   const FileStreamHandlerEvent(this.file);
 }
 
 @immutable
 final class RecentFileStreamHandlerEvent extends TelegramFilePickerEvents {
-  final TelegramFileImageWithCompressedAndOriginalPathEntity? file;
+  final TelegramPathFolderFile? file;
 
   const RecentFileStreamHandlerEvent(this.file);
 }
