@@ -108,10 +108,15 @@ final class SelectScreenForFilesPickerScreenEvent extends TelegramFilePickerEven
 
 //
 @immutable
-final class GetSpecificFolderDataEvent extends TelegramFilePickerEvents {
+final class SetSpecificFolderPathInOrderToGetDataFromThereEvent extends TelegramFilePickerEvents {
   final String? path;
+  const SetSpecificFolderPathInOrderToGetDataFromThereEvent(this.path);
+}
 
-  const GetSpecificFolderDataEvent(this.path);
+//
+@immutable
+final class GetSpecificFolderDataEvent extends TelegramFilePickerEvents {
+  const GetSpecificFolderDataEvent();
 }
 
 @immutable

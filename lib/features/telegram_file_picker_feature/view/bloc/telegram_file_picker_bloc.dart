@@ -107,6 +107,8 @@ class TelegramFilePickerBloc {
       yield* _getSpecificFolderDataEvent(event);
     } else if (event is SpecificFolderDataStreamHandlerEvent) {
       yield* _specificFolderDataStreamHandlerEvent(event);
+    } else if (event is SetSpecificFolderPathInOrderToGetDataFromThereEvent) {
+      yield* _setSpecificFolderPathInOrderToGetDataFromThereEvent(event);
     }
   }
 
@@ -365,15 +367,26 @@ class TelegramFilePickerBloc {
   }
 
   //
+  static Stream<TelegramFilePickerStates> _setSpecificFolderPathInOrderToGetDataFromThereEvent(
+    SetSpecificFolderPathInOrderToGetDataFromThereEvent event,
+  ) async* {
+    if (event.path == null) return;
+    _currentStateModel.setPathForGettingImagesFrom(event.path);
+    yield* _emitter();
+  }
+
+  //
   static Stream<TelegramFilePickerStates> _getSpecificFolderDataEvent(
     GetSpecificFolderDataEvent event,
   ) async* {
-    if (event.path == null) return;
+    if (_currentStateModel.getPathForGettingImagesFrom == null) return;
 
     _currentStateModel.clearSpecificFolderData();
     _currentStateModel.closeSpecificFolderDataStream();
     _currentStateModel.initSpecificFolderDataStream(
-      _filePickerUseCase.getSpecificFolderData(event.path!).listen(
+      _filePickerUseCase
+          .getSpecificFolderData(_currentStateModel.getPathForGettingImagesFrom!)
+          .listen(
         (data) {
           _events.add(SpecificFolderDataStreamHandlerEvent(data));
         },

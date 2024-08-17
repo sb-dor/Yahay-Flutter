@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
+import 'package:yahay/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
@@ -24,7 +25,7 @@ class TelegramFilesPickerScreen extends StatefulWidget {
   State<TelegramFilesPickerScreen> createState() => _TelegramFilesPickerScreenState();
 }
 
-class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
+class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> with FolderCreator {
   late final TelegramFilePickerBloc _telegramFilePickerBloc;
 
   @override
@@ -130,8 +131,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
                           : true,
                       onPopInvokedWithResult: (v, r) {
                         _telegramFilePickerBloc.events.add(
-                            const SelectScreenForFilesPickerScreenEvent(
-                                TelegramFileFolderEnum.recentDownloadsScreen));
+                          const SelectScreenForFilesPickerScreenEvent(
+                            TelegramFileFolderEnum.recentDownloadsScreen,
+                          ),
+                        );
                       },
                       child: AnimatedSlide(
                         curve: Curves.fastOutSlowIn,
@@ -141,13 +144,14 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
                             ? Offset.zero
                             : const Offset(1, 0),
                         child: AnimatedOpacity(
-                            opacity:
-                                state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                                        TelegramFileFolderEnum.browseTheAppsFolder
-                                    ? 1
-                                    : 0,
-                            duration: const Duration(seconds: 1),
-                            child: const TelegramBrowseAppFolderScreen()),
+                          opacity:
+                              state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                      TelegramFileFolderEnum.browseTheAppsFolder
+                                  ? 1
+                                  : 0,
+                          duration: const Duration(seconds: 1),
+                          child: const TelegramBrowseAppFolderScreen(),
+                        ),
                       ),
                     ),
                   ),
@@ -180,7 +184,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
                                   : 0,
                           duration: const Duration(seconds: 1),
                           child: TelegramBrowseFolderDataScreen(
-                            onBackFolder: () {
+                            onBackFolder: () async {
+                              final dir = await getApplicationDir();
+                              // init here for folder data
+                              _telegramFilePickerBloc.events.add(
+                                SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
+                              );
+
                               _telegramFilePickerBloc.events.add(
                                 const SelectScreenForFilesPickerScreenEvent(
                                   TelegramFileFolderEnum.browseTheAppsFolder,
@@ -202,8 +212,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
                           : true,
                       onPopInvokedWithResult: (v, r) {
                         _telegramFilePickerBloc.events.add(
-                            const SelectScreenForFilesPickerScreenEvent(
-                                TelegramFileFolderEnum.recentDownloadsScreen));
+                          const SelectScreenForFilesPickerScreenEvent(
+                            TelegramFileFolderEnum.recentDownloadsScreen,
+                          ),
+                        );
                       },
                       child: AnimatedSlide(
                         curve: Curves.fastOutSlowIn,
@@ -220,7 +232,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> {
                                   : 0,
                           duration: const Duration(seconds: 1),
                           child: TelegramBrowseFolderDataScreen(
-                            onBackFolder: () {
+                            onBackFolder: () async {
+                              final dir = await getApplicationDir();
+                              // init here for folder data
+                              _telegramFilePickerBloc.events.add(
+                                SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
+                              );
+
                               _telegramFilePickerBloc.events.add(
                                 const SelectScreenForFilesPickerScreenEvent(
                                   TelegramFileFolderEnum.recentDownloadsScreen,

@@ -35,14 +35,16 @@ mixin class FolderCreator {
 
   List<String> get foldersName => _foldersName;
 
+  Future<Directory?> getApplicationDir() async => defaultTargetPlatform == TargetPlatform.iOS
+      ? await getApplicationSupportDirectory()
+      : await getExternalStorageDirectory();
+
   Future<void> createFolders() async {
     final isFoldersAlreadyCreated = _sharedPreferHelper.getBoolByKey(
       key: "is_folders_created",
     );
 
-    final dir = defaultTargetPlatform == TargetPlatform.iOS
-        ? await getApplicationSupportDirectory()
-        : await getExternalStorageDirectory();
+    final dir = await getApplicationDir();
 
     if ((isFoldersAlreadyCreated ?? false)) return;
 

@@ -34,8 +34,11 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
         const SizedBox(height: 20),
         TelegramFolderWidget(
           onTap: () {
-            _telegramFilePickerBloc.events.add(const SelectScreenForFilesPickerScreenEvent(
-                TelegramFileFolderEnum.recentDownloadsScreen));
+            _telegramFilePickerBloc.events.add(
+              const SelectScreenForFilesPickerScreenEvent(
+                TelegramFileFolderEnum.recentDownloadsScreen,
+              ),
+            );
           },
           title: "...",
         ),
@@ -47,9 +50,13 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
           itemCount: foldersName.length,
           itemBuilder: (context, index) {
             return TelegramFolderWidget(
-              onTap: () {
+              onTap: () async {
+                final dir = await getApplicationDir();
                 // init here for folder data
-                // _telegramFilePickerBloc.events.add(data);
+                _telegramFilePickerBloc.events.add(
+                  SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
+                );
+
                 //
                 _telegramFilePickerBloc.events.add(
                   const SelectScreenForFilesPickerScreenEvent(

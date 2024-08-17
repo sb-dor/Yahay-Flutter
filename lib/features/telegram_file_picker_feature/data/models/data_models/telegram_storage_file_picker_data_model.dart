@@ -48,8 +48,11 @@ class TelegramStorageFilePickerDataModel {
       title: "Yahay",
       content: "Browse the app's folder",
       onTap: () async {
-        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(
-            TelegramFileFolderEnum.browseTheAppsFolder));
+        _telegramBloc.events.add(
+          const SelectScreenForFilesPickerScreenEvent(
+            TelegramFileFolderEnum.browseTheAppsFolder,
+          ),
+        );
       },
     ),
     TelegramStorageFilePickerDataModel(
@@ -62,8 +65,11 @@ class TelegramStorageFilePickerDataModel {
       title: "Gallery",
       content: "To send images without compression",
       onTap: () {
-        _telegramBloc.events.add(const SelectScreenForFilesPickerScreenEvent(
-            TelegramFileFolderEnum.browseTheGalleryFolder));
+        _telegramBloc.events.add(
+          const SelectScreenForFilesPickerScreenEvent(
+            TelegramFileFolderEnum.browseTheGalleryFolder,
+          ),
+        );
       },
     ),
   ];

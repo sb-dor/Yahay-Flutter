@@ -202,4 +202,12 @@ class TelegramFilePickerStateModel {
       return null;
     }
   }
+
+  String? _getPathForGettingImagesFrom;
+
+  String? get getPathForGettingImagesFrom => _getPathForGettingImagesFrom;
+
+  void clearGetPathForGettingImagesFrom() => _getPathForGettingImagesFrom = null;
+
+  void setPathForGettingImagesFrom(String? path) => _getPathForGettingImagesFrom = path;
 }
