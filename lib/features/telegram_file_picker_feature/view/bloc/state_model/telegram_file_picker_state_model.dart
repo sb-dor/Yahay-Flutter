@@ -7,6 +7,7 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_asset_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
@@ -54,6 +55,10 @@ class TelegramFilePickerStateModel {
   UnmodifiableListView<TelegramFileImageEntity> get specificFolderFilesPagination =>
       UnmodifiableListView(
         _specificFolderFilesPagination,
+      );
+
+  UnmodifiableListView<TelegramFileImageEntity> get specificFolderFilesAll => UnmodifiableListView(
+        _specificFolderFilesAll,
       );
 
   List<TelegramFileImageEntity?> get clonedPickedFiles =>
@@ -152,6 +157,10 @@ class TelegramFilePickerStateModel {
     }
   }
 
+  void addAllToFolderDataList(List<TelegramFileImageEntity> list) {
+    _specificFolderFilesPagination.addAll(list);
+  }
+
   void addToPagination(List<TelegramFileImageEntity> list) => _galleryPathPagination.addAll(list);
 
   void addToRecentFilesPagination(List<TelegramFileImageEntity> list) =>
@@ -193,6 +202,8 @@ class TelegramFilePickerStateModel {
 
   bool isFileInsidePickedFiles(TelegramFileImageEntity? value) =>
       _pickedFiles.any((el) => el.uuid == value?.uuid);
+
+  void clearPickedFiles() => _pickedFiles.clear();
 
   String? getFileBaseName(File? file) {
     try {

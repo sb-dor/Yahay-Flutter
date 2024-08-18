@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -7,28 +8,29 @@ class PermissionsService {
   }
 
   Future<bool> manageExternalStoragePermission() async {
-    var checkPermissionForManagingExternalStorage = await Permission.manageExternalStorage.status;
-
-    debugPrint("check external: $checkPermissionForManagingExternalStorage");
-
-    if (checkPermissionForManagingExternalStorage != PermissionStatus.granted) {
-      await Permission.manageExternalStorage.request();
+    bool permission = await Permission.manageExternalStorage.request().isGranted;
+    if (!permission) {
+      await openAppSettings();
+      permission = await Permission.manageExternalStorage.request().isGranted;
     }
-
-    checkPermissionForManagingExternalStorage = await Permission.manageExternalStorage.status;
-
-    return checkPermissionForManagingExternalStorage == PermissionStatus.granted;
+    return permission;
   }
 
-  Future<bool> storagePermission() async {
-    final checkPermissionForStorage = await Permission.storage.status;
+  Future<bool> storagePermission({bool checkOnceAgain = false}) async {
+    final deviceInfo = await DeviceInfoPlugin().androidInfo;
+    bool permission = false;
 
-    if (checkPermissionForStorage != PermissionStatus.granted) {
-      final permissionForStorage = await Permission.storage.request();
-
-      debugPrint("permission for managing storage denied $permissionForStorage");
-      return permissionForStorage != PermissionStatus.granted;
+    if (deviceInfo.version.sdkInt > 32) {
+      permission = await Permission.photos.request().isGranted;
+    } else {
+      permission = await Permission.storage.request().isGranted;
     }
-    return false;
+
+    if (!permission && !checkOnceAgain) {
+      await openAppSettings();
+      permission = await storagePermission(checkOnceAgain: true);
+    }
+
+    return permission;
   }
 }

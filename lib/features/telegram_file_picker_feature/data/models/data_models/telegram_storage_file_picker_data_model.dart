@@ -63,15 +63,15 @@ class TelegramStorageFilePickerDataModel {
       title: "Gallery",
       content: "To send images without compression",
       onTap: () async {
-        final dir = await FolderCreator.getApplicationDirStatic();
-        // init here for folder data
-        _telegramBloc.events.add(
-          SetSpecificFolderPathInOrderToGetDataFromThereEvent(dir?.path),
-        );
-
         _telegramBloc.events.add(
           const SelectScreenForFilesPickerScreenEvent(
             TelegramFileFolderEnum.browseTheGalleryFolder,
+          ),
+        );
+
+        _telegramBloc.events.add(
+          const GetSpecificFolderDataEvent(
+            getGalleryData: true,
           ),
         );
       },

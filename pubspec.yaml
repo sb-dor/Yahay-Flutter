@@ -79,6 +79,7 @@ dependencies:
   video_player: ^2.9.1
   video_thumbnail: ^0.5.3
   image_picker: ^1.1.2
+  device_info_plus: ^10.1.2
 
 
 dev_dependencies:

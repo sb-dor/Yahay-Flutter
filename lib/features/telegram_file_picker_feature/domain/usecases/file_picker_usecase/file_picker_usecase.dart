@@ -7,14 +7,11 @@ class FilePickerUseCase {
   FilePickerUseCase(this._filePickerRepo);
 
   // for getting recent files -> images and videos
-  Stream<TelegramPathFolderFile?> getRecentImagesAndVideos() async* {
-    yield* _filePickerRepo.getRecentImagesAndVideos();
-  }
+  Stream<TelegramPathFolderFile?> getRecentImagesAndVideos() =>
+      _filePickerRepo.getRecentImagesAndVideos();
 
   // for getting all download's path files here
-  Stream<TelegramPathFolderFile?> downloadsPathFilesData() async* {
-    yield* _filePickerRepo.getRecentFiles();
-  }
+  Stream<TelegramPathFolderFile?> downloadsPathFilesData() => _filePickerRepo.getRecentFiles();
 
   //
   // for getting specific app folder data, does not matter what

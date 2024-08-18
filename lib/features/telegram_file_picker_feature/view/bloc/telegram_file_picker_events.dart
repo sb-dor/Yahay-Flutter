@@ -117,7 +117,11 @@ final class SetSpecificFolderPathInOrderToGetDataFromThereEvent extends Telegram
 //
 @immutable
 final class GetSpecificFolderDataEvent extends TelegramFilePickerEvents {
-  const GetSpecificFolderDataEvent();
+  final bool getGalleryData;
+
+  const GetSpecificFolderDataEvent({
+    this.getGalleryData = false,
+  });
 }
 
 @immutable
@@ -125,4 +129,9 @@ final class SpecificFolderDataStreamHandlerEvent extends TelegramFilePickerEvent
   final TelegramPathFolderFile? file;
 
   const SpecificFolderDataStreamHandlerEvent(this.file);
+}
+
+@immutable
+final class PaginateSpecificFolderDataEvent extends TelegramFilePickerEvents {
+  const PaginateSpecificFolderDataEvent();
 }

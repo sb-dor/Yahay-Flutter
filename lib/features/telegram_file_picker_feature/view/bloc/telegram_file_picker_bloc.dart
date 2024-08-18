@@ -109,6 +109,8 @@ class TelegramFilePickerBloc {
       yield* _specificFolderDataStreamHandlerEvent(event);
     } else if (event is SetSpecificFolderPathInOrderToGetDataFromThereEvent) {
       yield* _setSpecificFolderPathInOrderToGetDataFromThereEvent(event);
+    } else if (event is PaginateSpecificFolderDataEvent) {
+      yield* _paginateSpecificFolderDataEvent(event);
     }
   }
 
@@ -120,6 +122,7 @@ class TelegramFilePickerBloc {
     }
     _currentStateModel.clearAllGalleryPath(clearAll: false);
     _currentStateModel.clearAllGalleryPaginationPath(clearAll: false);
+    _currentStateModel.clearPickedFiles();
 
     try {
       if (_currentStateModel.galleryPathFiles.isEmpty) {
@@ -130,6 +133,7 @@ class TelegramFilePickerBloc {
           ),
         );
 
+        // this init shows getting permission from uses for recording video or taking pictures from camera
         await fileModel.controllerInit();
 
         yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
@@ -383,15 +387,25 @@ class TelegramFilePickerBloc {
     if (_currentStateModel.getPathForGettingImagesFrom == null) return;
     _currentStateModel.clearSpecificFolderData();
     _currentStateModel.closeSpecificFolderDataStream();
-    _currentStateModel.initSpecificFolderDataStream(
-      _filePickerUseCase
-          .getSpecificFolderData(_currentStateModel.getPathForGettingImagesFrom!)
-          .listen(
-        (data) {
-          _events.add(SpecificFolderDataStreamHandlerEvent(data));
-        },
-      ),
-    );
+    if (event.getGalleryData) {
+      _currentStateModel.initSpecificFolderDataStream(
+        _filePickerUseCase.getRecentImagesAndVideos().listen(
+          (data) {
+            _events.add(SpecificFolderDataStreamHandlerEvent(data));
+          },
+        ),
+      );
+    } else {
+      _currentStateModel.initSpecificFolderDataStream(
+        _filePickerUseCase
+            .getSpecificFolderData(_currentStateModel.getPathForGettingImagesFrom!)
+            .listen(
+          (data) {
+            _events.add(SpecificFolderDataStreamHandlerEvent(data));
+          },
+        ),
+      );
+    }
   }
 
   //
@@ -411,6 +425,20 @@ class TelegramFilePickerBloc {
       fileName: event.file!.fileName,
     );
     _currentStateModel.addToFolderDataList(value);
+    yield* _emitter();
+  }
+
+  //
+  static Stream<TelegramFilePickerStates> _paginateSpecificFolderDataEvent(
+    PaginateSpecificFolderDataEvent event,
+  ) async* {
+    final data = snoopy<ListPaginationChecker>().paginateList(
+      wholeList: _currentStateModel.specificFolderFilesAll,
+      currentList: _currentStateModel.specificFolderFilesPagination,
+    );
+
+    _currentStateModel.addAllToFolderDataList(data);
+
     yield* _emitter();
   }
 

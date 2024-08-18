@@ -7,6 +7,8 @@ import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/t
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker_screen.dart';
 import 'package:yahay/injections/injections.dart';
 
+import 'bottom_picker_button/telegram_bottom_sender_button.dart';
+
 class TelegramDraggableScrollableBottomSheet extends StatefulWidget {
   const TelegramDraggableScrollableBottomSheet({super.key});
 
@@ -81,7 +83,18 @@ class _TelegramDraggableScrollableBottomSheetState
                       AnimatedPositioned(
                         curve: Curves.fastOutSlowIn,
                         duration: const Duration(milliseconds: 1000),
-                        bottom: currentStateModel.openBottomSectionButton ? 0 : -200,
+                        bottom: currentStateModel.clonedPickedFiles.isNotEmpty ? 0 : -200,
+                        right: 0,
+                        left: 0,
+                        child: const TelegramBottomSenderButton(),
+                      ),
+                      AnimatedPositioned(
+                        curve: Curves.fastOutSlowIn,
+                        duration: const Duration(milliseconds: 1000),
+                        bottom: (currentStateModel.openBottomSectionButton &&
+                                currentStateModel.clonedPickedFiles.isEmpty)
+                            ? 0
+                            : -200,
                         right: 0,
                         left: 0,
                         child: const TelegramBottomPickerButton(),

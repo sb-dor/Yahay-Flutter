@@ -27,7 +27,10 @@ class TelegramFolderWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: const Center(
-                  child: Icon(Icons.folder),
+                  child: Icon(
+                    Icons.folder,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),

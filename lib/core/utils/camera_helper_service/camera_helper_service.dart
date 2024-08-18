@@ -5,7 +5,8 @@
 import 'package:camera/camera.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-/// [for future usege only]
+
+/// [for future usage only]
 
 class CameraHelperService {
   late List<CameraDescription> _cameras;
@@ -14,8 +15,6 @@ class CameraHelperService {
 
   // init this one in main func
   Future<void> initCameras() async {
-    final list = await availableCameras();
-    debugPrint("all camera list settings list: ${list.length}");
     _cameras = await availableCameras();
   }
 

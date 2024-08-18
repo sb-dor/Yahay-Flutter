@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
@@ -27,27 +28,37 @@ class TelegramFilesPickerScreen extends StatefulWidget {
 
 class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> with FolderCreator {
   late final TelegramFilePickerBloc _telegramFilePickerBloc;
+  late final TelegramFilePickerStateModel _telegramFilePickerStateModel;
 
   @override
   void initState() {
     super.initState();
     _telegramFilePickerBloc = widget.telegramFilePickerBloc;
+    _telegramFilePickerStateModel =
+        _telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
     // final currentStateModel = _telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==
               widget.parentScrollController.position.maxScrollExtent &&
           _telegramFilePickerBloc.states.value is FilesPickerState) {
-        // pagination here
-        _telegramFilePickerBloc.events.add(const RecentFilesPaginationEvent());
+        if (_telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                TelegramFileFolderEnum.browseTheGalleryFolder ||
+            _telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                TelegramFileFolderEnum.browseTheFolder) {
+          _telegramFilePickerBloc.events.add(const PaginateSpecificFolderDataEvent());
+        } else {
+          // pagination here
+          _telegramFilePickerBloc.events.add(const RecentFilesPaginationEvent());
 
-        // if (currentStateModel.recentFilesPagination.length ==
-        //     currentStateModel.recentFiles.length) {
-        //   _telegramFilePickerBloc.events.add(
-        //     const OpenHideBottomTelegramButtonEvent(
-        //       false,
-        //     ),
-        //   );
-        // }
+          // if (currentStateModel.recentFilesPagination.length ==
+          //     currentStateModel.recentFiles.length) {
+          //   _telegramFilePickerBloc.events.add(
+          //     const OpenHideBottomTelegramButtonEvent(
+          //       false,
+          //     ),
+          //   );
+          // }
+        }
       }
     });
   }
