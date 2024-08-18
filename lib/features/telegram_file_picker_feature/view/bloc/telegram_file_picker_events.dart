@@ -88,6 +88,10 @@ final class SelectGalleryFileEvent extends TelegramFilePickerEvents {
   const SelectGalleryFileEvent(this.telegramFileImageEntity);
 }
 
+final class ClearSelectedGalleryFileEvent extends TelegramFilePickerEvents {
+  const ClearSelectedGalleryFileEvent();
+}
+
 @immutable
 final class RecentFilesPaginationEvent extends TelegramFilePickerEvents {
   const RecentFilesPaginationEvent();

@@ -69,11 +69,13 @@ class TelegramStorageFilePickerDataModel {
           ),
         );
 
-        _telegramBloc.events.add(
-          const GetSpecificFolderDataEvent(
-            getGalleryData: true,
-          ),
-        );
+        Future.delayed(const Duration(milliseconds: 300), () {
+          _telegramBloc.events.add(
+            const GetSpecificFolderDataEvent(
+              getGalleryData: true,
+            ),
+          );
+        });
       },
     ),
   ];

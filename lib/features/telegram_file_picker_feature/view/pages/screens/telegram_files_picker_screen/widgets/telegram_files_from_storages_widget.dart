@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/data_models/telegram_storage_file_picker_data_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_app_folder_screen.dart';
+import 'package:yahay/injections/injections.dart';
 
 class TelegramFilesFromStoragesWidget extends StatefulWidget {
   const TelegramFilesFromStoragesWidget({
@@ -13,12 +15,22 @@ class TelegramFilesFromStoragesWidget extends StatefulWidget {
 }
 
 class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStoragesWidget> {
+  late AppThemeBloc _appThemeBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _appThemeBloc = snoopy<AppThemeBloc>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
-        color: Colors.blueGrey.shade900.withOpacity(0.5),
+        color: _appThemeBloc.theme.value.brightness == Brightness.dark
+            ? Colors.blueGrey.shade900.withOpacity(0.5)
+            : Colors.white,
       ),
       child: Column(
         children: [

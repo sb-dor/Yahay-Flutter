@@ -39,6 +39,7 @@ class TelegramFilePickerBottomButton {
               child: const Center(
                 child: Icon(
                   Icons.image,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -72,6 +73,7 @@ class TelegramFilePickerBottomButton {
               child: const Center(
                 child: Icon(
                   Icons.file_open_outlined,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -104,6 +106,7 @@ class TelegramFilePickerBottomButton {
               child: const Center(
                 child: Icon(
                   Icons.file_open_outlined,
+                  color: Colors.white,
                 ),
               ),
             ),

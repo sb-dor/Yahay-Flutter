@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
@@ -23,6 +24,8 @@ class DebugImageCreatorInAppsFolder with FolderCreator {
 
   Future<void> createImagesInAppsFolder() async {
     final checkSet = _sharedPreferHelper.getBoolByKey(key: _key);
+
+    debugPrint("images saved: $checkSet");
 
     if ((checkSet ?? false)) return;
 

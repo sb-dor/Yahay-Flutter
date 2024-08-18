@@ -39,6 +39,9 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
                 TelegramFileFolderEnum.recentDownloadsScreen,
               ),
             );
+            Future.delayed(const Duration(milliseconds: 300), () {
+              _telegramFilePickerBloc.events.add(const ClearSelectedGalleryFileEvent());
+            });
           },
           title: "...",
         ),

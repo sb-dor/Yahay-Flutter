@@ -99,6 +99,8 @@ class TelegramFilePickerBloc {
       yield* _recentFilesPaginationEvent(event);
     } else if (event is SelectGalleryFileEvent) {
       yield* _selectGalleryFileEvent(event);
+    } else if (event is ClearSelectedGalleryFileEvent) {
+      yield* _clearSelectedGalleryFileEvent(event);
     } else if (event is BrowseInternalStorageAndSelectFilesEvent) {
       yield* _browseInternalStorageAndSelectFilesEvent(event);
     } else if (event is SelectScreenForFilesPickerScreenEvent) {
@@ -295,6 +297,13 @@ class TelegramFilePickerBloc {
     yield* _emitter();
   }
 
+  static Stream<TelegramFilePickerStates> _clearSelectedGalleryFileEvent(
+    ClearSelectedGalleryFileEvent event,
+  ) async* {
+    _currentStateModel.clearPickedFiles();
+    yield* _emitter();
+  }
+
   static Stream<TelegramFilePickerStates> _selectGalleryFileEvent(
     SelectGalleryFileEvent event,
   ) async* {
@@ -384,13 +393,14 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _getSpecificFolderDataEvent(
     GetSpecificFolderDataEvent event,
   ) async* {
-    if (_currentStateModel.getPathForGettingImagesFrom == null) return;
+    if (_currentStateModel.getPathForGettingImagesFrom == null && !event.getGalleryData) return;
     _currentStateModel.clearSpecificFolderData();
     _currentStateModel.closeSpecificFolderDataStream();
     if (event.getGalleryData) {
       _currentStateModel.initSpecificFolderDataStream(
         _filePickerUseCase.getRecentImagesAndVideos().listen(
           (data) {
+            debugPrint("path of data: ${data?.file.path}");
             _events.add(SpecificFolderDataStreamHandlerEvent(data));
           },
         ),

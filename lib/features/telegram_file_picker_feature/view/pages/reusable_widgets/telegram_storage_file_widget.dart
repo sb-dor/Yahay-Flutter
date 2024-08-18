@@ -116,7 +116,8 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                               child: const Center(
                                 child: Icon(
                                   Icons.check,
-                                  size: 20,
+                                  size: 18,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
@@ -26,6 +27,7 @@ class _TelegramResentFilesFromStorageWidgetState
     extends State<TelegramResentFilesFromStorageWidget> {
   late final TelegramFilePickerStateModel _telegramFilePickerStateModel;
   late final ReusableGlobalFunctions _reusableFunctions;
+  late final AppThemeBloc _appThemeBloc;
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _TelegramResentFilesFromStorageWidgetState
     _telegramFilePickerStateModel =
         widget.telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
     _reusableFunctions = snoopy<ReusableGlobalFunctions>();
+    _appThemeBloc = snoopy<AppThemeBloc>();
   }
 
   @override
@@ -41,7 +44,9 @@ class _TelegramResentFilesFromStorageWidgetState
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
-        color: Colors.blueGrey.shade900.withOpacity(0.5),
+        color: _appThemeBloc.theme.value.brightness == Brightness.dark
+            ? Colors.blueGrey.shade900.withOpacity(0.5)
+            : Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

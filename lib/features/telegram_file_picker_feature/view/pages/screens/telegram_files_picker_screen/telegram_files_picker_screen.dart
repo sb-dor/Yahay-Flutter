@@ -183,6 +183,9 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                             TelegramFileFolderEnum.browseTheAppsFolder,
                           ),
                         );
+                        Future.delayed(const Duration(milliseconds: 300), () {
+                          _telegramFilePickerBloc.events.add(const ClearSelectedGalleryFileEvent());
+                        });
                       },
                       child: AnimatedSlide(
                         curve: Curves.fastOutSlowIn,
@@ -205,6 +208,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                                   TelegramFileFolderEnum.browseTheAppsFolder,
                                 ),
                               );
+                              Future.delayed(const Duration(milliseconds: 300), () {
+                                _telegramFilePickerBloc.events
+                                    .add(const ClearSelectedGalleryFileEvent());
+                              });
                             },
                           ),
                         ),
@@ -229,6 +236,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                             TelegramFileFolderEnum.recentDownloadsScreen,
                           ),
                         );
+
+                        Future.delayed(const Duration(milliseconds: 300), () {
+                          _telegramFilePickerBloc.events.add(const ClearSelectedGalleryFileEvent());
+                        });
                       },
                       child: AnimatedSlide(
                         curve: Curves.fastOutSlowIn,
@@ -251,6 +262,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                                   TelegramFileFolderEnum.recentDownloadsScreen,
                                 ),
                               );
+
+                              Future.delayed(const Duration(milliseconds: 300), () {
+                                _telegramFilePickerBloc.events.add(const ClearSelectedGalleryFileEvent());
+                              });
                             },
                           ),
                         ),
