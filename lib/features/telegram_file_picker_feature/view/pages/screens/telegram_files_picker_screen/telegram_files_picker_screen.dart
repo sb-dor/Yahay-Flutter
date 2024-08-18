@@ -157,6 +157,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                   ),
 
                   Visibility(
+                    visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                        TelegramFileFolderEnum.browseTheFolder,
+                    maintainAnimation: true,
+                    maintainState: true,
                     child: PopScope(
                       canPop: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                               TelegramFileFolderEnum.browseTheFolder
@@ -185,7 +189,6 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           duration: const Duration(seconds: 1),
                           child: TelegramBrowseFolderDataScreen(
                             onBackFolder: () async {
-
                               _telegramFilePickerBloc.events.add(
                                 const SelectScreenForFilesPickerScreenEvent(
                                   TelegramFileFolderEnum.browseTheAppsFolder,
@@ -200,6 +203,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
 
                   // gallery folder data
                   Visibility(
+                    visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                        TelegramFileFolderEnum.browseTheGalleryFolder,
+                    maintainAnimation: true,
+                    maintainState: true,
                     child: PopScope(
                       canPop: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                               TelegramFileFolderEnum.browseTheGalleryFolder
@@ -228,7 +235,6 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           duration: const Duration(seconds: 1),
                           child: TelegramBrowseFolderDataScreen(
                             onBackFolder: () async {
-
                               _telegramFilePickerBloc.events.add(
                                 const SelectScreenForFilesPickerScreenEvent(
                                   TelegramFileFolderEnum.recentDownloadsScreen,
