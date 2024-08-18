@@ -7,7 +7,6 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_path_folder_file_model.dart';
-import 'package:yahay/injections/injections.dart';
 import 'package:path/path.dart' as p;
 
 mixin class AppStorageFileMixin {
