@@ -376,6 +376,7 @@ class TelegramFilePickerBloc {
     SelectScreenForFilesPickerScreenEvent event,
   ) async* {
     _currentStateModel.selectScreen(event.screen);
+    _currentStateModel.clearPickedFiles();
     yield* _emitter();
   }
 
