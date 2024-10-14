@@ -397,6 +397,7 @@ class TelegramFilePickerBloc {
     if (_currentStateModel.getPathForGettingImagesFrom == null && !event.getGalleryData) return;
     _currentStateModel.clearSpecificFolderData();
     _currentStateModel.closeSpecificFolderDataStream();
+    yield* _emitter();
     if (event.getGalleryData) {
       _currentStateModel.initSpecificFolderDataStream(
         _filePickerUseCase.getRecentImagesAndVideos().listen(
