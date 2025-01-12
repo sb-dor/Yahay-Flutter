@@ -91,7 +91,7 @@ class ChatScreenStateModel {
     _channelSubscription = subs;
   }
 
-  void disposePusherChannelWithStreamSubscription() async {
+  Future<void> disposePusherChannelWithStreamSubscription() async {
     await _pusherChannelsClient?.disconnect();
     await _channelSubscription?.cancel();
     _pusherChannelsClient?.dispose();

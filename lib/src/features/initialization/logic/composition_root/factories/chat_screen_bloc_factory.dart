@@ -12,7 +12,7 @@ import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 
 final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
-  final User user;
+  final User? user;
   final PusherChannelsOptions _channelsOptions;
 
   ChatScreenBlocFactory(

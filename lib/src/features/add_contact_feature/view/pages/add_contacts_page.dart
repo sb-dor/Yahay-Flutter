@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/global_usages/widgets/user_widgets/add_contact_user_widget.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
-import 'package:yahay/src/features/add_contact_feature/view/bloc/add_contact_bloc.dart';
-import 'package:yahay/src/features/add_contact_feature/view/bloc/add_contacts_events.dart';
-import 'package:yahay/src/features/add_contact_feature/view/bloc/add_contacts_states.dart';
+import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
+import 'package:yahay/src/features/add_contact_feature/bloc/add_contacts_events.dart';
+import 'package:yahay/src/features/add_contact_feature/bloc/add_contacts_states.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 
 class AddContactsPage extends StatefulWidget {

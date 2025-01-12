@@ -24,8 +24,12 @@ mixin _$InnerCandidateModel {
   String? get sdpMid => throw _privateConstructorUsedError;
   int? get sdpMLineIndex => throw _privateConstructorUsedError;
 
+  /// Serializes this InnerCandidateModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of InnerCandidateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $InnerCandidateModelCopyWith<InnerCandidateModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,6 +53,8 @@ class _$InnerCandidateModelCopyWithImpl<$Res, $Val extends InnerCandidateModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of InnerCandidateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$InnerCandidateModelImplCopyWithImpl<$Res>
       $Res Function(_$InnerCandidateModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of InnerCandidateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,12 +159,14 @@ class _$InnerCandidateModelImpl implements _InnerCandidateModel {
                 other.sdpMLineIndex == sdpMLineIndex));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, candidate, sdpMid, sdpMLineIndex);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of InnerCandidateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$InnerCandidateModelImplCopyWith<_$InnerCandidateModelImpl> get copyWith =>
@@ -186,8 +196,11 @@ abstract class _InnerCandidateModel implements InnerCandidateModel {
   String? get sdpMid;
   @override
   int? get sdpMLineIndex;
+
+  /// Create a copy of InnerCandidateModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$InnerCandidateModelImplCopyWith<_$InnerCandidateModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

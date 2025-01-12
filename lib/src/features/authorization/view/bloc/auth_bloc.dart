@@ -106,6 +106,7 @@ class AuthBloc {
 
       _currentStateModel.setUser(user);
 
+      event.initChatsBloc();
       // if yield has "*" it means that you will yield whole stream with value for returning stream
       // if yield has not "*" it meant that you will yield only value for returning stream
       yield AuthorizedState(_currentStateModel);
@@ -139,6 +140,8 @@ class AuthBloc {
       }
 
       _currentStateModel.setUser(user);
+
+      event.initChatsBloc();
 
       await DioSettings.instance.updateDio(
         _sharedPreferHelper,
@@ -179,6 +182,8 @@ class AuthBloc {
         _sharedPreferHelper,
       );
 
+      event.initChatsBloc();
+
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
       yield ErrorAuthState(_currentStateModel);
@@ -205,6 +210,8 @@ class AuthBloc {
         _sharedPreferHelper,
       );
 
+      event.initChatsBloc();
+
       yield AuthorizedState(_currentStateModel);
     } catch (e) {
       debugPrint("google auth error is: $e");
@@ -226,6 +233,8 @@ class AuthBloc {
       await DioSettings.instance.updateDio(
         _sharedPreferHelper,
       );
+
+      event.initChatsBloc();
 
       yield AuthorizedState(_currentStateModel);
     } catch (e) {

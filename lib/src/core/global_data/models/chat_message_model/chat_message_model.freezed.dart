@@ -45,8 +45,12 @@ mixin _$ChatMessageModel {
   @JsonKey(includeToJson: false, includeFromJson: false)
   bool? get messageSent => throw _privateConstructorUsedError;
 
+  /// Serializes this ChatMessageModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChatMessageModelCopyWith<ChatMessageModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -89,6 +93,8 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -167,6 +173,8 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
     ) as $Val);
   }
 
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserModelCopyWith<$Res>? get user {
@@ -179,6 +187,8 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
     });
   }
 
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $UserModelCopyWith<$Res>? get relatedToUser {
@@ -191,6 +201,8 @@ class _$ChatMessageModelCopyWithImpl<$Res, $Val extends ChatMessageModel>
     });
   }
 
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ChatModelCopyWith<$Res>? get chat {
@@ -245,6 +257,8 @@ class __$$ChatMessageModelImplCopyWithImpl<$Res>
       $Res Function(_$ChatMessageModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -420,7 +434,7 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
                 other.messageSent == messageSent));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -439,7 +453,9 @@ class _$ChatMessageModelImpl implements _ChatMessageModel {
       deletedAt,
       messageSent);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChatMessageModelImplCopyWith<_$ChatMessageModelImpl> get copyWith =>
@@ -513,8 +529,11 @@ abstract class _ChatMessageModel implements ChatMessageModel {
   @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   bool? get messageSent;
+
+  /// Create a copy of ChatMessageModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChatMessageModelImplCopyWith<_$ChatMessageModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

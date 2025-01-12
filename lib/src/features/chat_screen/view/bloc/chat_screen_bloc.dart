@@ -29,13 +29,14 @@ class ChatScreenBloc {
   final Sink<ChatScreenEvents> events;
   final BehaviorSubject<ChatScreenStates> _states;
 
-  static late final User _currentUser;
+  static late final User? _currentUser;
   static late final PusherChannelsOptions _channelsOptions;
 
   BehaviorSubject<ChatScreenStates> get states => _states;
 
-  void dispose() {
-    _currentStateModel.disposePusherChannelWithStreamSubscription();
+  void dispose() async {
+    await _currentStateModel.disposePusherChannelWithStreamSubscription();
+    await _states.drain();
     _states.close();
     events.close();
   }
@@ -48,7 +49,7 @@ class ChatScreenBloc {
   factory ChatScreenBloc({
     required ChatScreenRepo chatScreenRepo,
     required ChatScreenChatRepo chatScreenChatRepo,
-    required User user,
+    required User? user,
     required PusherChannelsOptions options,
   }) {
     _currentUser = user;

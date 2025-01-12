@@ -3,9 +3,9 @@ import 'package:rxdart/rxdart.dart';
 import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/src/features/add_contact_feature/domain/repo/add_contact_repo.dart';
 import 'package:yahay/src/features/add_contact_feature/domain/usecases/contacts_features_usecase.dart';
-import 'package:yahay/src/features/add_contact_feature/view/bloc/add_contacts_events.dart';
-import 'package:yahay/src/features/add_contact_feature/view/bloc/add_contacts_states.dart';
-import 'package:yahay/src/features/add_contact_feature/view/bloc/state_model/add_contact_state_model.dart';
+import 'add_contacts_events.dart';
+import 'add_contacts_states.dart';
+import 'state_model/add_contact_state_model.dart';
 
 @immutable
 class AddContactBloc {

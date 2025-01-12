@@ -22,7 +22,12 @@ class ChatWidget extends StatelessWidget {
     return SplashButtonClicker(
       splashColor: Colors.green.shade100,
       onTap: () {
-        AutoRouter.of(context).push(ChatRoute(chat: chat, user: null));
+        AutoRouter.of(context).push(
+          ChatRoute(
+            chat: chat,
+            user: null,
+          ),
+        );
       },
       child: IntrinsicHeight(
         child: Row(

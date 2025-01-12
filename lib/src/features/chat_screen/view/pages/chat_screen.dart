@@ -41,13 +41,16 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     final dependencyContainer = DependenciesScope.of(context, listen: false);
+    currentUser = dependencyContainer.authBloc.states.value.authStateModel.user;
+
 
     _chatScreenBloc = ChatScreenBlocFactory(
-      dependencyContainer.authBloc.states.value.authStateModel.user!,
+      currentUser,
       dependencyContainer.pusherClientService.options,
     ).create();
     _appThemeBloc = dependencyContainer.appThemeBloc;
-    currentUser = dependencyContainer.authBloc.states.value.authStateModel.user;
+    //
+    //
     _chatScreenBloc.events.add(
       InitChatScreenEvent(
         widget.chat,

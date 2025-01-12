@@ -8,7 +8,7 @@ class MaterialContext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ThemeData>(
-      stream: DependenciesScope.of(context)?.appThemeBloc.theme,
+      stream: DependenciesScope.of(context).appThemeBloc.theme,
       builder: (context, themeStates) {
         return MaterialApp.router(
           // scaffoldMessengerKey: snoopy<GlobalContext>().globalContext,
@@ -31,7 +31,7 @@ class MaterialContext extends StatelessWidget {
           // like singlton
           // example:
           // snoopy<AppRouter>().push(route)
-          routerConfig: DependenciesScope.of(context)?.appRouter.config(),
+          routerConfig: DependenciesScope.of(context).appRouter.config(),
           // about deeplinking have a look this doc:
           // https://pub.dev/packages/auto_route#deep-linking
         );

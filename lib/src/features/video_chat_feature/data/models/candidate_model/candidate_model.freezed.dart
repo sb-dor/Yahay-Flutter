@@ -29,8 +29,12 @@ mixin _$CandidateModel {
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this CandidateModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CandidateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CandidateModelCopyWith<CandidateModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -63,6 +67,8 @@ class _$CandidateModelCopyWithImpl<$Res, $Val extends CandidateModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CandidateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -101,6 +107,8 @@ class _$CandidateModelCopyWithImpl<$Res, $Val extends CandidateModel>
     ) as $Val);
   }
 
+  /// Create a copy of CandidateModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $InnerCandidateModelCopyWith<$Res>? get candidate {
@@ -143,6 +151,8 @@ class __$$CandidateModelImplCopyWithImpl<$Res>
       _$CandidateModelImpl _value, $Res Function(_$CandidateModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CandidateModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -232,12 +242,14 @@ class _$CandidateModelImpl implements _CandidateModel {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, roomId, candidate, role, createdAt, updatedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CandidateModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CandidateModelImplCopyWith<_$CandidateModelImpl> get copyWith =>
@@ -279,8 +291,11 @@ abstract class _CandidateModel implements CandidateModel {
   DateTime? get createdAt;
   @override
   DateTime? get updatedAt;
+
+  /// Create a copy of CandidateModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CandidateModelImplCopyWith<_$CandidateModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

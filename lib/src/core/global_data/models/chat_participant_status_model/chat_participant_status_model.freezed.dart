@@ -24,8 +24,12 @@ mixin _$ChatParticipantStatusModel {
   int? get id => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
 
+  /// Serializes this ChatParticipantStatusModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ChatParticipantStatusModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ChatParticipantStatusModelCopyWith<ChatParticipantStatusModel>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -51,6 +55,8 @@ class _$ChatParticipantStatusModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ChatParticipantStatusModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,6 +98,8 @@ class __$$ChatParticipantStatusModelImplCopyWithImpl<$Res>
       $Res Function(_$ChatParticipantStatusModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ChatParticipantStatusModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -139,11 +147,13 @@ class _$ChatParticipantStatusModelImpl implements _ChatParticipantStatusModel {
             (identical(other.status, status) || other.status == status));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, status);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ChatParticipantStatusModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChatParticipantStatusModelImplCopyWith<_$ChatParticipantStatusModelImpl>
@@ -170,8 +180,11 @@ abstract class _ChatParticipantStatusModel
   int? get id;
   @override
   String? get status;
+
+  /// Create a copy of ChatParticipantStatusModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChatParticipantStatusModelImplCopyWith<_$ChatParticipantStatusModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

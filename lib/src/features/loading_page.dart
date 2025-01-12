@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'authorization/view/bloc/auth_bloc.dart';
+import 'authorization/view/bloc/auth_events.dart';
 import 'authorization/view/bloc/auth_states.dart';
 
 @RoutePage()
@@ -22,7 +23,15 @@ class _HomePageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    _authBloc = DependenciesScope.of(context, listen: false).authBloc;
+    final depContainer = DependenciesScope.of(context, listen: false);
+    _authBloc = depContainer.authBloc;
+    _authBloc.events.add(
+      CheckAuthEvent(
+        initChatsBloc: () {
+          depContainer.initChatBlocAfterAuthorization();
+        },
+      ),
+    );
 
     _streamSubscription = _authBloc.states.listen((state) async {
       if (state is AuthorizedState) {

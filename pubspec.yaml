@@ -83,6 +83,7 @@ dependencies:
   logger: ^2.5.0
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -96,7 +97,7 @@ dev_dependencies:
   freezed: ^2.5.2
   auto_route_generator: ^8.0.0
   package_info_plus: any
-#  wakelock_windows: any
+  #  wakelock_windows: any
   win32: ^5.5.4
   build_runner: ^2.4.9
   pinenacl: ^0.6.0
@@ -128,11 +129,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-#  fonts:
-#    - family: BriemHand
-#      fonts:
-#        - asset: assets/fonts/BriemHand/BriemHand-Regular.ttf
-#        - asset: assets/fonts/BriemHand/BriemHand-Medium.ttf
+  #  fonts:
+  #    - family: BriemHand
+  #      fonts:
+  #        - asset: assets/fonts/BriemHand/BriemHand-Regular.ttf
+  #        - asset: assets/fonts/BriemHand/BriemHand-Medium.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
