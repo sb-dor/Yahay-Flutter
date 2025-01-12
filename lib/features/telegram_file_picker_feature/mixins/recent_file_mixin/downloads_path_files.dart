@@ -3,7 +3,6 @@ import 'dart:isolate';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:lecle_downloads_path_provider/constants/downloads_directory_type.dart';
 import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,10 +11,9 @@ import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dar
 import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_path_folder_file_model.dart';
-import 'package:yahay/injections/injections.dart';
 
 mixin class DownloadsPathFiles {
-  final _permissions = snoopy<PermissionsService>();
+  // final _permissions = snoopy<PermissionsService>();
 
   // final _reusables = snoopy<ReusableGlobalFunctions>();
 
@@ -73,15 +71,9 @@ mixin class DownloadsPathFiles {
 
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
 
-    if (!GetIt.instance.isRegistered<ReusableGlobalFunctions>()) {
-      GetIt.instance.registerLazySingleton<ReusableGlobalFunctions>(
-        () => ReusableGlobalFunctions(),
-      );
-    }
-
     // final defaultCacheManager = DefaultCacheManager();
 
-    final reusables = GetIt.instance.get<ReusableGlobalFunctions>();
+    final reusables = ReusableGlobalFunctions.instance;
 
     final directoryPath = await getTemporaryDirectory();
     await for (final entity in directory.list(recursive: false, followLinks: false)) {

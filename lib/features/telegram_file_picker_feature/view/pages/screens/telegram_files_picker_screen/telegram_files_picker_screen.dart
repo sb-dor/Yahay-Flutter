@@ -119,7 +119,9 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            const TelegramFilesFromStoragesWidget(),
+                            TelegramFilesFromStoragesWidget(
+                              telegramFilePickerBloc: widget.telegramFilePickerBloc,
+                            ),
                             const SizedBox(height: 15),
                             TelegramResentFilesFromStorageWidget(
                               telegramFilePickerBloc: widget.telegramFilePickerBloc,
@@ -161,7 +163,9 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                                   ? 1
                                   : 0,
                           duration: const Duration(seconds: 1),
-                          child: const TelegramBrowseAppFolderScreen(),
+                          child: TelegramBrowseAppFolderScreen(
+                            telegramFilePickerBloc: _telegramFilePickerBloc,
+                          ),
                         ),
                       ),
                     ),
@@ -213,6 +217,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                                     .add(const ClearSelectedGalleryFileEvent());
                               });
                             },
+                            telegramFilePickerBloc: _telegramFilePickerBloc,
                           ),
                         ),
                       ),
@@ -264,9 +269,11 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                               );
 
                               Future.delayed(const Duration(milliseconds: 300), () {
-                                _telegramFilePickerBloc.events.add(const ClearSelectedGalleryFileEvent());
+                                _telegramFilePickerBloc.events
+                                    .add(const ClearSelectedGalleryFileEvent());
                               });
                             },
+                            telegramFilePickerBloc: _telegramFilePickerBloc,
                           ),
                         ),
                       ),

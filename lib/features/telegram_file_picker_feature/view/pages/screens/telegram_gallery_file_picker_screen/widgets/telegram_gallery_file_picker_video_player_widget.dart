@@ -5,7 +5,6 @@ import 'package:yahay/features/telegram_file_picker_feature/domain/entities/tele
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
-import 'package:yahay/injections/injections.dart';
 
 class TelegramGalleryFilePickerVideoPlayerWidget extends StatefulWidget {
   final TelegramFileImageEntity item;
@@ -83,7 +82,7 @@ class _TelegramGalleryFilePickerVideoPlayerWidgetState
                     ),
                     const SizedBox(width: 2),
                     Text(
-                      snoopy<ReusableGlobalFunctions>().getNormalDuration(
+                      ReusableGlobalFunctions.instance.getNormalDuration(
                         widget.item.videoPlayerController?.value.duration,
                       ),
                       style: GoogleFonts.aBeeZee(fontSize: 12),

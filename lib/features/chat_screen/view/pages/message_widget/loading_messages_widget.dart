@@ -1,9 +1,8 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/core/global_usages/widgets/shimmer_loader.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 
 class LoadingMessagesWidget extends StatefulWidget {
   const LoadingMessagesWidget({super.key});
@@ -21,7 +20,7 @@ class _LoadingMessagesWidgetState extends State<LoadingMessagesWidget> {
     super.initState();
     final rnd = Random();
 
-    _appThemeBloc = snoopy<AppThemeBloc>();
+    _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
 
     final tempWidgets = [
       _RightWidget(

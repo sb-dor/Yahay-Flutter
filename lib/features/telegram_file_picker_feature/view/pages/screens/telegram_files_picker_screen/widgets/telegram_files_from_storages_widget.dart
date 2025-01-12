@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/data_models/telegram_storage_file_picker_data_model.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 
 class TelegramFilesFromStoragesWidget extends StatefulWidget {
+  final TelegramFilePickerBloc telegramFilePickerBloc;
+
   const TelegramFilesFromStoragesWidget({
     super.key,
+    required this.telegramFilePickerBloc,
   });
 
   @override
@@ -15,11 +19,18 @@ class TelegramFilesFromStoragesWidget extends StatefulWidget {
 
 class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStoragesWidget> {
   late AppThemeBloc _appThemeBloc;
+  late List<TelegramStorageFilePickerDataModel> telegramStorageFileDataModels;
 
   @override
   void initState() {
     super.initState();
-    _appThemeBloc = snoopy<AppThemeBloc>();
+    _appThemeBloc = DependenciesScope.of(
+      context,
+      listen: false,
+    ).appThemeBloc;
+    telegramStorageFileDataModels = TelegramStorageFilePickerDataModel.data(
+      widget.telegramFilePickerBloc,
+    );
   }
 
   @override
@@ -37,9 +48,9 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
             separatorBuilder: (context, index) => const SizedBox(height: 15),
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: TelegramStorageFilePickerDataModel.data.length,
+            itemCount: telegramStorageFileDataModels.length,
             itemBuilder: (context, index) {
-              final item = TelegramStorageFilePickerDataModel.data[index];
+              final item = telegramStorageFileDataModels[index];
               return IntrinsicHeight(
                 child: GestureDetector(
                   onTap: item.onTap,

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
@@ -12,11 +11,8 @@ import 'package:yahay/core/utils/image_comporessor/image_compressor.dart';
 import 'package:yahay/core/utils/permissions/permissions_service.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_path_folder_file_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_asset_entity.dart';
-import 'package:yahay/injections/injections.dart';
 
 mixin class RecentGalleyFileMixin {
-  final _permissions = snoopy<PermissionsService>();
-
   // final _context = snoopy<GlobalContext>().globalContext.currentContext!;
 
   // final _reusableFunctions = snoopy<ReusableGlobalFunctions>();
@@ -25,9 +21,11 @@ mixin class RecentGalleyFileMixin {
     RecentFilesOptions? options,
   }) async* {
     try {
-      final externalStoragePermission = await _permissions.manageExternalStoragePermission();
+      final PermissionsService permissionsService = PermissionsService();
 
-      final storagePermission = await _permissions.storagePermission();
+      final externalStoragePermission = await permissionsService.manageExternalStoragePermission();
+
+      final storagePermission = await permissionsService.storagePermission();
 
       debugPrint("storage $storagePermission | external: $externalStoragePermission");
 
@@ -80,9 +78,7 @@ mixin class RecentGalleyFileMixin {
 
     List<dynamic> dList = telegramImageAssetEntity['list'];
 
-    GetIt.instance.registerLazySingleton(() => ReusableGlobalFunctions());
-
-    final reusables = GetIt.instance.get<ReusableGlobalFunctions>();
+    final reusables = ReusableGlobalFunctions.instance;
 
     final List<TelegramFileImageAssetEntity> images =
         dList.map((e) => TelegramFileImageAssetEntity.fromJson(e)).toList();

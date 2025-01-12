@@ -6,15 +6,16 @@ import 'package:yahay/features/telegram_file_picker_feature/domain/entities/tele
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
-import 'package:yahay/injections/injections.dart';
 import 'package:path/path.dart' as path;
 
 class TelegramStorageFileWidget extends StatefulWidget {
   final List<TelegramFileImageEntity> list;
+  final TelegramFilePickerBloc telegramFilePickerBloc;
 
   const TelegramStorageFileWidget({
     super.key,
     required this.list,
+    required this.telegramFilePickerBloc,
   });
 
   @override
@@ -22,15 +23,13 @@ class TelegramStorageFileWidget extends StatefulWidget {
 }
 
 class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
-  late TelegramFilePickerBloc _telegramFilePickerBloc;
   late TelegramFilePickerStateModel _telegramFilePickerStateModel;
 
   @override
   void initState() {
     super.initState();
-    _telegramFilePickerBloc = snoopy<TelegramFilePickerBloc>();
     _telegramFilePickerStateModel =
-        _telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
+        widget.telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
   }
 
   @override
@@ -44,7 +43,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
         return InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () {
-            snoopy<TelegramFilePickerBloc>().events.add(SelectGalleryFileEvent(item));
+            widget.telegramFilePickerBloc.events.add(SelectGalleryFileEvent(item));
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
@@ -61,7 +60,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                     children: [
                       if (item.videoPlayerController != null && item.videoPreview != null)
                         _VideoItem(item: item)
-                      else if (snoopy<ReusableGlobalFunctions>().isImageFile(item.file?.path ?? ''))
+                      else if (ReusableGlobalFunctions.instance.isImageFile(item.file?.path ?? ''))
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: SizedBox(

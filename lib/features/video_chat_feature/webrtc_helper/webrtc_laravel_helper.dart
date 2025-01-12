@@ -9,7 +9,6 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/video_chat_feature/data/models/candidate_model/candidate_model.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/candidate.dart';
-import 'package:yahay/injections/injections.dart';
 
 typedef LaravelStreamStateCallback = void Function(MediaStream stream);
 
@@ -17,7 +16,11 @@ typedef SetStateCallbackSignal = void Function();
 
 class WebrtcLaravelHelper {
   final String _url = "http://192.168.100.3:8000/api";
-  final _dioHelper = snoopy<DioSettings>();
+  final _dioHelper = DioSettings.instance;
+
+  final PusherClientService pusherClientService;
+
+  WebrtcLaravelHelper(this.pusherClientService);
 
   // configuration for iceServers
   // they can be used for free
@@ -111,7 +114,7 @@ class WebrtcLaravelHelper {
       ///
       ///
       try {
-        final pusherService = await snoopy<PusherClientService>().subscriptionCreator();
+        final pusherService = await pusherClientService.subscriptionCreator();
 
         final channel = pusherService.publicChannel(Constants.webRtcChannelName);
 
@@ -297,7 +300,7 @@ class WebrtcLaravelHelper {
       }
 
       //
-      final pusherService = await snoopy<PusherClientService>().subscriptionCreator();
+      final pusherService = await pusherClientService.subscriptionCreator();
 
       final channel = pusherService.publicChannel(Constants.webRtcChannelName);
 

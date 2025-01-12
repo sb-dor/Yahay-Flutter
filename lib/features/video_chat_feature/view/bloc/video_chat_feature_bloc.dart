@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
+import 'package:yahay/core/global_data/entities/user.dart';
+import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
 import 'package:yahay/features/video_chat_feature/domain/usecases/start_video_chat.dart';
@@ -10,7 +11,6 @@ import 'package:yahay/features/video_chat_feature/domain/usecases/video_chat_ent
 import 'package:yahay/features/video_chat_feature/domain/usecases/leave_video_chat.dart';
 import 'package:yahay/features/video_chat_feature/domain/usecases/stream_the_video.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/state_model/video_chat_state_model.dart';
-import 'package:yahay/injections/injections.dart';
 import 'video_chat_feature_events.dart';
 import 'video_chat_feature_states.dart';
 
@@ -24,6 +24,8 @@ class VideoChatFeatureBloc {
   static late VideoChatEntrance _videoChatEntrance;
   static late LeaveVideoChat _leaveVideoChat;
   static late StreamTheVideo _streamTheVideo;
+  static late User? _currentUser;
+  static late PusherClientService _pusherClientService;
 
   //
   // in order to use an emitter function
@@ -41,12 +43,18 @@ class VideoChatFeatureBloc {
   }) : _states = states;
 
   void dispose() async {
-    events.add(const FinishVideoChatEvent());
+    _events.add(const FinishVideoChatEvent());
+    _events.close();
+    _states.close();
   }
 
   factory VideoChatFeatureBloc({
     required VideoChatFeatureRepo repo,
+    required User? currentUser,
+    required PusherClientService pusherClientService,
   }) {
+    _currentUser = currentUser;
+    _pusherClientService = pusherClientService;
     // useCases registration
     _startVideoChat = StartVideoChat(repo);
     _videoChatEntrance = VideoChatEntrance(repo);
@@ -66,7 +74,8 @@ class VideoChatFeatureBloc {
       InitialVideoChatState(_currentStateModel),
     );
 
-    final statesHandler = BehaviorSubject<VideoChatFeatureStates>()..addStream(states);
+    final statesHandler = BehaviorSubject<VideoChatFeatureStates>()
+      ..addStream(states);
 
     _currentState = statesHandler;
 
@@ -97,19 +106,16 @@ class VideoChatFeatureBloc {
   }
 
   static Stream<VideoChatFeatureStates> _videoChatInitFeatureEvent(
-    VideoChatInitFeatureEvent event,
-  ) async* {
+      VideoChatInitFeatureEvent event,) async* {
     final chat = event.chat;
 
     if (chat == null) return;
 
-    final currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
-
     _currentStateModel.initChannelChat(chat);
 
-    _currentStateModel.initCurrentUser(currentUser);
+    _currentStateModel.initCurrentUser(_currentUser);
 
-    await _currentStateModel.initLocalRenderer();
+    await _currentStateModel.initLocalRenderer(_pusherClientService);
 
     // in order to listen that someone from other side connected to your data
     _currentStateModel.webrtcLaravelHelper?.onAddRemoteStream = ((stream) async {
@@ -120,9 +126,7 @@ class VideoChatFeatureBloc {
   }
 
   //
-  static Stream<VideoChatFeatureStates> _startVideoChatEvent(
-    StartVideoChatEvent event,
-  ) async* {
+  static Stream<VideoChatFeatureStates> _startVideoChatEvent(StartVideoChatEvent event,) async* {
     if (_currentStateModel.currentVideoChatEntity == null) return;
 
     // start to loading chat
@@ -191,8 +195,7 @@ class VideoChatFeatureBloc {
 
   // not starting video, this event is for someone who wants to participate to video chat
   static Stream<VideoChatFeatureStates> _videoChatEntranceEvent(
-    VideoChatEntranceEvent event,
-  ) async* {
+      VideoChatEntranceEvent event,) async* {
     //
     final room = _currentStateModel.chat?.videoChatRoom;
 
@@ -218,9 +221,7 @@ class VideoChatFeatureBloc {
   }
 
   //
-  static Stream<VideoChatFeatureStates> _finishVideoChatEvent(
-    FinishVideoChatEvent event,
-  ) async* {
+  static Stream<VideoChatFeatureStates> _finishVideoChatEvent(FinishVideoChatEvent event,) async* {
     //
     if (_currentStateModel.currentVideoChatEntity == null) return;
     final result = await _leaveVideoChat.leaveVideoChat(
@@ -332,8 +333,7 @@ class VideoChatFeatureBloc {
   }
 
   static Stream<VideoChatFeatureStates> _onAddRemoteRendererStreamEvent(
-    OnAddRemoteRendererStreamEvent event,
-  ) async* {
+      OnAddRemoteRendererStreamEvent event,) async* {
     try {
       debugPrint("coming somebody");
       final videoChatEntity = VideoChatEntity(
@@ -355,8 +355,7 @@ class VideoChatFeatureBloc {
   }
 
   static Stream<VideoChatFeatureStates> _switchCameraStreamEvent(
-    SwitchCameraStreamEvent event,
-  ) async* {
+      SwitchCameraStreamEvent event,) async* {
     _currentStateModel.switchCamera();
 
     Helper.switchCamera(
@@ -370,21 +369,18 @@ class VideoChatFeatureBloc {
 
   //
   static Stream<VideoChatFeatureStates> _turnCameraOffAndEvent(
-    TurnCameraOffAndEvent event,
-  ) async* {
+      TurnCameraOffAndEvent event,) async* {
     _currentStateModel.changeHasVideo();
 
     final videoTrack =
-        _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0];
+    _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0];
 
     videoTrack.enabled = _currentStateModel.hasVideo;
 
     yield InitialVideoChatState(_currentStateModel);
   }
 
-  static Stream<VideoChatFeatureStates> _turnMicOffAndOnEvent(
-    TurnMicOffAndOnEvent event,
-  ) async* {
+  static Stream<VideoChatFeatureStates> _turnMicOffAndOnEvent(TurnMicOffAndOnEvent event,) async* {
     if (event.change) _currentStateModel.changeHasAudio();
 
     Helper.setMicrophoneMute(

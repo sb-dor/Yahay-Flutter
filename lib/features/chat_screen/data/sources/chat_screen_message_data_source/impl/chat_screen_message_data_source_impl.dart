@@ -8,10 +8,9 @@ import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat_message.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/features/chat_screen/data/sources/chat_screen_message_data_source/chat_screen_message_data_source.dart';
-import 'package:yahay/injections/injections.dart';
 
 class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
-  final _dioSettings = snoopy<DioSettings>();
+  final _dioSettings = DioSettings.instance;
 
   static const String _messageSendUrl = "${AppHttpRoutes.chatsPrefix}/message/handler";
 

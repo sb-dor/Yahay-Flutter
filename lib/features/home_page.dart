@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late StreamSubscription _authStreamListener;
   late List<BottomNavbarItem> _screens = [];
-  late final ChatsBloc _chatsBloc;
+  ChatsBloc? _chatsBloc;
   late final AuthBloc _authBloc;
   int _index = 1;
 
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
   void deactivate() {
     debugPrint("home page deactivate worked");
     _authStreamListener.cancel();
-    _chatsBloc.events.add(ChangeToLoadingState());
+    _chatsBloc?.events.add(ChangeToLoadingState());
     super.deactivate();
   }
 

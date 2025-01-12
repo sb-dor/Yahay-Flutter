@@ -6,10 +6,9 @@ import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/features/chats/data/sources/chats_data_source/chats_data_source.dart';
-import 'package:yahay/injections/injections.dart';
 
 class ChatsDataSourceImpl implements ChatsDataSource {
-  final _dioHelper = snoopy<DioSettings>();
+  final _dioHelper = DioSettings.instance;
 
   static const String _getUserChatsUrl = "${AppHttpRoutes.chatsPrefix}/get/chats";
 

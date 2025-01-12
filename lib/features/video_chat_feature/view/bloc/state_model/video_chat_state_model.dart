@@ -8,14 +8,12 @@ import 'package:yahay/core/global_data/models/chats_model/chat_functions.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/core/utils/extensions/extentions.dart';
-import 'package:yahay/core/utils/talker/talker_service.dart';
+import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:collection/collection.dart';
 import 'package:yahay/features/video_chat_feature/webrtc_helper/webrtc_laravel_helper.dart';
 
 class VideoChatStateModel {
-  final talker = TalkerService.instance.talker;
-
   UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
       UnmodifiableListView(_videoChatEntities);
 
@@ -71,9 +69,9 @@ class VideoChatStateModel {
 
   WebrtcLaravelHelper? get webrtcLaravelHelper => _webrtcLaravelHelper;
 
-  Future<void> initLocalRenderer() async {
+  Future<void> initLocalRenderer(PusherClientService pusherClientService) async {
     // helper initialization first
-    _webrtcLaravelHelper = WebrtcLaravelHelper();
+    _webrtcLaravelHelper = WebrtcLaravelHelper(pusherClientService);
 
     _currentVideoChatEntity = VideoChatEntity(
       videoRenderer: RTCVideoRenderer(),

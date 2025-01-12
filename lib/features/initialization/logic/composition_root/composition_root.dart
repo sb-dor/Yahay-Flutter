@@ -2,6 +2,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
+import 'package:yahay/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
@@ -57,7 +58,8 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
       sharedPreferHelper: _sharedPreferHelper,
     ).create();
 
-    final chatsBloc = ChatsBlocFactory().create();
+    final cameraHelperService = CameraHelperService();
+    await cameraHelperService.initCameras();
 
     final profileBloc = ProfileBlocFactory().create();
 
@@ -71,12 +73,12 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
       logger: _logger,
       appThemeBloc: AppThemeBloc(),
       authBloc: authBloc,
-      chatsBloc: chatsBloc,
       profileBloc: profileBloc,
       addContactBloc: addContactBloc,
       appRouter: AppRouter(),
       sharedPreferHelper: _sharedPreferHelper,
       pusherClientService: pusherClientService,
+      cameraHelperService: cameraHelperService
     );
   }
 }

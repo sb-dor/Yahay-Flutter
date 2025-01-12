@@ -5,15 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:yahay/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
-import 'package:yahay/core/utils/talker/talker_service.dart';
 import 'package:yahay/features/video_chat_feature/data/models/video_chat_model.dart';
 import 'package:yahay/features/video_chat_feature/data/sources/video_chat_feature_data_source/video_chat_feature_data_source.dart';
 import 'package:yahay/features/video_chat_feature/domain/entities/video_chat_entity.dart';
-import 'package:yahay/injections/injections.dart';
 
 class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
-  final _dioHelper = snoopy<DioSettings>();
-  final _talker = TalkerService.instance.talker;
+  final _dioHelper = DioSettings.instance;
   final _joinChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
   final _startVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/start/videochat";
   final _leaveVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
@@ -113,7 +110,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
 
       debugPrint("coming response from stream video: ${response.data}");
     } on DioException catch (e) {
-      _talker.log("stream the video error is: ${e.response?.data}");
+      // error
     }
   }
 }

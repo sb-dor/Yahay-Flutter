@@ -99,8 +99,6 @@ class AuthBloc {
     try {
       final user = await _checkTokenUseCase.checkAuth();
 
-      debugPrint("working auth checktoken");
-
       if (user == null) {
         yield UnAuthorizedState(_currentStateModel);
         return;

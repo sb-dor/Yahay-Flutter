@@ -1,6 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/features/initialization/logic/composition_root/factories/video_chat_bloc_factory.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_events.dart';
 import 'package:yahay/features/video_chat_feature/view/bloc/video_chat_feature_states.dart';
@@ -8,8 +10,6 @@ import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/dou
 import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/multiple_camera_view.dart';
 import 'package:yahay/features/video_chat_feature/view/pages/type_of_screens/single_camera_view_screen.dart';
 import 'package:yahay/features/video_chat_feature/view/pages/widgets/hang_up_buttons_widget.dart';
-import 'package:yahay/injections/injections.dart';
-
 import 'widgets/call_button_widget.dart';
 
 @RoutePage()
@@ -31,7 +31,11 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
   @override
   void initState() {
     super.initState();
-    _videoChatFeatureBloc = snoopy<VideoChatFeatureBloc>();
+    final depContainer = DependenciesScope.of(context, listen: false);
+    _videoChatFeatureBloc = VideoChatBlocFactory(
+      depContainer.authBloc.states.value.authStateModel.user,
+      depContainer.pusherClientService,
+    ).create();
     _videoChatFeatureBloc.events.add(VideoChatInitFeatureEvent(
       widget.chat,
     ));

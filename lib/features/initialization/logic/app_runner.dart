@@ -44,7 +44,7 @@ class AppRunner with FolderCreator {
               return true;
             };
 
-            await createFolders();
+            await createFolders(sharedPreferences);
 
             final compositionRoot = await CompositionRoot(
               logger: logger,

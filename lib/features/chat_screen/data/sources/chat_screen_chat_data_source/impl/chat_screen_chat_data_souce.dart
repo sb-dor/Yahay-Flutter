@@ -9,10 +9,9 @@ import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/features/chat_screen/data/sources/chat_screen_chat_data_source/chat_screen_chat_data_souce.dart';
-import 'package:yahay/injections/injections.dart';
 
 class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
-  final _dioSettings = snoopy<DioSettings>();
+  final _dioSettings = DioSettings.instance;
 
   static const String _getChatUrl = "${AppHttpRoutes.chatsPrefix}/get/chat/on/entrance";
   static const String _deleteTempCreatedChatsUrl =

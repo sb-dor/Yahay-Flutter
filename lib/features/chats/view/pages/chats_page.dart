@@ -5,7 +5,7 @@ import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
 import 'package:yahay/features/chats/view/bloc/chats_events.dart';
 import 'package:yahay/features/chats/view/bloc/chats_states.dart';
 import 'package:yahay/features/chats/view/pages/chat_widget/chat_widget.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 import 'chat_widget/chat_loading_widget.dart';
 import 'chats_appbar/chats_appbar.dart';
 
@@ -18,20 +18,22 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
-  late final ChatsBloc _chatsBloc;
+  ChatsBloc? _chatsBloc;
 
   @override
   void initState() {
     super.initState();
-    _chatsBloc = snoopy<ChatsBloc>();
-    _chatsBloc.events.add(GetUserChatsEvent());
-    _chatsBloc.events.add(ChatListenerInitEvent(_chatsBloc.events));
+    _chatsBloc = DependenciesScope.of(context, listen: false).chatsBloc;
+    if (_chatsBloc != null) {
+      _chatsBloc?.events.add(GetUserChatsEvent());
+      _chatsBloc?.events.add(ChatListenerInitEvent(_chatsBloc!.events));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ChatsStates>(
-      stream: _chatsBloc.states,
+      stream: _chatsBloc?.states,
       builder: (context, snap) {
         switch (snap.connectionState) {
           case ConnectionState.none:
@@ -47,7 +49,7 @@ class _ChatsPageState extends State<ChatsPage> {
                 child: const ChatsAppbar(),
               ),
               body: RefreshIndicator(
-                onRefresh: () async => _chatsBloc.events.add(GetUserChatsEvent(refresh: true)),
+                onRefresh: () async => _chatsBloc?.events.add(GetUserChatsEvent(refresh: true)),
                 child: ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.all(8),

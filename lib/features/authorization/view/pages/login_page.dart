@@ -121,8 +121,13 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           onPressed: () => _authBloc.events.add(
                             LoginEvent(
-                                emailOrUserName: _emailOrUserNameController.text,
-                                password: _passwordController.text),
+                              emailOrUserName: _emailOrUserNameController.text,
+                              password: _passwordController.text,
+                              initChatsBloc: () {
+                                DependenciesScope.of(context, listen: false)
+                                    .initChatBlocAfterAuthorization();
+                              },
+                            ),
                           ),
                           child: Center(
                             child: (authState?.authStateModel.loadingLogin ?? false)
@@ -184,7 +189,14 @@ class _LoginPageState extends State<LoginPage> {
                                 FontAwesomeIcons.google,
                               ),
                               text: 'Google',
-                              onTap: () => _authBloc.events.add(GoogleAuth()),
+                              onTap: () => _authBloc.events.add(
+                                GoogleAuth(
+                                  initChatsBloc: () {
+                                    DependenciesScope.of(context, listen: false)
+                                        .initChatBlocAfterAuthorization();
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -195,7 +207,14 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.blue,
                               ),
                               text: 'Facebook',
-                              onTap: () => _authBloc.events.add(FacebookAuth()),
+                              onTap: () => _authBloc.events.add(
+                                FacebookAuth(
+                                  initChatsBloc: () {
+                                    DependenciesScope.of(context, listen: false)
+                                        .initChatBlocAfterAuthorization();
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ],

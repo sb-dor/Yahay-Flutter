@@ -2,17 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:talker/talker.dart';
+import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
-import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
-import 'package:yahay/core/utils/talker/talker_service.dart';
-import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/chats/domain/repo/chats_repo.dart';
 import 'package:yahay/features/chats/domain/usecases/get_user_chats_usecase.dart';
 import 'package:yahay/features/chats/view/bloc/state_model/chats_state_model.dart';
-import 'package:yahay/injections/injections.dart';
 import 'chats_events.dart';
 import 'chats_states.dart';
 
@@ -30,6 +27,10 @@ class ChatsBloc {
 
   BehaviorSubject<ChatsStates> get states => _states;
 
+  static late final User? _currentUser;
+  static late final PusherChannelsOptions _pusherChannelsOptions;
+  static late final Logger _logger;
+
   const ChatsBloc._({
     required this.events,
     required final BehaviorSubject<ChatsStates> states,
@@ -37,7 +38,13 @@ class ChatsBloc {
 
   factory ChatsBloc({
     required ChatsRepo chatsRepo,
+    required final User? currentUser,
+    required final PusherChannelsOptions pusherChannelsOptions,
+    required final Logger logger,
   }) {
+    _currentUser = currentUser;
+    _pusherChannelsOptions = pusherChannelsOptions;
+    _logger = logger;
     _currentStateModel = ChatsStateModel();
     _getUserChatsUseCase = GetUserChatsUseCase(chatsRepo);
 
@@ -69,15 +76,13 @@ class ChatsBloc {
   // for channel listening (for getting new chats when whoever writes)
   static Stream<ChatsStates> _chatListenerInitEvent(ChatListenerInitEvent event) async* {
     try {
-      final user = snoopy<AuthBloc>().states.value.authStateModel.user;
-
-      final channelName = "${Constants.channelNotifyOfUserName}${user?.id}";
+      final channelName = "${Constants.channelNotifyOfUserName}${_currentUser?.id}";
 
       debugPrint("current whole channel listeners: $channelName");
 
       _currentStateModel.setToPusherClient(
         PusherChannelsClient.websocket(
-          options: snoopy<PusherClientService>().options,
+          options: _pusherChannelsOptions,
           connectionErrorHandler: (f, s, t) {},
         ),
       );
@@ -121,7 +126,10 @@ class ChatsBloc {
     try {
       final data = event.event?.data;
 
-      TalkerService.instance.talker.log("$data", logLevel: LogLevel.info,);
+      _logger.log(
+        Level.debug,
+        "$data",
+      );
 
       Map<String, dynamic> json = data is String
           ? jsonDecode(data)
@@ -135,7 +143,7 @@ class ChatsBloc {
 
       // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
-      _currentStateModel.addChat(chat);
+      _currentStateModel.addChat(chat, _currentUser);
 
       yield* _emitter();
     } catch (e) {

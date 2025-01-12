@@ -32,8 +32,12 @@ class TelegramFilePickerBloc {
 
   BehaviorSubject<TelegramFilePickerStates> get states => _states;
 
+  static late final CameraHelperService _cameraHelperService;
+
   void dispose() {
     events.add(const ClosePopupEvent());
+    _states.close();
+    _events.close();
   }
 
   const TelegramFilePickerBloc._({
@@ -43,7 +47,10 @@ class TelegramFilePickerBloc {
 
   factory TelegramFilePickerBloc(
     final TelegramFilePickerRepo telegramFilePickerRepo,
+    final CameraHelperService cameraHelperService,
   ) {
+    _cameraHelperService = cameraHelperService;
+
     _filePickerUseCase = FilePickerUseCase(telegramFilePickerRepo);
     //
     _currentStateModel = TelegramFilePickerStateModel();
@@ -129,7 +136,7 @@ class TelegramFilePickerBloc {
       if (_currentStateModel.galleryPathFiles.isEmpty) {
         final TelegramFileImageModel fileModel = TelegramFileImageModel(
           cameraController: CameraController(
-            snoopy<CameraHelperService>().cameras.last,
+            _cameraHelperService.cameras.last,
             ResolutionPreset.max,
           ),
         );
@@ -221,24 +228,24 @@ class TelegramFilePickerBloc {
       // until list reaches specific length of pagination
       final model = TelegramFileImageModel(
         file: event.file!.file,
-        videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+        videoPlayerController: ReusableGlobalFunctions.instance.isVideoFile(event.file!.file.path)
             ? VideoPlayerController.file(event.file!.file)
             : null,
-        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+        videoPreview: ReusableGlobalFunctions.instance.isVideoFile(event.file!.file.path)
             ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
             : null,
       );
 
       // if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
 
-      if (model.videoPlayerController == null && model.videoPreview == null) {
-        if (_currentStateModel.context.mounted) {
-          // precacheImage(
-          //   FileImage(event.file!),
-          //   _currentStateModel.context,
-          // );
-        }
-      }
+      // if (model.videoPlayerController == null && model.videoPreview == null) {
+      //   if (_currentStateModel.context.mounted) {
+      //     // precacheImage(
+      //     //   FileImage(event.file!),
+      //     //   _currentStateModel.context,
+      //     // );
+      //   }
+      // }
 
       _currentStateModel.setGalleryPathFiles(model);
 
@@ -258,25 +265,25 @@ class TelegramFilePickerBloc {
     if (event.file != null && event.file?.file != null) {
       final model = TelegramFileImageModel(
         file: event.file?.file,
-        videoPlayerController: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+        videoPlayerController: ReusableGlobalFunctions.instance.isVideoFile(event.file!.file.path)
             ? VideoPlayerController.file(event.file!.file)
             : null,
         fileName: basename(event.file!.file.path),
-        videoPreview: snoopy<ReusableGlobalFunctions>().isVideoFile(event.file!.file.path)
+        videoPreview: ReusableGlobalFunctions.instance.isVideoFile(event.file!.file.path)
             ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
             : null,
       );
 
       // if (model.videoPlayerController != null) model.videoPlayerController?.initialize();
 
-      if (model.videoPlayerController == null && model.videoPreview == null) {
-        if (_currentStateModel.context.mounted) {
-          // precacheImage(
-          //   FileImage(event.file!),
-          //   _currentStateModel.context,
-          // );
-        }
-      }
+      // if (model.videoPlayerController == null && model.videoPreview == null) {
+      //   if (_currentStateModel.context.mounted) {
+      //     // precacheImage(
+      //     //   FileImage(event.file!),
+      //     //   _currentStateModel.context,
+      //     // );
+      //   }
+      // }
 
       _currentStateModel.addToRecentFiles(model);
 
@@ -286,7 +293,7 @@ class TelegramFilePickerBloc {
 
   //
   static Stream<TelegramFilePickerStates> _imagesAndVideoPaginationEvent() async* {
-    final tempList = snoopy<ListPaginationChecker>().paginateList(
+    final tempList = ListPaginationChecker.instance.paginateList(
       wholeList: _currentStateModel.galleryPathFiles,
       currentList: _currentStateModel.galleryPathPagination,
     );
@@ -313,7 +320,7 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _recentFilesPaginationEvent(
     RecentFilesPaginationEvent event,
   ) async* {
-    final tempList = snoopy<ListPaginationChecker>().paginateList(
+    final tempList = ListPaginationChecker.instance.paginateList(
       wholeList: _currentStateModel.recentFiles,
       currentList: _currentStateModel.recentFilesPagination,
     );
@@ -443,7 +450,7 @@ class TelegramFilePickerBloc {
   static Stream<TelegramFilePickerStates> _paginateSpecificFolderDataEvent(
     PaginateSpecificFolderDataEvent event,
   ) async* {
-    final data = snoopy<ListPaginationChecker>().paginateList(
+    final data = ListPaginationChecker.instance.paginateList(
       wholeList: _currentStateModel.specificFolderFilesAll,
       currentList: _currentStateModel.specificFolderFilesPagination,
     );

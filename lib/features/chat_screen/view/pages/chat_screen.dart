@@ -5,7 +5,6 @@ import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_usages/widgets/shimmer_loader.dart';
-import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_events.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
@@ -15,7 +14,8 @@ import 'package:yahay/features/chat_screen/view/pages/bottom_chat_widget/bottom_
 import 'package:yahay/features/chat_screen/view/pages/bottom_chat_widget/emoji_picker_helper.dart';
 import 'package:yahay/features/chat_screen/view/pages/message_widget/loading_messages_widget.dart';
 import 'package:yahay/features/chat_screen/view/pages/message_widget/message_widget.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/logic/composition_root/factories/chat_screen_bloc_factory.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 
 @RoutePage()
 class ChatScreen extends StatefulWidget {
@@ -40,9 +40,14 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    _chatScreenBloc = snoopy<ChatScreenBloc>();
-    _appThemeBloc = snoopy<AppThemeBloc>();
-    currentUser = snoopy<AuthBloc>().states.value.authStateModel.user;
+    final dependencyContainer = DependenciesScope.of(context, listen: false);
+
+    _chatScreenBloc = ChatScreenBlocFactory(
+      dependencyContainer.authBloc.states.value.authStateModel.user!,
+      dependencyContainer.pusherClientService.options,
+    ).create();
+    _appThemeBloc = dependencyContainer.appThemeBloc;
+    currentUser = dependencyContainer.authBloc.states.value.authStateModel.user;
     _chatScreenBloc.events.add(
       InitChatScreenEvent(
         widget.chat,

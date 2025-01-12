@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:yahay/features/initialization/logic/composition_root/factories/telegram_file_picker_bloc_factory.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
+import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/bottom_picker_button/telegram_bottom_picker_button.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_files_picker_screen/telegram_files_picker_screen.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker_screen.dart';
-import 'package:yahay/injections/injections.dart';
-
 import 'bottom_picker_button/telegram_bottom_sender_button.dart';
 
 class TelegramDraggableScrollableBottomSheet extends StatefulWidget {
-  const TelegramDraggableScrollableBottomSheet({super.key});
+  final ValueChanged<List<TelegramFileImageEntity?>> selectedItems;
+
+  const TelegramDraggableScrollableBottomSheet({
+    super.key,
+    required this.selectedItems,
+  });
 
   @override
   State<TelegramDraggableScrollableBottomSheet> createState() =>
@@ -26,23 +32,31 @@ class _TelegramDraggableScrollableBottomSheetState
   @override
   void initState() {
     super.initState();
-    _telegramFilePickerBloc = snoopy<TelegramFilePickerBloc>();
+    _telegramFilePickerBloc = TelegramFilePickerBlocFactory(
+      cameraHelperService: DependenciesScope.of(context, listen: false).cameraHelperService,
+    ).create();
     _telegramFilePickerBloc.events.add(InitAllPicturesEvent(
       true,
       controller: _draggableScrollableController,
     ));
-    Future.delayed(const Duration(milliseconds: 350), () {
-      _telegramFilePickerBloc.events.add(
-        const OpenHideBottomTelegramButtonEvent(
-          true,
-        ),
-      );
-    });
+    Future.delayed(
+      const Duration(milliseconds: 350),
+      () {
+        _telegramFilePickerBloc.events.add(
+          const OpenHideBottomTelegramButtonEvent(
+            true,
+          ),
+        );
+      },
+    );
     // _telegramFilePickerBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
   }
 
   @override
   void dispose() {
+    widget.selectedItems(
+      _telegramFilePickerBloc.states.value.telegramFilePickerStateModel.clonedPickedFiles,
+    );
     _draggableScrollableController.dispose();
     _telegramFilePickerBloc.dispose();
     super.dispose();
@@ -97,7 +111,9 @@ class _TelegramDraggableScrollableBottomSheetState
                             : -200,
                         right: 0,
                         left: 0,
-                        child: const TelegramBottomPickerButton(),
+                        child: TelegramBottomPickerButton(
+                          telegramFilePickerBloc: _telegramFilePickerBloc,
+                        ),
                       ),
                     ],
                   ),

@@ -4,17 +4,15 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:yahay/core/global_usages/constants/constants.dart';
-import 'package:yahay/core/utils/global_context/global_context.dart';
 import 'package:yahay/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_state.dart';
-import 'package:yahay/injections/injections.dart';
 
 class TelegramFilePickerStateModel {
   //
-  BuildContext get context => snoopy<GlobalContext>().globalContext.currentContext!;
+  // BuildContext get context => snoopy<GlobalContext>().globalContext.currentContext!;
 
   DraggableScrollableController? _draggableScrollableController;
 

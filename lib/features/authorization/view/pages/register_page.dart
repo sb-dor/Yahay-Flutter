@@ -125,9 +125,14 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           onPressed: () => _authBloc.events.add(
                             RegisterEvent(
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                                userName: _userNameController.text),
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                              userName: _userNameController.text,
+                              initChatsBloc: () {
+                                DependenciesScope.of(context, listen: false)
+                                    .initChatBlocAfterAuthorization();
+                              },
+                            ),
                           ),
                           child: Center(
                             child: (authState?.authStateModel.loadingRegister ?? false)
@@ -189,7 +194,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                 FontAwesomeIcons.google,
                               ),
                               text: 'Google',
-                              onTap: () => _authBloc.events.add(GoogleAuth()),
+                              onTap: () => _authBloc.events.add(
+                                GoogleAuth(
+                                  initChatsBloc: () {
+                                    DependenciesScope.of(context, listen: false)
+                                        .initChatBlocAfterAuthorization();
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -200,7 +212,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Colors.blue,
                               ),
                               text: 'Facebook',
-                              onTap: () => _authBloc.events.add(FacebookAuth()),
+                              onTap: () => _authBloc.events.add(
+                                FacebookAuth(
+                                  initChatsBloc: () {
+                                    DependenciesScope.of(context, listen: false)
+                                        .initChatBlocAfterAuthorization();
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ],

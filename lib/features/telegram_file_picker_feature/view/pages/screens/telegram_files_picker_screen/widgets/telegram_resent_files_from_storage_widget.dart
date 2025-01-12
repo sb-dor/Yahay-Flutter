@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
-import 'package:yahay/core/global_usages/reusables/reusable_global_functions.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/reusable_widgets/telegram_storage_file_widget.dart';
-import 'package:yahay/injections/injections.dart';
 
 class TelegramResentFilesFromStorageWidget extends StatefulWidget {
   final TelegramFilePickerBloc telegramFilePickerBloc;
@@ -23,7 +22,6 @@ class TelegramResentFilesFromStorageWidget extends StatefulWidget {
 class _TelegramResentFilesFromStorageWidgetState
     extends State<TelegramResentFilesFromStorageWidget> {
   late final TelegramFilePickerStateModel _telegramFilePickerStateModel;
-  late final ReusableGlobalFunctions _reusableFunctions;
   late final AppThemeBloc _appThemeBloc;
 
   @override
@@ -31,8 +29,7 @@ class _TelegramResentFilesFromStorageWidgetState
     super.initState();
     _telegramFilePickerStateModel =
         widget.telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
-    _reusableFunctions = snoopy<ReusableGlobalFunctions>();
-    _appThemeBloc = snoopy<AppThemeBloc>();
+    _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
   }
 
   @override
@@ -61,6 +58,7 @@ class _TelegramResentFilesFromStorageWidgetState
           // here should be the list of only files not images or videos
           TelegramStorageFileWidget(
             list: _telegramFilePickerStateModel.recentFilesPagination,
+            telegramFilePickerBloc: widget.telegramFilePickerBloc,
           )
         ],
       ),

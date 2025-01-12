@@ -4,6 +4,7 @@ import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
+import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
@@ -16,7 +17,6 @@ import 'package:yahay/features/chat_screen/domain/usecases/chat_screen_chat_usec
 import 'package:yahay/features/chat_screen/domain/usecases/chat_screen_send_messages_usecases.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_states.dart';
 import 'package:yahay/features/chat_screen/view/bloc/state_model/chat_screen_state_model.dart';
-import 'package:yahay/injections/injections.dart';
 import 'chat_screen_events.dart';
 
 @immutable
@@ -29,10 +29,14 @@ class ChatScreenBloc {
   final Sink<ChatScreenEvents> events;
   final BehaviorSubject<ChatScreenStates> _states;
 
+  static late final User _currentUser;
+  static late final PusherChannelsOptions _channelsOptions;
+
   BehaviorSubject<ChatScreenStates> get states => _states;
 
   void dispose() {
     _currentStateModel.disposePusherChannelWithStreamSubscription();
+    _states.close();
     events.close();
   }
 
@@ -44,7 +48,11 @@ class ChatScreenBloc {
   factory ChatScreenBloc({
     required ChatScreenRepo chatScreenRepo,
     required ChatScreenChatRepo chatScreenChatRepo,
+    required User user,
+    required PusherChannelsOptions options,
   }) {
+    _currentUser = user;
+    _channelsOptions = options;
     _currentStateModel = ChatScreenStateModel();
     _chatScreenChatUsecase = ChatScreenChatUsecase(chatScreenChatRepo);
     _chatScreenSendMessagesUsecases = ChatScreenSendMessagesUsecases(chatScreenRepo);
@@ -86,15 +94,17 @@ class ChatScreenBloc {
     try {
       yield LoadingChatScreenState(_currentStateModel);
 
-      final user = snoopy<AuthBloc>().states.value.authStateModel.user;
-
-      _currentStateModel.setToCurrentUser(user);
+      _currentStateModel.setToCurrentUser(_currentUser);
 
       final chat = await _chatScreenChatUsecase.chat(chat: event.chat, withUser: event.user);
 
       // i don't know why after calling function above currentUser from "_currentStateModel.currentUser" disappears
       // i didn't find a bug
-      if (_currentStateModel.currentUser == null) _currentStateModel.setToCurrentUser(user);
+      if (_currentStateModel.currentUser == null) {
+        _currentStateModel.setToCurrentUser(
+          _currentUser,
+        );
+      }
 
       if (chat == null || chat.uuid == null) {
         _currentStateModel.setChat(null);
@@ -111,7 +121,7 @@ class ChatScreenBloc {
 
       _currentStateModel.setPusherChannel(
         PusherChannelsClient.websocket(
-          options: snoopy<PusherClientService>().options,
+          options: _channelsOptions,
           connectionErrorHandler: (f, s, t) {},
         ),
       );

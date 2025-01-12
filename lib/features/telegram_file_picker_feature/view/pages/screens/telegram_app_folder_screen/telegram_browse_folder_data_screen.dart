@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/reusable_widgets/telegram_storage_file_widget.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_folder_widget.dart';
-import 'package:yahay/injections/injections.dart';
 
 class TelegramBrowseFolderDataScreen extends StatefulWidget {
   final VoidCallback onBackFolder;
+  final TelegramFilePickerBloc telegramFilePickerBloc;
 
   const TelegramBrowseFolderDataScreen({
     super.key,
     required this.onBackFolder,
+    required this.telegramFilePickerBloc,
   });
 
   @override
@@ -17,14 +18,6 @@ class TelegramBrowseFolderDataScreen extends StatefulWidget {
 }
 
 class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDataScreen> {
-  late TelegramFilePickerBloc _telegramFilePickerBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _telegramFilePickerBloc = snoopy<TelegramFilePickerBloc>();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -39,7 +32,7 @@ class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDat
         ),
         const SizedBox(height: 20),
         StreamBuilder(
-          stream: _telegramFilePickerBloc.states,
+          stream: widget.telegramFilePickerBloc.states,
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -50,6 +43,7 @@ class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDat
                 final stateModel = snapshot.requireData.telegramFilePickerStateModel;
                 return TelegramStorageFileWidget(
                   list: stateModel.specificFolderFilesPagination,
+                  telegramFilePickerBloc: widget.telegramFilePickerBloc,
                 );
             }
           },

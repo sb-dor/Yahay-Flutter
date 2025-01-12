@@ -3,12 +3,12 @@ import 'package:yahay/features/telegram_file_picker_feature/view/pages/screens/t
 
 abstract final class TelegramAppFolderSheetOpener {
   static Future<void> openSheet(BuildContext context) async {
-    await showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return const TelegramBrowseAppFolderScreen();
-      },
-    );
+    // await showModalBottomSheet(
+    //   isScrollControlled: true,
+    //   context: context,
+    //   builder: (context) {
+    //     return const TelegramBrowseAppFolderScreen(telegramFilePickerBloc: null,);
+    //   },
+    // );
   }
 }
