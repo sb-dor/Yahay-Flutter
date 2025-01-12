@@ -1,3 +1,5 @@
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
 import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
@@ -12,13 +14,19 @@ import 'package:yahay/features/initialization/models/dependency_container.dart';
 final class CompositionRoot extends AsyncFactory<CompositionResult> {
   //
   final Logger _logger;
+  final SharedPreferHelper _sharedPreferHelper;
 
-  CompositionRoot({required Logger logger}) : _logger = logger;
+  CompositionRoot({
+    required Logger logger,
+    required SharedPreferHelper sharedPreferHelper,
+  })  : _logger = logger,
+        _sharedPreferHelper = sharedPreferHelper;
 
   @override
   Future<CompositionResult> create() async {
     final dependencyContainer = await DependencyContainerFactory(
       logger: _logger,
+      sharedPreferHelper: _sharedPreferHelper,
     ).create();
 
     return CompositionResult(dependencyContainer);
@@ -32,23 +40,28 @@ class CompositionResult {
 }
 
 final class DependencyContainerFactory extends AsyncFactory<DependencyContainer> {
-  DependencyContainerFactory({required Logger logger}) : _logger = logger;
-
   final Logger _logger;
+  final SharedPreferHelper _sharedPreferHelper;
+
+  DependencyContainerFactory({
+    required Logger logger,
+    required SharedPreferHelper sharedPreferHelper,
+  })  : _logger = logger,
+        _sharedPreferHelper = sharedPreferHelper;
 
   @override
   Future<DependencyContainer> create() async {
-    final authBloc = AuthorizationBlocFactory().create();
+    final authBloc = AuthorizationBlocFactory(
+      googleSignIn: GoogleSignIn(),
+      facebookAuth: FacebookAuth.instance,
+      sharedPreferHelper: _sharedPreferHelper,
+    ).create();
 
     final chatsBloc = ChatsBlocFactory().create();
 
     final profileBloc = ProfileBlocFactory().create();
 
     final addContactBloc = AddContactBlocFactory().create();
-
-    final sharedPreferences = SharedPreferHelper();
-
-    await sharedPreferences.initSharedPrefer();
 
     final pusherClientService = PusherClientService();
 
@@ -62,7 +75,7 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
       profileBloc: profileBloc,
       addContactBloc: addContactBloc,
       appRouter: AppRouter(),
-      sharedPreferHelper: sharedPreferences,
+      sharedPreferHelper: _sharedPreferHelper,
       pusherClientService: pusherClientService,
     );
   }

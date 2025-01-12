@@ -11,15 +11,17 @@ class DependenciesScope extends InheritedWidget {
 
   final DependencyContainer dependencies;
 
-  static DependencyContainer? of(BuildContext context, {bool listen = true}) {
+  static DependencyContainer of(BuildContext context, {bool listen = true}) {
     if (listen) {
       final DependenciesScope? result =
           context.dependOnInheritedWidgetOfExactType<DependenciesScope>();
-      assert(result != null, 'No _InheritedScope found in context');
-      return result?.dependencies;
+      assert(result != null, 'No DependenciesScope found in context');
+      return result!.dependencies;
     } else {
       final result = context.getElementForInheritedWidgetOfExactType<DependenciesScope>()?.widget;
-      return result is DependenciesScope ? result.dependencies : null;
+      final checkDep = result is DependenciesScope;
+      assert(checkDep, 'No DependenciesScope found in context');
+      return (result as DependenciesScope).dependencies;
     }
   }
 

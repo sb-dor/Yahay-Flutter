@@ -12,7 +12,7 @@ import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_states.dart';
 import 'package:yahay/features/authorization/view/pages/widgets/authorization_input_widget.dart';
 import 'package:yahay/features/authorization/view/pages/widgets/other_authorization_button_widget.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 
 @RoutePage()
 class RegisterPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    _authBloc = snoopy<AuthBloc>();
+    _authBloc = DependenciesScope.of(context, listen: false).authBloc;
     _streamSubscription = _authBloc.states.listen((event) {
       if (event is AuthorizedState) {
         AutoRouter.of(context).replaceAll([const HomeRoute()]);

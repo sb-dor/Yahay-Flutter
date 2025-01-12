@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
-import 'package:yahay/injections/injections.dart';
-
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 import 'authorization/view/bloc/auth_bloc.dart';
 import 'authorization/view/bloc/auth_states.dart';
 
@@ -23,7 +22,7 @@ class _HomePageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    _authBloc = snoopy<AuthBloc>();
+    _authBloc = DependenciesScope.of(context, listen: false).authBloc;
 
     _streamSubscription = _authBloc.states.listen((state) async {
       if (state is AuthorizedState) {

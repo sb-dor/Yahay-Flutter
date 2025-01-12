@@ -7,10 +7,9 @@ import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/features/add_contact_feature/data/sources/add_contact_source/add_contact_source.dart';
-import 'package:yahay/injections/injections.dart';
 
 class AddContactSourceImpl implements AddContactSource {
-  final DioSettings _dioSettings = snoopy<DioSettings>();
+  final DioSettings _dioSettings = DioSettings.instance;
 
   final String _searchContactUrl = "${AppHttpRoutes.contactsPrefix}/search";
   final String _addContactUrl = "${AppHttpRoutes.contactsPrefix}/add-contact";

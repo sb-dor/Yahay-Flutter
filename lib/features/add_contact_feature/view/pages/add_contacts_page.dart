@@ -5,7 +5,7 @@ import 'package:yahay/core/utils/extensions/extentions.dart';
 import 'package:yahay/features/add_contact_feature/view/bloc/add_contact_bloc.dart';
 import 'package:yahay/features/add_contact_feature/view/bloc/add_contacts_events.dart';
 import 'package:yahay/features/add_contact_feature/view/bloc/add_contacts_states.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 
 class AddContactsPage extends StatefulWidget {
   const AddContactsPage({super.key});
@@ -23,7 +23,7 @@ class _AddContactsPageState extends State<AddContactsPage> {
   void initState() {
     super.initState();
     _controller = DraggableScrollableController();
-    _addContactBloc = snoopy<AddContactBloc>();
+    _addContactBloc = DependenciesScope.of(context, listen: false).addContactBloc;
     _addContactBloc.event.add(ClearDataEvent());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       const maxHeight = 0.96;

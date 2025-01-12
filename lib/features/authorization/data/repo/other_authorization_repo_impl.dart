@@ -3,7 +3,7 @@ import 'package:yahay/features/authorization/data/sources/other_authorization/ot
 import 'package:yahay/features/authorization/domain/repo/other_authorization_repo.dart';
 
 class OtherAuthorizationRepoImpl implements OtherAuthorizationRepo {
-  final OtherAuthorization _otherAuthorization;
+  final OtherAuthorizationDatasource _otherAuthorization;
 
   OtherAuthorizationRepoImpl(this._otherAuthorization);
 

@@ -10,15 +10,23 @@ import 'package:yahay/core/utils/extensions/extentions.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/features/authorization/data/sources/other_authorization/other_authorization.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:yahay/injections/injections.dart';
 
 class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
   final DioSettings _dioSettings = DioSettings.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FacebookAuth _facebookAuth = FacebookAuth.instance;
-
   final String _googleAuthPath = "${AppHttpRoutes.authPrefix}/google-auth";
   final String _facebookAuthPath = "${AppHttpRoutes.authPrefix}/facebook-auth";
+
+  final GoogleSignIn _googleSignIn;
+  final FacebookAuth _facebookAuth;
+  final SharedPreferHelper _sharedPreferHelper;
+
+  OtherAuthorizationImpl({
+    required final GoogleSignIn googleSignIn,
+    required final FacebookAuth facebookAuth,
+    required final SharedPreferHelper sharedPreferHelper,
+  })  : _googleSignIn = googleSignIn,
+        _facebookAuth = facebookAuth,
+        _sharedPreferHelper = sharedPreferHelper;
 
   @override
   Future<UserModel?> faceBookAuth() async {
@@ -51,7 +59,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
         return null;
       }
 
-      await _sharedPreferences.setStringByKey(key: "token", value: json['token']);
+      await _sharedPreferHelper.setStringByKey(key: "token", value: json['token']);
 
       return UserModel.fromJson(json['user']);
     } catch (e) {
@@ -89,7 +97,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
         return null;
       }
 
-      await _sharedPreferences.setStringByKey(key: "token", value: json['token']);
+      await _sharedPreferHelper.setStringByKey(key: "token", value: json['token']);
 
       return UserModel.fromJson(json['user']);
     } catch (e) {

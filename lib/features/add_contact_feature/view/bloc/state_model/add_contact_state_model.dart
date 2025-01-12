@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/utils/list_pagination_checker/list_pagination_checker.dart';
-import 'package:yahay/injections/injections.dart';
 
 class AddContactStateModel {
+  final _listPaginate = ListPaginationChecker.instance;
+
   Timer? timerForSearch;
 
   List<User> _users = [];
@@ -33,8 +33,13 @@ class AddContactStateModel {
       _users = users;
     }
 
-    _page = snoopy<ListPaginationChecker>().checkIsListHasMorePageInt(list: users, page: page);
-    _hasMore = snoopy<ListPaginationChecker>().checkIsListHasMorePageBool(list: users);
+    _page = _listPaginate.checkIsListHasMorePageInt(
+      list: users,
+      page: page,
+    );
+    _hasMore = _listPaginate.checkIsListHasMorePageBool(
+      list: users,
+    );
   }
 
   void clearData() {

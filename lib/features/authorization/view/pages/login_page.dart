@@ -11,7 +11,7 @@ import 'package:yahay/core/global_usages/constants/constants.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_states.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 
 import 'widgets/authorization_input_widget.dart';
 import 'widgets/other_authorization_button_widget.dart';
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _authBloc = snoopy<AuthBloc>();
+    _authBloc = DependenciesScope.of(context, listen: false).authBloc;
     _streamSubscription = _authBloc.states.listen((event) {
       if (event is AuthorizedState) {
         AutoRouter.of(context).replaceAll([const HomeRoute()]);

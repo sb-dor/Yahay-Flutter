@@ -3,7 +3,6 @@ import 'package:rxdart/rxdart.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
 import 'package:yahay/features/profile/view/bloc/state_model/profile_state_model.dart';
-import 'package:yahay/injections/injections.dart';
 
 import 'profile_events.dart';
 import 'profile_states.dart';
@@ -48,7 +47,7 @@ class ProfileBloc {
 
   static Stream<ProfileStates> _profileLogoutEvent(ProfileLogoutEvent event) async* {
     try {
-      snoopy<AuthBloc>().events.add(LogOutEvent());
+      event.logoutEvent();
     } catch (e) {
       debugPrint("_profileLogoutEvent error is: $e");
     }

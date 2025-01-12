@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 
 class SearchWidget extends StatefulWidget {
   final ValueChanged<String> value;
@@ -30,7 +30,7 @@ class _SearchWidgetState extends State<SearchWidget> with SingleTickerProviderSt
   void initState() {
     super.initState();
     _searchController = TextEditingController(text: '');
-    _appThemeBloc = snoopy<AppThemeBloc>();
+    _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 350),

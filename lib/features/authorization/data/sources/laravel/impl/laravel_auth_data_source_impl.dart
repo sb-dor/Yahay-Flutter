@@ -8,12 +8,13 @@ import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/core/utils/screen_messaging/screen_messaging.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/features/authorization/data/sources/laravel/laravel_auth_data_source.dart';
-import 'package:yahay/injections/injections.dart';
 
 class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
-  final _dio = snoopy<DioSettings>();
-  final _sharedPreferences = snoopy<SharedPreferHelper>();
-  final _screenMessaging = snoopy<ScreenMessaging>();
+  final _dioSettings = DioSettings.instance;
+  final _screenMessaging = ScreenMessaging.instance;
+
+  final SharedPreferHelper _sharedPreferences;
+  LaravelAuthDataSourceImpl(this._sharedPreferences);
 
   final String _checkAuth = "/check-auth";
   final String _register = "/register";
@@ -25,7 +26,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     try {
       final url = "${AppHttpRoutes.authPrefix}$_checkAuth";
 
-      final response = await _dio.dio.get(url);
+      final response = await _dioSettings.dio.get(url);
 
       debugPrint("check auth response: ${response.data}");
 
@@ -59,7 +60,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
         "password": password,
       };
 
-      final response = await _dio.dio.post(url, data: body);
+      final response = await _dioSettings.dio.post(url, data: body);
 
       debugPrint("login response: ${response.data} | ${response.data.runtimeType}");
 
@@ -113,7 +114,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
         "user_name": userName,
       };
 
-      final response = await _dio.dio.post(url, data: body);
+      final response = await _dioSettings.dio.post(url, data: body);
 
       debugPrint("register response: ${response.realUri.path} | ${response.data}");
 
@@ -145,7 +146,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     try {
       final url = "${AppHttpRoutes.authPrefix}$_logout";
 
-      final response = await _dio.dio.delete(url);
+      final response = await _dioSettings.dio.delete(url);
 
       debugPrint("logout response: ${response.data}");
 

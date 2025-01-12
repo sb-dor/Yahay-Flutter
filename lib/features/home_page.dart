@@ -13,8 +13,8 @@ import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
 import 'package:yahay/features/chats/view/bloc/chats_events.dart';
 import 'package:yahay/features/chats/view/pages/chats_page.dart';
 import 'package:yahay/features/contacts/view/contacts_page.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/features/profile/view/pages/profile_page.dart';
-import 'package:yahay/injections/injections.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -27,15 +27,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late StreamSubscription _authStreamListener;
   late List<BottomNavbarItem> _screens = [];
-  late ChatsBloc _chatsBloc;
+  late final ChatsBloc _chatsBloc;
+  late final AuthBloc _authBloc;
   int _index = 1;
 
   @override
   void initState() {
     super.initState();
-    _chatsBloc = snoopy<ChatsBloc>();
+    _authBloc = DependenciesScope.of(context, listen: false).authBloc;
+    _chatsBloc = DependenciesScope.of(context, listen: false).chatsBloc;
 
-    _authStreamListener = snoopy<AuthBloc>().states.listen((authState) {
+    _authStreamListener = _authBloc.states.listen((authState) {
       if (authState is UnAuthorizedState) {
         AutoRouter.of(context).replaceAll([const LoginRoute()]);
       }

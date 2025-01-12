@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
+import 'package:yahay/features/authorization/view/bloc/auth_events.dart';
+import 'package:yahay/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/features/profile/view/bloc/profile_bloc.dart';
 import 'package:yahay/features/profile/view/bloc/profile_events.dart';
-import 'package:yahay/injections/injections.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,12 +13,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late ProfileBloc _profileBloc;
+  late final ProfileBloc _profileBloc;
+  late final AuthBloc _authBloc;
 
   @override
   void initState() {
     super.initState();
-    _profileBloc = snoopy<ProfileBloc>();
+    _authBloc = DependenciesScope.of(context, listen: false).authBloc;
+    _profileBloc = DependenciesScope.of(context, listen: false).profileBloc;
   }
 
   @override
@@ -24,8 +28,15 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-            onPressed: () => _profileBloc.events.add(ProfileLogoutEvent()),
-            child: const Icon(Icons.logout)),
+          onPressed: () => _profileBloc.events.add(
+            ProfileLogoutEvent(
+              () {
+               _authBloc.events.add(LogOutEvent());
+              },
+            ),
+          ),
+          child: const Icon(Icons.logout),
+        ),
       ),
     );
   }

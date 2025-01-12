@@ -4,4 +4,8 @@ import 'package:flutter/foundation.dart';
 class ProfileEvents {}
 
 @immutable
-class ProfileLogoutEvent extends ProfileEvents {}
+class ProfileLogoutEvent extends ProfileEvents {
+  final void Function() logoutEvent;
+
+  ProfileLogoutEvent(this.logoutEvent);
+}

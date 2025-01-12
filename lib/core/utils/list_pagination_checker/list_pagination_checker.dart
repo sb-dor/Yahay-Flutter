@@ -1,6 +1,12 @@
 import 'package:yahay/core/global_usages/constants/constants.dart';
 
 class ListPaginationChecker {
+  static ListPaginationChecker? _instance;
+
+  static ListPaginationChecker get instance => _instance ??= ListPaginationChecker._();
+
+  ListPaginationChecker._();
+
   // this func will check whether there are more values in list of pag (returns integer)
   int checkIsListHasMorePageInt(
       {required List<dynamic> list, required int page, int? limitInPage}) {

@@ -1,6 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 
 class ReusableGlobalFunctions {
+  static ReusableGlobalFunctions? _instance;
+
+  static ReusableGlobalFunctions get instance => _instance ??= ReusableGlobalFunctions._();
+
+  ReusableGlobalFunctions._();
+
   final _videoExtensions = [
     '.mp4',
     '.avi',
@@ -130,5 +137,11 @@ class ReusableGlobalFunctions {
     }
 
     return res;
+  }
+
+
+  bool get isMacOsOriOS {
+    return defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS;
   }
 }
