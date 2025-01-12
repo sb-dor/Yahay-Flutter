@@ -3,7 +3,7 @@ import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
-import 'package:yahay/src/features/add_contact_feature/view/bloc/add_contact_bloc.dart';
+import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/chats/view/bloc/chats_bloc.dart';
