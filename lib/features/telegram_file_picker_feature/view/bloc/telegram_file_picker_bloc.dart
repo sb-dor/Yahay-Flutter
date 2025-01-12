@@ -15,7 +15,6 @@ import 'package:yahay/features/telegram_file_picker_feature/domain/entities/tele
 import 'package:yahay/features/telegram_file_picker_feature/domain/repo/telegram_file_picker_repo.dart';
 import 'package:yahay/features/telegram_file_picker_feature/domain/usecases/file_picker_usecase/file_picker_usecase.dart';
 import 'package:yahay/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
-import 'package:yahay/injections/injections.dart';
 import 'telegram_file_picker_events.dart';
 import 'telegram_file_picker_state.dart';
 
@@ -43,7 +42,7 @@ class TelegramFilePickerBloc {
   }) : _states = states;
 
   factory TelegramFilePickerBloc(
-    TelegramFilePickerRepo telegramFilePickerRepo,
+    final TelegramFilePickerRepo telegramFilePickerRepo,
   ) {
     _filePickerUseCase = FilePickerUseCase(telegramFilePickerRepo);
     //

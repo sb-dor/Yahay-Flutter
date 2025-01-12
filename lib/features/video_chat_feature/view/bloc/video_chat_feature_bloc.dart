@@ -62,7 +62,9 @@ class VideoChatFeatureBloc {
 
     final states = eventsHandler.switchMap<VideoChatFeatureStates>((events) async* {
       yield* _eventHandler(events);
-    }).startWith(InitialVideoChatState(_currentStateModel));
+    }).startWith(
+      InitialVideoChatState(_currentStateModel),
+    );
 
     final statesHandler = BehaviorSubject<VideoChatFeatureStates>()..addStream(states);
 

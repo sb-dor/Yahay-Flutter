@@ -32,7 +32,9 @@ class EmojiPickerHelper extends StatelessWidget {
           // Issue: https://github.com/flutter/flutter/issues/28894
           emojiSizeMax: 28 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.20 : 1.0),
         ),
-        swapCategoryAndBottomBar: true,
+        viewOrderConfig: ViewOrderConfig(
+          bottom: EmojiPickerItem.categoryBar,
+        ),
         skinToneConfig: const SkinToneConfig(),
         categoryViewConfig: const CategoryViewConfig(),
         bottomActionBarConfig: const BottomActionBarConfig(
@@ -43,7 +45,6 @@ class EmojiPickerHelper extends StatelessWidget {
         ),
         searchViewConfig: const SearchViewConfig(
           backgroundColor: Colors.white,
-          buttonColor: Colors.grey,
         ),
       ),
     );

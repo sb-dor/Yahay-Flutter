@@ -10,7 +10,7 @@ import 'package:yahay/injections/blocs_inj/telegram_file_picker_inj/telegram_fil
 import 'package:yahay/injections/blocs_inj/video_chat_bloc_inj/video_chat_bloc_inj.dart';
 import 'package:yahay/injections/utils_inj/utils_inj.dart';
 
-final snoopy = GetIt.instance;
+// final snoopy = GetIt.instance;
 
 abstract class Injections {
   static Future<void> init() async {

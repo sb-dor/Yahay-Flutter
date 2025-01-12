@@ -40,7 +40,7 @@ dependencies:
   lecle_downloads_path_provider: ^0.0.2+8
   cupertino_icons: ^1.0.6
   rxdart: ^0.27.7
-  get_it: ^7.7.0
+  # get_it: ^7.7.0
   dio: ^5.4.3+1
   mockito: ^5.4.4
   collection: ^1.18.0
@@ -67,7 +67,7 @@ dependencies:
   firebase_crashlytics: ^3.5.5
   talker: ^4.2.0
   uuid: ^4.4.0
-  emoji_picker_flutter: ^2.2.0
+  emoji_picker_flutter: ^4.2.0
   flutter_image_compress: ^2.3.0
 
   # for video streaming
@@ -80,6 +80,7 @@ dependencies:
   video_thumbnail: ^0.5.3
   image_picker: ^1.1.2
   device_info_plus: ^10.1.2
+  logger: ^2.5.0
 
 
 dev_dependencies:
