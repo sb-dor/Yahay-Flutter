@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
+import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/injections/injections.dart';
 
 class SearchWidget extends StatefulWidget {

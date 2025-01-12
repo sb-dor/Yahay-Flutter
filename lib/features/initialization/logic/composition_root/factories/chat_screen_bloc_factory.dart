@@ -7,35 +7,24 @@ import 'package:yahay/features/chat_screen/data/sources/chat_screen_message_data
 import 'package:yahay/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/features/chat_screen/domain/repo/chat_screen_repo.dart';
 import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/logic/composition_root/composition_root.dart';
 
-abstract class ChatScreenBlocInj {
-  static Future<void> chatScreenBlocInj() async {
-    snoopy.registerLazySingleton<ChatScreenMessageDataSource>(
-      () => ChatScreenMessageDataSourceImpl(),
+final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
+  @override
+  ChatScreenBloc create() {
+    final ChatScreenMessageDataSource messageDataSource = ChatScreenMessageDataSourceImpl();
+
+    final ChatScreenChatDataSource chatScreenChatDataSource = ChatScreenChatDataSourceImpl();
+
+    final ChatScreenRepo chatScreenRepo = ChatScreenRepoImpl(messageDataSource);
+
+    final ChatScreenChatRepo chatScreenChatRepo = ChatScreenChatRepoImpl(
+      chatScreenChatDataSource,
     );
 
-    snoopy.registerLazySingleton<ChatScreenChatDataSource>(
-      () => ChatScreenChatDataSourceImpl(),
-    );
-
-    snoopy.registerLazySingleton<ChatScreenChatRepo>(
-      () => ChatScreenChatRepoImpl(
-        snoopy<ChatScreenChatDataSource>(),
-      ),
-    );
-
-    snoopy.registerLazySingleton<ChatScreenRepo>(
-      () => ChatScreenRepoImpl(
-        snoopy<ChatScreenMessageDataSource>(),
-      ),
-    );
-
-    snoopy.registerFactory<ChatScreenBloc>(
-      () => ChatScreenBloc(
-        chatScreenRepo: snoopy<ChatScreenRepo>(),
-        chatScreenChatRepo: snoopy<ChatScreenChatRepo>(),
-      ),
+    return ChatScreenBloc(
+      chatScreenRepo: chatScreenRepo,
+      chatScreenChatRepo: chatScreenChatRepo,
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:yahay/core/global_data/models/user_model/user_model.dart';
 
-abstract class LaravelAuthDataSource {
+abstract interface class LaravelAuthDataSource {
   Future<UserModel?> register({
     required final String email,
     required final String password,

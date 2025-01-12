@@ -1,23 +1,21 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:yahay/core/utils/dotenv/dotenv.dart';
-import 'package:yahay/injections/injections.dart';
 
 class PusherClientService {
-  final DotEnvHelper _envHelper = snoopy<DotEnvHelper>();
-
   late final PusherChannelsOptions _options;
 
   PusherChannelsOptions get options => _options;
 
   Future<void> init() async {
+    final DotEnvHelper envHelper = DotEnvHelper.instance;
     // just for showing logs
     PusherChannelsPackageLogger.enableLogs();
 
     _options = PusherChannelsOptions.fromHost(
-      scheme: _envHelper.dotEnv.get('PUSHER_SCHEME'), // should be -> ws
-      host: _envHelper.dotEnv.get('PUSHER_HOST'),
-      port: int.parse(_envHelper.dotEnv.get("PUSHER_PORT")),
-      key: _envHelper.dotEnv.get("PUSHER_APP_KEY"),
+      scheme: envHelper.dotEnv.get('PUSHER_SCHEME'), // should be -> ws
+      host: envHelper.dotEnv.get('PUSHER_HOST'),
+      port: int.parse(envHelper.dotEnv.get("PUSHER_PORT")),
+      key: envHelper.dotEnv.get("PUSHER_APP_KEY"),
     );
   }
 

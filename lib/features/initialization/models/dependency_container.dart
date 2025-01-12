@@ -1,12 +1,12 @@
 import 'package:logger/logger.dart';
 import 'package:yahay/core/app_routing/app_router.dart';
-import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
+import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
+import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
+import 'package:yahay/features/add_contact_feature/view/bloc/add_contact_bloc.dart';
+import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
-import 'package:yahay/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:yahay/features/chats/view/bloc/chats_bloc.dart';
 import 'package:yahay/features/profile/view/bloc/profile_bloc.dart';
-import 'package:yahay/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/injections/blocs_inj/video_chat_bloc_inj/video_chat_bloc_inj.dart';
 
 class DependencyContainer {
   //
@@ -20,9 +20,13 @@ class DependencyContainer {
 
   final ProfileBloc profileBloc;
 
-  final VideoChatBlocInj videoChatBlocInj;
+  final AddContactBloc addContactBloc;
 
   final AppRouter appRouter;
+
+  final SharedPreferHelper sharedPreferHelper;
+
+  final PusherClientService pusherClientService;
 
   DependencyContainer({
     required this.logger,
@@ -30,7 +34,14 @@ class DependencyContainer {
     required this.authBloc,
     required this.chatsBloc,
     required this.profileBloc,
-    required this.videoChatBlocInj,
+    required this.addContactBloc,
     required this.appRouter,
+    required this.sharedPreferHelper,
+    required this.pusherClientService,
   });
 }
+
+// not included
+// telegrampickerimage
+// videochatbloc
+// chatsscreenbloc

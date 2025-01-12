@@ -1,21 +1,21 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/core/app_settings/dio/http_status_codes.dart';
 import 'package:yahay/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
-import 'package:yahay/injections/injections.dart';
 
 class DebugImageCreatorInAppsFolder with FolderCreator {
   //
   static const String _key = "generated_images_in_folder";
 
-  final SharedPreferHelper _sharedPreferHelper = snoopy<SharedPreferHelper>();
+  final SharedPreferHelper _sharedPreferHelper;
 
-  final DioSettings _dioSettings = snoopy<DioSettings>();
+  final DioSettings _dioSettings = DioSettings.instance;
+
+  DebugImageCreatorInAppsFolder(this._sharedPreferHelper);
 
   int get _randomInt {
     Random rnd = Random();

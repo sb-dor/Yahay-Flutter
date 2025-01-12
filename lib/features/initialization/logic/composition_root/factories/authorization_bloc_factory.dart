@@ -7,33 +7,24 @@ import 'package:yahay/features/authorization/data/sources/other_authorization/ot
 import 'package:yahay/features/authorization/domain/repo/authorization_repo.dart';
 import 'package:yahay/features/authorization/domain/repo/other_authorization_repo.dart';
 import 'package:yahay/features/authorization/view/bloc/auth_bloc.dart';
-import 'package:yahay/injections/injections.dart';
+import 'package:yahay/features/initialization/logic/composition_root/composition_root.dart';
 
-abstract class AuthInj {
-  static Future<void> authInj() async {
-    snoopy.registerLazySingleton<LaravelAuthDataSource>(
-      () => LaravelAuthDataSourceImpl(),
+final class AuthorizationBlocFactory extends Factory<AuthBloc> {
+  @override
+  AuthBloc create() {
+    final LaravelAuthDataSource laravelAuthDataSource = LaravelAuthDataSourceImpl();
+
+    final OtherAuthorizationDatasource otherAuthorizationDatasource = OtherAuthorizationImpl();
+
+    final AuthorizationRepo authorizationRepo = AuthorizationRepoImpl(laravelAuthDataSource);
+
+    final OtherAuthorizationRepo otherAuthorizationRepo = OtherAuthorizationRepoImpl(
+      otherAuthorizationDatasource,
     );
 
-    snoopy.registerLazySingleton<AuthorizationRepo>(
-      () => AuthorizationRepoImpl(snoopy<LaravelAuthDataSource>()),
-    );
-
-    snoopy.registerLazySingleton<OtherAuthorization>(
-      () => OtherAuthorizationImpl(),
-    );
-
-    snoopy.registerLazySingleton<OtherAuthorizationRepo>(
-      () => OtherAuthorizationRepoImpl(
-        snoopy<OtherAuthorization>(),
-      ),
-    );
-
-    snoopy.registerLazySingleton<AuthBloc>(
-      () => AuthBloc(
-        authorizationRepo: snoopy<AuthorizationRepo>(),
-        otherAuthorizationRepo: snoopy<OtherAuthorizationRepo>(),
-      ),
+    return AuthBloc(
+      authorizationRepo: authorizationRepo,
+      otherAuthorizationRepo: otherAuthorizationRepo,
     );
   }
 }

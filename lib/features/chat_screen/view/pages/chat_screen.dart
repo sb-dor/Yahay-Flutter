@@ -1,7 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:yahay/core/app_settings/app_theme/app_theme_bloc.dart';
+import 'package:yahay/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/core/global_data/entities/user.dart';
 import 'package:yahay/core/global_usages/widgets/shimmer_loader.dart';

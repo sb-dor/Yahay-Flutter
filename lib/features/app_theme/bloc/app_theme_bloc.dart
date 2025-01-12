@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:yahay/core/app_settings/app_theme/app_colors_scheme.dart';
+import 'package:yahay/features/app_theme/models/app_colors_scheme.dart';
 
 @immutable
 abstract class AppThemeEvents {

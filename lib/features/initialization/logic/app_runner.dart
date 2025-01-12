@@ -4,6 +4,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:yahay/core/utils/debug_image_creator_in_apps_folder/debug_image_creator_in_apps_folder.dart';
+import 'package:yahay/core/utils/dotenv/dotenv.dart';
+import 'package:yahay/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/features/initialization/logic/composition_root/composition_root.dart';
 import 'package:yahay/features/initialization/widgets/root_context.dart';
 import 'package:yahay/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
@@ -19,6 +21,8 @@ class AppRunner with FolderCreator {
 
         Future<void> init() async {
           try {
+            await DotEnvHelper.instance.initEnv();
+
             await Firebase.initializeApp(
               options: DefaultFirebaseOptions.currentPlatform,
             );
@@ -37,7 +41,9 @@ class AppRunner with FolderCreator {
               await DebugImageCreatorInAppsFolder().createImagesInAppsFolder();
             }
 
-            final compositionRoot = await CompositionRoot().create();
+            final compositionRoot = await CompositionRoot(
+              logger: null,
+            ).create();
 
             runApp(
               RootContext(

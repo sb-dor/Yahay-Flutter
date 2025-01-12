@@ -12,10 +12,9 @@ import 'package:yahay/features/authorization/data/sources/other_authorization/ot
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:yahay/injections/injections.dart';
 
-class OtherAuthorizationImpl implements OtherAuthorization {
-  final DioSettings _dioSettings = snoopy<DioSettings>();
+class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
+  final DioSettings _dioSettings = DioSettings.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final _sharedPreferences = snoopy<SharedPreferHelper>();
   final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
   final String _googleAuthPath = "${AppHttpRoutes.authPrefix}/google-auth";
