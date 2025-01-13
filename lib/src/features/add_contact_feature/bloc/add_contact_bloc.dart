@@ -1,152 +1,145 @@
 import 'package:flutter/foundation.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yahay/src/core/global_data/entities/user.dart';
 import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/src/features/add_contact_feature/domain/repo/add_contact_repo.dart';
-import 'package:yahay/src/features/add_contact_feature/domain/usecases/contacts_features_usecase.dart';
-import 'add_contacts_events.dart';
-import 'add_contacts_states.dart';
 import 'state_model/add_contact_state_model.dart';
 
+part 'add_contact_bloc.freezed.dart';
+
 @immutable
-class AddContactBloc {
-  static late AddContactStateModel _currentStateModel;
-  static late BehaviorSubject<AddContactsStates> _currentState; // for emitter (if it's necessary)
-  static late AddContactRepo _addContactRepo;
-  static late ContactsFeaturesFunctions _contactsFeaturesFunctions;
+@freezed
+class AddContactsEvents with _$AddContactsEvents {
+  const factory AddContactsEvents.searchContact(final String value) = _SearchContactEvent;
 
-  final Sink<AddContactsEvents> event;
-  final Sink<SearchContactEvent> onlySearchContactEvent;
-  final BehaviorSubject<AddContactsStates> _state;
+  const factory AddContactsEvents.addContactEvent(final User? user) =
+      _AddContactEventOnAddContactsEvent;
 
-  Stream<AddContactsStates> get state => _state.stream;
+  const factory AddContactsEvents.clearDataEvent() = _ClearDataEvent;
+}
 
-  const AddContactBloc._({
-    required this.event,
-    required this.onlySearchContactEvent,
-    required BehaviorSubject<AddContactsStates> state,
-  }) : _state = state;
+@immutable
+@freezed
+sealed class AddContactsStates with _$AddContactsStates {
+  const factory AddContactsStates.initial(final AddContactStateModel addContactStateModel) =
+      InitialAddConstactsState;
 
-  factory AddContactBloc({
-    required AddContactRepo addContactRepo,
-  }) {
-    _addContactRepo = addContactRepo;
-    _contactsFeaturesFunctions = ContactsFeaturesFunctions(_addContactRepo);
-    _currentStateModel = AddContactStateModel();
+  const factory AddContactsStates.loadingAddContacts(
+      final AddContactStateModel addContactStateModel) = LoadingAddContactsState;
 
-    final eventsBehavior = BehaviorSubject<AddContactsEvents>();
+  const factory AddContactsStates.loadingAddContactsState(
+      final AddContactStateModel addContactStateModel) = LoadingAddContactsState;
 
-    final searchEventBehavior = BehaviorSubject<SearchContactEvent>();
+  const factory AddContactsStates.errorAddContactsState(
+      final AddContactStateModel addContactStateModel) = ErrorAddContactsState;
 
-    final state = eventsBehavior.switchMap<AddContactsStates>((event) async* {
-      // if yield has "*" it means that you will yield whole stream with value for returning stream
-      // if yield has not "*" it meant that you will yield only value for returning stream
-      yield* _eventHandler(event);
-    }).startWith(LoadedAddContactsState(_currentStateModel));
+  const factory AddContactsStates.loadedAddContactsState(
+      final AddContactStateModel addContactStateModel) = LoadedAddContactsState;
+}
 
-    final onlySearchEventStream = searchEventBehavior
-        .distinct()
-        .debounceTime(const Duration(seconds: 1))
-        .switchMap<AddContactsStates>((value) async* {
-      // if yield has "*" it means that you will yield whole stream with value for returning stream
-      // if yield has not "*" it meant that you will yield only value for returning stream
-      yield* _searchContactEvent(value);
-    });
+class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
+  final AddContactRepo _iAddContactRepo;
 
-    final mergedStreams = Rx.merge([state, onlySearchEventStream]);
+  AddContactBloc({
+    required AddContactsStates initialState,
+    required AddContactRepo iAddContactRepo,
+  })  : _iAddContactRepo = iAddContactRepo,
+        super(initialState) {
+    on<AddContactsEvents>(
+      (event, emit) => event.map(
+        searchContact: (event) => _searchContactEvent(event, emit),
+        addContactEvent: (event) => _addContactEventHandler(event, emit),
+        clearDataEvent: (event) {
+          var currentState = state.addContactStateModel.clearData();
 
-    final stateBehavior = BehaviorSubject<AddContactsStates>()..addStream(mergedStreams);
-
-    _currentState = stateBehavior;
-
-    return AddContactBloc._(
-      event: eventsBehavior.sink,
-      onlySearchContactEvent: searchEventBehavior.sink,
-      state: stateBehavior,
+          emit(AddContactsStates.loadedAddContactsState(currentState));
+        },
+      ),
     );
   }
 
-  static Stream<AddContactsStates> _eventHandler(AddContactsEvents event) async* {
-    Stream<AddContactsStates> tempStream = Stream.value(LoadedAddContactsState(_currentStateModel));
+  void _searchContactEvent(
+    _SearchContactEvent event,
+    Emitter<AddContactsStates> emit,
+  ) async {
+    var currentStateModel = state.addContactStateModel.copyWith();
 
-    if (event is AddContactEvent) {
-      tempStream = _addContactEvent(event);
-    } else if (event is ClearDataEvent) {
-      _currentStateModel.clearData();
-      tempStream = _emitter();
-    }
-
-    // if yield has "*" it means that you will yield whole stream with value for returning stream
-    // if yield has not "*" it meant that you will yield only value for returning stream
-    yield* tempStream;
-  }
-
-  static Stream<AddContactsStates> _searchContactEvent(SearchContactEvent event) async* {
     try {
       if (event.value.trim().isEmpty) return;
 
-      _currentStateModel.clearData();
-
-      yield LoadingAddContactsState(_currentStateModel);
-
-      final data = await _contactsFeaturesFunctions.searchContact(
+      currentStateModel.clearData();
+      //
+      emit(AddContactsStates.loadingAddContacts(currentStateModel));
+      //
+      final data = await _iAddContactRepo.searchContact(
         event.value,
-        _currentStateModel.page,
+        currentStateModel.page,
       );
+      //
 
-      _currentStateModel.addAndPag(data ?? []);
+      final List<User> currentUsers = List<User>.from(currentStateModel.users);
 
-      // if yield has "*" it means that you will yield whole stream with value for returning stream
-      // if yield has not "*" it meant that you will yield only value for returning stream
-      yield LoadedAddContactsState(_currentStateModel);
+      currentUsers.addAll(data);
+
+      currentStateModel = currentStateModel.copyWith();
+      //
+      // // if yield has "*" it means that you will yield whole stream with value for returning stream
+      // // if yield has not "*" it meant that you will yield only value for returning stream
+      emit(AddContactsStates.loadedAddContactsState(currentStateModel));
     } catch (e) {
-      yield ErrorAddContactsState(_currentStateModel);
+      emit(AddContactsStates.errorAddContactsState(currentStateModel));
     }
   }
 
-  static Stream<AddContactsStates> _addContactEvent(AddContactEvent event) async* {
-    try {
-      if (event.user == null) return;
+  void _addContactEventHandler(
+    _AddContactEventOnAddContactsEvent event,
+    Emitter<AddContactsStates> emit,
+  ) async {
+    var currentStateModel = state.addContactStateModel.copyWith();
 
-      UserModel? changingModel = UserModel.fromEntity(event.user!)?.copyWith(
-        loadingForAddingToContacts: true,
-      );
+    // try {
+    if (event.user == null) return;
 
-      _currentStateModel.setChangedModel(changingModel);
+    UserModel? changingModel = UserModel.fromEntity(event.user!)?.copyWith(
+      loadingForAddingToContacts: true,
+    );
 
-      yield* _emitter();
+    List<User> tempUsersList = List<User>.from(currentStateModel.users);
 
-      final responseValue = await _contactsFeaturesFunctions.addContact(event.user);
+    final foundIndex = tempUsersList.indexWhere((el) => el.id == event.user?.id);
 
-      debugPrint("reponse value: $responseValue");
-
-      changingModel = changingModel?.copyWith(
-        loadingForAddingToContacts: false,
-      );
-
-      _currentStateModel.setChangedModel(changingModel);
-
-      yield* _emitter();
-
-      if (!responseValue) return;
-
-      // set temp user. means that user successfully added this user to his contacts
-      changingModel = changingModel?.copyWith(contact: UserModel());
-
-      _currentStateModel.setChangedModel(changingModel);
-
-      yield* _emitter();
-    } catch (e) {
-      yield ErrorAddContactsState(_currentStateModel);
+    if (foundIndex != -1) {
+      tempUsersList[foundIndex] = event.user!;
     }
-  }
 
-  static Stream<AddContactsStates> _emitter() async* {
-    if (_currentState.value is LoadingAddContactsState) {
-      yield LoadingAddContactsState(_currentStateModel);
-    } else if (_currentState.value is ErrorAddContactsState) {
-      yield ErrorAddContactsState(_currentStateModel);
-    } else if (_currentState.value is LoadedAddContactsState) {
-      yield LoadedAddContactsState(_currentStateModel);
+    final responseValue = await _iAddContactRepo.addContact(event.user);
+
+    debugPrint("reponse value: $responseValue");
+
+    changingModel = changingModel?.copyWith(
+      loadingForAddingToContacts: false,
+    );
+
+    if (foundIndex != -1) {
+      tempUsersList[foundIndex] = event.user!;
     }
+
+    if (!responseValue) return;
+
+    // set temp user. means that user successfully added this user to his contacts
+    changingModel = changingModel?.copyWith(contact: UserModel());
+
+    if (foundIndex != -1) {
+      tempUsersList[foundIndex] = event.user!;
+    }
+
+    currentStateModel = currentStateModel.copyWith(users: tempUsersList);
+
+    emit(AddContactsStates.loadedAddContactsState(currentStateModel));
+
+    // } catch (e) {
+    //   yield ErrorAddContactsState(_currentStateModel);
+    // }
   }
 }

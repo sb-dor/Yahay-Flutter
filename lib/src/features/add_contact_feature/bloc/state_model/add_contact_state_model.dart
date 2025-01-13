@@ -2,49 +2,78 @@ import 'dart:async';
 import 'package:yahay/src/core/global_data/entities/user.dart';
 import 'package:yahay/src/core/utils/list_pagination_checker/list_pagination_checker.dart';
 
-class AddContactStateModel {
-  final _listPaginate = ListPaginationChecker.instance;
+final class AddContactStateModel {
+  final List<User> users;
+  final int page;
+  final bool hasMore;
+  final Timer? timerForSearch;
 
-  Timer? timerForSearch;
+  const AddContactStateModel({
+    this.users = const [],
+    this.page = 1,
+    this.hasMore = true,
+    this.timerForSearch,
+  });
 
-  List<User> _users = [];
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AddContactStateModel &&
+          runtimeType == other.runtimeType &&
+          users == other.users &&
+          page == other.page &&
+          hasMore == other.hasMore &&
+          timerForSearch == other.timerForSearch);
 
-  List<User> get users => _users;
+  @override
+  int get hashCode => users.hashCode ^ page.hashCode ^ hasMore.hashCode ^ timerForSearch.hashCode;
 
-  int _page = 1;
+  @override
+  String toString() {
+    return 'AddContactStateModel{ users: $users, page: $page,'
+        ' hasMore: $hasMore, timerForSearch: $timerForSearch }';
+  }
 
-  bool _hasMore = false;
+  /// Factory constructor for the initial state
+  factory AddContactStateModel.idle() => const AddContactStateModel(
+        users: <User>[],
+        page: 1,
+        hasMore: true,
+      );
 
-  int get page => _page;
+  /// Copy constructor with optional overrides
+  AddContactStateModel copyWith({
+    List<User>? users,
+    int? page,
+    bool? hasMore,
+    Timer? timerForSearch,
+  }) {
+    return AddContactStateModel(
+      users: users ?? this.users,
+      page: page ?? this.page,
+      hasMore: hasMore ?? this.hasMore,
+      timerForSearch: timerForSearch ?? this.timerForSearch,
+    );
+  }
 
-  bool get hasMore => _hasMore;
+  /// Update a user in the list
+  AddContactStateModel updateUser(User? user) {
+    if (user == null) return this;
 
-  void setChangedModel(User? user) {
-    final foundIndex = _users.indexWhere((el) => el.id == user?.id);
+    final updatedUsers = List<User>.from(users);
+    final foundIndex = updatedUsers.indexWhere((el) => el.id == user.id);
+
     if (foundIndex != -1) {
-      _users[foundIndex] = user!;
-    }
-  }
-
-  void addAndPag(List<User> users, {bool paginate = false}) {
-    if (paginate) {
-      _users.addAll(users);
-    } else {
-      _users = users;
+      updatedUsers[foundIndex] = user;
     }
 
-    _page = _listPaginate.checkIsListHasMorePageInt(
-      list: users,
-      page: page,
-    );
-    _hasMore = _listPaginate.checkIsListHasMorePageBool(
-      list: users,
-    );
+    return copyWith(users: updatedUsers);
   }
 
-  void clearData() {
-    _users.clear();
-    _page = 1;
-    _hasMore = false;
+  /// Clear all data
+  AddContactStateModel clearData() {
+    return copyWith(users: [], page: 1, hasMore: false);
   }
+
+
 }

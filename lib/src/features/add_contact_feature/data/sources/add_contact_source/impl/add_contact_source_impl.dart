@@ -15,7 +15,7 @@ class AddContactSourceImpl implements AddContactSource {
   final String _addContactUrl = "${AppHttpRoutes.contactsPrefix}/add-contact";
 
   @override
-  Future<List<UserModel>?> searchContact(String value, int page) async {
+  Future<List<UserModel>> searchContact(String value, int page) async {
     try {
       final response = await _dioSettings.dio.get(
         _searchContactUrl,
@@ -27,12 +27,12 @@ class AddContactSourceImpl implements AddContactSource {
 
       debugPrint("users search response: ${response.data}");
 
-      if (response.statusCode != HttpStatusCodes.success) return null;
+      if (response.statusCode != HttpStatusCodes.success) return <UserModel>[];
 
       Map<String, dynamic> json =
           response.data is String ? jsonDecode(response.data) : response.data;
 
-      if (!json.containsKey("success")) return null;
+      if (!json.containsKey("success")) return <UserModel>[];
 
       List<dynamic> usersList = json['users']['data'];
 
@@ -42,7 +42,7 @@ class AddContactSourceImpl implements AddContactSource {
     } catch (e) {
       debugPrint("getting value error is: $e");
       FirebaseCrashlytics.instance.log(e.toString());
-      return null;
+      return <UserModel>[];
     }
   }
 
