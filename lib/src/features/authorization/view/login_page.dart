@@ -13,8 +13,8 @@ import 'package:yahay/src/features/authorization/view/bloc/auth_events.dart';
 import 'package:yahay/src/features/authorization/view/bloc/auth_states.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 
-import 'widgets/authorization_input_widget.dart';
-import 'widgets/other_authorization_button_widget.dart';
+import 'pages/widgets/authorization_input_widget.dart';
+import 'pages/widgets/other_authorization_button_widget.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
