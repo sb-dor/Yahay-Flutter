@@ -541,8 +541,6 @@ mixin _$AddContactsStates {
     required TResult Function(AddContactStateModel addContactStateModel)
         initial,
     required TResult Function(AddContactStateModel addContactStateModel)
-        loadingAddContacts,
-    required TResult Function(AddContactStateModel addContactStateModel)
         loadingAddContactsState,
     required TResult Function(AddContactStateModel addContactStateModel)
         errorAddContactsState,
@@ -553,8 +551,6 @@ mixin _$AddContactsStates {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(AddContactStateModel addContactStateModel)? initial,
-    TResult? Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
     TResult? Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult? Function(AddContactStateModel addContactStateModel)?
@@ -567,8 +563,6 @@ mixin _$AddContactsStates {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(AddContactStateModel addContactStateModel)? initial,
     TResult Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
-    TResult Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult Function(AddContactStateModel addContactStateModel)?
         errorAddContactsState,
@@ -580,7 +574,6 @@ mixin _$AddContactsStates {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(InitialAddConstactsState value) initial,
-    required TResult Function(LoadingAddContactsState value) loadingAddContacts,
     required TResult Function(LoadingAddContactsState value)
         loadingAddContactsState,
     required TResult Function(ErrorAddContactsState value)
@@ -592,7 +585,6 @@ mixin _$AddContactsStates {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(InitialAddConstactsState value)? initial,
-    TResult? Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult? Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult? Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult? Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -601,7 +593,6 @@ mixin _$AddContactsStates {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(InitialAddConstactsState value)? initial,
-    TResult Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -739,8 +730,6 @@ class _$InitialAddConstactsStateImpl
     required TResult Function(AddContactStateModel addContactStateModel)
         initial,
     required TResult Function(AddContactStateModel addContactStateModel)
-        loadingAddContacts,
-    required TResult Function(AddContactStateModel addContactStateModel)
         loadingAddContactsState,
     required TResult Function(AddContactStateModel addContactStateModel)
         errorAddContactsState,
@@ -755,8 +744,6 @@ class _$InitialAddConstactsStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(AddContactStateModel addContactStateModel)? initial,
     TResult? Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
-    TResult? Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult? Function(AddContactStateModel addContactStateModel)?
         errorAddContactsState,
@@ -770,8 +757,6 @@ class _$InitialAddConstactsStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(AddContactStateModel addContactStateModel)? initial,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
     TResult Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult Function(AddContactStateModel addContactStateModel)?
@@ -790,7 +775,6 @@ class _$InitialAddConstactsStateImpl
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(InitialAddConstactsState value) initial,
-    required TResult Function(LoadingAddContactsState value) loadingAddContacts,
     required TResult Function(LoadingAddContactsState value)
         loadingAddContactsState,
     required TResult Function(ErrorAddContactsState value)
@@ -805,7 +789,6 @@ class _$InitialAddConstactsStateImpl
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(InitialAddConstactsState value)? initial,
-    TResult? Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult? Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult? Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult? Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -817,7 +800,6 @@ class _$InitialAddConstactsStateImpl
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(InitialAddConstactsState value)? initial,
-    TResult Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -843,200 +825,6 @@ abstract class InitialAddConstactsState implements AddContactsStates {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$InitialAddConstactsStateImplCopyWith<_$InitialAddConstactsStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$LoadingAddContactsStateImplCopyWith<$Res>
-    implements $AddContactsStatesCopyWith<$Res> {
-  factory _$$LoadingAddContactsStateImplCopyWith(
-          _$LoadingAddContactsStateImpl value,
-          $Res Function(_$LoadingAddContactsStateImpl) then) =
-      __$$LoadingAddContactsStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({AddContactStateModel addContactStateModel});
-}
-
-/// @nodoc
-class __$$LoadingAddContactsStateImplCopyWithImpl<$Res>
-    extends _$AddContactsStatesCopyWithImpl<$Res, _$LoadingAddContactsStateImpl>
-    implements _$$LoadingAddContactsStateImplCopyWith<$Res> {
-  __$$LoadingAddContactsStateImplCopyWithImpl(
-      _$LoadingAddContactsStateImpl _value,
-      $Res Function(_$LoadingAddContactsStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AddContactsStates
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? addContactStateModel = null,
-  }) {
-    return _then(_$LoadingAddContactsStateImpl(
-      null == addContactStateModel
-          ? _value.addContactStateModel
-          : addContactStateModel // ignore: cast_nullable_to_non_nullable
-              as AddContactStateModel,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$LoadingAddContactsStateImpl
-    with DiagnosticableTreeMixin
-    implements LoadingAddContactsState {
-  const _$LoadingAddContactsStateImpl(this.addContactStateModel);
-
-  @override
-  final AddContactStateModel addContactStateModel;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AddContactsStates.loadingAddContacts(addContactStateModel: $addContactStateModel)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'AddContactsStates.loadingAddContacts'))
-      ..add(DiagnosticsProperty('addContactStateModel', addContactStateModel));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LoadingAddContactsStateImpl &&
-            (identical(other.addContactStateModel, addContactStateModel) ||
-                other.addContactStateModel == addContactStateModel));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, addContactStateModel);
-
-  /// Create a copy of AddContactsStates
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoadingAddContactsStateImplCopyWith<_$LoadingAddContactsStateImpl>
-      get copyWith => __$$LoadingAddContactsStateImplCopyWithImpl<
-          _$LoadingAddContactsStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(AddContactStateModel addContactStateModel)
-        initial,
-    required TResult Function(AddContactStateModel addContactStateModel)
-        loadingAddContacts,
-    required TResult Function(AddContactStateModel addContactStateModel)
-        loadingAddContactsState,
-    required TResult Function(AddContactStateModel addContactStateModel)
-        errorAddContactsState,
-    required TResult Function(AddContactStateModel addContactStateModel)
-        loadedAddContactsState,
-  }) {
-    return loadingAddContacts(addContactStateModel);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(AddContactStateModel addContactStateModel)? initial,
-    TResult? Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
-    TResult? Function(AddContactStateModel addContactStateModel)?
-        loadingAddContactsState,
-    TResult? Function(AddContactStateModel addContactStateModel)?
-        errorAddContactsState,
-    TResult? Function(AddContactStateModel addContactStateModel)?
-        loadedAddContactsState,
-  }) {
-    return loadingAddContacts?.call(addContactStateModel);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(AddContactStateModel addContactStateModel)? initial,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        loadingAddContactsState,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        errorAddContactsState,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        loadedAddContactsState,
-    required TResult orElse(),
-  }) {
-    if (loadingAddContacts != null) {
-      return loadingAddContacts(addContactStateModel);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(InitialAddConstactsState value) initial,
-    required TResult Function(LoadingAddContactsState value) loadingAddContacts,
-    required TResult Function(LoadingAddContactsState value)
-        loadingAddContactsState,
-    required TResult Function(ErrorAddContactsState value)
-        errorAddContactsState,
-    required TResult Function(LoadedAddContactsState value)
-        loadedAddContactsState,
-  }) {
-    return loadingAddContacts(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InitialAddConstactsState value)? initial,
-    TResult? Function(LoadingAddContactsState value)? loadingAddContacts,
-    TResult? Function(LoadingAddContactsState value)? loadingAddContactsState,
-    TResult? Function(ErrorAddContactsState value)? errorAddContactsState,
-    TResult? Function(LoadedAddContactsState value)? loadedAddContactsState,
-  }) {
-    return loadingAddContacts?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialAddConstactsState value)? initial,
-    TResult Function(LoadingAddContactsState value)? loadingAddContacts,
-    TResult Function(LoadingAddContactsState value)? loadingAddContactsState,
-    TResult Function(ErrorAddContactsState value)? errorAddContactsState,
-    TResult Function(LoadedAddContactsState value)? loadedAddContactsState,
-    required TResult orElse(),
-  }) {
-    if (loadingAddContacts != null) {
-      return loadingAddContacts(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class LoadingAddContactsState implements AddContactsStates {
-  const factory LoadingAddContactsState(
-          final AddContactStateModel addContactStateModel) =
-      _$LoadingAddContactsStateImpl;
-
-  @override
-  AddContactStateModel get addContactStateModel;
-
-  /// Create a copy of AddContactsStates
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LoadingAddContactsStateImplCopyWith<_$LoadingAddContactsStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1128,8 +916,6 @@ class _$LoadingAddContactsStateImpl
     required TResult Function(AddContactStateModel addContactStateModel)
         initial,
     required TResult Function(AddContactStateModel addContactStateModel)
-        loadingAddContacts,
-    required TResult Function(AddContactStateModel addContactStateModel)
         loadingAddContactsState,
     required TResult Function(AddContactStateModel addContactStateModel)
         errorAddContactsState,
@@ -1144,8 +930,6 @@ class _$LoadingAddContactsStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(AddContactStateModel addContactStateModel)? initial,
     TResult? Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
-    TResult? Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult? Function(AddContactStateModel addContactStateModel)?
         errorAddContactsState,
@@ -1159,8 +943,6 @@ class _$LoadingAddContactsStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(AddContactStateModel addContactStateModel)? initial,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
     TResult Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult Function(AddContactStateModel addContactStateModel)?
@@ -1179,7 +961,6 @@ class _$LoadingAddContactsStateImpl
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(InitialAddConstactsState value) initial,
-    required TResult Function(LoadingAddContactsState value) loadingAddContacts,
     required TResult Function(LoadingAddContactsState value)
         loadingAddContactsState,
     required TResult Function(ErrorAddContactsState value)
@@ -1194,7 +975,6 @@ class _$LoadingAddContactsStateImpl
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(InitialAddConstactsState value)? initial,
-    TResult? Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult? Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult? Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult? Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -1206,7 +986,6 @@ class _$LoadingAddContactsStateImpl
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(InitialAddConstactsState value)? initial,
-    TResult Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -1322,8 +1101,6 @@ class _$ErrorAddContactsStateImpl
     required TResult Function(AddContactStateModel addContactStateModel)
         initial,
     required TResult Function(AddContactStateModel addContactStateModel)
-        loadingAddContacts,
-    required TResult Function(AddContactStateModel addContactStateModel)
         loadingAddContactsState,
     required TResult Function(AddContactStateModel addContactStateModel)
         errorAddContactsState,
@@ -1338,8 +1115,6 @@ class _$ErrorAddContactsStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(AddContactStateModel addContactStateModel)? initial,
     TResult? Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
-    TResult? Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult? Function(AddContactStateModel addContactStateModel)?
         errorAddContactsState,
@@ -1353,8 +1128,6 @@ class _$ErrorAddContactsStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(AddContactStateModel addContactStateModel)? initial,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
     TResult Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult Function(AddContactStateModel addContactStateModel)?
@@ -1373,7 +1146,6 @@ class _$ErrorAddContactsStateImpl
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(InitialAddConstactsState value) initial,
-    required TResult Function(LoadingAddContactsState value) loadingAddContacts,
     required TResult Function(LoadingAddContactsState value)
         loadingAddContactsState,
     required TResult Function(ErrorAddContactsState value)
@@ -1388,7 +1160,6 @@ class _$ErrorAddContactsStateImpl
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(InitialAddConstactsState value)? initial,
-    TResult? Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult? Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult? Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult? Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -1400,7 +1171,6 @@ class _$ErrorAddContactsStateImpl
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(InitialAddConstactsState value)? initial,
-    TResult Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -1517,8 +1287,6 @@ class _$LoadedAddContactsStateImpl
     required TResult Function(AddContactStateModel addContactStateModel)
         initial,
     required TResult Function(AddContactStateModel addContactStateModel)
-        loadingAddContacts,
-    required TResult Function(AddContactStateModel addContactStateModel)
         loadingAddContactsState,
     required TResult Function(AddContactStateModel addContactStateModel)
         errorAddContactsState,
@@ -1533,8 +1301,6 @@ class _$LoadedAddContactsStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(AddContactStateModel addContactStateModel)? initial,
     TResult? Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
-    TResult? Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult? Function(AddContactStateModel addContactStateModel)?
         errorAddContactsState,
@@ -1548,8 +1314,6 @@ class _$LoadedAddContactsStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(AddContactStateModel addContactStateModel)? initial,
-    TResult Function(AddContactStateModel addContactStateModel)?
-        loadingAddContacts,
     TResult Function(AddContactStateModel addContactStateModel)?
         loadingAddContactsState,
     TResult Function(AddContactStateModel addContactStateModel)?
@@ -1568,7 +1332,6 @@ class _$LoadedAddContactsStateImpl
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(InitialAddConstactsState value) initial,
-    required TResult Function(LoadingAddContactsState value) loadingAddContacts,
     required TResult Function(LoadingAddContactsState value)
         loadingAddContactsState,
     required TResult Function(ErrorAddContactsState value)
@@ -1583,7 +1346,6 @@ class _$LoadedAddContactsStateImpl
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(InitialAddConstactsState value)? initial,
-    TResult? Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult? Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult? Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult? Function(LoadedAddContactsState value)? loadedAddContactsState,
@@ -1595,7 +1357,6 @@ class _$LoadedAddContactsStateImpl
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(InitialAddConstactsState value)? initial,
-    TResult Function(LoadingAddContactsState value)? loadingAddContacts,
     TResult Function(LoadingAddContactsState value)? loadingAddContactsState,
     TResult Function(ErrorAddContactsState value)? errorAddContactsState,
     TResult Function(LoadedAddContactsState value)? loadedAddContactsState,

@@ -25,9 +25,6 @@ sealed class AddContactsStates with _$AddContactsStates {
   const factory AddContactsStates.initial(final AddContactStateModel addContactStateModel) =
       InitialAddConstactsState;
 
-  const factory AddContactsStates.loadingAddContacts(
-      final AddContactStateModel addContactStateModel) = LoadingAddContactsState;
-
   const factory AddContactsStates.loadingAddContactsState(
       final AddContactStateModel addContactStateModel) = LoadingAddContactsState;
 
@@ -70,7 +67,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
 
       currentStateModel.clearData();
       //
-      emit(AddContactsStates.loadingAddContacts(currentStateModel));
+      emit(AddContactsStates.loadingAddContactsState(currentStateModel));
       //
       final data = await _iAddContactRepo.searchContact(
         event.value,

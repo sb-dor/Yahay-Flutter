@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yahay/src/features/add_contact_feature/domain/usecases/open_search_contacts_popup.dart';
+import 'package:yahay/src/features/add_contact_feature/view/popup_openers/open_search_contacts_popup.dart';
 
 class ChatsAppbar extends StatelessWidget {
   const ChatsAppbar({super.key});

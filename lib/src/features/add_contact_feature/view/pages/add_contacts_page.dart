@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/global_usages/widgets/user_widgets/add_contact_user_widget.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
-import 'package:yahay/src/features/add_contact_feature/bloc/add_contacts_events.dart';
-import 'package:yahay/src/features/add_contact_feature/bloc/add_contacts_states.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 
 class AddContactsPage extends StatefulWidget {
@@ -24,7 +23,7 @@ class _AddContactsPageState extends State<AddContactsPage> {
     super.initState();
     _controller = DraggableScrollableController();
     _addContactBloc = DependenciesScope.of(context, listen: false).addContactBloc;
-    _addContactBloc.event.add(ClearDataEvent());
+    _addContactBloc.add(const AddContactsEvents.clearDataEvent());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       const maxHeight = 0.96;
       final screenHeight = MediaQuery.of(context).size.height * maxHeight;
@@ -60,10 +59,8 @@ class _AddContactsPageState extends State<AddContactsPage> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: TextField(
-                      onChanged: (v) =>
-                          _addContactBloc.onlySearchContactEvent.add(SearchContactEvent(v)),
-                      onSubmitted: (v) =>
-                          _addContactBloc.onlySearchContactEvent.add(SearchContactEvent(v)),
+                      onChanged: (v) => _addContactBloc.add(AddContactsEvents.searchContact(v)),
+                      onSubmitted: (v) => _addContactBloc.add(AddContactsEvents.searchContact(v)),
                       onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
                       style: GoogleFonts.aBeeZee(fontSize: 14),
                       decoration: const InputDecoration(
@@ -79,7 +76,7 @@ class _AddContactsPageState extends State<AddContactsPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _addContactBloc.event.add(ClearDataEvent());
+                    _addContactBloc.add(AddContactsEvents.clearDataEvent());
                     Navigator.pop(context);
                   },
                   child: const Text("Cancel"),
@@ -87,37 +84,31 @@ class _AddContactsPageState extends State<AddContactsPage> {
               ],
             ),
             const SizedBox(height: 20),
-            StreamBuilder<AddContactsStates>(
-              stream: _addContactBloc.state,
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                  case ConnectionState.waiting:
+            BlocBuilder<AddContactBloc, AddContactsStates>(
+              bloc: _addContactBloc,
+              builder: (context, states) {
+                switch (states) {
+                  case InitialAddConstactsState():
+                  case LoadingAddContactsState():
                     return const Center(child: CircularProgressIndicator());
-                  case ConnectionState.active:
-                  case ConnectionState.done:
-                    final currentState = snapshot.requireData;
-                    if (currentState is LoadingAddContactsState) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (currentState is ErrorAddContactsState) {
-                      return const Text("error");
-                    } else if (currentState is LoadedAddContactsState) {
-                      return ListView.separated(
-                        separatorBuilder: (context, index) => const SizedBox(height: 10),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: currentState.addContactStateModel.users.length,
-                        itemBuilder: (context, index) {
-                          final user = currentState.addContactStateModel.users[index];
-                          return AddContactUserWidget(
-                            user: user,
-                            addUser: () => _addContactBloc.event.add(AddContactEvent(user)),
-                          );
-                        },
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
+                  case ErrorAddContactsState():
+                    return const Text("error");
+                  case LoadedAddContactsState():
+                    final currentStateModel = states.addContactStateModel;
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(height: 10),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: currentStateModel.users.length,
+                      itemBuilder: (context, index) {
+                        final user = currentStateModel.users[index];
+                        return AddContactUserWidget(
+                          user: user,
+                          addUser: () =>
+                              _addContactBloc.add(AddContactsEvents.addContactEvent(user)),
+                        );
+                      },
+                    );
                 }
               },
             ),
