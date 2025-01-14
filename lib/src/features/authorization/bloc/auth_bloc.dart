@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/authorization/domain/repo/authorization_repo.dart';
 import 'package:yahay/src/features/authorization/domain/repo/other_authorization_repo.dart';
 import 'state_model/auth_state_model.dart';
@@ -311,13 +312,16 @@ sealed class AuthStates with _$AuthStates {
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   final AuthorizationRepo _iAuthorizationRepo;
   final OtherAuthorizationRepo _iOtherAuthorizationRepo;
+  final SharedPreferHelper _sharedPreferHelper;
 
   AuthBloc({
     required AuthorizationRepo authorizationRepo,
     required OtherAuthorizationRepo otherAuthorizationRepo,
+    required SharedPreferHelper sharedPreferHelper,
     required AuthStates initialState,
   })  : _iAuthorizationRepo = authorizationRepo,
         _iOtherAuthorizationRepo = otherAuthorizationRepo,
+        _sharedPreferHelper = sharedPreferHelper,
         super(initialState) {
     //
     //

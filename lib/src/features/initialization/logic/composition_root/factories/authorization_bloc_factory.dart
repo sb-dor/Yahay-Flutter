@@ -1,6 +1,8 @@
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
+import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
+import 'package:yahay/src/features/authorization/bloc/state_model/auth_state_model.dart';
 import 'package:yahay/src/features/authorization/data/repo/authorization_repo_impl.dart';
 import 'package:yahay/src/features/authorization/data/repo/other_authorization_repo_impl.dart';
 import 'package:yahay/src/features/authorization/data/sources/laravel/impl/laravel_auth_data_source_impl.dart';
@@ -42,10 +44,13 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
       otherAuthorizationDatasource,
     );
 
+    final initialState = AuthStates.initial(AuthStateModel());
+
     return AuthBloc(
       authorizationRepo: authorizationRepo,
       otherAuthorizationRepo: otherAuthorizationRepo,
       sharedPreferHelper: _sharedPreferHelper,
+      initialState: initialState,
     );
   }
 }
