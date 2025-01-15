@@ -1,18 +1,16 @@
-import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_bloc.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_events.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_states.dart';
-import 'package:yahay/src/features/authorization/view/pages/widgets/authorization_input_widget.dart';
-import 'package:yahay/src/features/authorization/view/pages/widgets/other_authorization_button_widget.dart';
+import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
+
+import 'widgets/authorization_input_widget.dart';
+import 'widgets/other_authorization_button_widget.dart';
 
 @RoutePage()
 class RegisterPage extends StatefulWidget {
@@ -23,21 +21,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final GlobalKey<FormState> _registerForm = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
   final TextEditingController _userNameController = TextEditingController(text: '');
   late final AuthBloc _authBloc;
-  late final StreamSubscription _streamSubscription;
 
   @override
   void initState() {
     super.initState();
     _authBloc = DependenciesScope.of(context, listen: false).authBloc;
-    _streamSubscription = _authBloc.states.listen((event) {
-      if (event is AuthorizedState) {
-        AutoRouter.of(context).replaceAll([const HomeRoute()]);
-      }
-    });
   }
 
   @override
@@ -45,29 +38,27 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _userNameController.dispose();
-    _streamSubscription.cancel();
     super.dispose();
   }
 
   @override
-  void deactivate() {
-    _streamSubscription.cancel();
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<AuthStates>(
-        stream: _authBloc.states,
-        builder: (context, snapshot) {
-          final authState = snapshot.data;
+    return BlocConsumer<AuthBloc, AuthStates>(
+        bloc: _authBloc,
+        listener: (context, state) {
+          if (state is AuthorizedStateOnAuthStates) {
+            AutoRouter.of(context).replaceAll([const HomeRoute()]);
+          }
+        },
+        builder: (context, state) {
+          final authState = state.authStateModel;
           return Scaffold(
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Form(
-                  key: authState?.authStateModel.registerForm,
+                  key: _registerForm,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -123,8 +114,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                             backgroundColor: const WidgetStatePropertyAll(Colors.blueAccent),
                           ),
-                          onPressed: () => _authBloc.events.add(
-                            RegisterEvent(
+                          onPressed: () => _authBloc.add(
+                            AuthEvents.registerEvent(
                               email: _emailController.text,
                               password: _passwordController.text,
                               userName: _userNameController.text,
@@ -135,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                           child: Center(
-                            child: (authState?.authStateModel.loadingRegister ?? false)
+                            child: (authState.loadingRegister)
                                 ? const SizedBox(
                                     width: 15,
                                     height: 15,
@@ -194,8 +185,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 FontAwesomeIcons.google,
                               ),
                               text: 'Google',
-                              onTap: () => _authBloc.events.add(
-                                GoogleAuth(
+                              onTap: () => _authBloc.add(
+                                AuthEvents.googleAuth(
                                   initChatsBloc: () {
                                     DependenciesScope.of(context, listen: false)
                                         .initChatBlocAfterAuthorization();
@@ -212,8 +203,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Colors.blue,
                               ),
                               text: 'Facebook',
-                              onTap: () => _authBloc.events.add(
-                                FacebookAuth(
+                              onTap: () => _authBloc.add(
+                                AuthEvents.facebookAuth(
                                   initChatsBloc: () {
                                     DependenciesScope.of(context, listen: false)
                                         .initChatBlocAfterAuthorization();

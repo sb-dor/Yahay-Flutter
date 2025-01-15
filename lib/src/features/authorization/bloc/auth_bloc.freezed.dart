@@ -149,7 +149,7 @@ class __$$GoogleAuthEventOnAuthEventsImplCopyWithImpl<$Res>
     Object? initChatsBloc = null,
   }) {
     return _then(_$GoogleAuthEventOnAuthEventsImpl(
-      null == initChatsBloc
+      initChatsBloc: null == initChatsBloc
           ? _value.initChatsBloc
           : initChatsBloc // ignore: cast_nullable_to_non_nullable
               as void Function(),
@@ -161,7 +161,7 @@ class __$$GoogleAuthEventOnAuthEventsImplCopyWithImpl<$Res>
 
 class _$GoogleAuthEventOnAuthEventsImpl
     implements _GoogleAuthEventOnAuthEvents {
-  const _$GoogleAuthEventOnAuthEventsImpl(this.initChatsBloc);
+  const _$GoogleAuthEventOnAuthEventsImpl({required this.initChatsBloc});
 
   @override
   final void Function() initChatsBloc;
@@ -302,7 +302,8 @@ class _$GoogleAuthEventOnAuthEventsImpl
 
 abstract class _GoogleAuthEventOnAuthEvents implements AuthEvents {
   const factory _GoogleAuthEventOnAuthEvents(
-      final void Function() initChatsBloc) = _$GoogleAuthEventOnAuthEventsImpl;
+          {required final void Function() initChatsBloc}) =
+      _$GoogleAuthEventOnAuthEventsImpl;
 
   void Function() get initChatsBloc;
 
@@ -340,7 +341,7 @@ class __$$FacebookAuthEventsAuthEventsImplCopyWithImpl<$Res>
     Object? initChatsBloc = null,
   }) {
     return _then(_$FacebookAuthEventsAuthEventsImpl(
-      null == initChatsBloc
+      initChatsBloc: null == initChatsBloc
           ? _value.initChatsBloc
           : initChatsBloc // ignore: cast_nullable_to_non_nullable
               as void Function(),
@@ -352,7 +353,7 @@ class __$$FacebookAuthEventsAuthEventsImplCopyWithImpl<$Res>
 
 class _$FacebookAuthEventsAuthEventsImpl
     implements _FacebookAuthEventsAuthEvents {
-  const _$FacebookAuthEventsAuthEventsImpl(this.initChatsBloc);
+  const _$FacebookAuthEventsAuthEventsImpl({required this.initChatsBloc});
 
   @override
   final void Function() initChatsBloc;
@@ -494,7 +495,8 @@ class _$FacebookAuthEventsAuthEventsImpl
 
 abstract class _FacebookAuthEventsAuthEvents implements AuthEvents {
   const factory _FacebookAuthEventsAuthEvents(
-      final void Function() initChatsBloc) = _$FacebookAuthEventsAuthEventsImpl;
+          {required final void Function() initChatsBloc}) =
+      _$FacebookAuthEventsAuthEventsImpl;
 
   void Function() get initChatsBloc;
 

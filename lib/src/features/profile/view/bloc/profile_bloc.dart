@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_bloc.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_events.dart';
 import 'package:yahay/src/features/profile/view/bloc/state_model/profile_state_model.dart';
 
 import 'profile_events.dart';

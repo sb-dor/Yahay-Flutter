@@ -33,7 +33,7 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
     super.initState();
     final depContainer = DependenciesScope.of(context, listen: false);
     _videoChatFeatureBloc = VideoChatBlocFactory(
-      depContainer.authBloc.states.value.authStateModel.user,
+      depContainer.authBloc.state.authStateModel.user,
       depContainer.pusherClientService,
     ).create();
     _videoChatFeatureBloc.events.add(VideoChatInitFeatureEvent(

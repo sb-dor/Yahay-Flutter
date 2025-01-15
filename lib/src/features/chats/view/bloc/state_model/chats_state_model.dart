@@ -7,7 +7,6 @@ import 'package:yahay/src/core/global_data/entities/user.dart';
 import 'package:yahay/src/core/global_data/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_participant_model.dart';
 import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_bloc.dart';
 
 class ChatsStateModel {
   PusherChannelsClient? _pusherClientService;

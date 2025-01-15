@@ -41,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     final dependencyContainer = DependenciesScope.of(context, listen: false);
-    currentUser = dependencyContainer.authBloc.states.value.authStateModel.user;
+    currentUser = dependencyContainer.authBloc.state.authStateModel.user;
 
 
     _chatScreenBloc = ChatScreenBlocFactory(

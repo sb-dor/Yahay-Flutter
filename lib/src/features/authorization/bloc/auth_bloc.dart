@@ -11,10 +11,10 @@ part 'auth_bloc.freezed.dart';
 @immutable
 @freezed
 class AuthEvents with _$AuthEvents {
-  const factory AuthEvents.googleAuth(final void Function() initChatsBloc) =
+  const factory AuthEvents.googleAuth({required final void Function() initChatsBloc}) =
       _GoogleAuthEventOnAuthEvents;
 
-  const factory AuthEvents.facebookAuth(final void Function() initChatsBloc) =
+  const factory AuthEvents.facebookAuth({required final void Function() initChatsBloc}) =
       _FacebookAuthEventsAuthEvents;
 
   const factory AuthEvents.registerEvent({
@@ -150,11 +150,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   ) async {
     var currentStateModel = state.authStateModel.copyWith();
     try {
-      if (!(currentStateModel.registerForm.currentState?.validate() ?? false)) {
-        _emitter(currentStateModel, emit);
-        return;
-      }
-
       currentStateModel = currentStateModel.copyWith(
         loadingRegister: true,
       );
@@ -199,11 +194,6 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     var currentStateModel = state.authStateModel.copyWith();
 
     try {
-      if (!(currentStateModel.loginForm.currentState?.validate() ?? false)) {
-        _emitter(currentStateModel, emit);
-        return;
-      }
-
       currentStateModel = currentStateModel.copyWith(loadingLogin: true);
 
       _emitter(currentStateModel, emit);

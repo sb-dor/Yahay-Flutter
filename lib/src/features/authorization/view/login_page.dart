@@ -4,17 +4,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_bloc.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_events.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_states.dart';
+import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 
-import 'pages/widgets/authorization_input_widget.dart';
-import 'pages/widgets/other_authorization_button_widget.dart';
+import 'widgets/authorization_input_widget.dart';
+import 'widgets/other_authorization_button_widget.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -25,49 +24,42 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _loginForm = GlobalKey<FormState>();
   final TextEditingController _emailOrUserNameController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
-  late final StreamSubscription _streamSubscription;
   late final AuthBloc _authBloc;
 
   @override
   void initState() {
     super.initState();
     _authBloc = DependenciesScope.of(context, listen: false).authBloc;
-    _streamSubscription = _authBloc.states.listen((event) {
-      if (event is AuthorizedState) {
-        AutoRouter.of(context).replaceAll([const HomeRoute()]);
-      }
-    });
   }
 
   @override
   void dispose() {
     _emailOrUserNameController.dispose();
     _passwordController.dispose();
-    _streamSubscription.cancel();
     super.dispose();
   }
 
   @override
-  void deactivate() {
-    _streamSubscription.cancel();
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<AuthStates>(
-        stream: _authBloc.states,
-        builder: (context, snapshot) {
-          final authState = snapshot.data;
+    return BlocConsumer<AuthBloc, AuthStates>(
+        listener: (context, state) {
+          if (state is AuthorizedStateOnAuthStates) {
+            AutoRouter.of(context).replaceAll([const HomeRoute()]);
+          }
+        },
+        bloc: _authBloc,
+        builder: (context, state) {
+          final authStateModel = state.authStateModel;
           return Scaffold(
             body: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Form(
-                  key: authState?.authStateModel.loginForm,
+                  key: _loginForm,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,9 +89,10 @@ class _LoginPageState extends State<LoginPage> {
                             right: 0,
                             top: 25,
                             child: IconButton(
-                              onPressed: () => _authBloc.events.add(ChangePasswordVisibility()),
+                              onPressed: () =>
+                                  _authBloc.add(const AuthEvents.changePasswordVisibility()),
                               icon: Icon(
-                                (authState?.authStateModel.showPassword ?? false)
+                                (authStateModel.showPassword)
                                     ? CupertinoIcons.eye
                                     : CupertinoIcons.eye_slash,
                               ),
@@ -119,8 +112,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             backgroundColor: const WidgetStatePropertyAll(Colors.blueAccent),
                           ),
-                          onPressed: () => _authBloc.events.add(
-                            LoginEvent(
+                          onPressed: () => _authBloc.add(
+                            AuthEvents.loginEvent(
                               emailOrUserName: _emailOrUserNameController.text,
                               password: _passwordController.text,
                               initChatsBloc: () {
@@ -130,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           child: Center(
-                            child: (authState?.authStateModel.loadingLogin ?? false)
+                            child: (authStateModel.loadingLogin)
                                 ? const SizedBox(
                                     width: 15,
                                     height: 15,
@@ -189,8 +182,8 @@ class _LoginPageState extends State<LoginPage> {
                                 FontAwesomeIcons.google,
                               ),
                               text: 'Google',
-                              onTap: () => _authBloc.events.add(
-                                GoogleAuth(
+                              onTap: () => _authBloc.add(
+                                AuthEvents.googleAuth(
                                   initChatsBloc: () {
                                     DependenciesScope.of(context, listen: false)
                                         .initChatBlocAfterAuthorization();
@@ -207,8 +200,8 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.blue,
                               ),
                               text: 'Facebook',
-                              onTap: () => _authBloc.events.add(
-                                FacebookAuth(
+                              onTap: () => _authBloc.add(
+                                AuthEvents.facebookAuth(
                                   initChatsBloc: () {
                                     DependenciesScope.of(context, listen: false)
                                         .initChatBlocAfterAuthorization();

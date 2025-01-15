@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_bloc.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_events.dart';
+import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/src/features/profile/view/bloc/profile_bloc.dart';
 import 'package:yahay/src/features/profile/view/bloc/profile_events.dart';
@@ -31,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () => _profileBloc.events.add(
             ProfileLogoutEvent(
               () {
-               _authBloc.events.add(LogOutEvent());
+               _authBloc.add(AuthEvents.logOutEvent());
               },
             ),
           ),
