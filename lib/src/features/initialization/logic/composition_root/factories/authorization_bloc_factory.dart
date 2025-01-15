@@ -11,7 +11,6 @@ import 'package:yahay/src/features/authorization/data/sources/other_authorizatio
 import 'package:yahay/src/features/authorization/data/sources/other_authorization/other_authorization.dart';
 import 'package:yahay/src/features/authorization/domain/repo/authorization_repo.dart';
 import 'package:yahay/src/features/authorization/domain/repo/other_authorization_repo.dart';
-import 'package:yahay/src/features/authorization/view/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 
 final class AuthorizationBlocFactory extends Factory<AuthBloc> {
@@ -44,7 +43,7 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
       otherAuthorizationDatasource,
     );
 
-    final initialState = AuthStates.initial(AuthStateModel());
+    final initialState = AuthStates.initial(AuthStateModel.idle());
 
     return AuthBloc(
       authorizationRepo: authorizationRepo,
