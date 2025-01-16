@@ -1,12 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:collection/collection.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/src/core/global_data/entities/chats_entities/chat_message.dart';
 import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/global_data/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
@@ -151,75 +156,16 @@ part 'chat_screen_bloc.freezed.dart';
 //
 //   // message sending event
 //   static Stream<ChatScreenStates> _sendMessageEvent() async* {
-//     try {
-//       if (_currentStateModel.messageController.text.trim().isEmpty &&
-//           _currentStateModel.pickedFile == null) {
-//         return;
-//       }
-//
-//       final chatMessage = ChatMessageModel(
-//         chat: ChatModel.fromEntity(_currentStateModel.currentChat),
-//         user: UserModel.fromEntity(_currentStateModel.currentUser),
-//         relatedToUser: UserModel.fromEntity(_currentStateModel.relatedUser),
-//         message: _currentStateModel.messageController.text.trim(),
-//         chatMessageUUID: const Uuid().v4(),
-//         file: _currentStateModel.pickedFile,
-//         createdAt: DateTime.now().toString().substring(0, 19),
-//         messageSent: false,
-//       );
-//
-//       _currentStateModel.addMessage(chatMessage);
-//
-//       _currentStateModel.clearMessage();
-//
-//       yield* _emitter();
-//
-//       await _chatScreenSendMessagesUsecases.sendMessage(
-//         chatMessage: chatMessage,
-//       );
-//     } catch (e) {
-//       yield ErrorChatScreenState(_currentStateModel);
-//     }
+
 //   }
 //
 //   static void _removeAllTempCreatedChatsEvent(RemoveAllTempCreatedChatsEvent event) {
-//     try {
-//       _chatScreenChatUsecase.removeAllTempCreatedChats(chat: _currentStateModel.currentChat);
-//     } catch (e) {
-//       debugPrint("_removeAllTempCreatedChatsEvent error is: $e");
-//     }
+
 //   }
 //
 //   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatMessageEvent event) async* {
 //     debugPrint("coming data: ${event.event?.data}");
-//     try {
-//       Map<String, dynamic> messageJson = jsonDecode(event.event?.data ?? '');
-//
-//       if (messageJson.containsKey('message') && messageJson['message'] != null) {
-//         ChatMessageModel message =
-//             ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
-//         _currentStateModel.addMessage(message);
-//       }
-//
-//       // find problem here
-//       if (messageJson.containsKey('chat') && messageJson['chat'] != null) {
-//         debugPrint("chat has chat room: ${_currentStateModel.currentChat?.videoChatRoom}");
-//         ChatModel chat = ChatModel.fromJson(messageJson['chat']);
-//         final currentChatFromModel = ChatModel.fromEntity(_currentStateModel.currentChat);
-//         _currentStateModel.setChat(
-//           currentChatFromModel?.copyWith(
-//             videoChatRoom: chat.videoChatRoom,
-//             videoChatStreaming: chat.videoChatStreaming,
-//           ),
-//           setChatMessages: false,
-//         );
-//         debugPrint("chat has chat room 2: ${_currentStateModel.currentChat?.videoChatRoom}");
-//       }
-//
-//       yield* _emitter();
-//     } catch (e) {
-//       yield ErrorChatScreenState(_currentStateModel);
-//     }
+
 //   }
 //
 //   static Stream<ChatScreenStates> _chaneEmojiPicker(
@@ -257,9 +203,13 @@ abstract class ChatScreenEvents with _$ChatScreenEvents {
 
   const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _RemoveAllTempCreatedChatsEvent;
 
-  const factory ChatScreenEvents.handleChatMessageEvent() = _HandleChatMessageEvent;
+  const factory ChatScreenEvents.handleChatMessageEvent(ChannelReadEvent event) =
+      _HandleChatMessageEvent;
 
-  const factory ChatScreenEvents.sendMessageEvent() = _SendMessageEvent;
+  const factory ChatScreenEvents.sendMessageEvent({
+    required final String message,
+    required void Function() clearMessage,
+  }) = _SendMessageEvent;
 
   const factory ChatScreenEvents.changeEmojiPicker() = _ChangeEmojiPicker;
 }
@@ -298,10 +248,10 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     on<ChatScreenEvents>(
       (event, emit) => event.map(
         initChatScreenEvent: (event) => _initChatScreenEvent(event, emit),
-        removeAllTempCreatedChatsEvent: removeAllTempCreatedChatsEvent,
-        handleChatMessageEvent: handleChatMessageEvent,
-        sendMessageEvent: sendMessageEvent,
-        changeEmojiPicker: changeEmojiPicker,
+        removeAllTempCreatedChatsEvent: (event) => _removeAllTempCreatedChatsEvent(event, emit),
+        handleChatMessageEvent: (event) => _handleChatMessageEvent(event, emit),
+        sendMessageEvent: (event) => _sendMessageEvent(event, emit),
+        changeEmojiPicker: (event) => _changeEmojiPicker(event, emit),
       ),
     );
     //
@@ -341,37 +291,127 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 
       debugPrint("channel name: $channelName");
 
-      _currentStateModel.setPusherChannel(
-        PusherChannelsClient.websocket(
-          options: _channelsOptions,
+      setPusherChannel(
+        client: PusherChannelsClient.websocket(
+          options: _options,
           connectionErrorHandler: (f, s, t) {},
         ),
+        currentStateModel: currentStateModel,
       );
 
-      final channel = _currentStateModel.pusherChannelClient?.publicChannel(channelName);
+      final channel = currentStateModel.pusherChannelsClient?.publicChannel(channelName);
 
-      final subs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
+      final subs = currentStateModel.pusherChannelsClient?.onConnectionEstablished.listen(
         (e) {
           channel?.subscribeIfNotUnsubscribed();
         },
       );
 
-      _currentStateModel.setToSubscription(subs);
+      setToSubscription(subs: subs, chatScreenStateModel: currentStateModel);
 
-      await _currentStateModel.pusherChannelClient?.connect();
+      await currentStateModel.pusherChannelsClient?.connect();
 
       channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
-        event.events.add(HandleChatMessageEvent(pusherEvent));
+        add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
       });
 
-      yield LoadedChatScreenState(_currentStateModel);
+      emit(ChatScreenStates.loaded(currentStateModel));
 
       // get all chat messages here
     } catch (e) {
       debugPrint("channel connecting error: $e");
-      yield ErrorChatScreenState(_currentStateModel);
+      emit(ChatScreenStates.error(currentStateModel));
     }
   }
+
+  void _removeAllTempCreatedChatsEvent(
+    _RemoveAllTempCreatedChatsEvent event,
+    Emitter<ChatScreenStates> emit,
+  ) async {
+    try {
+      _iChatScreenChatRepo.removeAllTempCreatedChats(
+        chat: state.chatScreenStateModel.currentChat,
+      );
+    } catch (e) {
+      debugPrint("_removeAllTempCreatedChatsEvent error is: $e");
+    }
+  }
+
+  void _handleChatMessageEvent(
+    _HandleChatMessageEvent event,
+    Emitter<ChatScreenStates> emit,
+  ) async {
+    var currentStateModel = state.chatScreenStateModel.copyWith();
+    try {
+      Map<String, dynamic> messageJson = jsonDecode(event.event.data ?? '');
+
+      if (messageJson.containsKey('message') && messageJson['message'] != null) {
+        ChatMessageModel message =
+            ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
+        addMessage(message: message, currentStateModel: currentStateModel);
+      }
+
+      // find problem here
+      if (messageJson.containsKey('chat') && messageJson['chat'] != null) {
+        debugPrint("chat has chat room: ${currentStateModel.currentChat?.videoChatRoom}");
+        ChatModel chat = ChatModel.fromJson(messageJson['chat']);
+        final currentChatFromModel = ChatModel.fromEntity(currentStateModel.currentChat);
+        setChat(
+          chat: currentChatFromModel?.copyWith(
+            videoChatRoom: chat.videoChatRoom,
+            videoChatStreaming: chat.videoChatStreaming,
+          ),
+          setChatMessages: false,
+          currentStateModel: currentStateModel,
+        );
+        debugPrint("chat has chat room 2: ${currentStateModel.currentChat?.videoChatRoom}");
+      }
+
+      _emitter(emit: emit, currentStateModel: currentStateModel);
+    } catch (e) {
+      emit(ChatScreenStates.error(currentStateModel));
+    }
+  }
+
+  void _sendMessageEvent(
+    _SendMessageEvent event,
+    Emitter<ChatScreenStates> emit,
+  ) async {
+    var currentStateModel = state.chatScreenStateModel.copyWith();
+    try {
+      if (currentStateModel.pickedFile == null) {
+        return;
+      }
+
+      final chatMessage = ChatMessageModel(
+        chat: ChatModel.fromEntity(currentStateModel.currentChat),
+        user: UserModel.fromEntity(currentStateModel.currentUser),
+        relatedToUser: UserModel.fromEntity(currentStateModel.relatedUser),
+        message: event.message.trim(),
+        chatMessageUUID: const Uuid().v4(),
+        file: currentStateModel.pickedFile,
+        createdAt: DateTime.now().toString().substring(0, 19),
+        messageSent: false,
+      );
+
+      addMessage(message: chatMessage, currentStateModel: currentStateModel);
+
+      event.clearMessage();
+
+      _emitter(emit: emit, currentStateModel: currentStateModel);
+
+      await _iChatScreenRepo.sendMessage(
+        chatMessage: chatMessage,
+      );
+    } catch (e) {
+      emit(ChatScreenStates.error(currentStateModel));
+    }
+  }
+
+  void _changeEmojiPicker(
+    _ChangeEmojiPicker event,
+    Emitter<ChatScreenStates> emit,
+  ) async {}
 
   // logic
   void setChat({
@@ -391,6 +431,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       );
     }
   }
+
 //
 // void setToFile(File? file) => _pickedFile = file;
 //
@@ -398,16 +439,25 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 //
 // void setToCurrentUser(User? user) => _currentUser = user;
 //
-// void addMessage(ChatMessage message) {
-//   final findMessage =
-//       _messages.firstWhereOrNull((e) => e.chatMessageUUID == message.chatMessageUUID);
-//   if (findMessage != null) {
-//     _messages[_messages.indexWhere((e) => e.chatMessageUUID == message.chatMessageUUID)] =
-//         ChatMessageModel.fromEntity(findMessage)!.copyWith(messageSent: true);
-//   } else {
-//     _messages.add(message);
-//   }
-// }
+  void addMessage({
+    required ChatMessage message,
+    required ChatScreenStateModel currentStateModel,
+  }) {
+    final listOfMessages = List<ChatMessage>.from(currentStateModel.messages);
+
+    final findMessage =
+        listOfMessages.firstWhereOrNull((e) => e.chatMessageUUID == message.chatMessageUUID);
+    if (findMessage != null) {
+      listOfMessages[
+              listOfMessages.indexWhere((e) => e.chatMessageUUID == message.chatMessageUUID)] =
+          ChatMessageModel.fromEntity(findMessage)!.copyWith(messageSent: true);
+    } else {
+      listOfMessages.add(message);
+    }
+
+    currentStateModel = currentStateModel.copyWith(messages: listOfMessages);
+  }
+
 //
 // void clearMessage() => _messageController.clear();
 //
@@ -419,13 +469,25 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 //   _showEmojiPicker = !_showEmojiPicker;
 // }
 //
-// void setPusherChannel(PusherChannelsClient client) {
-//   _pusherChannelsClient = client;
-// }
+  void setPusherChannel({
+    required PusherChannelsClient client,
+    required ChatScreenStateModel currentStateModel,
+  }) {
+    currentStateModel = currentStateModel.copyWith(
+      pusherChannelsClient: client,
+    );
+  }
+
 //
-// void setToSubscription(StreamSubscription<void>? subs) {
-//   _channelSubscription = subs;
-// }
+  void setToSubscription({
+    required StreamSubscription<void>? subs,
+    required ChatScreenStateModel chatScreenStateModel,
+  }) {
+    chatScreenStateModel = chatScreenStateModel.copyWith(
+      channelSubscription: subs,
+    );
+  }
+
 //
 // Future<void> disposePusherChannelWithStreamSubscription() async {
 //   await _pusherChannelsClient?.disconnect();
@@ -434,4 +496,21 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 //   _channelSubscription = null;
 //   _pusherChannelsClient = null;
 // }
+
+  void _emitter({
+    required Emitter<ChatScreenStates> emit,
+    required ChatScreenStateModel currentStateModel,
+  }) {
+    switch (state) {
+      case LoadingChatScreenState():
+        emit(ChatScreenStates.loading(currentStateModel));
+        break;
+      case ErrorChatScreenState():
+        emit(ChatScreenStates.error(currentStateModel));
+        break;
+      case LoadedChatScreenState():
+        emit(ChatScreenStates.loaded(currentStateModel));
+        break;
+    }
+  }
 }
