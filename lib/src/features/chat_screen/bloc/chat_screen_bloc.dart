@@ -5,7 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/src/core/global_data/entities/chats_entities/chat_message.dart';
 import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/global_usages/constants/constants.dart';
+import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_repo.dart';
 
@@ -277,18 +280,158 @@ sealed class ChatScreenStates with _$ChatScreenStates {
 class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   final ChatScreenRepo _iChatScreenRepo;
   final ChatScreenChatRepo _iChatScreenChatRepo;
-  final User? _user;
+  final User? _currentUser;
   final PusherChannelsOptions _options;
 
   ChatScreenBloc({
     required ChatScreenRepo chatScreenRepo,
     required ChatScreenChatRepo chatScreenChatRepo,
-    required User? user,
+    required User? currentUser,
     required PusherChannelsOptions options,
     required ChatScreenStates initialState,
   })  : _iChatScreenRepo = chatScreenRepo,
         _iChatScreenChatRepo = chatScreenChatRepo,
-        _user = user,
+        _currentUser = currentUser,
         _options = options,
-        super(initialState);
+        super(initialState) {
+    //
+    on<ChatScreenEvents>(
+      (event, emit) => event.map(
+        initChatScreenEvent: (event) => _initChatScreenEvent(event, emit),
+        removeAllTempCreatedChatsEvent: removeAllTempCreatedChatsEvent,
+        handleChatMessageEvent: handleChatMessageEvent,
+        sendMessageEvent: sendMessageEvent,
+        changeEmojiPicker: changeEmojiPicker,
+      ),
+    );
+    //
+  }
+
+  void _initChatScreenEvent(
+    _InitChatScreenEvent event,
+    Emitter<ChatScreenStates> emit,
+  ) async {
+    var currentStateModel = state.chatScreenStateModel.copyWith();
+
+    try {
+      emit(ChatScreenStates.loading(currentStateModel));
+
+      currentStateModel = currentStateModel.copyWith(currentUser: _currentUser);
+
+      final chat = await _iChatScreenChatRepo.chat(chat: event.chat, withUser: event.user);
+
+      // i don't know why after calling function above currentUser from "_currentStateModel.currentUser" disappears
+      // i didn't find a bug
+      // if (_currentStateModel.currentUser == null) {
+      //   _currentStateModel.setToCurrentUser(
+      //     _currentUser,
+      //   );
+      // }
+
+      if (chat == null || chat.uuid == null) {
+        setChat(currentStateModel: currentStateModel, chat: null);
+        emit(ChatScreenStates.error(currentStateModel));
+        return;
+      }
+
+      setChat(currentStateModel: currentStateModel, chat: chat);
+
+      final channelName =
+          "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
+
+      debugPrint("channel name: $channelName");
+
+      _currentStateModel.setPusherChannel(
+        PusherChannelsClient.websocket(
+          options: _channelsOptions,
+          connectionErrorHandler: (f, s, t) {},
+        ),
+      );
+
+      final channel = _currentStateModel.pusherChannelClient?.publicChannel(channelName);
+
+      final subs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
+        (e) {
+          channel?.subscribeIfNotUnsubscribed();
+        },
+      );
+
+      _currentStateModel.setToSubscription(subs);
+
+      await _currentStateModel.pusherChannelClient?.connect();
+
+      channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
+        event.events.add(HandleChatMessageEvent(pusherEvent));
+      });
+
+      yield LoadedChatScreenState(_currentStateModel);
+
+      // get all chat messages here
+    } catch (e) {
+      debugPrint("channel connecting error: $e");
+      yield ErrorChatScreenState(_currentStateModel);
+    }
+  }
+
+  // logic
+  void setChat({
+    required ChatScreenStateModel currentStateModel,
+    Chat? chat,
+    bool setChatMessages = true,
+  }) {
+    if (chat == null) return;
+    currentStateModel = currentStateModel.copyWith(
+      currentChat: chat,
+    );
+    if (setChatMessages) {
+      List<ChatMessage> chatMessages = List.from(currentStateModel.messages);
+      chatMessages.addAll((chat.messages ?? []).reversed.toList());
+      currentStateModel = currentStateModel.copyWith(
+        messages: chatMessages,
+      );
+    }
+  }
+//
+// void setToFile(File? file) => _pickedFile = file;
+//
+// void setToRelatedUser(User? user) => _relatedUser = user;
+//
+// void setToCurrentUser(User? user) => _currentUser = user;
+//
+// void addMessage(ChatMessage message) {
+//   final findMessage =
+//       _messages.firstWhereOrNull((e) => e.chatMessageUUID == message.chatMessageUUID);
+//   if (findMessage != null) {
+//     _messages[_messages.indexWhere((e) => e.chatMessageUUID == message.chatMessageUUID)] =
+//         ChatMessageModel.fromEntity(findMessage)!.copyWith(messageSent: true);
+//   } else {
+//     _messages.add(message);
+//   }
+// }
+//
+// void clearMessage() => _messageController.clear();
+//
+// void changeEmojiPicker({bool? value}) {
+//   if (value != null) {
+//     _showEmojiPicker = value;
+//     return;
+//   }
+//   _showEmojiPicker = !_showEmojiPicker;
+// }
+//
+// void setPusherChannel(PusherChannelsClient client) {
+//   _pusherChannelsClient = client;
+// }
+//
+// void setToSubscription(StreamSubscription<void>? subs) {
+//   _channelSubscription = subs;
+// }
+//
+// Future<void> disposePusherChannelWithStreamSubscription() async {
+//   await _pusherChannelsClient?.disconnect();
+//   await _channelSubscription?.cancel();
+//   _pusherChannelsClient?.dispose();
+//   _channelSubscription = null;
+//   _pusherChannelsClient = null;
+// }
 }

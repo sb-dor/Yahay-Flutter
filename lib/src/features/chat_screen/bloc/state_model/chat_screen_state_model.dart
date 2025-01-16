@@ -12,90 +12,113 @@ import 'package:yahay/src/core/global_data/models/chats_model/chat_functions.dar
 import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
 
 class ChatScreenStateModel {
-  StreamSubscription<void>? _channelSubscription;
+  final List<ChatMessage> messages;
+  final StreamSubscription<void>? channelSubscription;
+  final PusherChannelsClient? pusherChannelsClient;
+  final Chat? currentChat;
+  final File? pickedFile;
+  final User? currentUser, relatedUser;
+  final bool showEmojiPicker;
 
-  StreamSubscription<void>? get channelSubscription => _channelSubscription;
+  const ChatScreenStateModel({
+    this.messages = const [],
+    this.channelSubscription,
+    this.pusherChannelsClient,
+    this.currentChat,
+    this.pickedFile,
+    this.currentUser,
+    this.relatedUser,
+    this.showEmojiPicker = false,
+  });
 
-  PusherChannelsClient? _pusherChannelsClient;
+  ChatModel? get currentChatModel => ChatModel.fromEntity(currentChat);
 
-  PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
+  ChatFunctions? get currentChatFunctions => ChatFunctions.fromEntity(currentChat);
 
-  final TextEditingController _messageController = TextEditingController();
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChatScreenStateModel &&
+          runtimeType == other.runtimeType &&
+          messages == other.messages &&
+          channelSubscription == other.channelSubscription &&
+          pusherChannelsClient == other.pusherChannelsClient &&
+          currentChat == other.currentChat &&
+          pickedFile == other.pickedFile &&
+          currentUser == other.currentUser &&
+          relatedUser == other.relatedUser &&
+          showEmojiPicker == other.showEmojiPicker);
 
-  TextEditingController get messageController => _messageController;
+  @override
+  int get hashCode =>
+      messages.hashCode ^
+      channelSubscription.hashCode ^
+      pusherChannelsClient.hashCode ^
+      currentChat.hashCode ^
+      pickedFile.hashCode ^
+      currentUser.hashCode ^
+      relatedUser.hashCode ^
+      showEmojiPicker.hashCode;
 
-  final List<ChatMessage> _messages = [];
-
-  List<ChatMessage> get messages => _messages;
-
-  Chat? _currentChat;
-
-  Chat? get currentChat => _currentChat;
-
-  ChatModel? get currentChatModel => ChatModel.fromEntity(_currentChat);
-
-  ChatFunctions? get currentChatFunctions => ChatFunctions.fromEntity(_currentChat);
-
-  File? _pickedFile;
-
-  File? get pickedFile => _pickedFile;
-
-  User? _currentUser, _relatedUser;
-
-  User? get relatedUser => _relatedUser;
-
-  User? get currentUser => _currentUser;
-
-  bool _showEmojiPicker = false;
-
-  bool get showEmojiPicker => _showEmojiPicker;
-
-  void setChat(Chat? chat, {bool setChatMessages = true}) {
-    if (chat == null) return;
-    _currentChat = chat;
-    if (setChatMessages) _messages.addAll((chat.messages ?? []).reversed.toList());
+  @override
+  String toString() {
+    return 'ChatScreenStateModel{' +
+        ' messages: $messages,' +
+        ' channelSubscription: $channelSubscription,' +
+        ' pusherChannelsClient: $pusherChannelsClient,' +
+        ' currentChat: $currentChat,' +
+        ' pickedFile: $pickedFile,' +
+        ' currentUser: $currentUser,' +
+        ' relatedUser: $relatedUser,' +
+        ' showEmojiPicker: $showEmojiPicker,' +
+        '}';
   }
 
-  void setToFile(File? file) => _pickedFile = file;
-
-  void setToRelatedUser(User? user) => _relatedUser = user;
-
-  void setToCurrentUser(User? user) => _currentUser = user;
-
-  void addMessage(ChatMessage message) {
-    final findMessage =
-        _messages.firstWhereOrNull((e) => e.chatMessageUUID == message.chatMessageUUID);
-    if (findMessage != null) {
-      _messages[_messages.indexWhere((e) => e.chatMessageUUID == message.chatMessageUUID)] =
-          ChatMessageModel.fromEntity(findMessage)!.copyWith(messageSent: true);
-    } else {
-      _messages.add(message);
-    }
+  ChatScreenStateModel copyWith({
+    List<ChatMessage>? messages,
+    StreamSubscription<void>? channelSubscription,
+    PusherChannelsClient? pusherChannelsClient,
+    Chat? currentChat,
+    File? pickedFile,
+    User? currentUser,
+    User? relatedUser,
+    bool? showEmojiPicker,
+  }) {
+    return ChatScreenStateModel(
+      messages: messages ?? this.messages,
+      channelSubscription: channelSubscription ?? this.channelSubscription,
+      pusherChannelsClient: pusherChannelsClient ?? this.pusherChannelsClient,
+      currentChat: currentChat ?? this.currentChat,
+      pickedFile: pickedFile ?? this.pickedFile,
+      currentUser: currentUser ?? this.currentUser,
+      relatedUser: relatedUser ?? this.relatedUser,
+      showEmojiPicker: showEmojiPicker ?? this.showEmojiPicker,
+    );
   }
 
-  void clearMessage() => _messageController.clear();
-
-  void changeEmojiPicker({bool? value}) {
-    if (value != null) {
-      _showEmojiPicker = value;
-      return;
-    }
-    _showEmojiPicker = !_showEmojiPicker;
+  Map<String, dynamic> toMap() {
+    return {
+      'messages': messages,
+      'channelSubscription': channelSubscription,
+      'pusherChannelsClient': pusherChannelsClient,
+      'currentChat': currentChat,
+      'pickedFile': pickedFile,
+      'currentUser': currentUser,
+      'relatedUser': relatedUser,
+      'showEmojiPicker': showEmojiPicker,
+    };
   }
 
-  void setPusherChannel(PusherChannelsClient client) {
-    _pusherChannelsClient = client;
-  }
-
-  void setToSubscription(StreamSubscription<void>? subs) {
-    _channelSubscription = subs;
-  }
-
-  Future<void> disposePusherChannelWithStreamSubscription() async {
-    await _pusherChannelsClient?.disconnect();
-    await _channelSubscription?.cancel();
-    _pusherChannelsClient?.dispose();
-    _channelSubscription = null;
-    _pusherChannelsClient = null;
+  factory ChatScreenStateModel.fromMap(Map<String, dynamic> map) {
+    return ChatScreenStateModel(
+      messages: map['messages'] as List<ChatMessage>,
+      channelSubscription: map['channelSubscription'] as StreamSubscription<void>,
+      pusherChannelsClient: map['pusherChannelsClient'] as PusherChannelsClient,
+      currentChat: map['currentChat'] as Chat,
+      pickedFile: map['pickedFile'] as File,
+      currentUser: map['currentUser'] as User,
+      relatedUser: map['relatedUser'] as User,
+      showEmojiPicker: map['showEmojiPicker'] as bool,
+    );
   }
 }
