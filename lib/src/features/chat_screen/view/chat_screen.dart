@@ -113,7 +113,9 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
               canPop: !currentStateModel.showEmojiPicker,
               onPopInvokedWithResult: (v, _) => _emojiClearHelper(currentStateModel),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  _emojiClearHelper(currentStateModel);
+                },
                 child: Scaffold(
                   appBar: PreferredSize(
                     preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),

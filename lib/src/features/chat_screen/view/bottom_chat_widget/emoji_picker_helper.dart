@@ -45,9 +45,9 @@ class _EmojiPickerHelperState extends State<EmojiPickerHelper> {
           // Issue: https://github.com/flutter/flutter/issues/28894
           emojiSizeMax: 28 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.20 : 1.0),
         ),
-        viewOrderConfig: ViewOrderConfig(
-          bottom: EmojiPickerItem.categoryBar,
-        ),
+        // viewOrderConfig: ViewOrderConfig(
+        //   bottom: EmojiPickerItem.categoryBar,
+        // ),
         skinToneConfig: const SkinToneConfig(),
         categoryViewConfig: const CategoryViewConfig(),
         bottomActionBarConfig: const BottomActionBarConfig(

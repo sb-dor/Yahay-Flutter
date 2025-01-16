@@ -218,9 +218,9 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
     try {
-      if (currentStateModel.pickedFile == null) {
-        return;
-      }
+      // if (currentStateModel.pickedFile == null) {
+      //   return;
+      // }
 
       final chatMessage = ChatMessageModel(
         chat: ChatModel.fromEntity(currentStateModel.currentChat),
