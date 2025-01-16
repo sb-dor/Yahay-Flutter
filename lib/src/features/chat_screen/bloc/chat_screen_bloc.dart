@@ -112,19 +112,19 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       // }
 
       if (chat == null || chat.uuid == null) {
-        setChat(currentStateModel: currentStateModel, chat: null);
+        currentStateModel = _setChat(currentStateModel: currentStateModel, chat: null);
         emit(ChatScreenStates.error(currentStateModel));
         return;
       }
 
-      setChat(currentStateModel: currentStateModel, chat: chat);
+      currentStateModel = _setChat(currentStateModel: currentStateModel, chat: chat);
 
       final channelName =
           "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
 
       debugPrint("channel name: $channelName");
 
-      setPusherChannel(
+      currentStateModel = _setPusherChannel(
         client: PusherChannelsClient.websocket(
           options: _options,
           connectionErrorHandler: (f, s, t) {},
@@ -140,7 +140,10 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
         },
       );
 
-      setToSubscription(subs: subs, chatScreenStateModel: currentStateModel);
+      currentStateModel = _setToSubscription(
+        subs: subs,
+        chatScreenStateModel: currentStateModel,
+      );
 
       await currentStateModel.pusherChannelsClient?.connect();
 
@@ -181,7 +184,10 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       if (messageJson.containsKey('message') && messageJson['message'] != null) {
         ChatMessageModel message =
             ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
-        addMessage(message: message, currentStateModel: currentStateModel);
+        currentStateModel = _addMessage(
+          message: message,
+          currentStateModel: currentStateModel,
+        );
       }
 
       // find problem here
@@ -189,7 +195,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
         debugPrint("chat has chat room: ${currentStateModel.currentChat?.videoChatRoom}");
         ChatModel chat = ChatModel.fromJson(messageJson['chat']);
         final currentChatFromModel = ChatModel.fromEntity(currentStateModel.currentChat);
-        setChat(
+        currentStateModel = _setChat(
           chat: currentChatFromModel?.copyWith(
             videoChatRoom: chat.videoChatRoom,
             videoChatStreaming: chat.videoChatStreaming,
@@ -227,7 +233,10 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
         messageSent: false,
       );
 
-      addMessage(message: chatMessage, currentStateModel: currentStateModel);
+      currentStateModel = _addMessage(
+        message: chatMessage,
+        currentStateModel: currentStateModel,
+      );
 
       event.clearMessage();
 
@@ -246,8 +255,10 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     Emitter<ChatScreenStates> emit,
   ) async {
     try {
-      var currentStateModel = state.chatScreenStateModel.copyWith();
-      _changeEmojiPickerHelper(currentStateModel: currentStateModel, value: event.value);
+      var currentStateModel = _changeEmojiPickerHelper(
+        currentStateModel: state.chatScreenStateModel,
+        value: event.value,
+      );
       _emitter(emit: emit, currentStateModel: currentStateModel);
     } catch (e) {
       debugPrint("_chaneEmojiPicker error is: $e");
@@ -255,12 +266,12 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   }
 
   // logic
-  void setChat({
+  ChatScreenStateModel _setChat({
     required ChatScreenStateModel currentStateModel,
     Chat? chat,
     bool setChatMessages = true,
   }) {
-    if (chat == null) return;
+    if (chat == null) return currentStateModel;
     currentStateModel = currentStateModel.copyWith(
       currentChat: chat,
     );
@@ -271,6 +282,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
         messages: chatMessages,
       );
     }
+    return currentStateModel;
   }
 
 //
@@ -280,7 +292,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 //
 // void setToCurrentUser(User? user) => _currentUser = user;
 //
-  void addMessage({
+  ChatScreenStateModel _addMessage({
     required ChatMessage message,
     required ChatScreenStateModel currentStateModel,
   }) {
@@ -297,36 +309,37 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     }
 
     currentStateModel = currentStateModel.copyWith(messages: listOfMessages);
+    return currentStateModel;
   }
 
 //
 // void clearMessage() => _messageController.clear();
 //
-  void _changeEmojiPickerHelper({
+  ChatScreenStateModel _changeEmojiPickerHelper({
     required ChatScreenStateModel currentStateModel,
     bool? value,
   }) {
-    currentStateModel = currentStateModel.copyWith(
+    return currentStateModel = currentStateModel.copyWith(
       showEmojiPicker: value ?? !currentStateModel.showEmojiPicker,
     );
   }
 
 //
-  void setPusherChannel({
+  ChatScreenStateModel _setPusherChannel({
     required PusherChannelsClient client,
     required ChatScreenStateModel currentStateModel,
   }) {
-    currentStateModel = currentStateModel.copyWith(
+    return currentStateModel = currentStateModel.copyWith(
       pusherChannelsClient: client,
     );
   }
 
 //
-  void setToSubscription({
+  ChatScreenStateModel _setToSubscription({
     required StreamSubscription<void>? subs,
     required ChatScreenStateModel chatScreenStateModel,
   }) {
-    chatScreenStateModel = chatScreenStateModel.copyWith(
+    return chatScreenStateModel = chatScreenStateModel.copyWith(
       channelSubscription: subs,
     );
   }

@@ -102,9 +102,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
           case InitialChatScreenState():
             return const SizedBox();
           case LoadingChatScreenState():
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
+            return  const LoadingMessagesWidget();
           case ErrorChatScreenState():
             return const Center(
               child: Text(Constants.somethingWentWrong),
@@ -133,22 +131,19 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                           child: ListView(
                             reverse: true,
                             children: [
-                              if (state is LoadedChatScreenState)
-                                ListView.separated(
-                                  separatorBuilder: (context, index) => const SizedBox(height: 10),
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: currentStateModel.messages.length,
-                                  itemBuilder: (context, index) {
-                                    final message = currentStateModel.messages[index];
-                                    return MessageWidget(
-                                      message: message,
-                                      currentUser: currentUser,
-                                    );
-                                  },
-                                )
-                              else
-                                const LoadingMessagesWidget()
+                              ListView.separated(
+                                separatorBuilder: (context, index) => const SizedBox(height: 10),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: currentStateModel.messages.length,
+                                itemBuilder: (context, index) {
+                                  final message = currentStateModel.messages[index];
+                                  return MessageWidget(
+                                    message: message,
+                                    currentUser: currentUser,
+                                  );
+                                },
+                              )
                             ],
                           ),
                         ),
