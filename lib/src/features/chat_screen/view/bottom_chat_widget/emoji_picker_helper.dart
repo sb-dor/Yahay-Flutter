@@ -1,16 +1,29 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_bloc.dart';
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_events.dart';
+import 'package:provider/provider.dart';
+import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 
-class EmojiPickerHelper extends StatelessWidget {
-  final ChatScreenBloc chatScreenBloc;
+class EmojiPickerHelper extends StatefulWidget {
+  final TextEditingController messageController;
 
   const EmojiPickerHelper({
     super.key,
-    required this.chatScreenBloc,
+    required this.messageController,
   });
+
+  @override
+  State<EmojiPickerHelper> createState() => _EmojiPickerHelperState();
+}
+
+class _EmojiPickerHelperState extends State<EmojiPickerHelper> {
+  late final ChatScreenBloc _chatScreenBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _chatScreenBloc = Provider.of<ChatScreenBloc>(context, listen: false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +34,9 @@ class EmojiPickerHelper extends StatelessWidget {
       onBackspacePressed: () {
         // Do something when the user taps the backspace button (optional)
         // Set it to null to hide the Backspace-Button
-        chatScreenBloc.events.add(ChangeEmojiPicker(value: false));
+        _chatScreenBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
       },
-      textEditingController: chatScreenBloc.states.value.chatScreenStateModel.messageController,
+      textEditingController: widget.messageController,
       // pass here the same [TextEditingController] that is connected to your input field, usually a [TextFormField]
       config: Config(
         height: 250,

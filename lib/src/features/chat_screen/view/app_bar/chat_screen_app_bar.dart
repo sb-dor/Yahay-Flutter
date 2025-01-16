@@ -1,22 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/src/core/global_usages/widgets/shimmer_loader.dart';
-import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_bloc.dart';
-import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_events.dart';
-import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_states.dart';
-import 'package:yahay/src/features/chat_screen/view/bloc/state_model/chat_screen_state_model.dart';
+import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
+import 'package:yahay/src/features/chat_screen/bloc/state_model/chat_screen_state_model.dart';
 
 class ChatScreenAppBar extends StatefulWidget {
   final ThemeData themeData;
-  final ChatScreenBloc chatScreenBloc;
   final Chat? chat;
 
   const ChatScreenAppBar({
     super.key,
-    required this.chatScreenBloc,
     required this.themeData,
     required this.chat,
   });
@@ -32,8 +29,8 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
   @override
   void initState() {
     super.initState();
-    _chatScreenBloc = widget.chatScreenBloc;
-    _chatScreenStateModel = widget.chatScreenBloc.states.value.chatScreenStateModel;
+    _chatScreenBloc = Provider.of<ChatScreenBloc>(context, listen: false);
+    _chatScreenStateModel = _chatScreenBloc.state.chatScreenStateModel;
   }
 
   @override
@@ -45,14 +42,16 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
           AutoRouter.of(context).maybePop();
           Future.delayed(const Duration(milliseconds: 10), () {
             if (!_chatScreenStateModel.showEmojiPicker) {
-              _chatScreenBloc.events.add(RemoveAllTempCreatedChatsEvent());
-              AutoRouter.of(context).maybePop();
+              _chatScreenBloc.add(const ChatScreenEvents.removeAllTempCreatedChatsEvent());
+              if (context.mounted) {
+                AutoRouter.of(context).maybePop();
+              }
             }
           });
         },
         icon: const Icon(CupertinoIcons.back),
       ),
-      title: _chatScreenBloc.states.value is LoadingChatScreenState
+      title: _chatScreenBloc.state is LoadingChatScreenState
           ? ShimmerLoader(
               isLoading: true,
               mode: widget.themeData,
@@ -68,7 +67,7 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
           : _ChatAppBarTitle(
               chat: _chatScreenStateModel.currentChat,
             ),
-      actions: _chatScreenBloc.states.value is LoadingChatScreenState
+      actions: _chatScreenBloc.state is LoadingChatScreenState
           ? [
               ShimmerLoader(
                 isLoading: true,

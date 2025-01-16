@@ -1,5 +1,6 @@
 abstract class Constants {
   static const String appName = "Yahay";
+
   // integers
   static const int perPage = 30;
 
@@ -34,12 +35,14 @@ abstract class Constants {
   static const String chatVideoStreamEventName = "chat_video_stream.event";
   static const String webRtcChannelName = "webrtc_channel";
   static const String webRtcChannelEventName = "webrtc_channel.event";
+
   //
 
   static const String tempDateTime = "2024-01-01 12:00:00";
   static const String defaultUserImage = "assets/default_images/temp_user.jpg";
 
-
   //
   static const String killIsolate = "kill_isolate";
+
+  static const String somethingWentWrong = "Something went wrong, please, try later";
 }

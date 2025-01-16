@@ -13,184 +13,12 @@ import 'package:yahay/src/core/global_data/models/chat_message_model/chat_messag
 import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
-import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_repo.dart';
 
 import 'state_model/chat_screen_state_model.dart';
 
 part 'chat_screen_bloc.freezed.dart';
-
-// @immutable
-// class ChatScreenBloc {
-//   static late BehaviorSubject<ChatScreenStates> _currentState;
-//   static late ChatScreenStateModel _currentStateModel;
-//   static late ChatScreenChatUsecase _chatScreenChatUsecase;
-//   static late ChatScreenSendMessagesUsecases _chatScreenSendMessagesUsecases;
-//
-//   final Sink<ChatScreenEvents> events;
-//   final BehaviorSubject<ChatScreenStates> _states;
-//
-//   static late final User? _currentUser;
-//   static late final PusherChannelsOptions _channelsOptions;
-//
-//   BehaviorSubject<ChatScreenStates> get states => _states;
-//
-//   void dispose() async {
-//     await _currentStateModel.disposePusherChannelWithStreamSubscription();
-//     await _states.drain();
-//     _states.close();
-//     events.close();
-//   }
-//
-//   const ChatScreenBloc._({
-//     required this.events,
-//     required BehaviorSubject<ChatScreenStates> states,
-//   }) : _states = states;
-//
-//   factory ChatScreenBloc({
-//     required ChatScreenRepo chatScreenRepo,
-//     required ChatScreenChatRepo chatScreenChatRepo,
-//     required User? user,
-//     required PusherChannelsOptions options,
-//   }) {
-//     _currentUser = user;
-//     _channelsOptions = options;
-//     _currentStateModel = ChatScreenStateModel();
-//     _chatScreenChatUsecase = ChatScreenChatUsecase(chatScreenChatRepo);
-//     _chatScreenSendMessagesUsecases = ChatScreenSendMessagesUsecases(chatScreenRepo);
-//
-//     final eventsBehavior = BehaviorSubject<ChatScreenEvents>();
-//
-//     final state = eventsBehavior.switchMap<ChatScreenStates>((event) async* {
-//       yield* _eventHandler(event);
-//     }).startWith(LoadingChatScreenState(_currentStateModel));
-//
-//     final behaviorOfState = BehaviorSubject<ChatScreenStates>()..addStream(state);
-//
-//     behaviorOfState.listen((value) {
-//       _currentState = BehaviorSubject()..add(value);
-//     });
-//
-//     return ChatScreenBloc._(
-//       events: eventsBehavior.sink,
-//       states: behaviorOfState,
-//     );
-//   }
-//
-//   static Stream<ChatScreenStates> _eventHandler(ChatScreenEvents event) async* {
-//     if (event is InitChatScreenEvent) {
-//       yield* _initChatScreenEvent(event);
-//     } else if (event is HandleChatMessageEvent) {
-//       yield* _handleChatScreenEvent(event);
-//     } else if (event is SendMessageEvent) {
-//       yield* _sendMessageEvent();
-//     } else if (event is ChangeEmojiPicker) {
-//       yield* _chaneEmojiPicker(event);
-//     } else if (event is RemoveAllTempCreatedChatsEvent) {
-//       _removeAllTempCreatedChatsEvent(event);
-//     }
-//   }
-//
-//   // initializing chat screen on entering to the screen
-//   static Stream<ChatScreenStates> _initChatScreenEvent(InitChatScreenEvent event) async* {
-//     try {
-//       yield LoadingChatScreenState(_currentStateModel);
-//
-//       _currentStateModel.setToCurrentUser(_currentUser);
-//
-//       final chat = await _chatScreenChatUsecase.chat(chat: event.chat, withUser: event.user);
-//
-//       // i don't know why after calling function above currentUser from "_currentStateModel.currentUser" disappears
-//       // i didn't find a bug
-//       if (_currentStateModel.currentUser == null) {
-//         _currentStateModel.setToCurrentUser(
-//           _currentUser,
-//         );
-//       }
-//
-//       if (chat == null || chat.uuid == null) {
-//         _currentStateModel.setChat(null);
-//         yield ErrorChatScreenState(_currentStateModel);
-//         return;
-//       }
-//
-//       _currentStateModel.setChat(chat);
-//
-//       final channelName =
-//           "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
-//
-//       debugPrint("channel name: $channelName");
-//
-//       _currentStateModel.setPusherChannel(
-//         PusherChannelsClient.websocket(
-//           options: _channelsOptions,
-//           connectionErrorHandler: (f, s, t) {},
-//         ),
-//       );
-//
-//       final channel = _currentStateModel.pusherChannelClient?.publicChannel(channelName);
-//
-//       final subs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
-//         (e) {
-//           channel?.subscribeIfNotUnsubscribed();
-//         },
-//       );
-//
-//       _currentStateModel.setToSubscription(subs);
-//
-//       await _currentStateModel.pusherChannelClient?.connect();
-//
-//       channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
-//         event.events.add(HandleChatMessageEvent(pusherEvent));
-//       });
-//
-//       yield LoadedChatScreenState(_currentStateModel);
-//
-//       // get all chat messages here
-//     } catch (e) {
-//       debugPrint("channel connecting error: $e");
-//       yield ErrorChatScreenState(_currentStateModel);
-//     }
-//   }
-//
-//   // message sending event
-//   static Stream<ChatScreenStates> _sendMessageEvent() async* {
-
-//   }
-//
-//   static void _removeAllTempCreatedChatsEvent(RemoveAllTempCreatedChatsEvent event) {
-
-//   }
-//
-//   static Stream<ChatScreenStates> _handleChatScreenEvent(HandleChatMessageEvent event) async* {
-//     debugPrint("coming data: ${event.event?.data}");
-
-//   }
-//
-//   static Stream<ChatScreenStates> _chaneEmojiPicker(
-//     ChangeEmojiPicker event,
-//   ) async* {
-//     try {
-//       _currentStateModel.changeEmojiPicker(value: event.value);
-//       yield* _emitter();
-//     } catch (e) {
-//       debugPrint("_chaneEmojiPicker error is: $e");
-//     }
-//   }
-//
-//   static Stream<ChatScreenStates> _emitter() async* {
-//     if (_currentState.value is LoadingChatScreenState) {
-//       yield LoadingChatScreenState(_currentStateModel);
-//     } else if (_currentState.value is ErrorChatScreenState) {
-//       yield ErrorChatScreenState(_currentStateModel);
-//     } else if (_currentState.value is LoadedChatScreenState) {
-//       yield LoadedChatScreenState(_currentStateModel);
-//     } else {
-//       yield LoadedChatScreenState(_currentStateModel); // Default to loaded state
-//     }
-//   }
-// }
 
 @immutable
 @freezed
@@ -211,12 +39,17 @@ abstract class ChatScreenEvents with _$ChatScreenEvents {
     required void Function() clearMessage,
   }) = _SendMessageEvent;
 
-  const factory ChatScreenEvents.changeEmojiPicker() = _ChangeEmojiPicker;
+  const factory ChatScreenEvents.changeEmojiPicker({
+    final bool? value,
+  }) = _ChangeEmojiPicker;
 }
 
 @immutable
 @freezed
 sealed class ChatScreenStates with _$ChatScreenStates {
+  const factory ChatScreenStates.initial(final ChatScreenStateModel chatScreenStateModel) =
+      InitialChatScreenState;
+
   const factory ChatScreenStates.loading(final ChatScreenStateModel chatScreenStateModel) =
       LoadingChatScreenState;
 
@@ -411,7 +244,15 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   void _changeEmojiPicker(
     _ChangeEmojiPicker event,
     Emitter<ChatScreenStates> emit,
-  ) async {}
+  ) async {
+    try {
+      var currentStateModel = state.chatScreenStateModel.copyWith();
+      _changeEmojiPickerHelper(currentStateModel: currentStateModel, value: event.value);
+      _emitter(emit: emit, currentStateModel: currentStateModel);
+    } catch (e) {
+      debugPrint("_chaneEmojiPicker error is: $e");
+    }
+  }
 
   // logic
   void setChat({
@@ -461,13 +302,15 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 //
 // void clearMessage() => _messageController.clear();
 //
-// void changeEmojiPicker({bool? value}) {
-//   if (value != null) {
-//     _showEmojiPicker = value;
-//     return;
-//   }
-//   _showEmojiPicker = !_showEmojiPicker;
-// }
+  void _changeEmojiPickerHelper({
+    required ChatScreenStateModel currentStateModel,
+    bool? value,
+  }) {
+    currentStateModel = currentStateModel.copyWith(
+      showEmojiPicker: value ?? !currentStateModel.showEmojiPicker,
+    );
+  }
+
 //
   void setPusherChannel({
     required PusherChannelsClient client,
@@ -488,20 +331,13 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     );
   }
 
-//
-// Future<void> disposePusherChannelWithStreamSubscription() async {
-//   await _pusherChannelsClient?.disconnect();
-//   await _channelSubscription?.cancel();
-//   _pusherChannelsClient?.dispose();
-//   _channelSubscription = null;
-//   _pusherChannelsClient = null;
-// }
-
   void _emitter({
     required Emitter<ChatScreenStates> emit,
     required ChatScreenStateModel currentStateModel,
   }) {
     switch (state) {
+      case InitialChatScreenState():
+        emit(ChatScreenStates.initial(currentStateModel));
       case LoadingChatScreenState():
         emit(ChatScreenStates.loading(currentStateModel));
         break;
@@ -512,5 +348,13 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
         emit(ChatScreenStates.loaded(currentStateModel));
         break;
     }
+  }
+
+  @override
+  Future<void> close() async {
+    await state.chatScreenStateModel.pusherChannelsClient?.disconnect();
+    await state.chatScreenStateModel.channelSubscription?.cancel();
+    state.chatScreenStateModel.pusherChannelsClient?.dispose();
+    return super.close();
   }
 }

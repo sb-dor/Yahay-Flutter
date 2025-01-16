@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_bloc.dart';
-import 'package:yahay/src/features/chat_screen/view/bloc/chat_screen_events.dart';
+import 'package:provider/provider.dart';
+import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/usecases/sheet_opener/telegram_sheet_opener.dart';
 
 class BottomChatWidget extends StatefulWidget {
-  final ChatScreenBloc chatsBloc;
+  final TextEditingController messageController;
 
   const BottomChatWidget({
     super.key,
-    required this.chatsBloc,
+    required this.messageController,
   });
 
   @override
@@ -24,7 +24,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
   @override
   void initState() {
     super.initState();
-    _chatsBloc = widget.chatsBloc;
+    _chatsBloc = Provider.of<ChatScreenBloc>(context, listen: false);
   }
 
   @override
@@ -49,14 +49,14 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 35),
                       width: MediaQuery.of(context).size.width,
                       child: TextField(
-                        controller: _chatsBloc.states.value.chatScreenStateModel.messageController,
+                        controller: widget.messageController,
                         textInputAction: TextInputAction.newline,
                         onTap: () {
-                          _chatsBloc.events.add(ChangeEmojiPicker(value: false));
+                          _chatsBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
                         },
                         focusNode: _focusNode,
                         onTapOutside: (v) {
-                          _chatsBloc.events.add(ChangeEmojiPicker(value: false));
+                          _chatsBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onChanged: (v) {
@@ -88,11 +88,11 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                   child: IconButton(
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
-                      _chatsBloc.events.add(ChangeEmojiPicker());
+                      _chatsBloc.add(const ChatScreenEvents.changeEmojiPicker());
                     },
                     icon: Icon(
                       Icons.emoji_emotions_outlined,
-                      color: _chatsBloc.states.value.chatScreenStateModel.showEmojiPicker
+                      color: _chatsBloc.state.chatScreenStateModel.showEmojiPicker
                           ? Colors.blue
                           : null,
                     ),
@@ -114,7 +114,17 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
             ),
           ),
           IconButton(
-            onPressed: () => _chatsBloc.events.add(SendMessageEvent()),
+            onPressed: () {
+              if (widget.messageController.text.trim().isEmpty) return;
+              _chatsBloc.add(
+                ChatScreenEvents.sendMessageEvent(
+                  message: widget.messageController.text.trim(),
+                  clearMessage: () {
+                    widget.messageController.clear();
+                  },
+                ),
+              );
+            },
             icon: const Icon(Icons.send),
           )
         ],
