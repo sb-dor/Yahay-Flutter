@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'telegram_browse_folder_widget.dart';
 
 class TelegramBrowseAppFolderScreen extends StatefulWidget {
@@ -29,13 +28,14 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
         const SizedBox(height: 20),
         TelegramFolderWidget(
           onTap: () {
-            widget.telegramFilePickerBloc.events.add(
-              const SelectScreenForFilesPickerScreenEvent(
+            widget.telegramFilePickerBloc.add(
+              const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
                 TelegramFileFolderEnum.recentDownloadsScreen,
               ),
             );
             Future.delayed(const Duration(milliseconds: 300), () {
-              widget.telegramFilePickerBloc.events.add(const ClearSelectedGalleryFileEvent());
+              widget.telegramFilePickerBloc
+                  .add(const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
             });
           },
           title: "...",
@@ -50,8 +50,8 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
             return TelegramFolderWidget(
               onTap: () async {
                 //
-                widget.telegramFilePickerBloc.events.add(
-                  const SelectScreenForFilesPickerScreenEvent(
+                widget.telegramFilePickerBloc.add(
+                  const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
                     TelegramFileFolderEnum.browseTheFolder,
                   ),
                 );
@@ -60,8 +60,8 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
 
                 debugPrint("clicking path: $dir");
                 // init here for folder data
-                widget.telegramFilePickerBloc.events.add(
-                  SetSpecificFolderPathInOrderToGetDataFromThereEvent(
+                widget.telegramFilePickerBloc.add(
+                  TelegramFilePickerEvents.setSpecificFolderPathInOrderToGetDataFromThereEvent(
                     dir,
                   ),
                 );

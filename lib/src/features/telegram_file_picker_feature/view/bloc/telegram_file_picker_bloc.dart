@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
@@ -467,7 +468,7 @@ part 'telegram_file_picker_bloc.freezed.dart';
 
 @immutable
 @freezed
-class TelegramFilePickerEvents with _$TelegramFilePickerStates {
+class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
   const factory TelegramFilePickerEvents.justEmitStateEvent() = _JustEmitStateEvent;
 
   const factory TelegramFilePickerEvents.initAllPicturesEvent(
@@ -502,11 +503,10 @@ class TelegramFilePickerEvents with _$TelegramFilePickerStates {
   const factory TelegramFilePickerEvents.selectGalleryFileEvent(
       final TelegramFileImageEntity? telegramFileImageEntity) = _SelectGalleryFileEvent;
 
-  const factory TelegramFilePickerEvents.clearSelectedGalleryFileEvent(
-      final TelegramFileImageEntity? telegramFileImageEntity) = _ClearSelectedGalleryFileEvent;
+  const factory TelegramFilePickerEvents.clearSelectedGalleryFileEvent() =
+      _ClearSelectedGalleryFileEvent;
 
-  const factory TelegramFilePickerEvents.recentFilesPaginationEvent(
-      final TelegramFileImageEntity? telegramFileImageEntity) = _RecentFilesPaginationEvent;
+  const factory TelegramFilePickerEvents.recentFilesPaginationEvent() = _RecentFilesPaginationEvent;
 
   const factory TelegramFilePickerEvents.browseInternalStorageAndSelectFilesEvent() =
       _BrowseInternalStorageAndSelectFilesEvent;
@@ -517,8 +517,8 @@ class TelegramFilePickerEvents with _$TelegramFilePickerStates {
   const factory TelegramFilePickerEvents.setSpecificFolderPathInOrderToGetDataFromThereEvent(
       final String? path) = _SetSpecificFolderPathInOrderToGetDataFromThereEvent;
 
-  const factory TelegramFilePickerEvents.getSpecificFolderDataEvent(final bool getGalleryData) =
-      _GetSpecificFolderDataEvent;
+  const factory TelegramFilePickerEvents.getSpecificFolderDataEvent(
+      {required final bool getGalleryData}) = _GetSpecificFolderDataEvent;
 
   const factory TelegramFilePickerEvents.specificFolderDataStreamHandlerEvent(
       final TelegramPathFolderFile? file) = _SpecificFolderDataStreamHandlerEvent;
@@ -532,24 +532,70 @@ class TelegramFilePickerEvents with _$TelegramFilePickerStates {
 @freezed
 sealed class TelegramFilePickerStates with _$TelegramFilePickerStates {
   const factory TelegramFilePickerStates.initial(
-      final TelegramFilePickerStateModel telegramFilePickerStateModel) = InitialPickerState;
+    final TelegramFilePickerStateModel telegramFilePickerStateModel,
+  ) = InitialPickerState;
 
   const factory TelegramFilePickerStates.galleryFilePickerState(
-      final TelegramFilePickerStateModel telegramFilePickerStateModel) = GalleryFilePickerState;
+    final TelegramFilePickerStateModel telegramFilePickerStateModel,
+  ) = GalleryFilePickerState;
 
   const factory TelegramFilePickerStates.filesPickerState(
-      final TelegramFilePickerStateModel telegramFilePickerStateModel) = FilesPickerState;
+    final TelegramFilePickerStateModel telegramFilePickerStateModel,
+  ) = FilesPickerState;
 
   const factory TelegramFilePickerStates.musicFilesPickerState(
-      final TelegramFilePickerStateModel telegramFilePickerStateModel) = MusicFilesPickerState;
+    final TelegramFilePickerStateModel telegramFilePickerStateModel,
+  ) = MusicFilesPickerState;
 }
 
 class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFilePickerStates> {
   final TelegramFilePickerRepo _telegramFilePickerRepo;
+  final CameraHelperService _cameraHelperService;
+  late final TelegramFilePickerStateModel _currentStateModel;
 
   TelegramFilePickerBloc({
-    required final TelegramFilePickerStates initialState,
     required final TelegramFilePickerRepo telegramFilePickerRepo,
+    required final CameraHelperService cameraHelperService,
+    required final TelegramFilePickerStates initialState,
   })  : _telegramFilePickerRepo = telegramFilePickerRepo,
-        super(initialState);
+        _cameraHelperService = cameraHelperService,
+        super(initialState) {
+    _currentStateModel = initialState.telegramFilePickerStateModel;
+
+    // on<TelegramFilePickerEvents>(
+    //   (event, emit) => event.map(
+    //     justEmitStateEvent: justEmitStateEvent,
+    //     initAllPicturesEvent: initAllPicturesEvent,
+    //     changeStateToAllPicturesEvent: changeStateToAllPicturesEvent,
+    //     initAllFilesEvent: initAllFilesEvent,
+    //     changeStateToAllFilesState: changeStateToAllFilesState,
+    //     initAllMusicsEvent: initAllMusicsEvent,
+    //     openHideBottomTelegramButtonEvent: openHideBottomTelegramButtonEvent,
+    //     closePopupEvent: closePopupEvent,
+    //     fileStreamHandlerEvent: fileStreamHandlerEvent,
+    //     recentFileStreamHandlerEvent: recentFileStreamHandlerEvent,
+    //     imagesAndVideoPaginationEvent: imagesAndVideoPaginationEvent,
+    //     selectGalleryFileEvent: selectGalleryFileEvent,
+    //     clearSelectedGalleryFileEvent: clearSelectedGalleryFileEvent,
+    //     recentFilesPaginationEvent: recentFilesPaginationEvent,
+    //     browseInternalStorageAndSelectFilesEvent: browseInternalStorageAndSelectFilesEvent,
+    //     selectScreenForFilesPickerScreenEvent: selectScreenForFilesPickerScreenEvent,
+    //     setSpecificFolderPathInOrderToGetDataFromThereEvent:
+    //         setSpecificFolderPathInOrderToGetDataFromThereEvent,
+    //     getSpecificFolderDataEvent: getSpecificFolderDataEvent,
+    //     specificFolderDataStreamHandlerEvent: specificFolderDataStreamHandlerEvent,
+    //     paginateSpecificFolderDataEvent: paginateSpecificFolderDataEvent,
+    //   ),
+    // );
+  }
+
+  void resetDragScrollSheet() {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _currentStateModel.draggableScrollableController?.animateTo(
+        0.5,
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    });
+  }
 }

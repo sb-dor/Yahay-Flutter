@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/reusable_widgets/telegram_storage_file_widget.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_folder_widget.dart';
@@ -31,21 +32,12 @@ class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDat
           title: "...",
         ),
         const SizedBox(height: 20),
-        StreamBuilder(
-          stream: widget.telegramFilePickerBloc.states,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return const Center(child: CircularProgressIndicator());
-              case ConnectionState.active:
-              case ConnectionState.done:
-                final stateModel = snapshot.requireData.telegramFilePickerStateModel;
-                return TelegramStorageFileWidget(
-                  list: stateModel.specificFolderFilesPagination,
-                  telegramFilePickerBloc: widget.telegramFilePickerBloc,
-                );
-            }
+        BlocBuilder<TelegramFilePickerBloc, TelegramFilePickerStates>(
+          builder: (context, state) {
+            return TelegramStorageFileWidget(
+              list: state.telegramFilePickerStateModel.specificFolderFilesPagination,
+              telegramFilePickerBloc: widget.telegramFilePickerBloc,
+            );
           },
         ),
       ],

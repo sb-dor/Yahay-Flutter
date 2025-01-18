@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 
 class TelegramStorageFilePickerDataModel {
   final Color iconBackgroundColor;
@@ -32,7 +31,8 @@ class TelegramStorageFilePickerDataModel {
           title: "Internal Storage",
           content: "Browse your file system",
           onTap: () {
-            telegramFilerPickerBloc.events.add(const BrowseInternalStorageAndSelectFilesEvent());
+            telegramFilerPickerBloc
+                .add(const TelegramFilePickerEvents.browseInternalStorageAndSelectFilesEvent());
           },
         ),
         TelegramStorageFilePickerDataModel(
@@ -45,8 +45,8 @@ class TelegramStorageFilePickerDataModel {
           title: "Yahay",
           content: "Browse the app's folder",
           onTap: () async {
-            telegramFilerPickerBloc.events.add(
-              const SelectScreenForFilesPickerScreenEvent(
+            telegramFilerPickerBloc.add(
+              const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
                 TelegramFileFolderEnum.browseTheAppsFolder,
               ),
             );
@@ -62,15 +62,15 @@ class TelegramStorageFilePickerDataModel {
           title: "Gallery",
           content: "To send images without compression",
           onTap: () async {
-            telegramFilerPickerBloc.events.add(
-              const SelectScreenForFilesPickerScreenEvent(
+            telegramFilerPickerBloc.add(
+              const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
                 TelegramFileFolderEnum.browseTheGalleryFolder,
               ),
             );
 
             Future.delayed(const Duration(milliseconds: 300), () {
-              telegramFilerPickerBloc.events.add(
-                const GetSpecificFolderDataEvent(
+              telegramFilerPickerBloc.add(
+                const TelegramFilePickerEvents.getSpecificFolderDataEvent(
                   getGalleryData: true,
                 ),
               );

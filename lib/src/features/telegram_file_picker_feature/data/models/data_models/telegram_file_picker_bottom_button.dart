@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 
 @immutable
 class TelegramFilePickerBottomButton {
@@ -20,8 +19,8 @@ class TelegramFilePickerBottomButton {
           children: [
             GestureDetector(
               onTap: () {
-                telegramBloc.events.add(
-                  const ChangeStateToAllPicturesEvent(),
+                telegramBloc.add(
+                  const TelegramFilePickerEvents.changeStateToAllPicturesEvent(),
                 );
 
                 // telegramBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
@@ -58,7 +57,7 @@ class TelegramFilePickerBottomButton {
             children: [
               GestureDetector(
                 onTap: () {
-                  telegramBloc.events.add(const ChangeStateToAllFilesState());
+                  telegramBloc.add(const TelegramFilePickerEvents.changeStateToAllFilesState());
                   telegramBloc.resetDragScrollSheet();
                 },
                 child: Container(

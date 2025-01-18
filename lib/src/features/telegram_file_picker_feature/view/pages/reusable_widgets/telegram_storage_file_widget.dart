@@ -5,7 +5,6 @@ import 'package:yahay/src/features/telegram_file_picker_feature/data/models/tele
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 import 'package:path/path.dart' as path;
 
 class TelegramStorageFileWidget extends StatefulWidget {
@@ -29,7 +28,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
   void initState() {
     super.initState();
     _telegramFilePickerStateModel =
-        widget.telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
+        widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
   }
 
   @override
@@ -43,7 +42,8 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
         return InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () {
-            widget.telegramFilePickerBloc.events.add(SelectGalleryFileEvent(item));
+            widget.telegramFilePickerBloc
+                .add(TelegramFilePickerEvents.selectGalleryFileEvent(item));
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),

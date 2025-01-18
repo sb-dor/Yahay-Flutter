@@ -4,7 +4,6 @@ import 'package:yahay/src/core/global_usages/reusables/reusable_global_functions
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_events.dart';
 
 class TelegramGalleryFilePickerVideoPlayerWidget extends StatefulWidget {
   final TelegramFileImageEntity item;
@@ -28,7 +27,7 @@ class _TelegramGalleryFilePickerVideoPlayerWidgetState
   @override
   void initState() {
     super.initState();
-    _currentStateModel = widget.telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
+    _currentStateModel = widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
   }
 
   @override
@@ -52,7 +51,8 @@ class _TelegramGalleryFilePickerVideoPlayerWidgetState
               right: 0,
               top: 0,
               child: IconButton(
-                onPressed: () => widget.telegramFilePickerBloc.events.add(SelectGalleryFileEvent(
+                onPressed: () => widget.telegramFilePickerBloc
+                    .add(TelegramFilePickerEvents.selectGalleryFileEvent(
                   widget.item,
                 )),
                 icon: _currentStateModel.isFileInsidePickedFiles(widget.item)

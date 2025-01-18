@@ -28,7 +28,7 @@ class _TelegramResentFilesFromStorageWidgetState
   void initState() {
     super.initState();
     _telegramFilePickerStateModel =
-        widget.telegramFilePickerBloc.states.value.telegramFilePickerStateModel;
+        widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
     _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
   }
 
