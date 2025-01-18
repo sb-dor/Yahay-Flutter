@@ -4,9 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:rive/rive.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
@@ -28,11 +31,58 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailOrUserNameController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
   late final AuthBloc _authBloc;
+  StateMachineController? _controller;
+  Artboard? _artboard;
+
+  SMITrigger? failTrigger, successTrigger;
+  SMIBool? isChecking, isHandsUp;
+  SMINumber? lookinNum;
 
   @override
   void initState() {
     super.initState();
     _authBloc = DependenciesScope.of(context, listen: false).authBloc;
+    _loadLoginArt();
+  }
+
+  void _loadLoginArt() async {
+    await RiveFile.initialize();
+
+    final fileInAssets = await rootBundle.load('assets/rive/animated_login_character.riv');
+
+    final file = RiveFile.import(fileInAssets);
+
+    final artBoard = file.mainArtboard;
+
+    // for getting login machine check out the rive animation in editor where you downloaded it
+    // then check event that was created there (shortly, you can find name animation from editor)
+    _controller = StateMachineController.fromArtboard(artBoard, 'Login Machine');
+
+    if (_controller != null) {
+      artBoard.addController(_controller!);
+      for (var action in _controller!.inputs) {
+        if (action.name == 'isChecking') {
+          isChecking = action as SMIBool;
+        } else if (action.name == 'isHandsUp') {
+          isHandsUp = action as SMIBool;
+        } else if (action.name == 'trigSuccess') {
+          successTrigger = action as SMITrigger;
+        } else if (action.name == 'trigFail') {
+          failTrigger = action as SMITrigger;
+        } else if (action.name == 'numLook') {
+          lookinNum = action as SMINumber;
+        }
+      }
+    }
+
+    setState(() {
+      _artboard = artBoard;
+    });
+  }
+
+  void _handsUp(bool value) {
+    isHandsUp?.change(value);
+    isChecking?.change(false);
   }
 
   @override
@@ -49,11 +99,17 @@ class _LoginPageState extends State<LoginPage> {
           if (state is AuthorizedStateOnAuthStates) {
             AutoRouter.of(context).replaceAll([const HomeRoute()]);
           }
+          if (state.authStateModel.showPassword) {
+            _handsUp(false);
+          } else {
+            _handsUp(true);
+          }
         },
         bloc: _authBloc,
         builder: (context, state) {
           final authStateModel = state.authStateModel;
           return Scaffold(
+            backgroundColor: HexColor("#d6e2ea"),
             body: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: SizedBox(
@@ -64,6 +120,16 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      // 650 was solved before putting value
+                      if (MediaQuery.of(context).size.hashCode >=
+                              Constants.minimumHeightForShowingRiveTextFieldAnim &&
+                          _artboard != null)
+                        SizedBox(
+                          height: 200,
+                          child: Rive(
+                            artboard: _artboard!,
+                          ),
+                        ),
                       Text(
                         "Sign In",
                         style: GoogleFonts.aBeeZee(

@@ -46,6 +46,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
               fontWeight: FontWeight.w500,
             ),
             decoration: InputDecoration(
+              fillColor: Colors.white,
               hintText: widget.hintText,
               // isDense: true,
               // border: _border,

@@ -13,7 +13,7 @@ import 'package:yahay/src/features/video_chat_feature/view/pages/video_chat_feat
 part 'app_router.gr.dart';
 
 @AutoRouterConfig()
-class AppRouter extends _$AppRouter {
+class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
