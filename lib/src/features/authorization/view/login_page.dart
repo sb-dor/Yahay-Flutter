@@ -41,7 +41,10 @@ class _LoginPageState extends State<LoginPage> {
     _loadLoginArt();
   }
 
-  void _loadLoginArt() async => await _animatedLoginCharacter.loadLoginArt();
+  void _loadLoginArt() async {
+    await _animatedLoginCharacter.loadLoginArt();
+    setState(() {});
+  }
 
   @override
   void dispose() {
