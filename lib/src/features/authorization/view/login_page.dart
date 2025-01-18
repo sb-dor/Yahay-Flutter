@@ -13,6 +13,7 @@ import 'package:rive/rive.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
+import 'package:yahay/src/features/authorization/rives/animated_login_character.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 
 import 'widgets/authorization_input_widget.dart';
@@ -31,12 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailOrUserNameController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
   late final AuthBloc _authBloc;
-  StateMachineController? _controller;
-  Artboard? _artboard;
-
-  SMITrigger? failTrigger, successTrigger;
-  SMIBool? isChecking, isHandsUp;
-  SMINumber? lookinNum;
+  final AnimatedLoginCharacter _animatedLoginCharacter = AnimatedLoginCharacter();
 
   @override
   void initState() {
@@ -45,50 +41,13 @@ class _LoginPageState extends State<LoginPage> {
     _loadLoginArt();
   }
 
-  void _loadLoginArt() async {
-    await RiveFile.initialize();
-
-    final fileInAssets = await rootBundle.load('assets/rive/animated_login_character.riv');
-
-    final file = RiveFile.import(fileInAssets);
-
-    final artBoard = file.mainArtboard;
-
-    // for getting login machine check out the rive animation in editor where you downloaded it
-    // then check event that was created there (shortly, you can find name animation from editor)
-    _controller = StateMachineController.fromArtboard(artBoard, 'Login Machine');
-
-    if (_controller != null) {
-      artBoard.addController(_controller!);
-      for (var action in _controller!.inputs) {
-        if (action.name == 'isChecking') {
-          isChecking = action as SMIBool;
-        } else if (action.name == 'isHandsUp') {
-          isHandsUp = action as SMIBool;
-        } else if (action.name == 'trigSuccess') {
-          successTrigger = action as SMITrigger;
-        } else if (action.name == 'trigFail') {
-          failTrigger = action as SMITrigger;
-        } else if (action.name == 'numLook') {
-          lookinNum = action as SMINumber;
-        }
-      }
-    }
-
-    setState(() {
-      _artboard = artBoard;
-    });
-  }
-
-  void _handsUp(bool value) {
-    isHandsUp?.change(value);
-    isChecking?.change(false);
-  }
+  void _loadLoginArt() async => await _animatedLoginCharacter.loadLoginArt();
 
   @override
   void dispose() {
     _emailOrUserNameController.dispose();
     _passwordController.dispose();
+    _animatedLoginCharacter.dispose();
     super.dispose();
   }
 
@@ -100,9 +59,9 @@ class _LoginPageState extends State<LoginPage> {
             AutoRouter.of(context).replaceAll([const HomeRoute()]);
           }
           if (state.authStateModel.showPassword) {
-            _handsUp(false);
+            _animatedLoginCharacter.handsUp(false);
           } else {
-            _handsUp(true);
+            _animatedLoginCharacter.handsUp(true);
           }
         },
         bloc: _authBloc,
@@ -123,11 +82,11 @@ class _LoginPageState extends State<LoginPage> {
                       // 650 was solved before putting value
                       if (MediaQuery.of(context).size.hashCode >=
                               Constants.minimumHeightForShowingRiveTextFieldAnim &&
-                          _artboard != null)
+                          _animatedLoginCharacter.artBoard != null)
                         SizedBox(
                           height: 200,
                           child: Rive(
-                            artboard: _artboard!,
+                            artboard: _animatedLoginCharacter.artBoard!,
                           ),
                         ),
                       Text(
