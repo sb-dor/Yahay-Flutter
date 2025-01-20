@@ -19,3 +19,7 @@ extension ListExtensions<T> on List<T> {
     return null;
   }
 }
+
+extension StringEx on String {
+  String limit(int length) => length < this.length ? substring(0, length) : this;
+}

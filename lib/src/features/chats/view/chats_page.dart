@@ -1,12 +1,13 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/src/core/global_usages/widgets/search_widget/search_widget.dart';
-import 'package:yahay/src/features/chats/view/bloc/chats_bloc.dart';
-import 'package:yahay/src/features/chats/view/bloc/chats_events.dart';
-import 'package:yahay/src/features/chats/view/bloc/chats_states.dart';
-import 'package:yahay/src/features/chats/view/pages/chat_widget/chat_widget.dart';
+import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
+import 'package:yahay/src/features/chats/bloc/chats_events.dart';
+import 'package:yahay/src/features/chats/bloc/chats_states.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
+
 import 'chat_widget/chat_loading_widget.dart';
+import 'chat_widget/chat_widget.dart';
 import 'chats_appbar/chats_appbar.dart';
 
 @RoutePage()

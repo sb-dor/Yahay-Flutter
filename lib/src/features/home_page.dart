@@ -8,14 +8,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_data/models/bottom_navbar_item/bottom_navbar_item.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
-import 'package:yahay/src/features/chats/view/bloc/chats_bloc.dart';
-import 'package:yahay/src/features/chats/view/bloc/chats_events.dart';
-import 'package:yahay/src/features/chats/view/pages/chats_page.dart';
+import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
+import 'package:yahay/src/features/chats/view/chats_page.dart';
 import 'package:yahay/src/features/contacts/view/contacts_page.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/src/features/profile/view/pages/profile_page.dart';
 
 import 'authorization/bloc/auth_bloc.dart';
+import 'chats/bloc/chats_events.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {

@@ -9,9 +9,9 @@ import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/chats/domain/repo/chats_repo.dart';
 import 'package:yahay/src/features/chats/domain/usecases/get_user_chats_usecase.dart';
-import 'package:yahay/src/features/chats/view/bloc/state_model/chats_state_model.dart';
 import 'chats_events.dart';
 import 'chats_states.dart';
+import 'state_model/chats_state_model.dart';
 
 // typedef PusherDataListener = void Function(
 //     String eventName, void Function(PusherEvent? event) onEvent);

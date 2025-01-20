@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:yahay/src/features/chats/view/bloc/state_model/chats_state_model.dart';
+import 'state_model/chats_state_model.dart';
 
 @immutable
 class ChatsStates {

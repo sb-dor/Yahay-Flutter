@@ -5,7 +5,7 @@ import 'package:yahay/src/core/global_data/entities/user.dart';
 import 'package:yahay/src/features/authorization/view/login_page.dart';
 import 'package:yahay/src/features/authorization/view/register_page.dart';
 import 'package:yahay/src/features/chat_screen/view/chat_screen.dart';
-import 'package:yahay/src/features/chats/view/pages/chats_page.dart';
+import 'package:yahay/src/features/chats/view/chats_page.dart';
 import 'package:yahay/src/features/home_page.dart';
 import 'package:yahay/src/features/loading_page.dart';
 import 'package:yahay/src/features/video_chat_feature/view/pages/video_chat_feature_page.dart';

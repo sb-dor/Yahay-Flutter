@@ -6,7 +6,7 @@ import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart'
 import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
-import 'package:yahay/src/features/chats/view/bloc/chats_bloc.dart';
+import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/chats_bloc_factory.dart';
 import 'package:yahay/src/features/profile/view/bloc/profile_bloc.dart';
 
