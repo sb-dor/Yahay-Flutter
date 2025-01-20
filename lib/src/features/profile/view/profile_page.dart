@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
-import 'package:yahay/src/features/profile/view/bloc/profile_bloc.dart';
-import 'package:yahay/src/features/profile/view/bloc/profile_events.dart';
+import 'package:yahay/src/features/profile/bloc/profile_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -27,10 +26,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          onPressed: () => _profileBloc.events.add(
-            ProfileLogoutEvent(
+          onPressed: () => _profileBloc.add(
+            ProfileEvents.profileLogoutEvent(
               () {
-               _authBloc.add(AuthEvents.logOutEvent());
+                _authBloc.add(const AuthEvents.logOutEvent());
               },
             ),
           ),

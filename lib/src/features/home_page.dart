@@ -12,7 +12,7 @@ import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
 import 'package:yahay/src/features/chats/view/chats_page.dart';
 import 'package:yahay/src/features/contacts/view/contacts_page.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
-import 'package:yahay/src/features/profile/view/pages/profile_page.dart';
+import 'package:yahay/src/features/profile/view/profile_page.dart';
 
 import 'authorization/bloc/auth_bloc.dart';
 import 'chats/bloc/chats_events.dart';
