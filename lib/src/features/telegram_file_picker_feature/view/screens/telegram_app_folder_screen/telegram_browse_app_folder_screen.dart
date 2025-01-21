@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'telegram_browse_folder_widget.dart';
 
 class TelegramBrowseAppFolderScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
 import 'widgets/telegram_gallery_file_picker_camera_widget.dart';
 import 'widgets/telegram_gallery_file_picker_image_widget.dart';
 import 'widgets/telegram_gallery_file_picker_video_player_widget.dart';

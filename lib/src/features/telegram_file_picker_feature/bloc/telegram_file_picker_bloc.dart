@@ -1,12 +1,14 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_path_folder_file.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/repo/telegram_file_picker_repo.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
+import 'state_model/telegram_file_picker_state_model.dart';
 
 part 'telegram_file_picker_bloc.freezed.dart';
 
@@ -587,6 +589,59 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     //     paginateSpecificFolderDataEvent: paginateSpecificFolderDataEvent,
     //   ),
     // );
+  }
+
+  void _initAllPictureEvents(
+    _InitAllPicturesEvent event,
+    Emitter<TelegramFilePickerStates> emit,
+  ) async {
+    if (event.controller != null) {
+      _currentStateModel.initDragScrollController(event.controller!);
+    }
+    _currentStateModel.clearAllGalleryPath(clearAll: false);
+    _currentStateModel.clearAllGalleryPaginationPath(clearAll: false);
+    _currentStateModel.clearPickedFiles();
+
+    try {
+      if (_currentStateModel.galleryPathFiles.isEmpty) {
+        final TelegramFileImageModel fileModel = TelegramFileImageModel(
+          cameraController: CameraController(
+            _cameraHelperService.cameras.last,
+            ResolutionPreset.max,
+          ),
+        );
+
+        // this init shows getting permission from uses for recording video or taking pictures from camera
+        await fileModel.controllerInit();
+
+        yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
+          fileModel,
+          emitter: _emitter(),
+        );
+      } else {
+        yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
+          _currentStateModel.galleryPathFiles.first,
+          emitter: _emitter(),
+        );
+      }
+
+      _currentStateModel.initFileStreamData(
+        _telegramFilePickerRepo.getRecentImagesAndVideos().listen(
+          (value) {
+            add(FileStreamHandlerEvent(value));
+          },
+        )..onDone(() {
+            //
+            debugPrint("im done!");
+          }),
+      );
+
+      add(const InitAllFilesEvent(initFilePickerState: false));
+
+      yield GalleryFilePickerState(_currentStateModel);
+    } catch (e) {
+      debugPrint("ini all pictures event is: $e");
+    }
   }
 
   void resetDragScrollSheet() {

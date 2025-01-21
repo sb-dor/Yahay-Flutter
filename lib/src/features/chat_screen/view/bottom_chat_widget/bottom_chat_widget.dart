@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/domain/usecases/sheet_opener/telegram_sheet_opener.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/view/sheet_opener/telegram_sheet_opener.dart';
 
 class BottomChatWidget extends StatefulWidget {
   final TextEditingController messageController;

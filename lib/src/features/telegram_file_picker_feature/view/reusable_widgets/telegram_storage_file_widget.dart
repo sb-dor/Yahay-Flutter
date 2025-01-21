@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/global_usages/reusables/reusable_global_functions.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/state_model/telegram_file_picker_state_model.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/data/models/telegram_file_image_model.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
 import 'package:path/path.dart' as path;
 
 class TelegramStorageFileWidget extends StatefulWidget {
@@ -42,8 +42,9 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
         return InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () {
-            widget.telegramFilePickerBloc
-                .add(TelegramFilePickerEvents.selectGalleryFileEvent(item));
+            widget.telegramFilePickerBloc.add(
+              TelegramFilePickerEvents.selectGalleryFileEvent(item),
+            );
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),

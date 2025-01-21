@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/state_model/telegram_file_picker_state_model.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_folder_enums.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_app_folder_screen.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_folder_data_screen.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/view/screens/telegram_app_folder_screen/telegram_browse_app_folder_screen.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/view/screens/telegram_app_folder_screen/telegram_browse_folder_data_screen.dart';
 import 'widgets/telegram_files_from_storages_widget.dart';
 import 'widgets/telegram_resent_files_from_storage_widget.dart';
 

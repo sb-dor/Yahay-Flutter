@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/state_model/telegram_file_picker_state_model.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/reusable_widgets/telegram_storage_file_widget.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/state_model/telegram_file_picker_state_model.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/view/reusable_widgets/telegram_storage_file_widget.dart';
 
 class TelegramResentFilesFromStorageWidget extends StatefulWidget {
   final TelegramFilePickerBloc telegramFilePickerBloc;

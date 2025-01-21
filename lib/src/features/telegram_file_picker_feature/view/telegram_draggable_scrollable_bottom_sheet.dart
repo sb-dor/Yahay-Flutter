@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/telegram_file_picker_bloc_factory.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/bottom_picker_button/telegram_bottom_picker_button.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/screens/telegram_files_picker_screen/telegram_files_picker_screen.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker_screen.dart';
+import 'bottom_picker_button/telegram_bottom_picker_button.dart';
 import 'bottom_picker_button/telegram_bottom_sender_button.dart';
+import 'screens/telegram_files_picker_screen/telegram_files_picker_screen.dart';
+import 'screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker_screen.dart';
 
 class TelegramDraggableScrollableBottomSheet extends StatefulWidget {
   final ValueChanged<List<TelegramFileImageEntity?>> selectedItems;

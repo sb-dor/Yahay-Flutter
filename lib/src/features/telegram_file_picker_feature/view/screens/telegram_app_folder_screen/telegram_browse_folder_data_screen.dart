@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/reusable_widgets/telegram_storage_file_widget.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/pages/screens/telegram_app_folder_screen/telegram_browse_folder_widget.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/view/reusable_widgets/telegram_storage_file_widget.dart';
+import 'telegram_browse_folder_widget.dart';
 
 class TelegramBrowseFolderDataScreen extends StatefulWidget {
   final VoidCallback onBackFolder;
