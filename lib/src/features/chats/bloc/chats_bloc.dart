@@ -189,6 +189,8 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     Emitter<ChatsStates> emit,
   ) async {
     try {
+      if (_channelSubscription != null) return;
+
       final channelName = "${Constants.channelNotifyOfUserName}${_currentUser?.id}";
 
       _logger.log(Level.debug, "current whole channel listeners: $channelName");
