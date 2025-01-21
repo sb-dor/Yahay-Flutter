@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -481,8 +483,9 @@ class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
   const factory TelegramFilePickerEvents.changeStateToAllPicturesEvent() =
       _ChangeStateToAllPicturesEvent;
 
-  const factory TelegramFilePickerEvents.initAllFilesEvent(final bool initFilePickerState) =
-      _InitAllFilesEvent;
+  const factory TelegramFilePickerEvents.initAllFilesEvent({
+    required final bool initFilePickerState,
+  }) = _InitAllFilesEvent;
 
   const factory TelegramFilePickerEvents.changeStateToAllFilesState() = _ChangeStateToAllFilesState;
 
@@ -551,6 +554,15 @@ sealed class TelegramFilePickerStates with _$TelegramFilePickerStates {
 }
 
 class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFilePickerStates> {
+  //
+
+  StreamSubscription<TelegramPathFolderFile?>? _fileStreamData;
+
+  StreamSubscription<TelegramPathFolderFile?>? _recentFileData;
+
+  StreamSubscription<TelegramPathFolderFile?>? _specificFolderData;
+
+  //
   final TelegramFilePickerRepo _telegramFilePickerRepo;
   final CameraHelperService _cameraHelperService;
   late final TelegramFilePickerStateModel _currentStateModel;
@@ -567,8 +579,8 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     // on<TelegramFilePickerEvents>(
     //   (event, emit) => event.map(
     //     justEmitStateEvent: justEmitStateEvent,
-    //     initAllPicturesEvent: initAllPicturesEvent,
-    //     changeStateToAllPicturesEvent: changeStateToAllPicturesEvent,
+    //     initAllPicturesEvent: (event) => _initAllPictureEvents(event, emit),
+    //     changeStateToAllPicturesEvent: (event) => emit(GalleryFilePickerState(_currentStateModel)),
     //     initAllFilesEvent: initAllFilesEvent,
     //     changeStateToAllFilesState: changeStateToAllFilesState,
     //     initAllMusicsEvent: initAllMusicsEvent,
@@ -614,31 +626,27 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
         // this init shows getting permission from uses for recording video or taking pictures from camera
         await fileModel.controllerInit();
 
-        yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
+        _currentStateModel.addOnStreamOfValuesInPaginationList(
           fileModel,
-          emitter: _emitter(),
         );
       } else {
-        yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
+        _currentStateModel.addOnStreamOfValuesInPaginationList(
           _currentStateModel.galleryPathFiles.first,
-          emitter: _emitter(),
         );
       }
 
-      _currentStateModel.initFileStreamData(
-        _telegramFilePickerRepo.getRecentImagesAndVideos().listen(
-          (value) {
-            add(FileStreamHandlerEvent(value));
-          },
-        )..onDone(() {
-            //
-            debugPrint("im done!");
-          }),
-      );
+      _fileStreamData = _telegramFilePickerRepo.getRecentImagesAndVideos().listen(
+        (value) {
+          add(TelegramFilePickerEvents.fileStreamHandlerEvent(value));
+        },
+      )..onDone(() {
+          //
+          debugPrint("im done!");
+        });
 
-      add(const InitAllFilesEvent(initFilePickerState: false));
+      add(const TelegramFilePickerEvents.initAllFilesEvent(initFilePickerState: false));
 
-      yield GalleryFilePickerState(_currentStateModel);
+      emit(TelegramFilePickerStates.galleryFilePickerState(_currentStateModel));
     } catch (e) {
       debugPrint("ini all pictures event is: $e");
     }
@@ -652,5 +660,13 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
         curve: Curves.fastOutSlowIn,
       );
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _fileStreamData?.cancel();
+    await _recentFileData?.cancel();
+    await _specificFolderData?.cancel();
+    return super.close();
   }
 }

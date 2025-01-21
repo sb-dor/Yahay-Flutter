@@ -61,6 +61,12 @@ sealed class ChatScreenStates with _$ChatScreenStates {
 }
 
 class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
+  //
+  PusherChannelsClient? _pusherChannelsClient;
+  StreamSubscription<void>? _channelSubscription;
+  StreamSubscription<void>? _channelInformationSubscription;
+
+  //
   final ChatScreenRepo _iChatScreenRepo;
   final ChatScreenChatRepo _iChatScreenChatRepo;
   final User? _currentUser;
@@ -124,30 +130,22 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 
       debugPrint("channel name: $channelName");
 
-      currentStateModel = _setPusherChannel(
-        client: PusherChannelsClient.websocket(
-          options: _options,
-          connectionErrorHandler: (f, s, t) {},
-        ),
-        currentStateModel: currentStateModel,
+      _pusherChannelsClient = PusherChannelsClient.websocket(
+        options: _options,
+        connectionErrorHandler: (f, s, t) {},
       );
 
-      final channel = currentStateModel.pusherChannelsClient?.publicChannel(channelName);
+      final channel = _pusherChannelsClient?.publicChannel(channelName);
 
-      final subs = currentStateModel.pusherChannelsClient?.onConnectionEstablished.listen(
+      _channelInformationSubscription = _pusherChannelsClient?.onConnectionEstablished.listen(
         (e) {
           channel?.subscribeIfNotUnsubscribed();
         },
       );
 
-      currentStateModel = _setToSubscription(
-        subs: subs,
-        chatScreenStateModel: currentStateModel,
-      );
+      await _pusherChannelsClient?.connect();
 
-      await currentStateModel.pusherChannelsClient?.connect();
-
-      channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
+      _channelSubscription = channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
         add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
       });
 
@@ -324,26 +322,6 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     );
   }
 
-//
-  ChatScreenStateModel _setPusherChannel({
-    required PusherChannelsClient client,
-    required ChatScreenStateModel currentStateModel,
-  }) {
-    return currentStateModel = currentStateModel.copyWith(
-      pusherChannelsClient: client,
-    );
-  }
-
-//
-  ChatScreenStateModel _setToSubscription({
-    required StreamSubscription<void>? subs,
-    required ChatScreenStateModel chatScreenStateModel,
-  }) {
-    return chatScreenStateModel = chatScreenStateModel.copyWith(
-      channelSubscription: subs,
-    );
-  }
-
   void _emitter({
     required Emitter<ChatScreenStates> emit,
     required ChatScreenStateModel currentStateModel,
@@ -365,9 +343,10 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 
   @override
   Future<void> close() async {
-    await state.chatScreenStateModel.pusherChannelsClient?.disconnect();
-    await state.chatScreenStateModel.channelSubscription?.cancel();
-    state.chatScreenStateModel.pusherChannelsClient?.dispose();
+    await _pusherChannelsClient?.disconnect();
+    _pusherChannelsClient?.dispose();
+    await _channelSubscription?.cancel();
+    await _channelInformationSubscription?.cancel();
     return super.close();
   }
 }

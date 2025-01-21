@@ -112,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                             title: Constants.password,
                             controller: _passwordController,
                             hintText: Constants.enterPassword,
+                            obscureText: _animatedLoginCharacter.isHandsUp,
                           ),
                           Positioned(
                             right: 0,

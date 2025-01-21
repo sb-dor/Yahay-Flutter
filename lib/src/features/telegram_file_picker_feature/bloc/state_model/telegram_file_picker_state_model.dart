@@ -61,17 +61,7 @@ class TelegramFilePickerStateModel {
   List<TelegramFileImageEntity?> get clonedPickedFiles =>
       _pickedFiles.map((e) => TelegramFileImageModel.fromEntity(e)).toList();
 
-  StreamSubscription<TelegramPathFolderFile?>? _fileStreamData;
 
-  StreamSubscription<TelegramPathFolderFile?>? get fileStreamData => _fileStreamData;
-
-  StreamSubscription<TelegramPathFolderFile?>? _recentFileData;
-
-  StreamSubscription<TelegramPathFolderFile?>? get recentFileData => _recentFileData;
-
-  StreamSubscription<TelegramPathFolderFile?>? _specificFolderData;
-
-  StreamSubscription<TelegramPathFolderFile?>? get specificFolderData => _specificFolderData;
 
   bool _openBottomSectionButton = true;
 
@@ -131,13 +121,11 @@ class TelegramFilePickerStateModel {
     _specificFolderFilesPagination.clear();
   }
 
-  Stream<TelegramFilePickerStates> addOnStreamOfValuesInPaginationList(
-    TelegramFileImageEntity value, {
-    Stream<TelegramFilePickerStates>? emitter,
-  }) async* {
+  void addOnStreamOfValuesInPaginationList(
+    TelegramFileImageEntity value,
+  ) {
     if (_galleryPathPagination.length >= Constants.perPage) return;
     _galleryPathPagination.add(value);
-    if (emitter != null) yield* emitter;
   }
 
   void addToRecentFiles(TelegramFileImageEntity value) {
@@ -163,29 +151,29 @@ class TelegramFilePickerStateModel {
   void addToRecentFilesPagination(List<TelegramFileImageEntity> list) =>
       _recentFilesPagination.addAll(list);
 
-  void initFileStreamData(
-    StreamSubscription<TelegramPathFolderFile?> stream,
-  ) =>
-      _fileStreamData = stream;
-
-  void initRecentFileStreamData(
-    StreamSubscription<TelegramPathFolderFile?> stream,
-  ) =>
-      _recentFileData = stream;
-
-  void initSpecificFolderDataStream(
-    StreamSubscription<TelegramPathFolderFile?> stream,
-  ) =>
-      _specificFolderData = stream;
-
-  Future<void> closeSpecificFolderDataStream() async {
-    await _specificFolderData?.cancel();
-  }
-
-  void closeAllStreamSubs() {
-    _fileStreamData?.cancel();
-    _recentFileData?.cancel();
-  }
+  // void initFileStreamData(
+  //   StreamSubscription<TelegramPathFolderFile?> stream,
+  // ) =>
+  //     _fileStreamData = stream;
+  //
+  // void initRecentFileStreamData(
+  //   StreamSubscription<TelegramPathFolderFile?> stream,
+  // ) =>
+  //     _recentFileData = stream;
+  //
+  // void initSpecificFolderDataStream(
+  //   StreamSubscription<TelegramPathFolderFile?> stream,
+  // ) =>
+  //     _specificFolderData = stream;
+  //
+  // Future<void> closeSpecificFolderDataStream() async {
+  //   await _specificFolderData?.cancel();
+  // }
+  //
+  // void closeAllStreamSubs() {
+  //   _fileStreamData?.cancel();
+  //   _recentFileData?.cancel();
+  // }
 
   void removeOrAddEntity(TelegramFileImageEntity? value) {
     if (value == null) return;

@@ -6,12 +6,14 @@ class AuthorizationInputWidget extends StatefulWidget {
   final String title;
   final TextEditingController controller;
   final String hintText;
+  final bool obscureText;
 
   const AuthorizationInputWidget({
     super.key,
     required this.title,
     required this.controller,
     required this.hintText,
+    this.obscureText = false,
   });
 
   @override
@@ -36,6 +38,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: TextFormField(
+            obscureText: widget.obscureText,
             validator: (value) {
               if ((value ?? '').isEmpty) return Constants.fieldCanNotBeEmpty;
               return null;

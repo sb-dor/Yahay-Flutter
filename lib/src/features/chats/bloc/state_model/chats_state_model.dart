@@ -9,33 +9,27 @@ import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_pa
 import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
 
 class ChatsStateModel {
-  PusherChannelsClient? _pusherClientService;
 
-  StreamSubscription<void>? _channelSubscription;
-
-  PusherChannelsClient? get pusherClientService => _pusherClientService;
-
-  StreamSubscription<void>? get channelSubscription => _channelSubscription;
 
   List<Chat> _chats = [];
 
   List<Chat> get chats => _chats;
 
-  void setToPusherClient(PusherChannelsClient? client) {
-    _pusherClientService = client;
-  }
-
-  void setToSubscription(StreamSubscription<void>? subs) {
-    _channelSubscription = subs;
-  }
-
-  Future<void> disposeClientAndSubs() async {
-    await _pusherClientService?.disconnect();
-    await _channelSubscription?.cancel();
-    _pusherClientService?.dispose();
-    _pusherClientService = null;
-    _channelSubscription = null;
-  }
+  // void setToPusherClient(PusherChannelsClient? client) {
+  //   _pusherClientService = client;
+  // }
+  //
+  // void setToSubscription(StreamSubscription<void>? subs) {
+  //   _channelSubscription = subs;
+  // }
+  //
+  // Future<void> disposeClientAndSubs() async {
+  //   await _pusherClientService?.disconnect();
+  //   await _channelSubscription?.cancel();
+  //   _pusherClientService?.dispose();
+  //   _pusherClientService = null;
+  //   _channelSubscription = null;
+  // }
 
   void setChat(List<Chat> list) => _chats = list;
 
@@ -74,8 +68,8 @@ class ChatsStateModel {
     return chatModel;
   }
 
-  Future<void> clearAll() async {
-    await disposeClientAndSubs();
-    _chats.clear();
-  }
+  // Future<void> clearAll() async {
+  //   await disposeClientAndSubs();
+  //   _chats.clear();
+  // }
 }

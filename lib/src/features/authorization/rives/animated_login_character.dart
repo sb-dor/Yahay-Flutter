@@ -8,6 +8,8 @@ final class AnimatedLoginCharacter {
   SMIBool? _isChecking, _isHandsUp;
   SMINumber? _lookingNum;
 
+  bool get isHandsUp => _isHandsUp?.value ?? false;
+
   Future<void> loadLoginArt() async {
     await RiveFile.initialize();
 
