@@ -33,6 +33,8 @@ class ChatsStateModel {
 
   void setChat(List<Chat> list) => _chats = list;
 
+  void clearChat() => _chats.clear();
+
   void addChat(Chat chat, User? user) {
     var convertedToModelChat = ChatModel.fromEntity(chat);
 

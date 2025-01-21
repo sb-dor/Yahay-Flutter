@@ -13,9 +13,7 @@ import 'package:yahay/src/features/chats/view/chats_page.dart';
 import 'package:yahay/src/features/contacts/view/contacts_page.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/src/features/profile/view/profile_page.dart';
-
 import 'authorization/bloc/auth_bloc.dart';
-import 'chats/bloc/chats_events.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -68,7 +66,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void deactivate() {
     debugPrint("home page deactivate worked");
-    _chatsBloc?.events.add(ChangeToLoadingState());
+    _chatsBloc?.add(const ChatsEvents.changeToLoadingState());
     super.deactivate();
   }
 
