@@ -568,19 +568,12 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
       (event, emit) => event.map(
         justEmitStateEvent: justEmitStateEvent,
         initAllPicturesEvent: (event) => _initAllPictureEvents(event, emit),
-        changeStateToAllPicturesEvent: (event) => emit(
-          TelegramFilePickerStates.galleryFilePickerState(
-            _currentStateModel,
-          ),
-        ),
+        changeStateToAllPicturesEvent: (event) => _changeStateToAllPicturesEvent(event, emit),
         initAllFilesEvent: (event) => _initAllFilesEvent(event, emit),
-        changeStateToAllFilesState: (event) => emit(
-          TelegramFilePickerStates.filesPickerState(
-            _currentStateModel,
-          ),
-        ),
+        changeStateToAllFilesState: (event) => _changeStateToAllFilesState(event, emit),
         initAllMusicsEvent: (event) => _initAllMusicsEvent(event, emit),
-        openHideBottomTelegramButtonEvent: openHideBottomTelegramButtonEvent,
+        openHideBottomTelegramButtonEvent: (event) =>
+            _openHideBottomTelegramButtonEvent(event, emit),
         closePopupEvent: closePopupEvent,
         fileStreamHandlerEvent: fileStreamHandlerEvent,
         recentFileStreamHandlerEvent: recentFileStreamHandlerEvent,
@@ -648,6 +641,13 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     }
   }
 
+  void _changeStateToAllPicturesEvent(
+    _ChangeStateToAllPicturesEvent event,
+    Emitter<TelegramFilePickerStates> emit,
+  ) async {
+    emit(TelegramFilePickerStates.galleryFilePickerState(_currentStateModel));
+  }
+
   void _initAllFilesEvent(
     _InitAllFilesEvent event,
     Emitter<TelegramFilePickerStates> emit,
@@ -665,8 +665,22 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     }
   }
 
+  void _changeStateToAllFilesState(
+    _ChangeStateToAllFilesState event,
+    Emitter<TelegramFilePickerStates> emit,
+  ) async {
+    emit(TelegramFilePickerStates.filesPickerState(
+      _currentStateModel,
+    ));
+  }
+
   void _initAllMusicsEvent(
     _InitAllMusicsEvent event,
+    Emitter<TelegramFilePickerStates> emit,
+  ) async {}
+
+  void _openHideBottomTelegramButtonEvent(
+    _OpenHideBottomTelegramButtonEvent event,
     Emitter<TelegramFilePickerStates> emit,
   ) async {}
 
