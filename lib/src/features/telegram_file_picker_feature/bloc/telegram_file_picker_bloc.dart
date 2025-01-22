@@ -176,19 +176,7 @@ part 'telegram_file_picker_bloc.freezed.dart';
 //   static Stream<TelegramFilePickerStates> _initAllFilesEvent(
 //     InitAllFilesEvent event,
 //   ) async* {
-//     _currentStateModel.clearRecentFiles();
-//     _currentStateModel.clearRecentPagFiles();
-//     _currentStateModel.initRecentFileStreamData(
-//       _filePickerUseCase.downloadsPathFilesData().listen((e) {
-//         _events.add(RecentFileStreamHandlerEvent(e));
-//       }),
-//     );
-//
-//     if (event.initFilePickerState) {
-//       yield FilesPickerState(_currentStateModel);
-//     } else {
-//       yield* _emitter();
-//     }
+
 //   }
 //
 //   //
@@ -576,31 +564,39 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
         super(initialState) {
     _currentStateModel = initialState.telegramFilePickerStateModel;
 
-    // on<TelegramFilePickerEvents>(
-    //   (event, emit) => event.map(
-    //     justEmitStateEvent: justEmitStateEvent,
-    //     initAllPicturesEvent: (event) => _initAllPictureEvents(event, emit),
-    //     changeStateToAllPicturesEvent: (event) => emit(GalleryFilePickerState(_currentStateModel)),
-    //     initAllFilesEvent: initAllFilesEvent,
-    //     changeStateToAllFilesState: changeStateToAllFilesState,
-    //     initAllMusicsEvent: initAllMusicsEvent,
-    //     openHideBottomTelegramButtonEvent: openHideBottomTelegramButtonEvent,
-    //     closePopupEvent: closePopupEvent,
-    //     fileStreamHandlerEvent: fileStreamHandlerEvent,
-    //     recentFileStreamHandlerEvent: recentFileStreamHandlerEvent,
-    //     imagesAndVideoPaginationEvent: imagesAndVideoPaginationEvent,
-    //     selectGalleryFileEvent: selectGalleryFileEvent,
-    //     clearSelectedGalleryFileEvent: clearSelectedGalleryFileEvent,
-    //     recentFilesPaginationEvent: recentFilesPaginationEvent,
-    //     browseInternalStorageAndSelectFilesEvent: browseInternalStorageAndSelectFilesEvent,
-    //     selectScreenForFilesPickerScreenEvent: selectScreenForFilesPickerScreenEvent,
-    //     setSpecificFolderPathInOrderToGetDataFromThereEvent:
-    //         setSpecificFolderPathInOrderToGetDataFromThereEvent,
-    //     getSpecificFolderDataEvent: getSpecificFolderDataEvent,
-    //     specificFolderDataStreamHandlerEvent: specificFolderDataStreamHandlerEvent,
-    //     paginateSpecificFolderDataEvent: paginateSpecificFolderDataEvent,
-    //   ),
-    // );
+    on<TelegramFilePickerEvents>(
+      (event, emit) => event.map(
+        justEmitStateEvent: justEmitStateEvent,
+        initAllPicturesEvent: (event) => _initAllPictureEvents(event, emit),
+        changeStateToAllPicturesEvent: (event) => emit(
+          TelegramFilePickerStates.galleryFilePickerState(
+            _currentStateModel,
+          ),
+        ),
+        initAllFilesEvent: (event) => _initAllFilesEvent(event, emit),
+        changeStateToAllFilesState: (event) => emit(
+          TelegramFilePickerStates.filesPickerState(
+            _currentStateModel,
+          ),
+        ),
+        initAllMusicsEvent: (event) => _initAllMusicsEvent(event, emit),
+        openHideBottomTelegramButtonEvent: openHideBottomTelegramButtonEvent,
+        closePopupEvent: closePopupEvent,
+        fileStreamHandlerEvent: fileStreamHandlerEvent,
+        recentFileStreamHandlerEvent: recentFileStreamHandlerEvent,
+        imagesAndVideoPaginationEvent: imagesAndVideoPaginationEvent,
+        selectGalleryFileEvent: selectGalleryFileEvent,
+        clearSelectedGalleryFileEvent: clearSelectedGalleryFileEvent,
+        recentFilesPaginationEvent: recentFilesPaginationEvent,
+        browseInternalStorageAndSelectFilesEvent: browseInternalStorageAndSelectFilesEvent,
+        selectScreenForFilesPickerScreenEvent: selectScreenForFilesPickerScreenEvent,
+        setSpecificFolderPathInOrderToGetDataFromThereEvent:
+            setSpecificFolderPathInOrderToGetDataFromThereEvent,
+        getSpecificFolderDataEvent: getSpecificFolderDataEvent,
+        specificFolderDataStreamHandlerEvent: specificFolderDataStreamHandlerEvent,
+        paginateSpecificFolderDataEvent: paginateSpecificFolderDataEvent,
+      ),
+    );
   }
 
   void _initAllPictureEvents(
@@ -652,6 +648,28 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     }
   }
 
+  void _initAllFilesEvent(
+    _InitAllFilesEvent event,
+    Emitter<TelegramFilePickerStates> emit,
+  ) async {
+    _currentStateModel.clearRecentFiles();
+    _currentStateModel.clearRecentPagFiles();
+    _recentFileData = _telegramFilePickerRepo.getRecentFiles().listen((e) {
+      add(TelegramFilePickerEvents.recentFileStreamHandlerEvent(e));
+    });
+
+    if (event.initFilePickerState) {
+      emit(TelegramFilePickerStates.filesPickerState(_currentStateModel));
+    } else {
+      _emitter(emit);
+    }
+  }
+
+  void _initAllMusicsEvent(
+    _InitAllMusicsEvent event,
+    Emitter<TelegramFilePickerStates> emit,
+  ) async {}
+
   void resetDragScrollSheet() {
     Future.delayed(const Duration(milliseconds: 300), () {
       _currentStateModel.draggableScrollableController?.animateTo(
@@ -660,6 +678,23 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
         curve: Curves.fastOutSlowIn,
       );
     });
+  }
+
+  void _emitter(Emitter<TelegramFilePickerStates> emit) async {
+    switch (state) {
+      case InitialPickerState():
+        emit(TelegramFilePickerStates.initial(_currentStateModel));
+        break;
+      case GalleryFilePickerState():
+        emit(TelegramFilePickerStates.galleryFilePickerState(_currentStateModel));
+        break;
+      case FilesPickerState():
+        emit(TelegramFilePickerStates.filesPickerState(_currentStateModel));
+        break;
+      case MusicFilesPickerState():
+        emit(TelegramFilePickerStates.musicFilesPickerState(_currentStateModel));
+        break;
+    }
   }
 
   @override
