@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
@@ -7,11 +8,8 @@ import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_fi
 import 'package:yahay/src/features/telegram_file_picker_feature/view/reusable_widgets/telegram_storage_file_widget.dart';
 
 class TelegramResentFilesFromStorageWidget extends StatefulWidget {
-  final TelegramFilePickerBloc telegramFilePickerBloc;
-
   const TelegramResentFilesFromStorageWidget({
     super.key,
-    required this.telegramFilePickerBloc,
   });
 
   @override
@@ -28,7 +26,7 @@ class _TelegramResentFilesFromStorageWidgetState
   void initState() {
     super.initState();
     _telegramFilePickerStateModel =
-        widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
+        context.read<TelegramFilePickerBloc>().state.telegramFilePickerStateModel;
     _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
   }
 
@@ -58,7 +56,6 @@ class _TelegramResentFilesFromStorageWidgetState
           // here should be the list of only files not images or videos
           TelegramStorageFileWidget(
             list: _telegramFilePickerStateModel.recentFilesPagination,
-            telegramFilePickerBloc: widget.telegramFilePickerBloc,
           )
         ],
       ),

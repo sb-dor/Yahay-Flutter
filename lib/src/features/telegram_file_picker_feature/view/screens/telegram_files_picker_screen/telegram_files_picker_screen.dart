@@ -11,12 +11,10 @@ import 'widgets/telegram_files_from_storages_widget.dart';
 import 'widgets/telegram_resent_files_from_storage_widget.dart';
 
 class TelegramFilesPickerScreen extends StatefulWidget {
-  final TelegramFilePickerBloc telegramFilePickerBloc;
   final ScrollController parentScrollController;
 
   const TelegramFilesPickerScreen({
     super.key,
-    required this.telegramFilePickerBloc,
     required this.parentScrollController,
   });
 
@@ -31,7 +29,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
   @override
   void initState() {
     super.initState();
-    _telegramFilePickerBloc = widget.telegramFilePickerBloc;
+    _telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
     _telegramFilePickerStateModel = _telegramFilePickerBloc.state.telegramFilePickerStateModel;
     // final currentStateModel = _telegramFilePickerBloc.state.telegramFilePickerStateModel;
     widget.parentScrollController.addListener(() {
@@ -107,14 +105,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                     child: ListView(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        TelegramFilesFromStoragesWidget(
-                          telegramFilePickerBloc: widget.telegramFilePickerBloc,
-                        ),
-                        const SizedBox(height: 15),
-                        TelegramResentFilesFromStorageWidget(
-                          telegramFilePickerBloc: widget.telegramFilePickerBloc,
-                        ),
+                      children: const [
+                        TelegramFilesFromStoragesWidget(),
+                        SizedBox(height: 15),
+                        TelegramResentFilesFromStorageWidget(),
                       ],
                     ),
                   ),
@@ -152,7 +146,6 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           : 0,
                       duration: const Duration(seconds: 1),
                       child: TelegramBrowseAppFolderScreen(
-                        telegramFilePickerBloc: _telegramFilePickerBloc,
                       ),
                     ),
                   ),
@@ -205,7 +198,6 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                                 const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
                           });
                         },
-                        telegramFilePickerBloc: _telegramFilePickerBloc,
                       ),
                     ),
                   ),
@@ -257,11 +249,10 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           );
 
                           Future.delayed(const Duration(milliseconds: 300), () {
-                            _telegramFilePickerBloc
-                                .add(const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
+                            _telegramFilePickerBloc.add(
+                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
                           });
                         },
-                        telegramFilePickerBloc: _telegramFilePickerBloc,
                       ),
                     ),
                   ),

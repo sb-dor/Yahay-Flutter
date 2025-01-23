@@ -7,12 +7,10 @@ import 'widgets/telegram_gallery_file_picker_image_widget.dart';
 import 'widgets/telegram_gallery_file_picker_video_player_widget.dart';
 
 class TelegramGalleryFilePickerScreen extends StatefulWidget {
-  final TelegramFilePickerBloc telegramFilePickerBloc;
   final ScrollController parentScrollController;
 
   const TelegramGalleryFilePickerScreen({
     super.key,
-    required this.telegramFilePickerBloc,
     required this.parentScrollController,
   });
 
@@ -26,7 +24,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
   @override
   void initState() {
     super.initState();
-    _telegramFilePickerBloc = widget.telegramFilePickerBloc;
+    _telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
     final currentStateModel = _telegramFilePickerBloc.state.telegramFilePickerStateModel;
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==

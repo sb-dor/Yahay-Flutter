@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/data/models/data_models/telegram_file_picker_bottom_button.dart';
 
 class TelegramBottomPickerButton extends StatefulWidget {
-  final TelegramFilePickerBloc _telegramFilePickerBloc;
-
   const TelegramBottomPickerButton({
     super.key,
-    required TelegramFilePickerBloc telegramFilePickerBloc,
-  }) : _telegramFilePickerBloc = telegramFilePickerBloc;
+  });
 
   @override
   State<TelegramBottomPickerButton> createState() => _TelegramBottomPickerButtonState();
@@ -20,7 +18,9 @@ class _TelegramBottomPickerButtonState extends State<TelegramBottomPickerButton>
   @override
   void initState() {
     super.initState();
-    _buttons = TelegramFilePickerBottomButton.listOfBottomButtons(widget._telegramFilePickerBloc);
+    _buttons = TelegramFilePickerBottomButton.listOfBottomButtons(
+      context.read<TelegramFilePickerBloc>(),
+    );
   }
 
   @override

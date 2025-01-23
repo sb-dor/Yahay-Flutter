@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
@@ -6,11 +7,8 @@ import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_fi
 import 'package:yahay/src/features/telegram_file_picker_feature/data/models/data_models/telegram_storage_file_picker_data_model.dart';
 
 class TelegramFilesFromStoragesWidget extends StatefulWidget {
-  final TelegramFilePickerBloc telegramFilePickerBloc;
-
   const TelegramFilesFromStoragesWidget({
     super.key,
-    required this.telegramFilePickerBloc,
   });
 
   @override
@@ -29,7 +27,7 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
       listen: false,
     ).appThemeBloc;
     telegramStorageFileDataModels = TelegramStorageFilePickerDataModel.data(
-      widget.telegramFilePickerBloc,
+      context.read<TelegramFilePickerBloc>(),
     );
   }
 

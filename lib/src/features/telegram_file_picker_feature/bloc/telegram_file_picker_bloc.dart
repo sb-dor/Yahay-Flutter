@@ -201,8 +201,9 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
       add(const TelegramFilePickerEvents.initAllFilesEvent(initFilePickerState: false));
 
       emit(TelegramFilePickerStates.galleryFilePickerState(_currentStateModel));
-    } catch (e) {
-      debugPrint("ini all pictures event is: $e");
+    } catch (error, stackTrace) {
+      debugPrint("ini all pictures event is: $error");
+      Error.throwWithStackTrace(error, stackTrace);
     }
   }
 

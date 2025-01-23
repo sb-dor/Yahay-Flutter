@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/view/sheet_opener/telegram_sheet_opener.dart';
+import 'package:yahay/src/features/initialization/logic/composition_root/factories/telegram_file_picker_bloc_factory.dart';
+import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
+import 'package:yahay/src/features/telegram_file_picker_feature/view/telegram_draggable_scrollable_bottom_sheet.dart';
 
 class BottomChatWidget extends StatefulWidget {
   final TextEditingController messageController;
@@ -105,7 +107,25 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                     right: 0,
                     child: IconButton(
                       onPressed: () {
-                        TelegramSheetOpener.telegramSheetOpener(context);
+                        final telegramFilePickerBloc = TelegramFilePickerBlocFactory(
+                          cameraHelperService: DependenciesScope.of(
+                            context,
+                            listen: false,
+                          ).cameraHelperService,
+                        ).create();
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (context) {
+                            return TelegramDraggableScrollableBottomSheet(
+                              telegramFilePickerBloc: telegramFilePickerBloc,
+                            );
+                          },
+                        ).whenComplete(
+                          () {
+                            telegramFilePickerBloc.close();
+                          },
+                        ).ignore();
                       },
                       icon: const FaIcon(FontAwesomeIcons.paste),
                     ),

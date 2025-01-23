@@ -1,47 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yahay/src/features/initialization/logic/composition_root/factories/telegram_file_picker_bloc_factory.dart';
-import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_file_picker_bloc.dart';
-import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/telegram_file_image_entity.dart';
 import 'bottom_picker_button/telegram_bottom_picker_button.dart';
 import 'bottom_picker_button/telegram_bottom_sender_button.dart';
 import 'screens/telegram_files_picker_screen/telegram_files_picker_screen.dart';
 import 'screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker_screen.dart';
 
-class TelegramDraggableScrollableBottomSheet extends StatefulWidget {
-  final ValueChanged<List<TelegramFileImageEntity?>> selectedItems;
+class TelegramDraggableScrollableBottomSheet extends StatelessWidget {
+  final TelegramFilePickerBloc telegramFilePickerBloc;
 
   const TelegramDraggableScrollableBottomSheet({
     super.key,
-    required this.selectedItems,
+    required this.telegramFilePickerBloc,
   });
 
   @override
-  State<TelegramDraggableScrollableBottomSheet> createState() =>
-      _TelegramDraggableScrollableBottomSheetState();
+  Widget build(BuildContext context) {
+    return BlocProvider.value(
+      value: telegramFilePickerBloc,
+      child: const _TelegramDraggableScrollableBottomSheetUI(),
+    );
+  }
 }
 
-class _TelegramDraggableScrollableBottomSheetState
-    extends State<TelegramDraggableScrollableBottomSheet> {
-  late final TelegramFilePickerBloc _telegramFilePickerBloc;
+class _TelegramDraggableScrollableBottomSheetUI extends StatefulWidget {
+  const _TelegramDraggableScrollableBottomSheetUI();
+
+  @override
+  State<_TelegramDraggableScrollableBottomSheetUI> createState() =>
+      _TelegramDraggableScrollableBottomSheetUIState();
+}
+
+class _TelegramDraggableScrollableBottomSheetUIState
+    extends State<_TelegramDraggableScrollableBottomSheetUI> {
   final DraggableScrollableController _draggableScrollableController =
       DraggableScrollableController();
 
   @override
   void initState() {
     super.initState();
-    _telegramFilePickerBloc = TelegramFilePickerBlocFactory(
-      cameraHelperService: DependenciesScope.of(context, listen: false).cameraHelperService,
-    ).create();
-    _telegramFilePickerBloc.add(TelegramFilePickerEvents.initAllPicturesEvent(
-      true,
-      controller: _draggableScrollableController,
-    ));
+    final telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
+    telegramFilePickerBloc.add(
+      TelegramFilePickerEvents.initAllPicturesEvent(
+        true,
+        controller: _draggableScrollableController,
+      ),
+    );
     Future.delayed(
       const Duration(milliseconds: 350),
       () {
-        _telegramFilePickerBloc.add(
+        telegramFilePickerBloc.add(
           const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
             true,
           ),
@@ -53,9 +61,6 @@ class _TelegramDraggableScrollableBottomSheetState
 
   @override
   void dispose() {
-    widget.selectedItems(
-      _telegramFilePickerBloc.state.telegramFilePickerStateModel.clonedPickedFiles,
-    );
     _draggableScrollableController.dispose();
     super.dispose();
   }
@@ -82,12 +87,10 @@ class _TelegramDraggableScrollableBottomSheetState
                     GalleryFilePickerState() => const SizedBox(),
                     // TODO: Handle this case.
                     FilesPickerState() => TelegramFilesPickerScreen(
-                        telegramFilePickerBloc: _telegramFilePickerBloc,
                         parentScrollController: scrollController,
                       ),
                     // TODO: Handle this case.
                     MusicFilesPickerState() => TelegramGalleryFilePickerScreen(
-                        telegramFilePickerBloc: _telegramFilePickerBloc,
                         parentScrollController: scrollController,
                       ),
                   },
@@ -108,9 +111,7 @@ class _TelegramDraggableScrollableBottomSheetState
                         : -200,
                     right: 0,
                     left: 0,
-                    child: TelegramBottomPickerButton(
-                      telegramFilePickerBloc: _telegramFilePickerBloc,
-                    ),
+                    child: const TelegramBottomPickerButton(),
                   ),
                 ],
               ),

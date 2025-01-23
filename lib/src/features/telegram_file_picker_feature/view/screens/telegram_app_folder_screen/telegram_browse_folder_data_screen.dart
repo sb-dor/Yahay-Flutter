@@ -6,12 +6,10 @@ import 'telegram_browse_folder_widget.dart';
 
 class TelegramBrowseFolderDataScreen extends StatefulWidget {
   final VoidCallback onBackFolder;
-  final TelegramFilePickerBloc telegramFilePickerBloc;
 
   const TelegramBrowseFolderDataScreen({
     super.key,
     required this.onBackFolder,
-    required this.telegramFilePickerBloc,
   });
 
   @override
@@ -36,7 +34,6 @@ class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDat
           builder: (context, state) {
             return TelegramStorageFileWidget(
               list: state.telegramFilePickerStateModel.specificFolderFilesPagination,
-              telegramFilePickerBloc: widget.telegramFilePickerBloc,
             );
           },
         ),

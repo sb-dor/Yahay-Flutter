@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/bloc/state_model/telegram_file_picker_state_model.dart';
@@ -9,12 +10,10 @@ import 'package:path/path.dart' as path;
 
 class TelegramStorageFileWidget extends StatefulWidget {
   final List<TelegramFileImageEntity> list;
-  final TelegramFilePickerBloc telegramFilePickerBloc;
 
   const TelegramStorageFileWidget({
     super.key,
     required this.list,
-    required this.telegramFilePickerBloc,
   });
 
   @override
@@ -28,7 +27,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
   void initState() {
     super.initState();
     _telegramFilePickerStateModel =
-        widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
+        context.read<TelegramFilePickerBloc>().state.telegramFilePickerStateModel;
   }
 
   @override
@@ -42,7 +41,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
         return InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () {
-            widget.telegramFilePickerBloc.add(
+            context.read<TelegramFilePickerBloc>().add(
               TelegramFilePickerEvents.selectGalleryFileEvent(item),
             );
           },
