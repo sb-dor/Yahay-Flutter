@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:yahay/src/features/video_chat_feature/widgets/bloc/video_chat_feature_bloc.dart';
+import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
 
 class SingleCameraViewScreen extends StatelessWidget {
   final VideoChatFeatureBloc videoChatBloc;
