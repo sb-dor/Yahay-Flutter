@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:yahay/src/features/video_chat_feature/view/bloc/state_model/video_chat_state_model.dart';
+import 'package:yahay/src/features/video_chat_feature/widgets/bloc/state_model/video_chat_state_model.dart';
 
 @immutable
 class VideoChatFeatureStates {

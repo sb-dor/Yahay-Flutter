@@ -10,7 +10,7 @@ import 'package:yahay/src/features/video_chat_feature/domain/usecases/start_vide
 import 'package:yahay/src/features/video_chat_feature/domain/usecases/video_chat_entrance.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/usecases/leave_video_chat.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/usecases/stream_the_video.dart';
-import 'package:yahay/src/features/video_chat_feature/view/bloc/state_model/video_chat_state_model.dart';
+import 'package:yahay/src/features/video_chat_feature/widgets/bloc/state_model/video_chat_state_model.dart';
 import 'video_chat_feature_events.dart';
 import 'video_chat_feature_states.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:yahay/src/features/video_chat_feature/view/bloc/state_model/video_chat_state_model.dart';
-import 'package:yahay/src/features/video_chat_feature/view/bloc/video_chat_feature_bloc.dart';
+import 'package:yahay/src/features/video_chat_feature/widgets/bloc/state_model/video_chat_state_model.dart';
+import 'package:yahay/src/features/video_chat_feature/widgets/bloc/video_chat_feature_bloc.dart';
 
 class DoubleCameraViewScreen extends StatefulWidget {
   final VideoChatFeatureBloc videoChatBloc;
