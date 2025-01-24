@@ -17,14 +17,6 @@ class VideoChatStateModel {
   UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
       UnmodifiableListView(_videoChatEntities);
 
-  StreamSubscription<void>? _channelSubscription;
-
-  StreamSubscription<void>? get channelSubscription => _channelSubscription;
-
-  PusherChannelsClient? _pusherChannelsClient;
-
-  PusherChannelsClient? get pusherChannelClient => _pusherChannelsClient;
-
   Timer? _timerForGettingFrame;
 
   Timer? get timerForGettingFrame => _timerForGettingFrame;
@@ -115,13 +107,13 @@ class VideoChatStateModel {
 
   void initCurrentUser(User? user) => _currentUser = user;
 
-  void initChannelSubscription(StreamSubscription<void>? channelSubs) {
-    _channelSubscription = channelSubs;
-  }
-
-  void initPusherChannelClient(PusherChannelsClient pusherClient) {
-    _pusherChannelsClient = pusherClient;
-  }
+  // void initChannelSubscription(StreamSubscription<void>? channelSubs) {
+  //   _channelSubscription = channelSubs;
+  // }
+  //
+  // void initPusherChannelClient(PusherChannelsClient pusherClient) {
+  //   _pusherChannelsClient = pusherClient;
+  // }
 
   void initChannelChat(Chat? chat) {
     _chat = ChatModel.fromEntity(chat)?.copyWith();
@@ -134,16 +126,16 @@ class VideoChatStateModel {
   void switchCamera({bool? value}) => _cameraSwitched = value ?? !_cameraSwitched;
 
   Future<void> dispose() async {
-    await _channelSubscription?.cancel();
-    await _pusherChannelsClient?.disconnect();
+    // await _channelSubscription?.cancel();
+    // await _pusherChannelsClient?.disconnect();
     if (_currentVideoChatEntity?.videoRenderer != null) {
       await _webrtcLaravelHelper?.hangUp(_currentVideoChatEntity!.videoRenderer!);
     }
     _webrtcLaravelHelper = null;
     _currentVideoChatEntity = null;
-    _pusherChannelsClient?.dispose();
-    _channelSubscription = null;
-    _pusherChannelsClient = null;
+    // _pusherChannelsClient?.dispose();
+    // _channelSubscription = null;
+    // _pusherChannelsClient = null;
     for (var each in _videoChatEntities) {
       await each.videoRenderer?.dispose();
       each.videoRenderer = null;
