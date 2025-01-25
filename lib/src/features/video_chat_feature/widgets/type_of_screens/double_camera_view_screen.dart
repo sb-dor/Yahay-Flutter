@@ -4,7 +4,7 @@ import 'package:yahay/src/features/video_chat_feature/bloc/state_model/video_cha
 import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
 
 class DoubleCameraViewScreen extends StatefulWidget {
-  final VideoChatFeatureBloc videoChatBloc;
+  final VideoChatBloc videoChatBloc;
 
   const DoubleCameraViewScreen({
     super.key,
@@ -16,14 +16,14 @@ class DoubleCameraViewScreen extends StatefulWidget {
 }
 
 class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
-  late VideoChatFeatureBloc _videoChatFeatureBloc;
+  late VideoChatBloc _videoChatFeatureBloc;
   late VideoChatStateModel _videoChatStateModel;
 
   @override
   void initState() {
     super.initState();
     _videoChatFeatureBloc = widget.videoChatBloc;
-    _videoChatStateModel = widget.videoChatBloc.states.value.videoChatStateModel;
+    _videoChatStateModel = widget.videoChatBloc.state.videoChatStateModel;
   }
 
   @override
@@ -37,7 +37,7 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
               child: RTCVideoView(
                 objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
                 _videoChatFeatureBloc
-                    .states.value.videoChatStateModel.videoChatEntities.first.videoRenderer!,
+                    .state.videoChatStateModel.videoChatEntities.first.videoRenderer!,
               ),
             ),
             const Divider(
@@ -48,7 +48,7 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
               child: RTCVideoView(
                 objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
                 _videoChatFeatureBloc
-                    .states.value.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
+                    .state.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
                 mirror: !_videoChatStateModel.cameraSwitched,
               ),
             ),

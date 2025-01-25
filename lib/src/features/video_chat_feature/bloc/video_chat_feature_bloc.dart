@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/src/core/global_data/entities/user.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
+import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/usecases/start_video_chat.dart';
@@ -112,132 +113,23 @@ part 'video_chat_feature_bloc.freezed.dart';
 //
 //   static Stream<VideoChatFeatureStates> _videoChatInitFeatureEvent(
 //       VideoChatInitFeatureEvent event,) async* {
-//     final chat = event.chat;
-//
-//     if (chat == null) return;
-//
-//     _currentStateModel.initChannelChat(chat);
-//
-//     _currentStateModel.initCurrentUser(_currentUser);
-//
-//     await _currentStateModel.initLocalRenderer(_pusherClientService);
-//
-//     // in order to listen that someone from other side connected to your data
-//     _currentStateModel.webrtcLaravelHelper?.onAddRemoteStream = ((stream) async {
-//       _events.add(OnAddRemoteRendererStreamEvent(stream));
-//     });
-//
-//     yield InitialVideoChatState(_currentStateModel);
+
 //   }
 //
 //   //
 //   static Stream<VideoChatFeatureStates> _startVideoChatEvent(StartVideoChatEvent event,) async* {
-//     if (_currentStateModel.currentVideoChatEntity == null) return;
-//
-//     // start to loading chat
-//
-//     final initResponse = await _initVideoPusher();
-//
-//     if (!initResponse) return;
-//
-//     final roomId = await _currentStateModel.webrtcLaravelHelper?.createRoom(
-//       _currentStateModel.chat,
-//     );
-//
-//     debugPrint("creating room id: $roomId");
-//     // -------------------------------------------------
-//
-//     yield InitialVideoChatState(_currentStateModel);
-//
-//     // was just for check
-//     // you have to call this function after
-//     // acception video call from the other side
-//     // _currentStateModel.mainVideoStreamCameraController?.startImageStream(
-//     //   (cameraImage) async {
-//     //     // after specific time sending data
-//     //     if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
-//     //         _currentStateModel.timerForGettingFrame == null) {
-//     //       // after every 100 millisecond we will send data to user through pusher
-//     //
-//     //       _currentStateModel.initTimer(
-//     //         Timer(
-//     //           const Duration(milliseconds: 100),
-//     //           () async {
-//     //             // convert each getting image stream to Uint8List and send to server
-//     //             final frontCamera =
-//     //                 _currentStateModel.mainVideoStreamCameraController?.description ==
-//     //                     _currentStateModel.cameraService.cameras.first;
-//     //             final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(
-//     //               cameraImage,
-//     //               frontCamera: frontCamera,
-//     //             );
-//     //             _sendDataToTheServer(utf8ListInt);
-//     //           },
-//     //         ),
-//     //       );
-//     //     }
-//     //     // cameraImage.
-//     //   },
-//     // );
-//
-//     // audio stream sender
-//     // make this singleton
-//     // await _currentStateModel.flutterSound?.thePlayer.openPlayer();
-//
-//     // await _currentStateModel.flutterSound?.thePlayer.startPlayerFromStream(
-//     //   codec: Codec.pcm16,
-//     //   numChannels: 1,
-//     //   sampleRate: 44100,
-//     // );
-//     // Stream<List<int>> stream = MicStream.microphone(sampleRate: 44100);
-//     //
-//     // StreamSubscription<List<int>> listener = stream.listen((data){
-//     //   _micDataHandler(Uint8List.fromList(data));
-//     // });
-//     //
-//     // _currentStateModel.initAudioStreamSubscription(listener);
+
 //   }
 //
 //   // not starting video, this event is for someone who wants to participate to video chat
 //   static Stream<VideoChatFeatureStates> _videoChatEntranceEvent(
 //       VideoChatEntranceEvent event,) async* {
-//     //
-//     final room = _currentStateModel.chat?.videoChatRoom;
-//
-//     if (room == null) return;
-//
-//     final resultOfJoining = await _videoChatEntrance.videoChatEntrance(
-//       _currentStateModel.currentVideoChatEntity!,
-//     );
-//
-//     _currentStateModel.startChat();
-//
-//     await _currentStateModel.webrtcLaravelHelper?.joinRoom(
-//       room.id.toString(),
-//     );
-//
-//     Future.delayed(const Duration(milliseconds: 100), () {
-//       _events.add(const TurnMicOffAndOnEvent(change: false));
-//     });
-//
-//     debugPrint("chat started or not: ${_currentStateModel.chatStarted}");
-//
-//     yield InitialVideoChatState(_currentStateModel);
+
 //   }
 //
 //   //
 //   static Stream<VideoChatFeatureStates> _finishVideoChatEvent(FinishVideoChatEvent event,) async* {
-//     //
-//     if (_currentStateModel.currentVideoChatEntity == null) return;
-//     final result = await _leaveVideoChat.leaveVideoChat(
-//       _currentStateModel.currentVideoChatEntity!,
-//     );
-//     debugPrint("leave video chat data: $result");
-//     await _currentStateModel.webrtcLaravelHelper?.hangUp(
-//       _currentStateModel.currentVideoChatEntity?.videoRenderer,
-//     );
-//     await _currentStateModel.dispose();
-//     _events.close();
+
 //   }
 //
 //   // function that sends image Uint8List to the server
@@ -294,106 +186,28 @@ part 'video_chat_feature_bloc.freezed.dart';
 //   //   debugPrint("audio data: time: ${DateTime.now()} | $data");
 //   // }
 //
-//   static Future<bool> _initVideoPusher() async {
-//     final resultOfStart = await _startVideoChat.startVideoChat(
-//       _currentStateModel.currentVideoChatEntity!,
-//     );
-//
-//     if (!resultOfStart) return false;
-//
-//     _currentStateModel.startChat();
-//
-//     return true;
-//     // create only channel subscription
-//     // after successfully response we will send the data to the server
-//     // _currentStateModel.initPusherChannelClient(
-//     //   PusherChannelsClient.websocket(
-//     //     options: snoopy<PusherClientService>().options,
-//     //     connectionErrorHandler: (f, s, th) {},
-//     //   ),
-//     // );
-//     //
-//     // final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
-//     //
-//     // debugPrint("channel name for video chat: $channelName");
-//     //
-//     // final channel = _currentStateModel.pusherChannelClient?.publicChannel(
-//     //   channelName,
-//     // );
-//     //
-//     // final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
-//     //   (e) {
-//     //     channel?.subscribeIfNotUnsubscribed();
-//     //   },
-//     // );
-//     //
-//     // _currentStateModel.initChannelSubscription(channelSubs);
-//     //
-//     // await _currentStateModel.pusherChannelClient?.connect();
-//     //
-//     // channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
-//     //   // TODO: handle event data by creating bloc event
-//     //   _events.add(VideoStreamHandlerEvent(pusherEvent));
-//     // });
-//   }
+
 //
 //   static Stream<VideoChatFeatureStates> _onAddRemoteRendererStreamEvent(
 //       OnAddRemoteRendererStreamEvent event,) async* {
-//     try {
-//       debugPrint("coming somebody");
-//       final videoChatEntity = VideoChatEntity(
-//         videoRenderer: RTCVideoRenderer(),
-//         chat: _currentStateModel.chat,
-//         user: null,
-//       );
-//       await videoChatEntity.videoRenderer?.initialize();
-//       // videoChatEntity.videoRenderer?.srcObject =
-//       //     await createLocalMediaStream('key${Random().nextInt(100)}');
-//       videoChatEntity.videoRenderer?.srcObject = event.mediaStream;
-//       _currentStateModel.addVideoChat(videoChatEntity);
-//       yield InitialVideoChatState(_currentStateModel);
-//     } catch (e) {
-//       debugPrint("getting error in stream handler: $e");
-//     }
+
 //
 //     // for switching camera
 //   }
 //
 //   static Stream<VideoChatFeatureStates> _switchCameraStreamEvent(
 //       SwitchCameraStreamEvent event,) async* {
-//     _currentStateModel.switchCamera();
-//
-//     Helper.switchCamera(
-//       _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0],
-//       null,
-//       _currentStateModel.webrtcLaravelHelper?.localStream,
-//     );
-//
-//     yield InitialVideoChatState(_currentStateModel);
+
 //   }
 //
 //   //
 //   static Stream<VideoChatFeatureStates> _turnCameraOffAndEvent(
 //       TurnCameraOffAndEvent event,) async* {
-//     _currentStateModel.changeHasVideo();
-//
-//     final videoTrack =
-//     _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0];
-//
-//     videoTrack.enabled = _currentStateModel.hasVideo;
-//
-//     yield InitialVideoChatState(_currentStateModel);
+
 //   }
 //
 //   static Stream<VideoChatFeatureStates> _turnMicOffAndOnEvent(TurnMicOffAndOnEvent event,) async* {
-//     if (event.change) _currentStateModel.changeHasAudio();
-//
-//     Helper.setMicrophoneMute(
-//       !_currentStateModel.hasAudio,
-//       _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getAudioTracks()[0],
-//     );
-//
-//     yield InitialVideoChatState(_currentStateModel);
+
 //   }
 //
 // // static Stream<VideoChatFeatureStates> _emitter() async* {
@@ -417,7 +231,9 @@ class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
 
   const factory VideoChatFeatureEvents.videoChatEntranceEvent() = _VideoChatEntranceEvent;
 
-  const factory VideoChatFeatureEvents.finishVideoChatEvent() = _FinishVideoChatEvent;
+  const factory VideoChatFeatureEvents.finishVideoChatEvent({
+    required void Function() popScreen,
+  }) = _FinishVideoChatEvent;
 
   const factory VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(
       final MediaStream mediaStream) = _OnAddRemoteRendererStreamEvent;
@@ -455,19 +271,23 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   StreamSubscription<void>? _channelSubscription;
   PusherChannelsClient? _pusherChannelsClient;
 
-  final VideoChatFeatureRepo _videoChatFeatureRepo;
+  final VideoChatFeatureRepo _iVideoChatFeatureRepo;
   final User? _currentUser;
   final PusherClientService _pusherClientService;
+  late final VideoChatStateModel _currentStateModel;
 
   VideoChatBloc({
-    required VideoChatFeatureRepo repo,
+    required VideoChatFeatureRepo iVideoChatFeatureRepo,
     required User? currentUser,
     required PusherClientService pusherClientService,
     required VideoChatFeatureStates initialState,
-  })  : _videoChatFeatureRepo = repo,
+  })  : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
         _currentUser = currentUser,
         _pusherClientService = pusherClientService,
         super(initialState) {
+    _currentStateModel = initialState.videoChatStateModel;
+    //
+
     on<VideoChatFeatureEvents>(
       (event, emit) => event.map(
         videoChatInitFeatureEvent: (event) => _videoChatInitFeatureEvent(event, emit),
@@ -485,48 +305,257 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   void _videoChatInitFeatureEvent(
     _VideoChatInitFeatureEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    final chat = event.chat;
+
+    if (chat == null) return;
+
+    _currentStateModel.initChannelChat(chat);
+
+    _currentStateModel.initCurrentUser(_currentUser);
+
+    await _currentStateModel.initLocalRenderer(_pusherClientService);
+
+    // in order to listen that someone from other side connected to your data
+    _currentStateModel.webrtcLaravelHelper?.onAddRemoteStream = ((stream) async {
+      add(VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(stream));
+    });
+
+    emit(VideoChatFeatureStates.initialVideoChatState(_currentStateModel));
+  }
 
   void _startVideoChatEvent(
     _StartVideoChatEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    if (_currentStateModel.currentVideoChatEntity == null) return;
+
+    final initResponse = await _initVideoPusher();
+
+    if (!initResponse) return;
+
+    final roomId = await _currentStateModel.webrtcLaravelHelper?.createRoom(
+      _currentStateModel.chat,
+    );
+
+    debugPrint("creating room id: $roomId");
+    // -------------------------------------------------
+
+    emit(VideoChatFeatureStates.initialVideoChatState(_currentStateModel));
+
+    // was just for check
+    // you have to call this function after
+    // acception video call from the other side
+    // _currentStateModel.mainVideoStreamCameraController?.startImageStream(
+    //   (cameraImage) async {
+    //     // after specific time sending data
+    //     if (!(_currentStateModel.timerForGettingFrame?.isActive ?? false) ||
+    //         _currentStateModel.timerForGettingFrame == null) {
+    //       // after every 100 millisecond we will send data to user through pusher
+    //
+    //       _currentStateModel.initTimer(
+    //         Timer(
+    //           const Duration(milliseconds: 100),
+    //           () async {
+    //             // convert each getting image stream to Uint8List and send to server
+    //             final frontCamera =
+    //                 _currentStateModel.mainVideoStreamCameraController?.description ==
+    //                     _currentStateModel.cameraService.cameras.first;
+    //             final utf8ListInt = _currentStateModel.cameraService.convertYUV420toImage(
+    //               cameraImage,
+    //               frontCamera: frontCamera,
+    //             );
+    //             _sendDataToTheServer(utf8ListInt);
+    //           },
+    //         ),
+    //       );
+    //     }
+    //     // cameraImage.
+    //   },
+    // );
+
+    // audio stream sender
+    // make this singleton
+    // await _currentStateModel.flutterSound?.thePlayer.openPlayer();
+
+    // await _currentStateModel.flutterSound?.thePlayer.startPlayerFromStream(
+    //   codec: Codec.pcm16,
+    //   numChannels: 1,
+    //   sampleRate: 44100,
+    // );
+    // Stream<List<int>> stream = MicStream.microphone(sampleRate: 44100);
+    //
+    // StreamSubscription<List<int>> listener = stream.listen((data){
+    //   _micDataHandler(Uint8List.fromList(data));
+    // });
+    //
+    // _currentStateModel.initAudioStreamSubscription(listener);
+  }
 
   void _videoChatEntranceEvent(
     _VideoChatEntranceEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    //
+    final room = _currentStateModel.chat?.videoChatRoom;
+
+    if (room == null) return;
+
+    final resultOfJoining = await _iVideoChatFeatureRepo.videoChatEntrance(
+      _currentStateModel.currentVideoChatEntity!,
+    );
+
+    _currentStateModel.startChat();
+
+    await _currentStateModel.webrtcLaravelHelper?.joinRoom(
+      room.id.toString(),
+    );
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      add(const VideoChatFeatureEvents.turnMicOffAndOnEvent(change: false));
+    });
+
+    debugPrint("chat started or not: ${_currentStateModel.chatStarted}");
+
+    emit(VideoChatFeatureStates.initialVideoChatState(_currentStateModel));
+  }
 
   void _finishVideoChatEvent(
     _FinishVideoChatEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    //
+    if (_currentStateModel.currentVideoChatEntity == null) return;
+    final result = await _iVideoChatFeatureRepo.leaveTheChat(
+      _currentStateModel.currentVideoChatEntity!,
+    );
+    debugPrint("leave video chat data: $result");
+
+    await _currentStateModel.webrtcLaravelHelper?.hangUp(
+      _currentStateModel.currentVideoChatEntity?.videoRenderer,
+    );
+
+    await _currentStateModel.dispose();
+
+    event.popScreen();
+  }
 
   void _onAddRemoteRendererStreamEvent(
     _OnAddRemoteRendererStreamEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    try {
+      debugPrint("coming somebody");
+      final videoChatEntity = VideoChatEntity(
+        videoRenderer: RTCVideoRenderer(),
+        chat: _currentStateModel.chat,
+        user: null,
+      );
+      await videoChatEntity.videoRenderer?.initialize();
+      // videoChatEntity.videoRenderer?.srcObject =
+      //     await createLocalMediaStream('key${Random().nextInt(100)}');
+      videoChatEntity.videoRenderer?.srcObject = event.mediaStream;
+      _currentStateModel.addVideoChat(videoChatEntity);
+
+      emit(VideoChatFeatureStates.initialVideoChatState(_currentStateModel));
+    } catch (error, stackTrace) {
+      debugPrint("getting error in stream handler: $error");
+      Error.throwWithStackTrace(error, stackTrace);
+    }
+  }
 
   void _switchCameraStreamEvent(
     _SwitchCameraStreamEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    _currentStateModel.switchCamera();
+
+    Helper.switchCamera(
+      _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0],
+      null,
+      _currentStateModel.webrtcLaravelHelper?.localStream,
+    );
+
+    emit(VideoChatFeatureStates.initialVideoChatState(_currentStateModel));
+  }
 
   void _turnMicOffAndOnEvent(
     _TurnMicOffAndOnEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    if (event.change) _currentStateModel.changeHasAudio();
+
+    Helper.setMicrophoneMute(
+      !_currentStateModel.hasAudio,
+      _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getAudioTracks()[0],
+    );
+
+    emit(VideoChatFeatureStates.initialVideoChatState(_currentStateModel));
+  }
 
   void _turnCameraOffAndEvent(
     _TurnCameraOffAndEvent event,
     Emitter<VideoChatFeatureStates> emit,
-  ) async {}
+  ) async {
+    _currentStateModel.changeHasVideo();
+
+    final videoTrack =
+        _currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0];
+
+    videoTrack.enabled = _currentStateModel.hasVideo;
+
+    emit(VideoChatFeatureStates.initialVideoChatState(_currentStateModel));
+  }
+
+  Future<bool> _initVideoPusher() async {
+    final resultOfStart = await _iVideoChatFeatureRepo.startVideoChat(
+      _currentStateModel.currentVideoChatEntity!,
+    );
+
+    if (!resultOfStart) return false;
+
+    _currentStateModel.startChat();
+
+    return true;
+    // create only channel subscription
+    // after successfully response we will send the data to the server
+    // _currentStateModel.initPusherChannelClient(
+    //   PusherChannelsClient.websocket(
+    //     options: snoopy<PusherClientService>().options,
+    //     connectionErrorHandler: (f, s, th) {},
+    //   ),
+    // );
+    //
+    // final channelName = "video_${_currentStateModel.chatFunctions?.channelName()}";
+    //
+    // debugPrint("channel name for video chat: $channelName");
+    //
+    // final channel = _currentStateModel.pusherChannelClient?.publicChannel(
+    //   channelName,
+    // );
+    //
+    // final channelSubs = _currentStateModel.pusherChannelClient?.onConnectionEstablished.listen(
+    //   (e) {
+    //     channel?.subscribeIfNotUnsubscribed();
+    //   },
+    // );
+    //
+    // _currentStateModel.initChannelSubscription(channelSubs);
+    //
+    // await _currentStateModel.pusherChannelClient?.connect();
+    //
+    // channel?.bind(Constants.chatVideoStreamEventName).listen((pusherEvent) {
+    //   // TODO: handle event data by creating bloc event
+    //   _events.add(VideoStreamHandlerEvent(pusherEvent));
+    // });
+  }
 
   @override
   Future<void> close() async {
     await _pusherChannelsClient?.disconnect();
     _pusherChannelsClient?.dispose();
     _channelSubscription?.cancel();
+    _currentStateModel.dispose();
     return super.close();
   }
 }

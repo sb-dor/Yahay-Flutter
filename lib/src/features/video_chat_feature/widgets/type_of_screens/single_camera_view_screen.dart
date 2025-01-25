@@ -3,7 +3,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
 
 class SingleCameraViewScreen extends StatelessWidget {
-  final VideoChatFeatureBloc videoChatBloc;
+  final VideoChatBloc videoChatBloc;
 
   const SingleCameraViewScreen({
     super.key,
@@ -17,7 +17,7 @@ class SingleCameraViewScreen extends StatelessWidget {
         objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
         filterQuality: FilterQuality.none,
         mirror: true,
-        videoChatBloc.states.value.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
+        videoChatBloc.state.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
       ),
     );
   }

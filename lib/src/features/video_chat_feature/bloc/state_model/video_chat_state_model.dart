@@ -126,16 +126,11 @@ class VideoChatStateModel {
   void switchCamera({bool? value}) => _cameraSwitched = value ?? !_cameraSwitched;
 
   Future<void> dispose() async {
-    // await _channelSubscription?.cancel();
-    // await _pusherChannelsClient?.disconnect();
     if (_currentVideoChatEntity?.videoRenderer != null) {
       await _webrtcLaravelHelper?.hangUp(_currentVideoChatEntity!.videoRenderer!);
     }
     _webrtcLaravelHelper = null;
     _currentVideoChatEntity = null;
-    // _pusherChannelsClient?.dispose();
-    // _channelSubscription = null;
-    // _pusherChannelsClient = null;
     for (var each in _videoChatEntities) {
       await each.videoRenderer?.dispose();
       each.videoRenderer = null;
