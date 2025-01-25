@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/app_settings/dio/http_status_codes.dart';
-import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/authorization/data/sources/other_authorization/other_authorization.dart';

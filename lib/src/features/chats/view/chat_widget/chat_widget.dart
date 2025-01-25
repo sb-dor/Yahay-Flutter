@@ -3,14 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_functions.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/core/global_usages/widgets/image_loader/image_loaded.dart';
 import 'package:yahay/src/core/global_usages/widgets/splash_button_clicker.dart';
 
 class ChatWidget extends StatelessWidget {
-  final Chat? chat;
+  final ChatModel? chat;
 
   const ChatWidget({
     super.key,
@@ -72,7 +71,7 @@ class ChatWidget extends StatelessWidget {
 }
 
 class _ChatMainImage extends StatelessWidget {
-  final Chat? chat;
+  final ChatModel? chat;
 
   const _ChatMainImage({
     required this.chat,
@@ -90,7 +89,7 @@ class _ChatMainImage extends StatelessWidget {
             radius: 30,
             child: Container(
               color: Colors.green,
-              child: Text(ChatFunctions.fromEntity(chat)?.getWrappedName() ?? '-'),
+              child: Text(chat?.getWrappedName() ?? '-'),
             ),
           ),
         );
@@ -98,7 +97,7 @@ class _ChatMainImage extends StatelessWidget {
     } else if ((chat?.participants?.length ?? 0) == 1) {
       return _ChatImageBuilder(path: chat?.participants?.first.user?.imageUrl);
     } else {
-      return Text(ChatFunctions.fromEntity(chat)?.getWrappedName() ?? '-');
+      return Text(chat?.getWrappedName() ?? '-');
     }
   }
 }
@@ -124,7 +123,7 @@ class _ChatImageBuilder extends StatelessWidget {
 }
 
 class _ChatName extends StatelessWidget {
-  final Chat? chat;
+  final ChatModel? chat;
 
   const _ChatName({
     required this.chat,

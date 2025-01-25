@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
-import 'package:yahay/src/features/add_contact_feature/domain/repo/add_contact_repo.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/features/add_contact_feature/data/add_contact_repo.dart';
 import 'state_model/add_contact_state_model.dart';
 
 part 'add_contact_bloc.freezed.dart';
@@ -13,7 +12,7 @@ part 'add_contact_bloc.freezed.dart';
 class AddContactsEvents with _$AddContactsEvents {
   const factory AddContactsEvents.searchContact(final String value) = _SearchContactEvent;
 
-  const factory AddContactsEvents.addContactEvent(final User? user) =
+  const factory AddContactsEvents.addContactEvent(final UserModel? user) =
       _AddContactEventOnAddContactsEvent;
 
   const factory AddContactsEvents.clearDataEvent() = _ClearDataEvent;
@@ -76,7 +75,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
       );
       //
 
-      final List<User> currentUsers = List<User>.from(currentStateModel.users);
+      final List<UserModel> currentUsers = List<UserModel>.from(currentStateModel.users);
 
       currentUsers.addAll(data);
 
@@ -99,11 +98,11 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
     // try {
     if (event.user == null) return;
 
-    UserModel? changingModel = UserModel.fromEntity(event.user!)?.copyWith(
+    UserModel? changingModel = event.user?.copyWith(
       loadingForAddingToContacts: true,
     );
 
-    List<User> tempUsersList = List<User>.from(currentStateModel.users);
+    List<UserModel> tempUsersList = List<UserModel>.from(currentStateModel.users);
 
     final foundIndex = tempUsersList.indexWhere((el) => el.id == event.user?.id);
 

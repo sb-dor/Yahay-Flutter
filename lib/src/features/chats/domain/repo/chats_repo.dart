@@ -1,5 +1,5 @@
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 
 abstract class ChatsRepo {
-  Future<List<Chat>> chats();
+  Future<List<ChatModel>> chats();
 }

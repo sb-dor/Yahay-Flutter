@@ -1,20 +1,13 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat_participant.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/chat_message_model/chat_message_model.dart';
-import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_participant_model.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 
 class ChatsStateModel {
-  final List<Chat> chats;
+  final List<ChatModel> chats;
 
   const ChatsStateModel({
     required this.chats,
   });
 
-  factory ChatsStateModel.idle() => const ChatsStateModel(chats: <Chat>[]);
+  factory ChatsStateModel.idle() => const ChatsStateModel(chats: <ChatModel>[]);
 
   @override
   bool operator ==(Object other) =>
@@ -30,7 +23,7 @@ class ChatsStateModel {
   }
 
   ChatsStateModel copyWith({
-    List<Chat>? chats,
+    List<ChatModel>? chats,
   }) {
     return ChatsStateModel(
       chats: chats ?? this.chats,

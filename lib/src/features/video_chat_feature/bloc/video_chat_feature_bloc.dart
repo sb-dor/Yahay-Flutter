@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
@@ -17,7 +17,7 @@ part 'video_chat_feature_bloc.freezed.dart';
 @immutable
 @freezed
 class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
-  const factory VideoChatFeatureEvents.videoChatInitFeatureEvent(final Chat? chat) =
+  const factory VideoChatFeatureEvents.videoChatInitFeatureEvent(final ChatModel? chat) =
       _VideoChatInitFeatureEvent;
 
   const factory VideoChatFeatureEvents.startVideoChatEvent() = _StartVideoChatEvent;
@@ -65,13 +65,13 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   PusherChannelsClient? _pusherChannelsClient;
 
   final VideoChatFeatureRepo _iVideoChatFeatureRepo;
-  final User? _currentUser;
+  final UserModel? _currentUser;
   final PusherClientService _pusherClientService;
   late final VideoChatStateModel _currentStateModel;
 
   VideoChatBloc({
     required VideoChatFeatureRepo iVideoChatFeatureRepo,
-    required User? currentUser,
+    required UserModel? currentUser,
     required PusherClientService pusherClientService,
     required VideoChatFeatureStates initialState,
   })  : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
@@ -219,9 +219,11 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   ) async {
     //
     if (_currentStateModel.currentVideoChatEntity == null) return;
+
     final result = await _iVideoChatFeatureRepo.leaveTheChat(
       _currentStateModel.currentVideoChatEntity!,
     );
+
     debugPrint("leave video chat data: $result");
 
     await _currentStateModel.webrtcLaravelHelper?.hangUp(

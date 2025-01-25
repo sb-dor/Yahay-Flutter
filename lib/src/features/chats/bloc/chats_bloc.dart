@@ -2,16 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat_participant.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/chat_message_model/chat_message_model.dart';
-import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_participant_model.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/chat_participant_model/chat_participant_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/chats/domain/repo/chats_repo.dart';
 import 'state_model/chats_state_model.dart';
@@ -53,13 +49,13 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
   //
   final ChatsRepo _chatsRepo;
-  final User? _currentUser;
+  final UserModel? _currentUser;
   final PusherChannelsOptions _pusherChannelsOptions;
   final Logger _logger;
 
   ChatsBloc({
     required final ChatsRepo chatsRepo,
-    required final User? currentUser,
+    required final UserModel? currentUser,
     required final PusherChannelsOptions pusherChannelsOptions,
     required final Logger logger,
     required ChatsStates initialState,
@@ -173,7 +169,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     _ChangeToLoadingState event,
     Emitter<ChatsStates> emit,
   ) async {
-    var currentState = state.chatsStateModel.copyWith(chats: <Chat>[]);
+    var currentState = state.chatsStateModel.copyWith(chats: <ChatModel>[]);
     _emitter(currentStateModel: currentState, emit: emit);
   }
 
@@ -197,29 +193,27 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     }
   }
 
-  List<Chat> addChat({
-    required Chat chat,
-    required List<Chat> currentChats,
-    User? user,
+  List<ChatModel> addChat({
+    required ChatModel? chat,
+    required List<ChatModel> currentChats,
+    UserModel? user,
   }) {
-    var convertedToModelChat = ChatModel.fromEntity(chat);
+    if (chat == null) return currentChats;
 
-    if (convertedToModelChat == null) return currentChats;
+    final List<ChatModel> resultChats = List.of(currentChats);
 
-    final List<Chat> resultChats = List.of(currentChats);
-
-    convertedToModelChat = _removeCurrentUserFromParticipants(
-      convertedToModelChat,
+    final convertedToModelChat = _removeCurrentUserFromParticipants(
+      chat,
       user,
     );
 
     final chatIndex = resultChats.indexWhere(
-      (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
+      (e) => e.id == convertedToModelChat.id && e.uuid == convertedToModelChat.uuid,
     );
 
     if (chatIndex != -1) {
       resultChats[chatIndex] = convertedToModelChat.copyWith(
-        lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
+        lastMessage: chat.lastMessage,
       );
     } else {
       resultChats.add(convertedToModelChat);
@@ -228,8 +222,10 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     return resultChats;
   }
 
-  ChatModel _removeCurrentUserFromParticipants(ChatModel chatModel, User? user) {
-    final data = List<ChatParticipantModel>.from(chatModel.participants ?? <ChatParticipant>[]);
+  ChatModel _removeCurrentUserFromParticipants(ChatModel chatModel, UserModel? user) {
+    final data = List<ChatParticipantModel>.from(
+      chatModel.participants ?? <ChatParticipantModel>[],
+    );
 
     data.removeWhere((e) => e.user?.id == user?.id);
 

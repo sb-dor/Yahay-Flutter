@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/authorization/view/login_page.dart';
 import 'package:yahay/src/features/authorization/view/register_page.dart';
 import 'package:yahay/src/features/chat_screen/view/chat_screen.dart';

@@ -1,4 +1,4 @@
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/authorization/data/sources/laravel/laravel_auth_data_source.dart';
 import 'package:yahay/src/features/authorization/domain/repo/authorization_repo.dart';
 
@@ -8,10 +8,10 @@ class AuthorizationRepoImpl implements AuthorizationRepo {
   AuthorizationRepoImpl(this._laravelAuthDataSource);
 
   @override
-  Future<User?> checkAuth() => _laravelAuthDataSource.checkAuth();
+  Future<UserModel?> checkAuth() => _laravelAuthDataSource.checkAuth();
 
   @override
-  Future<User?> login({
+  Future<UserModel?> login({
     required final String emailOrUserName,
     required final String password,
   }) =>
@@ -21,7 +21,7 @@ class AuthorizationRepoImpl implements AuthorizationRepo {
       );
 
   @override
-  Future<User?> register({
+  Future<UserModel?> register({
     required final String email,
     required final String password,
     required final String userName,

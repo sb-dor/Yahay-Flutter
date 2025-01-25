@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 class AuthStateModel {
 
-  final User? user;
+  final UserModel? user;
   final bool showPassword, loadingRegister, loadingLogin;
 
   const AuthStateModel({
@@ -55,7 +55,7 @@ class AuthStateModel {
   AuthStateModel copyWith({
     GlobalKey<FormState>? loginForm,
     GlobalKey<FormState>? registerForm,
-    User? user,
+    UserModel? user,
     bool? showPassword,
     bool? loadingRegister,
     bool? loadingLogin,

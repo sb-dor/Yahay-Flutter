@@ -1,7 +1,7 @@
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 abstract class OtherAuthorizationRepo {
-  Future<User?> googleAuth();
+  Future<UserModel?> googleAuth();
 
-  Future<User?> faceBookAuth();
+  Future<UserModel?> faceBookAuth();
 }

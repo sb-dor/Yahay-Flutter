@@ -1,4 +1,4 @@
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/state_model/video_chat_state_model.dart';
@@ -14,7 +14,7 @@ final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
     this._pusherClientService,
   );
 
-  final User? _user;
+  final UserModel? _user;
   final PusherClientService _pusherClientService;
 
   @override

@@ -1,6 +1,6 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
 import 'package:yahay/src/features/chats/bloc/state_model/chats_state_model.dart';
 import 'package:yahay/src/features/chats/data/repo/chat_repo_impl.dart';
@@ -10,12 +10,12 @@ import 'package:yahay/src/features/chats/domain/repo/chats_repo.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 
 final class ChatsBlocFactory extends Factory<ChatsBloc> {
-  final User? _currentUser;
+  final UserModel? _currentUser;
   final PusherChannelsOptions _pusherChannelsOptions;
   final Logger _logger;
 
   ChatsBlocFactory(
-      {required User? currentUser,
+      {required UserModel? currentUser,
       required PusherChannelsOptions pusherChannelsOption,
       required Logger logger,
       r})

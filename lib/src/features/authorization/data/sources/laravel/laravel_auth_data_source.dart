@@ -1,4 +1,4 @@
-import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 abstract interface class LaravelAuthDataSource {
   Future<UserModel?> register({

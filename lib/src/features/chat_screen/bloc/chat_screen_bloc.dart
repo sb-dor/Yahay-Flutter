@@ -6,12 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat_message.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/chat_message_model/chat_message_model.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core//models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_repo.dart';
@@ -25,8 +24,8 @@ part 'chat_screen_bloc.freezed.dart';
 abstract class ChatScreenEvents with _$ChatScreenEvents {
   // init chat on entering to the screen (if chat was already created)
   const factory ChatScreenEvents.initChatScreenEvent({
-    final Chat? chat,
-    final User? user, // temp for creating temp chat if chat does not exist
+    final ChatModel? chat,
+    final UserModel? user, // temp for creating temp chat if chat does not exist
   }) = _InitChatScreenEvent;
 
   const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _RemoveAllTempCreatedChatsEvent;
@@ -69,13 +68,13 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   //
   final ChatScreenRepo _iChatScreenRepo;
   final ChatScreenChatRepo _iChatScreenChatRepo;
-  final User? _currentUser;
+  final UserModel? _currentUser;
   final PusherChannelsOptions _options;
 
   ChatScreenBloc({
     required ChatScreenRepo chatScreenRepo,
     required ChatScreenChatRepo chatScreenChatRepo,
-    required User? currentUser,
+    required UserModel? currentUser,
     required PusherChannelsOptions options,
     required ChatScreenStates initialState,
   })  : _iChatScreenRepo = chatScreenRepo,
@@ -192,9 +191,8 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       if (messageJson.containsKey('chat') && messageJson['chat'] != null) {
         debugPrint("chat has chat room: ${currentStateModel.currentChat?.videoChatRoom}");
         ChatModel chat = ChatModel.fromJson(messageJson['chat']);
-        final currentChatFromModel = ChatModel.fromEntity(currentStateModel.currentChat);
         currentStateModel = _setChat(
-          chat: currentChatFromModel?.copyWith(
+          chat: currentStateModel.currentChat?.copyWith(
             videoChatRoom: chat.videoChatRoom,
             videoChatStreaming: chat.videoChatStreaming,
           ),
@@ -221,9 +219,9 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       // }
 
       final chatMessage = ChatMessageModel(
-        chat: ChatModel.fromEntity(currentStateModel.currentChat),
-        user: UserModel.fromEntity(currentStateModel.currentUser),
-        relatedToUser: UserModel.fromEntity(currentStateModel.relatedUser),
+        chat: currentStateModel.currentChat,
+        user: currentStateModel.currentUser,
+        relatedToUser: currentStateModel.relatedUser,
         message: event.message.trim(),
         chatMessageUUID: const Uuid().v4(),
         file: currentStateModel.pickedFile,
@@ -266,7 +264,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   // logic
   ChatScreenStateModel _setChat({
     required ChatScreenStateModel currentStateModel,
-    Chat? chat,
+    ChatModel? chat,
     bool setChatMessages = true,
   }) {
     if (chat == null) return currentStateModel;
@@ -274,7 +272,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       currentChat: chat,
     );
     if (setChatMessages) {
-      List<ChatMessage> chatMessages = List.from(currentStateModel.messages);
+      List<ChatMessageModel> chatMessages = List.from(currentStateModel.messages);
       chatMessages.addAll((chat.messages ?? []).reversed.toList());
       currentStateModel = currentStateModel.copyWith(
         messages: chatMessages,
@@ -286,22 +284,22 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 //
 // void setToFile(File? file) => _pickedFile = file;
 //
-// void setToRelatedUser(User? user) => _relatedUser = user;
+// void setToRelatedUser(UserModel? user) => _relatedUser = user;
 //
-// void setToCurrentUser(User? user) => _currentUser = user;
+// void setToCurrentUser(UserModel? user) => _currentUser = user;
 //
   ChatScreenStateModel _addMessage({
-    required ChatMessage message,
+    required ChatMessageModel message,
     required ChatScreenStateModel currentStateModel,
   }) {
-    final listOfMessages = List<ChatMessage>.from(currentStateModel.messages);
+    final listOfMessages = List<ChatMessageModel>.from(currentStateModel.messages);
 
     final findMessage =
         listOfMessages.firstWhereOrNull((e) => e.chatMessageUUID == message.chatMessageUUID);
     if (findMessage != null) {
       listOfMessages[
               listOfMessages.indexWhere((e) => e.chatMessageUUID == message.chatMessageUUID)] =
-          ChatMessageModel.fromEntity(findMessage)!.copyWith(messageSent: true);
+          findMessage.copyWith(messageSent: true);
     } else {
       listOfMessages.add(message);
     }

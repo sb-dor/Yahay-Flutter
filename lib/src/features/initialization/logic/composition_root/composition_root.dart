@@ -62,23 +62,24 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
 
     final profileBloc = ProfileBlocFactory().create();
 
-    final addContactBloc = AddContactBlocFactory().create();
+    final addContactBloc = AddContactBlocFactory(
+      logger: _logger,
+    ).create();
 
     final pusherClientService = PusherClientService();
 
     await pusherClientService.init();
 
     return DependencyContainer(
-      logger: _logger,
-      appThemeBloc: AppThemeBloc(),
-      authBloc: authBloc,
-      profileBloc: profileBloc,
-      addContactBloc: addContactBloc,
-      appRouter: AppRouter(),
-      sharedPreferHelper: _sharedPreferHelper,
-      pusherClientService: pusherClientService,
-      cameraHelperService: cameraHelperService
-    );
+        logger: _logger,
+        appThemeBloc: AppThemeBloc(),
+        authBloc: authBloc,
+        profileBloc: profileBloc,
+        addContactBloc: addContactBloc,
+        appRouter: AppRouter(),
+        sharedPreferHelper: _sharedPreferHelper,
+        pusherClientService: pusherClientService,
+        cameraHelperService: cameraHelperService);
   }
 }
 

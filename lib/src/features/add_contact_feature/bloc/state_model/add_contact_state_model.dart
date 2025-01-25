@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 final class AddContactStateModel {
-  final List<User> users;
+  final List<UserModel> users;
   final int page;
   final bool hasMore;
   final Timer? timerForSearch;
@@ -35,14 +35,14 @@ final class AddContactStateModel {
 
   /// Factory constructor for the initial state
   factory AddContactStateModel.idle() => const AddContactStateModel(
-        users: <User>[],
+        users: <UserModel>[],
         page: 1,
         hasMore: true,
       );
 
   /// Copy constructor with optional overrides
   AddContactStateModel copyWith({
-    List<User>? users,
+    List<UserModel>? users,
     int? page,
     bool? hasMore,
     Timer? timerForSearch,
@@ -56,10 +56,10 @@ final class AddContactStateModel {
   }
 
   /// Update a user in the list
-  AddContactStateModel updateUser(User? user) {
+  AddContactStateModel updateUser(UserModel? user) {
     if (user == null) return this;
 
-    final updatedUsers = List<User>.from(users);
+    final updatedUsers = List<UserModel>.from(users);
     final foundIndex = updatedUsers.indexWhere((el) => el.id == user.id);
 
     if (foundIndex != -1) {

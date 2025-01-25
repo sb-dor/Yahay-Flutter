@@ -1,20 +1,20 @@
-import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core//models/user_model/user_model.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
 
 class VideoChatModel extends VideoChatEntity {
   VideoChatModel({
     super.videoRenderer,
-    UserModel? user,
-    ChatModel? chat,
-  }) : super(user: user, chat: chat);
+    super.user,
+    super.chat,
+  });
 
   static VideoChatModel? fromEntity(VideoChatEntity? entity) {
     if (entity == null) return null;
     return VideoChatModel(
       videoRenderer: entity.videoRenderer,
-      user: UserModel.fromEntity(entity.user),
-      chat: ChatModel.fromEntity(entity.chat),
+      user: entity.user,
+      chat: entity.chat,
     );
   }
 

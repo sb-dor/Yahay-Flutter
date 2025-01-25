@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_data/models/chats_model/chat_functions.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core//models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
@@ -36,17 +36,17 @@ class VideoChatStateModel {
 
   bool get cameraSwitched => _cameraSwitched;
 
-  Chat? _chat;
+  ChatModel? _chat;
 
-  Chat? get chat => _chat;
+  ChatModel? get chat => _chat;
 
   ChatModel? get chatModel => ChatModel.fromEntity(_chat);
 
   ChatFunctions? get chatFunctions => ChatFunctions.fromEntity(_chat);
 
-  User? _currentUser;
+  UserModel? _currentUser;
 
-  User? get currentUser => _currentUser;
+  UserModel? get currentUser => _currentUser;
 
   UserModel? get currentUserModel => UserModel.fromEntity(_currentUser);
 
@@ -104,7 +104,7 @@ class VideoChatStateModel {
     }
   }
 
-  void initCurrentUser(User? user) => _currentUser = user;
+  void initCurrentUser(UserModel? user) => _currentUser = user;
 
   // void initChannelSubscription(StreamSubscription<void>? channelSubs) {
   //   _channelSubscription = channelSubs;
@@ -114,8 +114,8 @@ class VideoChatStateModel {
   //   _pusherChannelsClient = pusherClient;
   // }
 
-  void initChannelChat(Chat? chat) {
-    _chat = ChatModel.fromEntity(chat)?.copyWith();
+  void initChannelChat(ChatModel? chat) {
+    _chat = chat?.copyWith();
   }
 
   void changeHasAudio({bool? value}) => _hasAudio = value ?? !_hasAudio;

@@ -1,5 +1,5 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/chat_screen/bloc/state_model/chat_screen_state_model.dart';
 import 'package:yahay/src/features/chat_screen/data/repo/chat_screen_chat_repo_impl.dart';
@@ -13,7 +13,7 @@ import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_repo.dart
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 
 final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
-  final User? user;
+  final UserModel? user;
   final PusherChannelsOptions _channelsOptions;
 
   ChatScreenBlocFactory(

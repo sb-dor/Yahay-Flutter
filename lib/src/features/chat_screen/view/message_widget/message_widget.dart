@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat_message.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:intl/intl.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 
 class MessageWidget extends StatefulWidget {
-  final User? currentUser;
-  final ChatMessage? message;
+  final UserModel? currentUser;
+  final ChatMessageModel? message;
 
   const MessageWidget({
     super.key,
@@ -31,7 +31,7 @@ class _MessageWidgetState extends State<MessageWidget> {
 }
 
 class _LeftSide extends StatelessWidget {
-  final ChatMessage? message;
+  final ChatMessageModel? message;
 
   const _LeftSide({required this.message});
 
@@ -76,7 +76,7 @@ class _LeftSide extends StatelessWidget {
 }
 
 class _RightSide extends StatelessWidget {
-  final ChatMessage? message;
+  final ChatMessageModel? message;
 
   const _RightSide({required this.message});
 
@@ -118,7 +118,7 @@ class _RightSide extends StatelessWidget {
 
 class _MessageTime extends StatelessWidget {
   final bool showSeen;
-  final ChatMessage? message;
+  final ChatMessageModel? message;
 
   const _MessageTime({
     required this.message,

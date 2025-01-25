@@ -1,15 +1,13 @@
 import 'dart:io';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat_message.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_functions.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 class ChatScreenStateModel {
-  final List<ChatMessage> messages;
-  final Chat? currentChat;
+  final List<ChatMessageModel> messages;
+  final ChatModel? currentChat;
   final File? pickedFile;
-  final User? currentUser, relatedUser;
+  final UserModel? currentUser, relatedUser;
   final bool showEmojiPicker;
 
   const ChatScreenStateModel({
@@ -20,10 +18,6 @@ class ChatScreenStateModel {
     this.relatedUser,
     this.showEmojiPicker = false,
   });
-
-  ChatModel? get currentChatModel => ChatModel.fromEntity(currentChat);
-
-  ChatFunctions? get currentChatFunctions => ChatFunctions.fromEntity(currentChat);
 
   @override
   bool operator ==(Object other) =>
@@ -51,19 +45,23 @@ class ChatScreenStateModel {
 
   @override
   String toString() {
-    return 'ChatScreenStateModel{' ' messages: $messages,' ' currentChat: $currentChat,' ' pickedFile: $pickedFile,' ' currentUser: $currentUser,' +
+    return 'ChatScreenStateModel{'
+            ' messages: $messages,'
+            ' currentChat: $currentChat,'
+            ' pickedFile: $pickedFile,'
+            ' currentUser: $currentUser,' +
         ' relatedUser: $relatedUser,' +
         ' showEmojiPicker: $showEmojiPicker,' +
         '}';
   }
 
   ChatScreenStateModel copyWith({
-    List<ChatMessage>? messages,
+    List<ChatMessageModel>? messages,
     // PusherChannelsClient? pusherChannelsClient,
-    Chat? currentChat,
+    ChatModel? currentChat,
     File? pickedFile,
-    User? currentUser,
-    User? relatedUser,
+    UserModel? currentUser,
+    UserModel? relatedUser,
     bool? showEmojiPicker,
   }) {
     return ChatScreenStateModel(

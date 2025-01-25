@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/widgets/shimmer_loader.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/chat_screen/bloc/state_model/chat_screen_state_model.dart';
@@ -20,8 +20,8 @@ import 'message_widget/message_widget.dart';
 
 @RoutePage()
 class ChatScreen extends StatelessWidget {
-  final Chat? chat;
-  final User? user; // temp for creating temp chat if chat does not exist
+  final ChatModel? chat;
+  final UserModel? user; // temp for creating temp chat if chat does not exist
 
   const ChatScreen({
     super.key,
@@ -43,8 +43,8 @@ class ChatScreen extends StatelessWidget {
 }
 
 class _ChatScreenUI extends StatefulWidget {
-  final Chat? chat;
-  final User? user; // temp for creating temp chat if chat does not exist
+  final ChatModel? chat;
+  final UserModel? user; // temp for creating temp chat if chat does not exist
 
   const _ChatScreenUI({
     required this.chat,
@@ -58,7 +58,7 @@ class _ChatScreenUI extends StatefulWidget {
 class _ChatScreenUIState extends State<_ChatScreenUI> {
   late final ChatScreenBloc _chatScreenBloc;
   late final AppThemeBloc _appThemeBloc;
-  late User? currentUser;
+  late UserModel? currentUser;
   final TextEditingController _messageController = TextEditingController();
 
   @override

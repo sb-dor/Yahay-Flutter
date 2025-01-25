@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/widgets/shimmer_loader.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/chat_screen/bloc/state_model/chat_screen_state_model.dart';
 
 class ChatScreenAppBar extends StatefulWidget {
   final ThemeData themeData;
-  final Chat? chat;
+  final ChatModel? chat;
 
   const ChatScreenAppBar({
     super.key,
@@ -105,7 +105,7 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
 }
 
 class _ChatAppBarTitle extends StatelessWidget {
-  final Chat? chat;
+  final ChatModel? chat;
 
   const _ChatAppBarTitle({
     required this.chat,

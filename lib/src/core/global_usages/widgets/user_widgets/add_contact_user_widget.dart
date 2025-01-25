@@ -3,12 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/user_model/user_functions.dart';
 import 'package:yahay/src/core/global_usages/widgets/image_loader/image_loaded.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 class AddContactUserWidget extends StatelessWidget {
-  final User user;
+  final UserModel user;
   final VoidCallback addUser;
 
   const AddContactUserWidget({
@@ -35,7 +34,7 @@ class AddContactUserWidget extends StatelessWidget {
                     backgroundColor: Colors.green,
                     child: Center(
                       child: Text(
-                        UserFunctions.fromEntity(user).getFirstAndLastLetterOfName(),
+                        user.getFirstAndLastLetterOfName(),
                         style: GoogleFonts.aBeeZee(color: Colors.white),
                       ),
                     ),

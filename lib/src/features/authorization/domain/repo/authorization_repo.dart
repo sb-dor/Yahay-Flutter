@@ -1,18 +1,18 @@
-import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 abstract class AuthorizationRepo {
-  Future<User?> register({
+  Future<UserModel?> register({
     required final String email,
     required final String password,
     required final String userName,
   });
 
-  Future<User?> login({
+  Future<UserModel?> login({
     required final String emailOrUserName,
     required final String password,
   });
 
-  Future<User?> checkAuth();
+  Future<UserModel?> checkAuth();
 
   Future<bool> logout();
 }

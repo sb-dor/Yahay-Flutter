@@ -1,7 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/video_chat_bloc_factory.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
@@ -13,7 +13,7 @@ import 'widgets/hang_up_buttons_widget.dart';
 
 @RoutePage()
 class VideoChatFeaturePage extends StatelessWidget {
-  final Chat? chat;
+  final ChatModel? chat;
 
   const VideoChatFeaturePage({
     super.key,
@@ -34,7 +34,7 @@ class VideoChatFeaturePage extends StatelessWidget {
 }
 
 class _VideoChatFeaturePageUI extends StatefulWidget {
-  final Chat? chat;
+  final ChatModel? chat;
 
   const _VideoChatFeaturePageUI({required this.chat});
 

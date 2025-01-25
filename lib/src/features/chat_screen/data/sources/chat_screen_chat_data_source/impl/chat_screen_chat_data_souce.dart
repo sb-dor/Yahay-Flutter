@@ -5,9 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/app_settings/dio/http_status_codes.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/chats_model/chat_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_chat_data_source/chat_screen_chat_data_souce.dart';
 
 class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
@@ -18,7 +17,7 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
       "${AppHttpRoutes.chatsPrefix}/delete/temp/created/chats";
 
   @override
-  Future<ChatModel?> chat({Chat? chat, User? withUser}) async {
+  Future<ChatModel?> chat({ChatModel? chat, UserModel? withUser}) async {
     try {
       final body = {
         "chat_uuid": chat?.uuid,
@@ -55,7 +54,7 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
   }
 
   @override
-  Future<void> removeAllTempCreatedChats({required Chat? chat}) async {
+  Future<void> removeAllTempCreatedChats({required ChatModel? chat}) async {
     try {
       final body = {"chat_id": chat?.id, "chat_uuid": chat?.uuid};
 

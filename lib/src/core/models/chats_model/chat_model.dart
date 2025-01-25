@@ -1,10 +1,10 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
-import 'package:yahay/src/core/global_data/models/chat_message_model/chat_message_model.dart';
-import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_participant_model.dart';
-import 'package:yahay/src/core/global_data/models/room_models/room_model.dart';
+import 'package:yahay/src/core/global_usages/constants/constants.dart';
+import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/src/core/models/chat_participant_model/chat_participant_model.dart';
+import 'package:yahay/src/core/models/room_models/room_model.dart';
 
 part 'chat_model.freezed.dart';
 
@@ -18,7 +18,9 @@ bool? _fromJsonVideoChatStreaming(dynamic json) {
 }
 
 @freezed
-class ChatModel extends Chat with _$ChatModel {
+class ChatModel with _$ChatModel {
+  const ChatModel._();
+
   const factory ChatModel({
     int? id,
     @JsonKey(name: "chat_uuid") String? uuid,
@@ -45,21 +47,14 @@ class ChatModel extends Chat with _$ChatModel {
 
   factory ChatModel.fromJson(Map<String, Object?> json) => _$ChatModelFromJson(json);
 
-  static ChatModel? fromEntity(Chat? chat) {
-    if (chat == null) return null;
-    return ChatModel(
-      id: chat.id,
-      uuid: chat.uuid,
-      name: chat.name,
-      description: chat.description,
-      imageUrl: chat.imageUrl,
-      createdAt: chat.createdAt,
-      updatedAt: chat.updatedAt,
-      lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
-      participants: chat.participants?.map((e) => ChatParticipantModel.fromEntity(e)!).toList(),
-      messages: chat.messages?.map((e) => ChatMessageModel.fromEntity(e)!).toList(),
-      videoChatStreaming: chat.videoChatStreaming,
-      videoChatRoom: RoomModel.fromEntity(chat.videoChatRoom),
-    );
+  String getWrappedName() {
+    if (name == null) return '';
+    if ((name ?? '').isEmpty) return '';
+    if ((name?.length ?? 0) < 1) return name?[0] ?? '';
+    return "${name?[0].toUpperCase()} ${name?[(name?.length ?? 0) - 1].toUpperCase()}";
+  }
+
+  String channelName() {
+    return "${Constants.chatChannelName}$id${Constants.chatChannelUUID}$uuid";
   }
 }

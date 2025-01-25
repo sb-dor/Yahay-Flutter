@@ -1,14 +1,24 @@
 import 'dart:convert';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/app_settings/dio/http_status_codes.dart';
-import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/global_data/models/user_model/user_model.dart';
-import 'package:yahay/src/features/add_contact_feature/data/sources/add_contact_source/add_contact_source.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
+
+abstract class AddContactSource {
+  Future<List<UserModel>> searchContact(String value, int page);
+
+  Future<bool> addContact(UserModel? user);
+}
 
 class AddContactSourceImpl implements AddContactSource {
+  //
+  AddContactSourceImpl({required Logger logger}) : _logger = logger;
+
+  final Logger _logger;
+
   final DioSettings _dioSettings = DioSettings.instance;
 
   final String _searchContactUrl = "${AppHttpRoutes.contactsPrefix}/search";
@@ -25,7 +35,7 @@ class AddContactSourceImpl implements AddContactSource {
         },
       );
 
-      debugPrint("users search response: ${response.data}");
+      _logger.log(Level.debug, "users search response: ${response.data}");
 
       if (response.statusCode != HttpStatusCodes.success) return <UserModel>[];
 
@@ -40,14 +50,14 @@ class AddContactSourceImpl implements AddContactSource {
 
       return userList;
     } catch (e) {
-      debugPrint("getting value error is: $e");
+      _logger.log(Level.error, "getting value error is: $e");
       FirebaseCrashlytics.instance.log(e.toString());
       return <UserModel>[];
     }
   }
 
   @override
-  Future<bool> addContact(User? user) async {
+  Future<bool> addContact(UserModel? user) async {
     try {
       final body = {
         "contact_id": user?.id,
@@ -55,7 +65,7 @@ class AddContactSourceImpl implements AddContactSource {
 
       final response = await _dioSettings.dio.put(_addContactUrl, data: body);
 
-      debugPrint("adding contact response is: ${response.data}");
+      _logger.log(Level.debug, "adding contact response is: ${response.data}");
 
       if (response.statusCode != HttpStatusCodes.success) return false;
 
@@ -71,7 +81,7 @@ class AddContactSourceImpl implements AddContactSource {
 
       return true;
     } catch (e) {
-      debugPrint("add contact error is: $e");
+      _logger.log(Level.error, "add contact error is: $e");
       FirebaseCrashlytics.instance.log(e.toString());
       return false;
     }

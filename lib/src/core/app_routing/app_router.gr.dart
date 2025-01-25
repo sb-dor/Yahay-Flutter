@@ -15,8 +15,8 @@ part of 'app_router.dart';
 class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
     Key? key,
-    required Chat? chat,
-    required User? user,
+    required ChatModel? chat,
+    required UserModel? user,
     List<PageRouteInfo>? children,
   }) : super(
          ChatRoute.name,
@@ -40,9 +40,9 @@ class ChatRouteArgs {
 
   final Key? key;
 
-  final Chat? chat;
+  final ChatModel? chat;
 
-  final User? user;
+  final UserModel? user;
 
   @override
   String toString() {
@@ -135,7 +135,7 @@ class RegisterRoute extends PageRouteInfo<void> {
 class VideoChatFeatureRoute extends PageRouteInfo<VideoChatFeatureRouteArgs> {
   VideoChatFeatureRoute({
     Key? key,
-    required Chat? chat,
+    required ChatModel? chat,
     List<PageRouteInfo>? children,
   }) : super(
          VideoChatFeatureRoute.name,
@@ -159,7 +159,7 @@ class VideoChatFeatureRouteArgs {
 
   final Key? key;
 
-  final Chat? chat;
+  final ChatModel? chat;
 
   @override
   String toString() {
