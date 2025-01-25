@@ -6,7 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
+import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
+import 'package:yahay/src/core/global_data/entities/chats_entities/chat_participant.dart';
 import 'package:yahay/src/core/global_data/entities/user.dart';
+import 'package:yahay/src/core/global_data/models/chat_message_model/chat_message_model.dart';
+import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_participant_model.dart';
 import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/chats/domain/repo/chats_repo.dart';
@@ -52,7 +56,6 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
   final User? _currentUser;
   final PusherChannelsOptions _pusherChannelsOptions;
   final Logger _logger;
-  late final ChatsStateModel _currentStateModel;
 
   ChatsBloc({
     required final ChatsRepo chatsRepo,
@@ -65,7 +68,6 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
         _pusherChannelsOptions = pusherChannelsOptions,
         _logger = logger,
         super(initialState) {
-    _currentStateModel = initialState.chatsStateModel;
     //
     on<ChatsEvents>(
       (event, emit) => event.map(
@@ -84,16 +86,18 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     try {
       if (state is LoadedChatsState && !event.refresh) return;
 
-      emit(ChatsStates.loadingChatsState(_currentStateModel));
+      emit(ChatsStates.loadingChatsState(state.chatsStateModel));
 
-      _currentStateModel.setChat(await _chatsRepo.chats());
+      var currentStateModel = state.chatsStateModel.copyWith(
+        chats: await _chatsRepo.chats(),
+      );
 
-      _logger.log(Level.debug, "chat length is: ${_currentStateModel.chats.length}");
+      _logger.log(Level.debug, "chat length is: ${currentStateModel.chats.length}");
 
-      emit(ChatsStates.loadedChatsState(_currentStateModel));
+      emit(ChatsStates.loadedChatsState(currentStateModel));
     } catch (e) {
       _logger.log(Level.error, "_getUserChatsEvent error is: $e");
-      emit(ChatsStates.errorChatsState(_currentStateModel));
+      emit(ChatsStates.errorChatsState(state.chatsStateModel));
     }
   }
 
@@ -155,9 +159,11 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
-      _currentStateModel.addChat(chat, _currentUser);
+      var currentStateModel = state.chatsStateModel.copyWith(
+        chats: addChat(chat: chat, currentChats: state.chatsStateModel.chats),
+      );
 
-      _emitter(emit);
+      _emitter(currentStateModel: currentStateModel, emit: emit);
     } catch (e) {
       _logger.log(Level.error, "_channelListenerEvent error is: $e");
     }
@@ -167,25 +173,69 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     _ChangeToLoadingState event,
     Emitter<ChatsStates> emit,
   ) async {
-    _currentStateModel.chats.clear();
-    _emitter(emit);
+    var currentState = state.chatsStateModel.copyWith(chats: <Chat>[]);
+    _emitter(currentStateModel: currentState, emit: emit);
   }
 
-  void _emitter(Emitter<ChatsStates> emit) {
+  void _emitter({
+    required ChatsStateModel currentStateModel,
+    required Emitter<ChatsStates> emit,
+  }) {
     switch (state) {
       case InitialChatsState():
-        emit(ChatsStates.initial(_currentStateModel));
+        emit(ChatsStates.initial(currentStateModel));
         break;
       case LoadingChatsState():
-        emit(ChatsStates.loadingChatsState(_currentStateModel));
+        emit(ChatsStates.loadingChatsState(currentStateModel));
         break;
       case ErrorChatsState():
-        emit(ChatsStates.errorChatsState(_currentStateModel));
+        emit(ChatsStates.errorChatsState(currentStateModel));
         break;
       case LoadedChatsState():
-        emit(ChatsStates.loadedChatsState(_currentStateModel));
+        emit(ChatsStates.loadedChatsState(currentStateModel));
         break;
     }
+  }
+
+  List<Chat> addChat({
+    required Chat chat,
+    required List<Chat> currentChats,
+    User? user,
+  }) {
+    var convertedToModelChat = ChatModel.fromEntity(chat);
+
+    if (convertedToModelChat == null) return currentChats;
+
+    final List<Chat> resultChats = List.of(currentChats);
+
+    convertedToModelChat = _removeCurrentUserFromParticipants(
+      convertedToModelChat,
+      user,
+    );
+
+    final chatIndex = resultChats.indexWhere(
+      (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
+    );
+
+    if (chatIndex != -1) {
+      resultChats[chatIndex] = convertedToModelChat.copyWith(
+        lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
+      );
+    } else {
+      resultChats.add(convertedToModelChat);
+    }
+
+    return resultChats;
+  }
+
+  ChatModel _removeCurrentUserFromParticipants(ChatModel chatModel, User? user) {
+    final data = List<ChatParticipantModel>.from(chatModel.participants ?? <ChatParticipant>[]);
+
+    data.removeWhere((e) => e.user?.id == user?.id);
+
+    chatModel = chatModel.copyWith(participants: data);
+
+    return chatModel;
   }
 
   @override

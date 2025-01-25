@@ -29,7 +29,7 @@ final class ChatsBlocFactory extends Factory<ChatsBloc> {
 
     final ChatsRepo chatsRepo = ChatsRepoImpl(chatsDataSource);
 
-    final initialState = ChatsStates.initial(ChatsStateModel());
+    final initialState = ChatsStates.initial(ChatsStateModel.idle());
 
     return ChatsBloc(
       chatsRepo: chatsRepo,

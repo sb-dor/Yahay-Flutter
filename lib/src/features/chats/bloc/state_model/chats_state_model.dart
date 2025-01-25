@@ -8,65 +8,32 @@ import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_pa
 import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
 
 class ChatsStateModel {
-  List<Chat> _chats = [];
+  final List<Chat> chats;
 
-  UnmodifiableListView<Chat> get chats => UnmodifiableListView(_chats);
+  const ChatsStateModel({
+    required this.chats,
+  });
 
-  // void setToPusherClient(PusherChannelsClient? client) {
-  //   _pusherClientService = client;
-  // }
-  //
-  // void setToSubscription(StreamSubscription<void>? subs) {
-  //   _channelSubscription = subs;
-  // }
-  //
-  // Future<void> disposeClientAndSubs() async {
-  //   await _pusherClientService?.disconnect();
-  //   await _channelSubscription?.cancel();
-  //   _pusherClientService?.dispose();
-  //   _pusherClientService = null;
-  //   _channelSubscription = null;
-  // }
+  factory ChatsStateModel.idle() => const ChatsStateModel(chats: <Chat>[]);
 
-  void setChat(List<Chat> list) => _chats = list;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ChatsStateModel && runtimeType == other.runtimeType && chats == other.chats);
 
-  void clearChat() => _chats.clear();
+  @override
+  int get hashCode => chats.hashCode;
 
-  void addChat(Chat chat, User? user) {
-    var convertedToModelChat = ChatModel.fromEntity(chat);
-
-    if (convertedToModelChat == null) return;
-
-    convertedToModelChat = _removeCurrentUserFromParticipants(
-      convertedToModelChat,
-      user,
-    );
-
-    final chatIndex = _chats.indexWhere(
-      (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
-    );
-
-    if (chatIndex != -1) {
-      _chats[chatIndex] = convertedToModelChat.copyWith(
-        lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
-      );
-    } else {
-      _chats.add(convertedToModelChat);
-    }
+  @override
+  String toString() {
+    return 'ChatsStateModel{' + ' chats: $chats,' + '}';
   }
 
-  ChatModel _removeCurrentUserFromParticipants(ChatModel chatModel, User? user) {
-    final data = List<ChatParticipantModel>.from(chatModel.participants ?? <ChatParticipant>[]);
-
-    data.removeWhere((e) => e.user?.id == user?.id);
-
-    chatModel = chatModel.copyWith(participants: data);
-
-    return chatModel;
+  ChatsStateModel copyWith({
+    List<Chat>? chats,
+  }) {
+    return ChatsStateModel(
+      chats: chats ?? this.chats,
+    );
   }
-
-// Future<void> clearAll() async {
-//   await disposeClientAndSubs();
-//   _chats.clear();
-// }
 }
