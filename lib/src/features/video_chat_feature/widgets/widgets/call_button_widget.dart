@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yahay/src/features/video_chat_feature/bloc/state_model/video_chat_state_model.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
 
 class CallButtonWidget extends StatefulWidget {
@@ -14,13 +13,6 @@ class CallButtonWidget extends StatefulWidget {
 }
 
 class _CallButtonWidgetState extends State<CallButtonWidget> {
-  late final VideoChatStateModel _videoChatStateModel;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -57,46 +49,52 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
             ),
           ],
         ),
-        Column(
-          children: [
-            Material(
-              color: _videoChatStateModel.chat?.videoChatRoom != null ? Colors.blue : Colors.green,
-              borderRadius: BorderRadius.circular(50),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(50),
-                onTap: () {
-                  if (_videoChatStateModel.chat?.videoChatRoom != null) {
-                    debugPrint("working22  here");
-                    context
-                        .read<VideoChatBloc>()
-                        .add(const VideoChatFeatureEvents.videoChatEntranceEvent());
-                  } else {
-                    debugPrint("working11  here");
-                    context
-                        .read<VideoChatBloc>()
-                        .add(const VideoChatFeatureEvents.startVideoChatEvent());
-                  }
-                },
-                child: const SizedBox(
-                  width: 90,
-                  height: 90,
-                  child: Center(
-                    child: Icon(
-                      Icons.call,
-                      size: 35,
-                      color: Colors.white,
+        BlocBuilder<VideoChatBloc, VideoChatFeatureStates>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                Material(
+                  color: state.videoChatStateModel.chat?.videoChatRoom != null
+                      ? Colors.blue
+                      : Colors.green,
+                  borderRadius: BorderRadius.circular(50),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50),
+                    onTap: () {
+                      if (state.videoChatStateModel.chat?.videoChatRoom != null) {
+                        debugPrint("working22  here");
+                        context
+                            .read<VideoChatBloc>()
+                            .add(const VideoChatFeatureEvents.videoChatEntranceEvent());
+                      } else {
+                        debugPrint("working11  here");
+                        context
+                            .read<VideoChatBloc>()
+                            .add(const VideoChatFeatureEvents.startVideoChatEvent());
+                      }
+                    },
+                    child: const SizedBox(
+                      width: 90,
+                      height: 90,
+                      child: Center(
+                        child: Icon(
+                          Icons.call,
+                          size: 35,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              _videoChatStateModel.chat?.videoChatRoom != null ? "Accept" : "Call",
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 1.5),
-            ),
-          ],
+                const SizedBox(height: 10),
+                Text(
+                  state.videoChatStateModel.chat?.videoChatRoom != null ? "Accept" : "Call",
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 1.5),
+                ),
+              ],
+            );
+          },
         ),
       ],
     );

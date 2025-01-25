@@ -51,6 +51,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
           var currentState = state.addContactStateModel.clearData();
 
           emit(AddContactsStates.loadedAddContactsState(currentState));
+          return null;
         },
       ),
     );

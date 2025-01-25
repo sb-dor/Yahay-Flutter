@@ -11,10 +11,7 @@ class DoubleCameraViewScreen extends StatefulWidget {
 }
 
 class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {

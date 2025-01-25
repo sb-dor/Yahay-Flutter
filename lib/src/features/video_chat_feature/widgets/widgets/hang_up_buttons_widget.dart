@@ -11,10 +11,7 @@ class HangUpButtonsWidget extends StatefulWidget {
 }
 
 class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {

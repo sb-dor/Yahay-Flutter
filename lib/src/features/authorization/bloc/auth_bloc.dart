@@ -109,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       event.initChatsBloc();
 
       emit(AuthStates.authorized(currentStateModel));
-    } catch (error, trace) {
+    } catch (error) {
       emit(AuthStates.error(currentStateModel));
     }
   }

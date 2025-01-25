@@ -76,7 +76,7 @@ class _AddContactsPageState extends State<AddContactsPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _addContactBloc.add(AddContactsEvents.clearDataEvent());
+                    _addContactBloc.add(const AddContactsEvents.clearDataEvent());
                     Navigator.pop(context);
                   },
                   child: const Text("Cancel"),

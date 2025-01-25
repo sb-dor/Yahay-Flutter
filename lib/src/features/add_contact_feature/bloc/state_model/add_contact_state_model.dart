@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:yahay/src/core/global_data/entities/user.dart';
-import 'package:yahay/src/core/utils/list_pagination_checker/list_pagination_checker.dart';
 
 final class AddContactStateModel {
   final List<User> users;

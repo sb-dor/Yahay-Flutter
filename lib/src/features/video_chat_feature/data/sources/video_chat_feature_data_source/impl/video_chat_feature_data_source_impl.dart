@@ -109,7 +109,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
       );
 
       debugPrint("coming response from stream video: ${response.data}");
-    } on DioException catch (e) {
+    } on DioException {
       // error
     }
   }

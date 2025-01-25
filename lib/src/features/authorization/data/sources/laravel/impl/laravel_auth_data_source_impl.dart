@@ -97,6 +97,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       debugPrint("login error is $e");
       return null;
     }
+    return null;
   }
 
   @override

@@ -73,7 +73,7 @@ class AppRunner with FolderCreator {
                 compositionResult: compositionRoot,
               ),
             );
-          } catch (error, trace) {
+          } catch (error) {
             //
           } finally {
             binding.allowFirstFrame();

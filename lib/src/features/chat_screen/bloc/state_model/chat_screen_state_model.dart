@@ -51,12 +51,7 @@ class ChatScreenStateModel {
 
   @override
   String toString() {
-    return 'ChatScreenStateModel{' +
-        ' messages: $messages,' +
-        // ' pusherChannelsClient: $pusherChannelsClient,' +
-        ' currentChat: $currentChat,' +
-        ' pickedFile: $pickedFile,' +
-        ' currentUser: $currentUser,' +
+    return 'ChatScreenStateModel{' ' messages: $messages,' ' currentChat: $currentChat,' ' pickedFile: $pickedFile,' ' currentUser: $currentUser,' +
         ' relatedUser: $relatedUser,' +
         ' showEmojiPicker: $showEmojiPicker,' +
         '}';

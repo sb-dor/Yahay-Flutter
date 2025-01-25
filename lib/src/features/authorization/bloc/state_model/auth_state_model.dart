@@ -15,7 +15,7 @@ class AuthStateModel {
     required this.loadingLogin,
   });
 
-  factory AuthStateModel.idle() => AuthStateModel(
+  factory AuthStateModel.idle() => const AuthStateModel(
 
         user: null,
         showPassword: true,

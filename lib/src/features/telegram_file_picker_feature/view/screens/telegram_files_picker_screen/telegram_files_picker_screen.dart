@@ -145,7 +145,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           ? 1
                           : 0,
                       duration: const Duration(seconds: 1),
-                      child: TelegramBrowseAppFolderScreen(
+                      child: const TelegramBrowseAppFolderScreen(
                       ),
                     ),
                   ),
