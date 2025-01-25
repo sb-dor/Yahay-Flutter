@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
@@ -45,6 +46,7 @@ class DependencyContainer {
   });
 
   void initChatBlocAfterAuthorization() {
+    debugPrint("user after check auth state: ${ authBloc.state.authStateModel.user}");
     chatsBloc = ChatsBlocFactory(
       currentUser: authBloc.state.authStateModel.user,
       pusherChannelsOption: pusherClientService.options,

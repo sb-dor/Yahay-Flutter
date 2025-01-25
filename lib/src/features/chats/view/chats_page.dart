@@ -18,49 +18,44 @@ class ChatsPage extends StatefulWidget {
 }
 
 class _ChatsPageState extends State<ChatsPage> {
-  ChatsBloc? _chatsBloc;
+  late final ChatsBloc? _chatsBloc;
 
   @override
   void initState() {
     super.initState();
     _chatsBloc = DependenciesScope.of(context, listen: false).chatsBloc;
-    if (_chatsBloc != null) {
-      _chatsBloc?.add(const ChatsEvents.getUserChatsEvent());
-      _chatsBloc?.add(const ChatsEvents.chatListenerInitialEvent());
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChatsBloc, ChatsStates>(
-      bloc: _chatsBloc,
-      builder: (context, state) {
-        final currentStateModel = state.chatsStateModel;
-        return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
-            child: const ChatsAppbar(),
-          ),
-          body: RefreshIndicator(
-            onRefresh: () async =>
-                _chatsBloc?.add(const ChatsEvents.getUserChatsEvent(refresh: true)),
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(8),
-              children: [
-                SearchWidget(
-                  value: (String value) {},
-                  onDispose: () {},
-                ),
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+        child: const ChatsAppbar(),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async => _chatsBloc?.add(const ChatsEvents.getUserChatsEvent(refresh: true)),
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(8),
+          children: [
+            SearchWidget(
+              value: (String value) {},
+              onDispose: () {},
+            ),
+            BlocBuilder<ChatsBloc, ChatsStates>(
+              bloc: _chatsBloc,
+              builder: (context, state) {
                 switch (state) {
-                  // TODO: Handle this case.
-                  InitialChatsState() => const SizedBox.shrink(),
-                  // TODO: Handle this case.
-                  LoadingChatsState() => const ChatLoadingWidget(),
-                  // TODO: Handle this case.
-                  ErrorChatsState() => const Text(Constants.somethingWentWrong),
-                  // TODO: Handle this case.
-                  LoadedChatsState() => ListView.separated(
+                  case InitialChatsState():
+                    return const SizedBox.shrink();
+                  case LoadingChatsState():
+                    return const ChatLoadingWidget();
+                  case ErrorChatsState():
+                    return const Text(Constants.somethingWentWrong);
+                  case LoadedChatsState():
+                    final currentStateModel = state.chatsStateModel;
+                    return ListView.separated(
                       separatorBuilder: (context, index) => const SizedBox(height: 15),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -69,13 +64,13 @@ class _ChatsPageState extends State<ChatsPage> {
                         final chat = currentStateModel.chats[index];
                         return ChatWidget(chat: chat);
                       },
-                    ),
-                },
-              ],
+                    );
+                }
+              },
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

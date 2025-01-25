@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
@@ -150,7 +151,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       ChatModel chat = ChatModel.fromJson(json['chat']);
 
-      _logger.log(Level.debug, "is this chat: ${chat.videoChatRoom}");
+      _logger.log(Level.debug, "is this chat: $chat");
 
       // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
@@ -183,6 +184,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
         break;
       case LoadedChatsState():
         emit(ChatsStates.loadedChatsState(_currentStateModel));
+        break;
     }
   }
 

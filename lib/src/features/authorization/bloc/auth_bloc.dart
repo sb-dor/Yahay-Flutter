@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
@@ -106,9 +107,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         _sharedPreferHelper,
       );
 
-      event.initChatsBloc();
-
       emit(AuthStates.authorized(currentStateModel));
+
+      event.initChatsBloc();
     } catch (error) {
       emit(AuthStates.error(currentStateModel));
     }
@@ -135,9 +136,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         _sharedPreferHelper,
       );
 
-      event.initChatsBloc();
-
       emit(AuthStates.authorized(currentStateModel));
+
+      event.initChatsBloc();
     } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
       Error.throwWithStackTrace(error, stackTrace);
@@ -175,13 +176,13 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      event.initChatsBloc();
-
       await DioSettings.instance.updateDio(
         _sharedPreferHelper,
       );
 
       emit(AuthStates.authorized(currentStateModel));
+
+      event.initChatsBloc();
     } catch (e) {
       emit(AuthStates.error(currentStateModel));
     }
@@ -220,9 +221,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         _sharedPreferHelper,
       );
 
-      event.initChatsBloc();
-
       emit(AuthStates.authorized(currentStateModel));
+
+      event.initChatsBloc();
     } catch (e) {
       emit(AuthStates.error(currentStateModel));
     }
@@ -245,10 +246,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      event.initChatsBloc();
-      // if yield has "*" it means that you will yield whole stream with value for returning stream
-      // if yield has not "*" it meant that you will yield only value for returning stream
       emit(AuthStates.authorized(currentStateModel));
+
+      event.initChatsBloc();
     } catch (e) {
       emit(AuthStates.error(currentStateModel));
     }

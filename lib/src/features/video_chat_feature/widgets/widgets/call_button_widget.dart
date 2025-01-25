@@ -26,7 +26,13 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () async {
-                  Navigator.pop(context);
+                  context.read<VideoChatBloc>().add(
+                    VideoChatFeatureEvents.finishVideoChatEvent(
+                      popScreen: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
                 },
                 child: const SizedBox(
                   width: 90,

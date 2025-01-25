@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +32,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _authBloc = DependenciesScope.of(context, listen: false).authBloc;
     _chatsBloc = DependenciesScope.of(context, listen: false).chatsBloc;
+
+    if (_chatsBloc != null) {
+      _chatsBloc.add(const ChatsEvents.getUserChatsEvent());
+      _chatsBloc.add(const ChatsEvents.chatListenerInitialEvent());
+    }
 
     _screens = [
       const BottomNavbarItem(

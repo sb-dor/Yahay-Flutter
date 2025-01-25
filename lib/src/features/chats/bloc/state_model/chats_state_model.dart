@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/src/core/global_data/entities/chats_entities/chat_participant.dart';
 import 'package:yahay/src/core/global_data/entities/user.dart';
@@ -7,11 +8,9 @@ import 'package:yahay/src/core/global_data/models/chat_participant_model/chat_pa
 import 'package:yahay/src/core/global_data/models/chats_model/chat_model.dart';
 
 class ChatsStateModel {
-
-
   List<Chat> _chats = [];
 
-  List<Chat> get chats => _chats;
+  UnmodifiableListView<Chat> get chats => UnmodifiableListView(_chats);
 
   // void setToPusherClient(PusherChannelsClient? client) {
   //   _pusherClientService = client;
@@ -43,14 +42,12 @@ class ChatsStateModel {
       user,
     );
 
-    final findChat = _chats.firstWhereOrNull(
+    final chatIndex = _chats.indexWhere(
       (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
     );
 
-    if (findChat != null) {
-      _chats[_chats.indexWhere(
-        (e) => e.id == convertedToModelChat?.id && e.uuid == convertedToModelChat?.uuid,
-      )] = convertedToModelChat.copyWith(
+    if (chatIndex != -1) {
+      _chats[chatIndex] = convertedToModelChat.copyWith(
         lastMessage: ChatMessageModel.fromEntity(chat.lastMessage),
       );
     } else {
@@ -68,8 +65,8 @@ class ChatsStateModel {
     return chatModel;
   }
 
-  // Future<void> clearAll() async {
-  //   await disposeClientAndSubs();
-  //   _chats.clear();
-  // }
+// Future<void> clearAll() async {
+//   await disposeClientAndSubs();
+//   _chats.clear();
+// }
 }
