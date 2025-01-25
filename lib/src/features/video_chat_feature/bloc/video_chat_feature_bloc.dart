@@ -3,7 +3,9 @@ import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:yahay/src/core/global_data/entities/chats_entities/chat.dart';
 import 'package:yahay/src/core/global_data/entities/user.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
@@ -12,9 +14,10 @@ import 'package:yahay/src/features/video_chat_feature/domain/usecases/start_vide
 import 'package:yahay/src/features/video_chat_feature/domain/usecases/video_chat_entrance.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/usecases/leave_video_chat.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/usecases/stream_the_video.dart';
-import 'package:yahay/src/features/video_chat_feature/widgets/bloc/state_model/video_chat_state_model.dart';
-import 'video_chat_feature_events.dart';
-import 'video_chat_feature_states.dart';
+
+import 'state_model/video_chat_state_model.dart';
+
+part 'video_chat_feature_bloc.freezed.dart';
 
 // @immutable
 // class VideoChatFeatureBloc {
@@ -405,15 +408,26 @@ import 'video_chat_feature_states.dart';
 // }
 
 @immutable
-class VideoChatFeatureEvents {
-  const VideoChatFeatureEvents();
-}
+@freezed
+class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
+  const factory VideoChatFeatureEvents.videoChatInitFeatureEvent(final Chat? chat) =
+      _VideoChatInitFeatureEvent;
 
-@immutable
-class VideoChatInitFeatureEvent extends VideoChatFeatureEvents {
-  final Chat? chat;
+  const factory VideoChatFeatureEvents.startVideoChatEvent() = _StartVideoChatEvent;
 
-  const VideoChatInitFeatureEvent(this.chat);
+  const factory VideoChatFeatureEvents.videoChatEntranceEvent() = _VideoChatEntranceEvent;
+
+  const factory VideoChatFeatureEvents.finishVideoChatEvent() = _FinishVideoChatEvent;
+
+  const factory VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(
+      final MediaStream mediaStream) = _OnAddRemoteRendererStreamEvent;
+
+  const factory VideoChatFeatureEvents.switchCameraStreamEvent() = _SwitchCameraStreamEvent;
+
+  const factory VideoChatFeatureEvents.turnMicOffAndOnEvent({@Default(true) final bool change}) =
+      _TurnMicOffAndOnEvent;
+
+  const factory VideoChatFeatureEvents.turnCameraOffAndEvent() = _TurnCameraOffAndEvent;
 }
 
 // @immutable
@@ -423,41 +437,6 @@ class VideoChatInitFeatureEvent extends VideoChatFeatureEvents {
 //   const InitMainCameraControllerEvent(this.cameraDescription);
 // }
 
-@immutable
-class StartVideoChatEvent extends VideoChatFeatureEvents {
-  const StartVideoChatEvent();
-}
-
-@immutable
-class VideoChatEntranceEvent extends VideoChatFeatureEvents {
-  const VideoChatEntranceEvent();
-}
-
-@immutable
-class FinishVideoChatEvent extends VideoChatFeatureEvents {
-  const FinishVideoChatEvent();
-}
-
-@immutable
-class OnAddRemoteRendererStreamEvent extends VideoChatFeatureEvents {
-  final MediaStream mediaStream;
-
-  const OnAddRemoteRendererStreamEvent(this.mediaStream);
-}
-
-@immutable
-class SwitchCameraStreamEvent extends VideoChatFeatureEvents {}
-
-@immutable
-class TurnMicOffAndOnEvent extends VideoChatFeatureEvents {
-  final bool change;
-
-  const TurnMicOffAndOnEvent({this.change = true});
-}
-
-@immutable
-class TurnCameraOffAndEvent extends VideoChatFeatureEvents {}
-
 // @immutable
 // class VideoStreamHandlerEvent extends VideoChatFeatureEvents {
 //   final ChannelReadEvent? pusherEvent;
@@ -465,32 +444,83 @@ class TurnCameraOffAndEvent extends VideoChatFeatureEvents {}
 //   const VideoStreamHandlerEvent(this.pusherEvent);
 // }
 
-// @immutable
-// class AudioStreamHandlerEvent extends VideoChatFeatureEvents {
-//   // temp for check
-//   final Uint8List data;
-//
-//   const AudioStreamHandlerEvent(this.data);
-// }
-
 @immutable
-class VideoChatFeatureStates {
-  final VideoChatStateModel videoChatStateModel;
-
-  const VideoChatFeatureStates(this.videoChatStateModel);
-}
-
-@immutable
-class InitialVideoChatState extends VideoChatFeatureStates {
-  const InitialVideoChatState(super.videoChatStateModel);
+@freezed
+class VideoChatFeatureStates with _$VideoChatFeatureStates {
+  const factory VideoChatFeatureStates.initialVideoChatState(
+      final VideoChatStateModel videoChatStateModel) = _InitialVideoChatState;
 }
 
 class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates> {
   StreamSubscription<void>? _channelSubscription;
-
   PusherChannelsClient? _pusherChannelsClient;
 
-  VideoChatBloc(super.initialState);
+  final VideoChatFeatureRepo _videoChatFeatureRepo;
+  final User? _currentUser;
+  final PusherClientService _pusherClientService;
+
+  VideoChatBloc({
+    required VideoChatFeatureRepo repo,
+    required User? currentUser,
+    required PusherClientService pusherClientService,
+    required VideoChatFeatureStates initialState,
+  })  : _videoChatFeatureRepo = repo,
+        _currentUser = currentUser,
+        _pusherClientService = pusherClientService,
+        super(initialState) {
+    on<VideoChatFeatureEvents>(
+      (event, emit) => event.map(
+        videoChatInitFeatureEvent: (event) => _videoChatInitFeatureEvent(event, emit),
+        startVideoChatEvent: (event) => _startVideoChatEvent(event, emit),
+        videoChatEntranceEvent: (event) => _videoChatEntranceEvent(event, emit),
+        finishVideoChatEvent: (event) => _finishVideoChatEvent(event, emit),
+        onAddRemoteRendererStreamEvent: (event) => _onAddRemoteRendererStreamEvent(event, emit),
+        switchCameraStreamEvent: (event) => _switchCameraStreamEvent(event, emit),
+        turnMicOffAndOnEvent: (event) => _turnMicOffAndOnEvent(event, emit),
+        turnCameraOffAndEvent: (event) => _turnCameraOffAndEvent(event, emit),
+      ),
+    );
+  }
+
+  void _videoChatInitFeatureEvent(
+    _VideoChatInitFeatureEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
+
+  void _startVideoChatEvent(
+    _StartVideoChatEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
+
+  void _videoChatEntranceEvent(
+    _VideoChatEntranceEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
+
+  void _finishVideoChatEvent(
+    _FinishVideoChatEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
+
+  void _onAddRemoteRendererStreamEvent(
+    _OnAddRemoteRendererStreamEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
+
+  void _switchCameraStreamEvent(
+    _SwitchCameraStreamEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
+
+  void _turnMicOffAndOnEvent(
+    _TurnMicOffAndOnEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
+
+  void _turnCameraOffAndEvent(
+    _TurnCameraOffAndEvent event,
+    Emitter<VideoChatFeatureStates> emit,
+  ) async {}
 
   @override
   Future<void> close() async {
