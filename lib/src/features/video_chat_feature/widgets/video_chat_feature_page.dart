@@ -12,7 +12,7 @@ import 'widgets/call_button_widget.dart';
 import 'widgets/hang_up_buttons_widget.dart';
 
 @RoutePage()
-class VideoChatFeaturePage extends StatefulWidget {
+class VideoChatFeaturePage extends StatelessWidget {
   final Chat? chat;
 
   const VideoChatFeaturePage({
@@ -21,30 +21,42 @@ class VideoChatFeaturePage extends StatefulWidget {
   });
 
   @override
-  State<VideoChatFeaturePage> createState() => _VideoChatFeaturePageState();
+  Widget build(BuildContext context) {
+    final depContainer = DependenciesScope.of(context, listen: false);
+    return BlocProvider(
+      create: (_) => VideoChatBlocFactory(
+        depContainer.authBloc.state.authStateModel.user,
+        depContainer.pusherClientService,
+      ).create(),
+      child: _VideoChatFeaturePageUI(chat: chat),
+    );
+  }
 }
 
-class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
-  late final VideoChatBloc _videoChatFeatureBloc;
+class _VideoChatFeaturePageUI extends StatefulWidget {
+  final Chat? chat;
 
+  const _VideoChatFeaturePageUI({required this.chat});
+
+  @override
+  State<_VideoChatFeaturePageUI> createState() => _VideoChatFeaturePageUIState();
+}
+
+class _VideoChatFeaturePageUIState extends State<_VideoChatFeaturePageUI> {
   @override
   void initState() {
     super.initState();
-    final depContainer = DependenciesScope.of(context, listen: false);
-    _videoChatFeatureBloc = VideoChatBlocFactory(
-      depContainer.authBloc.state.authStateModel.user,
-      depContainer.pusherClientService,
-    ).create();
-    _videoChatFeatureBloc.add(VideoChatFeatureEvents.videoChatInitFeatureEvent(
-      widget.chat,
-    ));
+    context.read<VideoChatBloc>().add(
+          VideoChatFeatureEvents.videoChatInitFeatureEvent(
+            widget.chat,
+          ),
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<VideoChatBloc, VideoChatFeatureStates>(
-        bloc: _videoChatFeatureBloc,
         builder: (context, state) {
           final currentStateModel = state.videoChatStateModel;
           if (currentStateModel.currentVideoChatEntity?.videoRenderer == null) {
@@ -53,11 +65,9 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
             return Stack(
               children: [
                 if (currentStateModel.videoChatEntities.isEmpty)
-                  SingleCameraViewScreen(
-                    videoChatBloc: _videoChatFeatureBloc,
-                  )
+                  const SingleCameraViewScreen()
                 else if (currentStateModel.videoChatEntities.length == 1)
-                  DoubleCameraViewScreen(videoChatBloc: _videoChatFeatureBloc)
+                  const DoubleCameraViewScreen()
                 else if (currentStateModel.videoChatEntities.length > 1)
                   const MultipleCameraView(),
                 Positioned(
@@ -66,10 +76,8 @@ class _VideoChatFeaturePageState extends State<VideoChatFeaturePage> {
                   right: 0,
                   child: Center(
                     child: currentStateModel.chatStarted
-                        ? HangUpButtonsWidget(videoChatBloc: _videoChatFeatureBloc)
-                        : CallButtonWidget(
-                            videoChatBloc: _videoChatFeatureBloc,
-                          ),
+                        ? const HangUpButtonsWidget()
+                        : const CallButtonWidget(),
                   ),
                 ),
               ],

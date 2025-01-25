@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/state_model/video_chat_state_model.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
 
 class CallButtonWidget extends StatefulWidget {
-  final VideoChatBloc videoChatBloc;
-
   const CallButtonWidget({
     super.key,
-    required this.videoChatBloc,
   });
 
   @override
@@ -16,14 +14,11 @@ class CallButtonWidget extends StatefulWidget {
 }
 
 class _CallButtonWidgetState extends State<CallButtonWidget> {
-  late final VideoChatBloc _videoChatFeatureBloc;
   late final VideoChatStateModel _videoChatStateModel;
 
   @override
   void initState() {
     super.initState();
-    _videoChatFeatureBloc = widget.videoChatBloc;
-    _videoChatStateModel = _videoChatFeatureBloc.state.videoChatStateModel;
   }
 
   @override
@@ -72,10 +67,14 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
                 onTap: () {
                   if (_videoChatStateModel.chat?.videoChatRoom != null) {
                     debugPrint("working22  here");
-                    _videoChatFeatureBloc.add(const VideoChatFeatureEvents.videoChatEntranceEvent());
+                    context
+                        .read<VideoChatBloc>()
+                        .add(const VideoChatFeatureEvents.videoChatEntranceEvent());
                   } else {
                     debugPrint("working11  here");
-                    _videoChatFeatureBloc.add(const VideoChatFeatureEvents.startVideoChatEvent());
+                    context
+                        .read<VideoChatBloc>()
+                        .add(const VideoChatFeatureEvents.startVideoChatEvent());
                   }
                 },
                 child: const SizedBox(

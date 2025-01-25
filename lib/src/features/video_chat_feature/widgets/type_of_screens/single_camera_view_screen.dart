@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
 
 class SingleCameraViewScreen extends StatelessWidget {
-  final VideoChatBloc videoChatBloc;
-
-  const SingleCameraViewScreen({
-    super.key,
-    required this.videoChatBloc,
-  });
+  const SingleCameraViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +13,12 @@ class SingleCameraViewScreen extends StatelessWidget {
         objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
         filterQuality: FilterQuality.none,
         mirror: true,
-        videoChatBloc.state.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
+        context
+            .read<VideoChatBloc>()
+            .state
+            .videoChatStateModel
+            .currentVideoChatEntity!
+            .videoRenderer!,
       ),
     );
   }
