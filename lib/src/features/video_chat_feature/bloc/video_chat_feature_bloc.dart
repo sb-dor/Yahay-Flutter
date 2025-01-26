@@ -109,7 +109,11 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
 
-    await _initLocalRenderer(_pusherClientService);
+    final currentChatVideoEntity = await _initLocalRenderer(_pusherClientService);
+
+    currentStateModel = currentStateModel.copyWith(
+      currentVideoChatEntity: currentChatVideoEntity,
+    );
     // in order to listen that someone from other side connected to your data
     _webrtcLaravelHelper?.onAddRemoteStream = ((stream) async {
       add(VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(stream));
@@ -280,7 +284,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     if (!resultOfStart) return false;
 
     var currentStateModel = state.videoChatStateModel.copyWith(
-      chatStarted: true,
+      chatStarted: resultOfStart,
     );
 
     emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
@@ -288,7 +292,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     return true;
   }
 
-  Future<void> _initLocalRenderer(PusherClientService pusherClientService) async {
+  Future<VideoChatModel> _initLocalRenderer(PusherClientService pusherClientService) async {
     // helper initialization first
     _webrtcLaravelHelper = WebrtcLaravelService(pusherClientService);
 
@@ -303,6 +307,8 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     // after video render initialization open the media
     await _webrtcLaravelHelper?.openUserMedia(currentVideoChatEntity.videoRenderer!);
+
+    return currentVideoChatEntity;
   }
 
   @override
