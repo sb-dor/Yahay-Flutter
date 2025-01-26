@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yahay/src/features/video_chat_feature/data/models/inner_candidate_model/inner_candidate_model.dart';
-import 'package:yahay/src/features/video_chat_feature/domain/entities/candidate.dart';
+import 'package:yahay/src/features/video_chat_feature/models/inner_candidate_model/inner_candidate_model.dart';
 
 part 'candidate_model.freezed.dart';
 
@@ -21,7 +19,7 @@ InnerCandidateModel? _fromJsonInnerCandidate(dynamic json) {
 }
 
 @freezed
-class CandidateModel extends Candidate with _$CandidateModel {
+class CandidateModel with _$CandidateModel {
   const factory CandidateModel({
     required int? id,
     @JsonKey(name: "room_id") required int? roomId,

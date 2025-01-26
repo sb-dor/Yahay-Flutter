@@ -1,141 +1,179 @@
-import 'dart:async';
-import 'dart:collection';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
-import 'package:yahay/src/core/global_data/models/chats_model/chat_functions.dart';
-import 'package:yahay/src/core/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core//models/user_model/user_model.dart';
-import 'package:yahay/src/core/utils/extensions/extentions.dart';
-import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
-import 'package:collection/collection.dart';
-import 'package:yahay/src/features/video_chat_feature/webrtc_helper/webrtc_laravel_helper.dart';
 
 class VideoChatStateModel {
-  UnmodifiableListView<VideoChatEntity> get videoChatEntities =>
-      UnmodifiableListView(_videoChatEntities);
+  final bool chatStarted;
 
-  Timer? _timerForGettingFrame;
+  final bool hasAudio;
 
-  Timer? get timerForGettingFrame => _timerForGettingFrame;
+  final bool hasVideo;
 
-  bool _chatStarted = false;
+  final bool cameraSwitched;
 
-  bool get chatStarted => _chatStarted;
+  final ChatModel? chat;
 
-  bool _hasAudio = true;
+  final UserModel? currentUser;
 
-  bool _hasVideo = true;
+  final VideoChatEntity? currentVideoChatEntity;
 
-  bool _cameraSwitched = false;
+  final List<VideoChatEntity> videoChatEntities;
 
-  bool get hasAudio => _hasAudio;
+  const VideoChatStateModel({
+    required this.chatStarted,
+    required this.hasAudio,
+    required this.hasVideo,
+    required this.cameraSwitched,
+    required this.videoChatEntities,
+    this.chat,
+    this.currentUser,
+    this.currentVideoChatEntity,
+  });
 
-  bool get hasVideo => _hasVideo;
+  factory VideoChatStateModel.idle() => const VideoChatStateModel(
+        chatStarted: false,
+        hasAudio: true,
+        hasVideo: true,
+        cameraSwitched: false,
+        currentVideoChatEntity: null,
+        videoChatEntities: <VideoChatEntity>[],
+      );
 
-  bool get cameraSwitched => _cameraSwitched;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VideoChatStateModel &&
+          runtimeType == other.runtimeType &&
+          chatStarted == other.chatStarted &&
+          hasAudio == other.hasAudio &&
+          hasVideo == other.hasVideo &&
+          cameraSwitched == other.cameraSwitched &&
+          chat == other.chat &&
+          currentUser == other.currentUser &&
+          currentVideoChatEntity == other.currentVideoChatEntity &&
+          videoChatEntities == other.videoChatEntities);
 
-  ChatModel? _chat;
+  @override
+  int get hashCode =>
+      chatStarted.hashCode ^
+      hasAudio.hashCode ^
+      hasVideo.hashCode ^
+      cameraSwitched.hashCode ^
+      chat.hashCode ^
+      currentUser.hashCode ^
+      currentVideoChatEntity.hashCode ^
+      videoChatEntities.hashCode;
 
-  ChatModel? get chat => _chat;
+  @override
+  String toString() {
+    return 'VideoChatStateModel{' +
+        ' chatStarted: $chatStarted,' +
+        ' hasAudio: $hasAudio,' +
+        ' hasVideo: $hasVideo,' +
+        ' cameraSwitched: $cameraSwitched,' +
+        ' chat: $chat,' +
+        ' currentUser: $currentUser,' +
+        ' _currentVideoChatEntity: $currentVideoChatEntity,' +
+        ' _videoChatEntities: $videoChatEntities,' +
+        '}';
+  }
 
-  ChatModel? get chatModel => ChatModel.fromEntity(_chat);
-
-  ChatFunctions? get chatFunctions => ChatFunctions.fromEntity(_chat);
-
-  UserModel? _currentUser;
-
-  UserModel? get currentUser => _currentUser;
-
-  UserModel? get currentUserModel => UserModel.fromEntity(_currentUser);
-
-  VideoChatEntity? _currentVideoChatEntity;
-
-  VideoChatEntity? get currentVideoChatEntity => _currentVideoChatEntity;
-
-  final List<VideoChatEntity> _videoChatEntities = [];
-
-  WebrtcLaravelHelper? _webrtcLaravelHelper;
-
-  WebrtcLaravelHelper? get webrtcLaravelHelper => _webrtcLaravelHelper;
-
-  Future<void> initLocalRenderer(PusherClientService pusherClientService) async {
-    // helper initialization first
-    _webrtcLaravelHelper = WebrtcLaravelHelper(pusherClientService);
-
-    _currentVideoChatEntity = VideoChatEntity(
-      videoRenderer: RTCVideoRenderer(),
-      chat: _chat,
-      user: _currentUser,
+  VideoChatStateModel copyWith({
+    bool? chatStarted,
+    bool? hasAudio,
+    bool? hasVideo,
+    bool? cameraSwitched,
+    ChatModel? chat,
+    UserModel? currentUser,
+    VideoChatEntity? currentVideoChatEntity,
+    List<VideoChatEntity>? videoChatEntities,
+  }) {
+    return VideoChatStateModel(
+      chatStarted: chatStarted ?? this.chatStarted,
+      hasAudio: hasAudio ?? this.hasAudio,
+      hasVideo: hasVideo ?? this.hasVideo,
+      cameraSwitched: cameraSwitched ?? this.cameraSwitched,
+      chat: (chat ?? this.chat)?.copyWith(),
+      currentUser: (currentUser ?? this.currentUser)?.copyWith(),
+      currentVideoChatEntity: currentVideoChatEntity ?? this.currentVideoChatEntity,
+      videoChatEntities: videoChatEntities ?? this.videoChatEntities,
     );
-
-    // init the video renderer
-    await _currentVideoChatEntity?.videoRenderer?.initialize();
-
-    // after video render initialization open the media
-    await _webrtcLaravelHelper?.openUserMedia(_currentVideoChatEntity!.videoRenderer!);
   }
 
-  void startChat() => _chatStarted = true;
-
-  void finishChat() => _chatStarted = false;
-
-  void initTimer(Timer timer) {
-    _timerForGettingFrame = timer;
+  Map<String, dynamic> toMap() {
+    return {
+      'chatStarted': chatStarted,
+      'hasAudio': hasAudio,
+      'hasVideo': hasVideo,
+      'cameraSwitched': cameraSwitched,
+      'chat': chat,
+      'currentUser': currentUser,
+      '_currentVideoChatEntity': currentVideoChatEntity,
+      '_videoChatEntities': videoChatEntities,
+    };
   }
 
-  void addVideoChat(VideoChatEntity videoChatEntity) {
-    _videoChatEntities.add(videoChatEntity);
+  factory VideoChatStateModel.fromMap(Map<String, dynamic> map) {
+    return VideoChatStateModel(
+      chatStarted: map['chatStarted'] as bool,
+      hasAudio: map['hasAudio'] as bool,
+      hasVideo: map['hasVideo'] as bool,
+      cameraSwitched: map['cameraSwitched'] as bool,
+      chat: map['chat'] as ChatModel,
+      currentUser: map['currentUser'] as UserModel,
+      currentVideoChatEntity: map['_currentVideoChatEntity'] as VideoChatEntity,
+      videoChatEntities: map['_videoChatEntities'] as List<VideoChatEntity>,
+    );
   }
-
-  void updateVideoChat(VideoChatEntity videoChatEntity, int index) {
-    _videoChatEntities[index] = videoChatEntity;
-  }
-
-  void checkVideoEntitiesBeforeAdding(VideoChatEntity videoChatEntity) {
-    final videoEntity = _videoChatEntities.getValueAndIndexOrNull((element) =>
-        element.chat?.uuid == videoChatEntity.chat?.uuid &&
-        element.user?.id == videoChatEntity.user?.id);
-    if (videoEntity == null) {
-      addVideoChat(videoChatEntity);
-    } else {
-      updateVideoChat(videoChatEntity, videoEntity.$2);
-    }
-  }
-
-  void initCurrentUser(UserModel? user) => _currentUser = user;
-
-  // void initChannelSubscription(StreamSubscription<void>? channelSubs) {
-  //   _channelSubscription = channelSubs;
-  // }
-  //
-  // void initPusherChannelClient(PusherChannelsClient pusherClient) {
-  //   _pusherChannelsClient = pusherClient;
-  // }
-
-  void initChannelChat(ChatModel? chat) {
-    _chat = chat?.copyWith();
-  }
-
-  void changeHasAudio({bool? value}) => _hasAudio = value ?? !_hasAudio;
-
-  void changeHasVideo({bool? value}) => _hasVideo = value ?? !_hasVideo;
-
-  void switchCamera({bool? value}) => _cameraSwitched = value ?? !_cameraSwitched;
 
   Future<void> dispose() async {
-    if (_currentVideoChatEntity?.videoRenderer != null) {
-      await _webrtcLaravelHelper?.hangUp(_currentVideoChatEntity!.videoRenderer!);
-    }
-    _webrtcLaravelHelper = null;
-    _currentVideoChatEntity = null;
-    for (var each in _videoChatEntities) {
+    for (var each in videoChatEntities) {
       await each.videoRenderer?.dispose();
       each.videoRenderer = null;
     }
-    _videoChatEntities.clear();
-    _chat = null;
-    finishChat();
   }
 }
+
+// void startChat() => _chatStarted = true;
+//
+// void finishChat() => _chatStarted = false;
+
+// void addVideoChat(VideoChatEntity videoChatEntity) {
+//   _videoChatEntities.add(videoChatEntity);
+// }
+
+// void updateVideoChat(VideoChatEntity videoChatEntity, int index) {
+//   _videoChatEntities[index] = videoChatEntity;
+// }
+
+// void checkVideoEntitiesBeforeAdding(VideoChatEntity videoChatEntity) {
+//   final videoEntity = _videoChatEntities.getValueAndIndexOrNull((element) =>
+//       element.chat?.uuid == videoChatEntity.chat?.uuid &&
+//       element.user?.id == videoChatEntity.user?.id);
+//   if (videoEntity == null) {
+//     addVideoChat(videoChatEntity);
+//   } else {
+//     updateVideoChat(videoChatEntity, videoEntity.$2);
+//   }
+// }
+
+// void initCurrentUser(UserModel? user) => _currentUser = user;
+
+// void initChannelSubscription(StreamSubscription<void>? channelSubs) {
+//   _channelSubscription = channelSubs;
+// }
+//
+// void initPusherChannelClient(PusherChannelsClient pusherClient) {
+//   _pusherChannelsClient = pusherClient;
+// }
+
+// void initChannelChat(ChatModel? chat) {
+//   _chat = chat?.copyWith();
+// }
+//
+// void changeHasAudio({bool? value}) => _hasAudio = value ?? !_hasAudio;
+//
+// void changeHasVideo({bool? value}) => _hasVideo = value ?? !_hasVideo;
+//
+// void switchCamera({bool? value}) => _cameraSwitched = value ?? !_cameraSwitched;
+//

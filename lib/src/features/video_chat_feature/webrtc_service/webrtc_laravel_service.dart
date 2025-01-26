@@ -7,20 +7,19 @@ import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
-import 'package:yahay/src/features/video_chat_feature/data/models/candidate_model/candidate_model.dart';
-import 'package:yahay/src/features/video_chat_feature/domain/entities/candidate.dart';
+import 'package:yahay/src/features/video_chat_feature/models/candidate_model/candidate_model.dart';
 
 typedef LaravelStreamStateCallback = void Function(MediaStream stream);
 
 typedef SetStateCallbackSignal = void Function();
 
-class WebrtcLaravelHelper {
+class WebrtcLaravelService {
   final String _url = "http://192.168.100.3:8000/api";
   final _dioHelper = DioSettings.instance;
 
   final PusherClientService pusherClientService;
 
-  WebrtcLaravelHelper(this.pusherClientService);
+  WebrtcLaravelService(this.pusherClientService);
 
   // configuration for iceServers
   // they can be used for free
@@ -152,7 +151,7 @@ class WebrtcLaravelHelper {
               //
               List<dynamic> listOfCandidates = mapOfData['candidates'];
 
-              List<Candidate> candidates =
+              List<CandidateModel> candidates =
                   listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
 
               for (final each in candidates) {
