@@ -10,9 +10,10 @@ class TelegramFilePickerBottomButton {
     this.icon,
   );
 
-  static List<TelegramFilePickerBottomButton> listOfBottomButtons(
-    final TelegramFilePickerBloc telegramBloc,
-  ) =>
+  static List<TelegramFilePickerBottomButton> listOfBottomButtons({
+    required final TelegramFilePickerBloc telegramBloc,
+    required void Function() draggableSheetAnimate,
+  }) =>
       [
         TelegramFilePickerBottomButton(Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +26,7 @@ class TelegramFilePickerBottomButton {
 
                 // telegramBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
 
-                telegramBloc.resetDragScrollSheet();
+                draggableSheetAnimate();
               },
               child: Container(
                 width: 60,
@@ -58,7 +59,7 @@ class TelegramFilePickerBottomButton {
               GestureDetector(
                 onTap: () {
                   telegramBloc.add(const TelegramFilePickerEvents.changeStateToAllFilesState());
-                  telegramBloc.resetDragScrollSheet();
+                  draggableSheetAnimate();
                 },
                 child: Container(
                   width: 60,
@@ -91,7 +92,7 @@ class TelegramFilePickerBottomButton {
             children: [
               GestureDetector(
                 onTap: () {
-                  telegramBloc.resetDragScrollSheet();
+                  draggableSheetAnimate();
                 },
                 child: Container(
                   width: 60,

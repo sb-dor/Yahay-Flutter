@@ -4,8 +4,11 @@ import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_fi
 import 'package:yahay/src/features/telegram_file_picker_feature/data/models/data_models/telegram_file_picker_bottom_button.dart';
 
 class TelegramBottomPickerButton extends StatefulWidget {
+  final DraggableScrollableController draggableScrollableController;
+
   const TelegramBottomPickerButton({
     super.key,
+    required this.draggableScrollableController,
   });
 
   @override
@@ -19,7 +22,16 @@ class _TelegramBottomPickerButtonState extends State<TelegramBottomPickerButton>
   void initState() {
     super.initState();
     _buttons = TelegramFilePickerBottomButton.listOfBottomButtons(
-      context.read<TelegramFilePickerBloc>(),
+      telegramBloc: context.read<TelegramFilePickerBloc>(),
+      draggableSheetAnimate: () {
+        Future.delayed(const Duration(milliseconds: 300), () {
+          widget.draggableScrollableController.animateTo(
+            0.5,
+            duration: const Duration(seconds: 1),
+            curve: Curves.fastOutSlowIn,
+          );
+        });
+      },
     );
   }
 

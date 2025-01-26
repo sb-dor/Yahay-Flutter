@@ -17,7 +17,9 @@ final class TelegramFilePickerBlocFactory extends Factory<TelegramFilePickerBloc
     //
     final TelegramFilePickerRepo telegramFilePickerRepo = TelegramFilePickerRepoImpl();
     //
-    final initialState = TelegramFilePickerStates.initial(TelegramFilePickerStateModel());
+    final initialState = TelegramFilePickerStates.initial(
+      TelegramFilePickerStateModel.idle(),
+    );
 
     return TelegramFilePickerBloc(
       telegramFilePickerRepo: telegramFilePickerRepo,

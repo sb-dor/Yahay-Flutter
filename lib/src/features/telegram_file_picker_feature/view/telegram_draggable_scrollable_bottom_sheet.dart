@@ -41,10 +41,7 @@ class _TelegramDraggableScrollableBottomSheetUIState
     super.initState();
     final telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
     telegramFilePickerBloc.add(
-      TelegramFilePickerEvents.initAllPicturesEvent(
-        true,
-        controller: _draggableScrollableController,
-      ),
+      const TelegramFilePickerEvents.initAllPicturesEvent(true),
     );
     Future.delayed(
       const Duration(milliseconds: 350),
@@ -93,7 +90,7 @@ class _TelegramDraggableScrollableBottomSheetUIState
                   AnimatedPositioned(
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 1000),
-                    bottom: currentStateModel.clonedPickedFiles.isNotEmpty ? 0 : -200,
+                    bottom: currentStateModel.pickedFiles.isNotEmpty ? 0 : -200,
                     right: 0,
                     left: 0,
                     child: const TelegramBottomSenderButton(),
@@ -102,12 +99,14 @@ class _TelegramDraggableScrollableBottomSheetUIState
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 1000),
                     bottom: (currentStateModel.openBottomSectionButton &&
-                            currentStateModel.clonedPickedFiles.isEmpty)
+                            currentStateModel.pickedFiles.isEmpty)
                         ? 0
                         : -200,
                     right: 0,
                     left: 0,
-                    child: const TelegramBottomPickerButton(),
+                    child: TelegramBottomPickerButton(
+                      draggableScrollableController: _draggableScrollableController,
+                    ),
                   ),
                 ],
               ),

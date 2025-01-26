@@ -10,198 +10,229 @@ import 'package:yahay/src/features/telegram_file_picker_feature/domain/entities/
 
 class TelegramFilePickerStateModel {
   //
-  // BuildContext get context => snoopy<GlobalContext>().globalContext.currentContext!;
+  final String? getPathForGettingImagesFrom;
 
-  DraggableScrollableController? _draggableScrollableController;
+  final bool openBottomSectionButton;
 
-  DraggableScrollableController? get draggableScrollableController =>
-      _draggableScrollableController;
+  final TelegramFileFolderEnum filePickerScreenSelectedScreen;
 
-  final List<TelegramFileImageEntity> _galleryPathFiles = [];
+  final List<TelegramFileImageEntity> galleryPathFiles;
 
-  final List<TelegramFileImageEntity> _galleryPathPagination = [];
+  final List<TelegramFileImageEntity> galleryPathPagination;
 
-  final List<TelegramFileImageEntity> _recentFiles = [];
+  final List<TelegramFileImageEntity> recentFiles;
 
-  final List<TelegramFileImageEntity> _recentFilesPagination = [];
+  final List<TelegramFileImageEntity> recentFilesPagination;
 
-  final List<TelegramFileImageEntity> _pickedFiles = [];
+  final List<TelegramFileImageEntity> pickedFiles;
 
-  final List<TelegramFileImageEntity> _specificFolderFilesAll = [];
+  final List<TelegramFileImageEntity> specificFolderFilesAll;
 
-  final List<TelegramFileImageEntity> _specificFolderFilesPagination = [];
+  final List<TelegramFileImageEntity> specificFolderFilesPagination;
 
-  UnmodifiableListView<TelegramFileImageEntity> get galleryPathFiles => UnmodifiableListView(
-        _galleryPathFiles,
+//<editor-fold desc="Data Methods">
+  const TelegramFilePickerStateModel({
+    this.getPathForGettingImagesFrom,
+    this.filePickerScreenSelectedScreen = TelegramFileFolderEnum.recentDownloadsScreen,
+    this.openBottomSectionButton = true,
+    required this.galleryPathFiles,
+    required this.galleryPathPagination,
+    required this.recentFiles,
+    required this.recentFilesPagination,
+    required this.pickedFiles,
+    required this.specificFolderFilesAll,
+    required this.specificFolderFilesPagination,
+  });
+
+  factory TelegramFilePickerStateModel.idle() => const TelegramFilePickerStateModel(
+        galleryPathFiles: <TelegramFileImageEntity>[],
+        galleryPathPagination: <TelegramFileImageEntity>[],
+        recentFiles: <TelegramFileImageEntity>[],
+        recentFilesPagination: <TelegramFileImageEntity>[],
+        pickedFiles: <TelegramFileImageEntity>[],
+        specificFolderFilesAll: <TelegramFileImageEntity>[],
+        specificFolderFilesPagination: <TelegramFileImageEntity>[],
       );
 
-  UnmodifiableListView<TelegramFileImageEntity> get galleryPathPagination => UnmodifiableListView(
-        _galleryPathPagination,
-      );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TelegramFilePickerStateModel &&
+          runtimeType == other.runtimeType &&
+          getPathForGettingImagesFrom == other.getPathForGettingImagesFrom &&
+          openBottomSectionButton == other.openBottomSectionButton &&
+          filePickerScreenSelectedScreen == other.filePickerScreenSelectedScreen &&
+          galleryPathFiles == other.galleryPathFiles &&
+          galleryPathPagination == other.galleryPathPagination &&
+          recentFiles == other.recentFiles &&
+          recentFilesPagination == other.recentFilesPagination &&
+          pickedFiles == other.pickedFiles &&
+          specificFolderFilesAll == other.specificFolderFilesAll &&
+          specificFolderFilesPagination == other.specificFolderFilesPagination);
 
-  UnmodifiableListView<TelegramFileImageEntity> get recentFiles => UnmodifiableListView(
-        _recentFiles,
-      );
+  @override
+  int get hashCode =>
+      getPathForGettingImagesFrom.hashCode ^
+      openBottomSectionButton.hashCode ^
+      filePickerScreenSelectedScreen.hashCode ^
+      galleryPathFiles.hashCode ^
+      galleryPathPagination.hashCode ^
+      recentFiles.hashCode ^
+      recentFilesPagination.hashCode ^
+      pickedFiles.hashCode ^
+      specificFolderFilesAll.hashCode ^
+      specificFolderFilesPagination.hashCode;
 
-  UnmodifiableListView<TelegramFileImageEntity> get recentFilesPagination => UnmodifiableListView(
-        _recentFilesPagination,
-      );
-
-  UnmodifiableListView<TelegramFileImageEntity> get specificFolderFilesPagination =>
-      UnmodifiableListView(
-        _specificFolderFilesPagination,
-      );
-
-  UnmodifiableListView<TelegramFileImageEntity> get specificFolderFilesAll => UnmodifiableListView(
-        _specificFolderFilesAll,
-      );
-
-  List<TelegramFileImageEntity?> get clonedPickedFiles =>
-      _pickedFiles.map((e) => TelegramFileImageModel.fromEntity(e)).toList();
-
-
-
-  bool _openBottomSectionButton = true;
-
-  bool get openBottomSectionButton => _openBottomSectionButton;
-
-  Timer? _openButtonSectionTimer;
-
-  Timer? get openButtonSectionTimer => _openButtonSectionTimer;
-
-  TelegramFileFolderEnum _filePickerScreenSelectedScreen =
-      TelegramFileFolderEnum.recentDownloadsScreen;
-
-  TelegramFileFolderEnum get filePickerScreenSelectedScreen => _filePickerScreenSelectedScreen;
-
-  void selectScreen(TelegramFileFolderEnum screen) {
-    _filePickerScreenSelectedScreen = screen;
+  @override
+  String toString() {
+    return 'TelegramFilePickerStateModel{' +
+        ' getPathForGettingImagesFrom: $getPathForGettingImagesFrom,' +
+        ' openBottomSectionButton: $openBottomSectionButton,' +
+        ' filePickerScreenSelectedScreen: $filePickerScreenSelectedScreen,' +
+        ' galleryPathFiles: $galleryPathFiles,' +
+        ' galleryPathPagination: $galleryPathPagination,' +
+        ' recentFiles: $recentFiles,' +
+        ' recentFilesPagination: $recentFilesPagination,' +
+        ' pickedFiles: $pickedFiles,' +
+        ' specificFolderFilesAll: $specificFolderFilesAll,' +
+        ' specificFolderFilesPagination: $specificFolderFilesPagination,' +
+        '}';
   }
 
-  void initDragScrollController(DraggableScrollableController controller) =>
-      _draggableScrollableController = controller;
-
-  void setGalleryPathFiles(TelegramFileImageEntity value) => _galleryPathFiles.add(value);
-
-  void setOpenButtonSectionTimer(Timer? timer) {
-    if ((_openButtonSectionTimer?.isActive ?? false)) {
-      _openButtonSectionTimer?.cancel();
-    }
-    _openButtonSectionTimer = timer;
-  }
-
-  void setValueToOpenButtonSectionButton(bool value) {
-    _openBottomSectionButton = value;
-  }
-
-  void clearAllGalleryPath({bool clearAll = true}) {
-    if (_galleryPathFiles.isNotEmpty && !clearAll) {
-      _galleryPathFiles.removeRange(1, _galleryPathFiles.length);
-    } else {
-      _galleryPathFiles.clear();
-    }
-  }
-
-  void clearAllGalleryPaginationPath({bool clearAll = true}) {
-    if (_galleryPathPagination.isNotEmpty && !clearAll) {
-      _galleryPathPagination.removeRange(1, _galleryPathPagination.length);
-    } else {
-      _galleryPathPagination.clear();
-    }
-  }
-
-  void clearRecentFiles() => _recentFiles.clear();
-
-  void clearRecentPagFiles() => _recentFilesPagination.clear();
-
-  void clearSpecificFolderData() {
-    _specificFolderFilesAll.clear();
-    _specificFolderFilesPagination.clear();
-  }
-
-  void addOnStreamOfValuesInPaginationList(
-    TelegramFileImageEntity value,
-  ) {
-    if (_galleryPathPagination.length >= Constants.perPage) return;
-    _galleryPathPagination.add(value);
-  }
-
-  void addToRecentFiles(TelegramFileImageEntity value) {
-    _recentFiles.add(value);
-    if (_recentFilesPagination.length < Constants.perPage) {
-      _recentFilesPagination.add(value);
-    }
-  }
-
-  void addToFolderDataList(TelegramFileImageEntity value) {
-    _specificFolderFilesAll.add(value);
-    if (_specificFolderFilesPagination.length < Constants.perPage) {
-      _specificFolderFilesPagination.add(value);
-    }
-  }
-
-  void addAllToFolderDataList(List<TelegramFileImageEntity> list) {
-    _specificFolderFilesPagination.addAll(list);
-  }
-
-  void addToPagination(List<TelegramFileImageEntity> list) => _galleryPathPagination.addAll(list);
-
-  void addToRecentFilesPagination(List<TelegramFileImageEntity> list) =>
-      _recentFilesPagination.addAll(list);
-
-  // void initFileStreamData(
-  //   StreamSubscription<TelegramPathFolderFile?> stream,
-  // ) =>
-  //     _fileStreamData = stream;
-  //
-  // void initRecentFileStreamData(
-  //   StreamSubscription<TelegramPathFolderFile?> stream,
-  // ) =>
-  //     _recentFileData = stream;
-  //
-  // void initSpecificFolderDataStream(
-  //   StreamSubscription<TelegramPathFolderFile?> stream,
-  // ) =>
-  //     _specificFolderData = stream;
-  //
-  // Future<void> closeSpecificFolderDataStream() async {
-  //   await _specificFolderData?.cancel();
-  // }
-  //
-  // void closeAllStreamSubs() {
-  //   _fileStreamData?.cancel();
-  //   _recentFileData?.cancel();
-  // }
-
-  void removeOrAddEntity(TelegramFileImageEntity? value) {
-    if (value == null) return;
-    final findEntity = _pickedFiles.firstWhereOrNull((el) => el.uuid == value.uuid);
-    if (findEntity != null) {
-      _pickedFiles.removeWhere((el) => el.uuid == value.uuid);
-    } else {
-      _pickedFiles.add(value);
-    }
+  TelegramFilePickerStateModel copyWith({
+    String? getPathForGettingImagesFrom,
+    bool? openBottomSectionButton,
+    TelegramFileFolderEnum? filePickerScreenSelectedScreen,
+    List<TelegramFileImageEntity>? galleryPathFiles,
+    List<TelegramFileImageEntity>? galleryPathPagination,
+    List<TelegramFileImageEntity>? recentFiles,
+    List<TelegramFileImageEntity>? recentFilesPagination,
+    List<TelegramFileImageEntity>? pickedFiles,
+    List<TelegramFileImageEntity>? specificFolderFilesAll,
+    List<TelegramFileImageEntity>? specificFolderFilesPagination,
+  }) {
+    return TelegramFilePickerStateModel(
+      getPathForGettingImagesFrom: getPathForGettingImagesFrom ?? this.getPathForGettingImagesFrom,
+      openBottomSectionButton: openBottomSectionButton ?? this.openBottomSectionButton,
+      filePickerScreenSelectedScreen:
+          filePickerScreenSelectedScreen ?? this.filePickerScreenSelectedScreen,
+      galleryPathFiles: galleryPathFiles ?? this.galleryPathFiles,
+      galleryPathPagination: galleryPathPagination ?? this.galleryPathPagination,
+      recentFiles: recentFiles ?? this.recentFiles,
+      recentFilesPagination: recentFilesPagination ?? this.recentFilesPagination,
+      pickedFiles: pickedFiles ?? this.pickedFiles,
+      specificFolderFilesAll: specificFolderFilesAll ?? this.specificFolderFilesAll,
+      specificFolderFilesPagination:
+          specificFolderFilesPagination ?? this.specificFolderFilesPagination,
+    );
   }
 
   bool isFileInsidePickedFiles(TelegramFileImageEntity? value) =>
-      _pickedFiles.any((el) => el.uuid == value?.uuid);
-
-  void clearPickedFiles() => _pickedFiles.clear();
-
-  String? getFileBaseName(File? file) {
-    try {
-      return basename(file!.path);
-    } catch (e) {
-      debugPrint("get file base name error is: $e");
-      return null;
-    }
-  }
-
-  String? _getPathForGettingImagesFrom;
-
-  String? get getPathForGettingImagesFrom => _getPathForGettingImagesFrom;
-
-  void clearGetPathForGettingImagesFrom() => _getPathForGettingImagesFrom = null;
-
-  void setPathForGettingImagesFrom(String? path) => _getPathForGettingImagesFrom = path;
+      pickedFiles.any((el) => el.uuid == value?.uuid);
 }
+
+//
+//
+//   // String? getFileBaseName(File? file) {
+//   //   try {
+//   //     return basename(file!.path);
+//   //   } catch (e) {
+//   //     debugPrint("get file base name error is: $e");
+//   //     return null;
+//   //   }
+//   // }
+
+//
+
+// void clearPickedFiles() => _pickedFiles.clear();
+//
+
+//  void clearGetPathForGettingImagesFrom() => _getPathForGettingImagesFrom = null;
+//
+//   void setPathForGettingImagesFrom(String? path) => _getPathForGettingImagesFrom = path;
+
+// void selectScreen(TelegramFileFolderEnum screen) {
+//   _filePickerScreenSelectedScreen = screen;
+// }
+
+// void setGalleryPathFiles(TelegramFileImageEntity value) => _galleryPathFiles.add(value);
+
+//void setOpenButtonSectionTimer(Timer? timer) {
+//     if ((_openButtonSectionTimer?.isActive ?? false)) {
+//       _openButtonSectionTimer?.cancel();
+//     }
+//     _openButtonSectionTimer = timer;
+//   }
+//
+//   void setValueToOpenButtonSectionButton(bool value) {
+//     _openBottomSectionButton = value;
+//   }
+//
+//   void clearAllGalleryPath({bool clearAll = true}) {
+//     if (_galleryPathFiles.isNotEmpty && !clearAll) {
+//       _galleryPathFiles.removeRange(1, _galleryPathFiles.length);
+//     } else {
+//       _galleryPathFiles.clear();
+//     }
+//   }
+//
+//   void clearAllGalleryPaginationPath({bool clearAll = true}) {
+//     if (_galleryPathPagination.isNotEmpty && !clearAll) {
+//       _galleryPathPagination.removeRange(1, _galleryPathPagination.length);
+//     } else {
+//       _galleryPathPagination.clear();
+//     }
+//   }
+//
+//   void clearRecentFiles() => _recentFiles.clear();
+//
+//   void clearRecentPagFiles() => _recentFilesPagination.clear();
+//
+//   void clearSpecificFolderData() {
+//     _specificFolderFilesAll.clear();
+//     _specificFolderFilesPagination.clear();
+//   }
+//
+
+//
+
+//
+//   void addToFolderDataList(TelegramFileImageEntity value) {
+//     _specificFolderFilesAll.add(value);
+//     if (_specificFolderFilesPagination.length < Constants.perPage) {
+//       _specificFolderFilesPagination.add(value);
+//     }
+//   }
+//
+//   void addAllToFolderDataList(List<TelegramFileImageEntity> list) {
+//     _specificFolderFilesPagination.addAll(list);
+//   }
+//
+//   void addToPagination(List<TelegramFileImageEntity> list) => _galleryPathPagination.addAll(list);
+//
+//   void addToRecentFilesPagination(List<TelegramFileImageEntity> list) =>
+//       _recentFilesPagination.addAll(list);
+
+///// void initFileStreamData(
+//   //   StreamSubscription<TelegramPathFolderFile?> stream,
+//   // ) =>
+//   //     _fileStreamData = stream;
+//   //
+//   // void initRecentFileStreamData(
+//   //   StreamSubscription<TelegramPathFolderFile?> stream,
+//   // ) =>
+//   //     _recentFileData = stream;
+//   //
+//   // void initSpecificFolderDataStream(
+//   //   StreamSubscription<TelegramPathFolderFile?> stream,
+//   // ) =>
+//   //     _specificFolderData = stream;
+//   //
+//   // Future<void> closeSpecificFolderDataStream() async {
+//   //   await _specificFolderData?.cancel();
+//   // }
+//   //
+//   // void closeAllStreamSubs() {
+//   //   _fileStreamData?.cancel();
+//   //   _recentFileData?.cancel();
+//   // }
