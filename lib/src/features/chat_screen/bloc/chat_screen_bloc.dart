@@ -303,6 +303,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     }
 
     currentStateModel = currentStateModel.copyWith(messages: listOfMessages);
+
     return currentStateModel;
   }
 
@@ -325,6 +326,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     switch (state) {
       case InitialChatScreenState():
         emit(ChatScreenStates.initial(currentStateModel));
+        break;
       case LoadingChatScreenState():
         emit(ChatScreenStates.loading(currentStateModel));
         break;
@@ -339,6 +341,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 
   @override
   Future<void> close() async {
+    add(const ChatScreenEvents.removeAllTempCreatedChatsEvent());
     await _pusherChannelsClient?.disconnect();
     _pusherChannelsClient?.dispose();
     await _channelSubscription?.cancel();

@@ -126,7 +126,13 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
                     // when you dispose main stream page
                     // it automatically finishes the chat.
                     // I wrote dispose code in main screen's dispose method
-                    Navigator.pop(context);
+                    context.read<VideoChatBloc>().add(
+                      VideoChatFeatureEvents.finishVideoChatEvent(
+                        popScreen: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    );
                   }
                 },
                 child: const SizedBox(

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
@@ -68,15 +69,18 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   final VideoChatFeatureRepo _iVideoChatFeatureRepo;
   final UserModel? _currentUser;
   final PusherClientService _pusherClientService;
+  final Logger _logger;
 
   VideoChatBloc({
     required VideoChatFeatureRepo iVideoChatFeatureRepo,
     required UserModel? currentUser,
     required PusherClientService pusherClientService,
     required VideoChatFeatureStates initialState,
+    required Logger logger,
   })  : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
         _currentUser = currentUser,
         _pusherClientService = pusherClientService,
+        _logger = logger,
         super(initialState) {
     //
 
@@ -154,6 +158,8 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     final resultOfJoining = await _iVideoChatFeatureRepo.videoChatEntrance(
       state.videoChatStateModel.currentVideoChatEntity!,
     );
+
+    _logger.log(Level.debug, "entrance to the chat: $resultOfJoining");
 
     var currentStateModel = state.videoChatStateModel.copyWith(
       chatStarted: resultOfJoining,

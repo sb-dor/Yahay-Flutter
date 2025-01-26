@@ -32,7 +32,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dependencyContainer = DependenciesScope.of(context, listen: false);
-    return Provider<ChatScreenBloc>(
+    return BlocProvider<ChatScreenBloc>(
       create: (context) => ChatScreenBlocFactory(
         dependencyContainer.authBloc.state.authStateModel.user,
         dependencyContainer.pusherClientService.options,
@@ -67,7 +67,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
     final dependencyContainer = DependenciesScope.of(context, listen: false);
     currentUser = dependencyContainer.authBloc.state.authStateModel.user;
 
-    _chatScreenBloc = Provider.of<ChatScreenBloc>(context, listen: false);
+    _chatScreenBloc = BlocProvider.of<ChatScreenBloc>(context, listen: false);
     _appThemeBloc = dependencyContainer.appThemeBloc;
     //
     //
@@ -81,8 +81,6 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
 
   @override
   void dispose() {
-    _chatScreenBloc.add(const ChatScreenEvents.removeAllTempCreatedChatsEvent());
-    _chatScreenBloc.close();
     _messageController.dispose();
     super.dispose();
   }
