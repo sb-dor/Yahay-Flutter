@@ -1,6 +1,6 @@
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
-import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
+import 'package:yahay/src/features/video_chat_feature/models/video_chat_model.dart';
 
 class VideoChatStateModel {
   final bool chatStarted;
@@ -15,9 +15,9 @@ class VideoChatStateModel {
 
   final UserModel? currentUser;
 
-  final VideoChatEntity? currentVideoChatEntity;
+  final VideoChatModel? currentVideoChatEntity;
 
-  final List<VideoChatEntity> videoChatEntities;
+  final List<VideoChatModel> videoChatEntities;
 
   const VideoChatStateModel({
     required this.chatStarted,
@@ -36,7 +36,7 @@ class VideoChatStateModel {
         hasVideo: true,
         cameraSwitched: false,
         currentVideoChatEntity: null,
-        videoChatEntities: <VideoChatEntity>[],
+        videoChatEntities: <VideoChatModel>[],
       );
 
   @override
@@ -85,8 +85,8 @@ class VideoChatStateModel {
     bool? cameraSwitched,
     ChatModel? chat,
     UserModel? currentUser,
-    VideoChatEntity? currentVideoChatEntity,
-    List<VideoChatEntity>? videoChatEntities,
+    VideoChatModel? currentVideoChatEntity,
+    List<VideoChatModel>? videoChatEntities,
   }) {
     return VideoChatStateModel(
       chatStarted: chatStarted ?? this.chatStarted,
@@ -121,8 +121,8 @@ class VideoChatStateModel {
       cameraSwitched: map['cameraSwitched'] as bool,
       chat: map['chat'] as ChatModel,
       currentUser: map['currentUser'] as UserModel,
-      currentVideoChatEntity: map['_currentVideoChatEntity'] as VideoChatEntity,
-      videoChatEntities: map['_videoChatEntities'] as List<VideoChatEntity>,
+      currentVideoChatEntity: map['_currentVideoChatEntity'] as VideoChatModel,
+      videoChatEntities: map['_videoChatEntities'] as List<VideoChatModel>,
     );
   }
 

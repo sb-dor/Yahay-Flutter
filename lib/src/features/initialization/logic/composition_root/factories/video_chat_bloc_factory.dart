@@ -3,10 +3,8 @@ import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/state_model/video_chat_state_model.dart';
 import 'package:yahay/src/features/video_chat_feature/bloc/video_chat_feature_bloc.dart';
-import 'package:yahay/src/features/video_chat_feature/data/repo/video_chat_feature_repo_impl.dart';
-import 'package:yahay/src/features/video_chat_feature/data/sources/video_chat_feature_data_source/impl/video_chat_feature_data_source_impl.dart';
-import 'package:yahay/src/features/video_chat_feature/data/sources/video_chat_feature_data_source/video_chat_feature_data_source.dart';
-import 'package:yahay/src/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
+import 'package:yahay/src/features/video_chat_feature/data/video_chat_feature_data_source.dart';
+import 'package:yahay/src/features/video_chat_feature/data/video_chat_feature_repo.dart';
 
 final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
   VideoChatBlocFactory(

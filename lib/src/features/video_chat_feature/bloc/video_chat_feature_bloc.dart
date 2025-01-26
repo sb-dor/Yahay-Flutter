@@ -7,8 +7,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
-import 'package:yahay/src/features/video_chat_feature/domain/entities/video_chat_entity.dart';
-import 'package:yahay/src/features/video_chat_feature/domain/repo/video_chat_feature_repo.dart';
+import 'package:yahay/src/features/video_chat_feature/data/video_chat_feature_repo.dart';
+import 'package:yahay/src/features/video_chat_feature/models/video_chat_model.dart';
 import 'package:yahay/src/features/video_chat_feature/webrtc_service/webrtc_laravel_service.dart';
 import 'state_model/video_chat_state_model.dart';
 
@@ -194,7 +194,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   ) async {
     try {
       debugPrint("coming somebody");
-      final videoChatEntity = VideoChatEntity(
+      final videoChatEntity = VideoChatModel(
         videoRenderer: RTCVideoRenderer(),
         chat: state.videoChatStateModel.chat,
         user: null,
@@ -292,7 +292,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     // helper initialization first
     _webrtcLaravelHelper = WebrtcLaravelService(pusherClientService);
 
-    final currentVideoChatEntity = VideoChatEntity(
+    final currentVideoChatEntity = VideoChatModel(
       videoRenderer: RTCVideoRenderer(),
       chat: state.videoChatStateModel.chat,
       user: _currentUser,

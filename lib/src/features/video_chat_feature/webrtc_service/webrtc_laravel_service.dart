@@ -288,7 +288,8 @@ class WebrtcLaravelService {
       //
       List<dynamic> listOfCandidates = mapOfData['candidates'];
 
-      List<Candidate> candidates = listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
+      List<CandidateModel> candidates =
+          listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
 
       for (final each in candidates) {
         await peerConnection?.addCandidate(RTCIceCandidate(
