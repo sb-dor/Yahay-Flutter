@@ -1,7 +1,7 @@
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core//models/user_model/user_model.dart';
+import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 class VideoChatModel {
   RTCVideoRenderer? videoRenderer;

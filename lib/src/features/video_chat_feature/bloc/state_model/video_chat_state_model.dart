@@ -66,11 +66,7 @@ class VideoChatStateModel {
 
   @override
   String toString() {
-    return 'VideoChatStateModel{' +
-        ' chatStarted: $chatStarted,' +
-        ' hasAudio: $hasAudio,' +
-        ' hasVideo: $hasVideo,' +
-        ' cameraSwitched: $cameraSwitched,' +
+    return 'VideoChatStateModel{' ' chatStarted: $chatStarted,' ' hasAudio: $hasAudio,' ' hasVideo: $hasVideo,' ' cameraSwitched: $cameraSwitched,' +
         ' chat: $chat,' +
         ' currentUser: $currentUser,' +
         ' _currentVideoChatEntity: $currentVideoChatEntity,' +

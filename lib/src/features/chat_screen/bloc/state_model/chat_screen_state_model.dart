@@ -49,10 +49,7 @@ class ChatScreenStateModel {
             ' messages: $messages,'
             ' currentChat: $currentChat,'
             ' pickedFile: $pickedFile,'
-            ' currentUser: $currentUser,' +
-        ' relatedUser: $relatedUser,' +
-        ' showEmojiPicker: $showEmojiPicker,' +
-        '}';
+            ' currentUser: $currentUser,' ' relatedUser: $relatedUser,' ' showEmojiPicker: $showEmojiPicker,' '}';
   }
 
   ChatScreenStateModel copyWith({

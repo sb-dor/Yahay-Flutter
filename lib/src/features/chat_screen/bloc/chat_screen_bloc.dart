@@ -9,8 +9,6 @@ import 'package:uuid/uuid.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
-import 'package:yahay/src/core/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core//models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_repo.dart';

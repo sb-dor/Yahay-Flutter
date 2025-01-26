@@ -19,7 +19,7 @@ class ChatsStateModel {
 
   @override
   String toString() {
-    return 'ChatsStateModel{' + ' chats: $chats,' + '}';
+    return 'ChatsStateModel{' ' chats: $chats,' '}';
   }
 
   ChatsStateModel copyWith({
