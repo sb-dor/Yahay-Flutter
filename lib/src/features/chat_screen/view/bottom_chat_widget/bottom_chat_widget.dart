@@ -107,11 +107,12 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                     right: 0,
                     child: IconButton(
                       onPressed: () {
+                        final dependencies = DependenciesScope.of(
+                          context,
+                          listen: false,
+                        );
                         final telegramFilePickerBloc = TelegramFilePickerBlocFactory(
-                          cameraHelperService: DependenciesScope.of(
-                            context,
-                            listen: false,
-                          ).cameraHelperService,
+                          cameraHelperService: dependencies.cameraHelperService,
                         ).create();
                         showModalBottomSheet(
                           isScrollControlled: true,

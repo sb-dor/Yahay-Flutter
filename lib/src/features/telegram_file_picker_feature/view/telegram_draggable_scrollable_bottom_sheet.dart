@@ -81,18 +81,14 @@ class _TelegramDraggableScrollableBottomSheetUIState
               child: Stack(
                 children: [
                   switch (state) {
-                    // TODO: Handle this case.
                     InitialPickerState() => const SizedBox(),
-                    // TODO: Handle this case.
-                    GalleryFilePickerState() => const SizedBox(),
-                    // TODO: Handle this case.
+                    GalleryFilePickerState() => TelegramGalleryFilePickerScreen(
+                        parentScrollController: scrollController,
+                      ),
                     FilesPickerState() => TelegramFilesPickerScreen(
                         parentScrollController: scrollController,
                       ),
-                    // TODO: Handle this case.
-                    MusicFilesPickerState() => TelegramGalleryFilePickerScreen(
-                        parentScrollController: scrollController,
-                      ),
+                    MusicFilesPickerState() => const SizedBox(),
                   },
                   AnimatedPositioned(
                     curve: Curves.fastOutSlowIn,

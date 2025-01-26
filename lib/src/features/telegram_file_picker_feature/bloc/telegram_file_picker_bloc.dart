@@ -530,6 +530,7 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     await _fileStreamData?.cancel();
     await _recentFileData?.cancel();
     await _specificFolderData?.cancel();
+    add(const TelegramFilePickerEvents.closePopupEvent());
     return super.close();
   }
 }

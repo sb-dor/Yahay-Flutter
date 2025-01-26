@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/core/global_usages/reusables/reusable_global_functions.dart';
 import 'package:yahay/src/core/utils/image_comporessor/image_compressor.dart';
@@ -22,13 +23,17 @@ mixin class RecentGalleyFileMixin {
     try {
       final PermissionsService permissionsService = PermissionsService();
 
-      final externalStoragePermission = await permissionsService.manageExternalStoragePermission();
+      // final externalStoragePermission = await permissionsService.manageExternalStoragePermission();
 
       final storagePermission = await permissionsService.storagePermission();
 
-      debugPrint("storage $storagePermission | external: $externalStoragePermission");
+      // debugPrint("storage $storagePermission | external: $externalStoragePermission");
 
-      if (!externalStoragePermission || !storagePermission) return;
+      if (
+          // !externalStoragePermission ||
+          !storagePermission) {
+        return;
+      }
 
       List<TelegramFileImageAssetEntity> toEncodeList = await _RecentFilesHelper(
         options: options,
@@ -178,40 +183,40 @@ class _GetRangedAssetFiles implements _RecentFilesHelper {
 
   @override
   Future<List<TelegramFileImageAssetEntity>> getAssets() async {
-    // var images = await PhotoManager.getAssetListRange(
-    //   start: start ?? 0,
-    //   end: end ?? 100,
-    // );
-    //
-    // List<TelegramFileImageAssetEntity> list = [];
-    //
-    // for (final image in images) {
-    //   final file = await image.file;
-    //   if (file == null) continue;
-    //   list.add(TelegramFileImageAssetEntity(file.absolute.path));
-    // }
-    return [];
+    var images = await PhotoManager.getAssetListRange(
+      start: start ?? 0,
+      end: end ?? 100,
+    );
+
+    List<TelegramFileImageAssetEntity> list = [];
+
+    for (final image in images) {
+      final file = await image.file;
+      if (file == null) continue;
+      list.add(TelegramFileImageAssetEntity(file.absolute.path));
+    }
+    return list;
   }
 }
 
 class _GetAllAssetFiles implements _RecentFilesHelper {
   @override
   Future<List<TelegramFileImageAssetEntity>> getAssets() async {
-    // var images = await PhotoManager.getAssetPathList();
-    // List<TelegramFileImageAssetEntity> list = [];
-    // for (final assetPath in images) {
-    //   // Fetch all assets in the album
-    //   final assets = await assetPath.getAssetListPaged(
-    //     page: 0, // Start with the first page
-    //     size: await assetPath.assetCountAsync, // Fetch all assets in one go
-    //   );
-    //
-    //   for (final asset in assets) {
-    //     final file = await asset.file;
-    //     if (file == null) continue;
-    //     list.add(TelegramFileImageAssetEntity(file.absolute.path));
-    //   }
-    // }
+    var images = await PhotoManager.getAssetPathList();
+    List<TelegramFileImageAssetEntity> list = [];
+    for (final assetPath in images) {
+      // Fetch all assets in the album
+      final assets = await assetPath.getAssetListPaged(
+        page: 0, // Start with the first page
+        size: await assetPath.assetCountAsync, // Fetch all assets in one go
+      );
+
+      for (final asset in assets) {
+        final file = await asset.file;
+        if (file == null) continue;
+        list.add(TelegramFileImageAssetEntity(file.absolute.path));
+      }
+    }
     return [];
   }
 }

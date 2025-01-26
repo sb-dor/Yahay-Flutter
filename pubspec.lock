@@ -330,10 +330,10 @@ packages:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: a7fd703482b391a87d60b6061d04dfdeab07826b96f9abd8f5ed98068acc0074
+      sha256: b37d37c2f912ad4e8ec694187de87d05de2a3cb82b465ff1f65f65a2d05de544
       url: "https://pub.dev"
     source: hosted
-    version: "10.1.2"
+    version: "11.2.1"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -362,10 +362,10 @@ packages:
     dependency: "direct main"
     description:
       name: emoji_picker_flutter
-      sha256: "63dee6be976c51c8b971eccbc73fc637f021b6b679eed1b2ec3b503947304734"
+      sha256: "9a44c102079891ea5877f78c70f2e3c6e9df7b7fe0a01757d31f1046eeaa016d"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.0"
+    version: "4.3.0"
   facebook_auth_desktop:
     dependency: transitive
     description:
@@ -1210,6 +1210,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  photo_manager:
+    dependency: "direct main"
+    description:
+      name: photo_manager
+      sha256: dc26184676b26d722d656073ca8fe29203d7631ec613aed1a9679de3aa1f52c2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.3"
   pinenacl:
     dependency: "direct dev"
     description:

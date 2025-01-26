@@ -7,10 +7,10 @@ class PermissionsService {
   }
 
   Future<bool> manageExternalStoragePermission() async {
-    bool permission = await Permission.manageExternalStorage.request().isGranted;
+    bool permission = await Permission.storage.request().isGranted;
     if (!permission) {
       await openAppSettings();
-      permission = await Permission.manageExternalStorage.request().isGranted;
+      permission = await Permission.storage.request().isGranted;
     }
     return permission;
   }
