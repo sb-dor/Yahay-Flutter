@@ -130,7 +130,7 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     on<TelegramFilePickerEvents>(
       (event, emit) => event.map(
         justEmitStateEvent: (event) => _emitter(
-          currentStateModel: state.telegramFilePickerStateModel,
+          currentStateModel: event.currentStateModel,
           emit: emit,
         ),
         initAllPicturesEvent: (event) => _initAllPictureEvents(event, emit),
@@ -194,6 +194,7 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
 
       _fileStreamData = _telegramFilePickerRepo.getRecentImagesAndVideos().listen(
         (value) {
+          debugPrint("any other image coming here brother: $value");
           add(TelegramFilePickerEvents.fileStreamHandlerEvent(value));
         },
       )..onDone(() {
@@ -228,6 +229,7 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     // _currentStateModel.clearRecentFiles();
     // _currentStateModel.clearRecentPagFiles();
     _recentFileData = _telegramFilePickerRepo.getRecentFiles().listen((e) {
+      debugPrint("coming any message here brother: $e");
       add(TelegramFilePickerEvents.recentFileStreamHandlerEvent(e));
     });
 
@@ -298,6 +300,7 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     Emitter<TelegramFilePickerStates> emit,
   ) async {
     if (event.file != null && event.file?.file != null) {
+      debugPrint("diving inside me brother: ${event.file?.file}");
       // it's not paginating logic
       // that is why this function should get stream of file
       // any time when it comes and
@@ -336,6 +339,9 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
         galleryPathFiles: galleryPathFiles,
       );
 
+      currentStateModel = addOnStreamOfValuesInPaginationList(
+        model,
+      );
       // yield* _currentStateModel.addOnStreamOfValuesInPaginationList(
       //   model,
       //   emitter: _emitter(),
@@ -644,6 +650,7 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     await _recentFileData?.cancel();
     await _specificFolderData?.cancel();
     add(const TelegramFilePickerEvents.closePopupEvent());
+    _openButtonSectionTimer?.cancel();
     return super.close();
   }
 }
