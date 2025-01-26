@@ -25,7 +25,7 @@ mixin class DownloadsPathFiles {
       //
       // if (!externalStoragePermission && !storagePermission) return;
 
-      Directory? downloadsDirectory = await getDownloadsDirectory();
+      Directory? downloadsDirectory = await getDownloadPath();
 
       // debugPrint("downloades dir: $downloadsDirectory");
 
@@ -95,5 +95,31 @@ mixin class DownloadsPathFiles {
     }
 
     receivingPort.send(Constants.killIsolate);
+  }
+
+  Future<Directory?> getDownloadPath() async {
+    Directory? downloadsDirectory;
+
+    if (Platform.isAndroid) {
+      // Define the Downloads path for Android
+      downloadsDirectory = Directory('/storage/emulated/0/Download');
+
+      // Check if the directory exists, and create it if it doesn't
+      if (!downloadsDirectory.existsSync()) {
+        try {
+          downloadsDirectory.createSync(recursive: true);
+          print("Downloads directory created at: ${downloadsDirectory.path}");
+        } catch (e) {
+          print("Error creating Downloads directory: $e");
+          return null;
+        }
+      }
+    } else if (Platform.isIOS) {
+      // On iOS, use Application Documents Directory
+      downloadsDirectory = await getApplicationDocumentsDirectory();
+      print("iOS does not have a dedicated Downloads folder like Android.");
+    }
+
+    return downloadsDirectory;
   }
 }

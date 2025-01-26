@@ -21,15 +21,6 @@ class TelegramStorageFileWidget extends StatefulWidget {
 }
 
 class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
-  late TelegramFilePickerStateModel _telegramFilePickerStateModel;
-
-  @override
-  void initState() {
-    super.initState();
-    _telegramFilePickerStateModel =
-        context.read<TelegramFilePickerBloc>().state.telegramFilePickerStateModel;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -42,8 +33,8 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
           borderRadius: BorderRadius.circular(10),
           onTap: () {
             context.read<TelegramFilePickerBloc>().add(
-              TelegramFilePickerEvents.selectGalleryFileEvent(item),
-            );
+                  TelegramFilePickerEvents.selectGalleryFileEvent(item),
+                );
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
@@ -96,32 +87,39 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                      Positioned(
-                        bottom: -10,
-                        right: 0,
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 150),
-                          opacity:
-                              _telegramFilePickerStateModel.isFileInsidePickedFiles(item) ? 1 : 0,
-                          child: AnimatedScale(
-                            scale:
-                                _telegramFilePickerStateModel.isFileInsidePickedFiles(item) ? 1 : 0,
-                            duration: const Duration(milliseconds: 150),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: const Center(
-                                child: Icon(
-                                  Icons.check,
-                                  size: 18,
-                                  color: Colors.white,
+                      BlocBuilder<TelegramFilePickerBloc, TelegramFilePickerStates>(
+                        builder: (context, state) {
+                          final telegramFilePickerStateModel = state.telegramFilePickerStateModel;
+                          return Positioned(
+                            bottom: -10,
+                            right: 0,
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 150),
+                              opacity: telegramFilePickerStateModel.isFileInsidePickedFiles(item)
+                                  ? 1
+                                  : 0,
+                              child: AnimatedScale(
+                                scale: telegramFilePickerStateModel.isFileInsidePickedFiles(item)
+                                    ? 1
+                                    : 0,
+                                duration: const Duration(milliseconds: 150),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.check,
+                                      size: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ],
                   ),

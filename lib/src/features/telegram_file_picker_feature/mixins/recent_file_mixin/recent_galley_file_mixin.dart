@@ -49,7 +49,7 @@ mixin class RecentGalleyFileMixin {
         }).toList(),
       };
 
-      debugPrint("type of isolate image: ${jsonEncode(toIsolateImages)}");
+      debugPrint("type of isolate image: $toIsolateImages");
 
       Isolate.spawn(_isolateFileSender, [
         rootIsolateToken,
@@ -217,6 +217,6 @@ class _GetAllAssetFiles implements _RecentFilesHelper {
         list.add(TelegramFileImageAssetEntity(file.absolute.path));
       }
     }
-    return [];
+    return list;
   }
 }
