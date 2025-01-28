@@ -64,6 +64,8 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
       googleSignIn: GoogleSignIn(),
       facebookAuth: FacebookAuth.instance,
       sharedPreferHelper: _sharedPreferHelper,
+      logger: _logger,
+      dioSettings: _dioSettings,
     ).create();
 
     final cameraHelperService = CameraHelperService();
@@ -73,6 +75,7 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
 
     final addContactBloc = AddContactBlocFactory(
       logger: _logger,
+      dioSettings: _dioSettings,
     ).create();
 
     final pusherClientService = PusherClientService();

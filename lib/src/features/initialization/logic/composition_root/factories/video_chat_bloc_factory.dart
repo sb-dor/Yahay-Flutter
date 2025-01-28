@@ -1,4 +1,5 @@
 import 'package:logger/logger.dart';
+import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
@@ -8,21 +9,28 @@ import 'package:yahay/src/features/video_chat_feature/data/video_chat_feature_da
 import 'package:yahay/src/features/video_chat_feature/data/video_chat_feature_repo.dart';
 
 final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
-  VideoChatBlocFactory(
-    this._user,
-    this._pusherClientService,
-    this._logger,
-  );
+  VideoChatBlocFactory({
+    required final UserModel? user,
+    required final PusherClientService pusherClientService,
+    required final Logger logger,
+    required final DioSettings dioSettings,
+  })  : _user = user,
+        _pusherClientService = pusherClientService,
+        _logger = logger,
+        _dioSettings = dioSettings;
 
   final UserModel? _user;
   final PusherClientService _pusherClientService;
   final Logger _logger;
+  final DioSettings _dioSettings;
 
   @override
   VideoChatBloc create() {
     //
 
-    final VideoChatFeatureDataSource videoChatFeatureDataSource = VideoChatFeatureDataSourceImpl();
+    final VideoChatFeatureDataSource videoChatFeatureDataSource = VideoChatFeatureDataSourceImpl(
+      dioHelper: _dioSettings,
+    );
 
     final VideoChatFeatureRepo videoChatFeatureRepo = VideoChatFeatureRepoImpl(
       videoChatFeatureDataSource,
@@ -36,6 +44,7 @@ final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
       pusherClientService: _pusherClientService,
       initialState: initialState,
       logger: _logger,
+      dioSettings: _dioSettings,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/chat_screen/bloc/state_model/chat_screen_state_model.dart';
@@ -13,19 +14,27 @@ import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_repo.dart
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 
 final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
-  final UserModel? user;
-  final PusherChannelsOptions _channelsOptions;
+  ChatScreenBlocFactory({
+    required final UserModel? user,
+    required final PusherChannelsOptions channelsOptions,
+    required final DioSettings dioSettings,
+  })  : _user = user,
+        _channelsOptions = channelsOptions,
+        _dioSettings = dioSettings;
 
-  ChatScreenBlocFactory(
-    this.user,
-    this._channelsOptions,
-  );
+  final UserModel? _user;
+  final PusherChannelsOptions _channelsOptions;
+  final DioSettings _dioSettings;
 
   @override
   ChatScreenBloc create() {
-    final ChatScreenMessageDataSource messageDataSource = ChatScreenMessageDataSourceImpl();
+    final ChatScreenMessageDataSource messageDataSource = ChatScreenMessageDataSourceImpl(
+      dioSettings: _dioSettings,
+    );
 
-    final ChatScreenChatDataSource chatScreenChatDataSource = ChatScreenChatDataSourceImpl();
+    final ChatScreenChatDataSource chatScreenChatDataSource = ChatScreenChatDataSourceImpl(
+      dioSettings: _dioSettings,
+    );
 
     final ChatScreenRepo chatScreenRepo = ChatScreenRepoImpl(messageDataSource);
 
@@ -38,7 +47,7 @@ final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
     return ChatScreenBloc(
       chatScreenRepo: chatScreenRepo,
       chatScreenChatRepo: chatScreenChatRepo,
-      currentUser: user,
+      currentUser: _user,
       options: _channelsOptions,
       initialState: initialState,
     );

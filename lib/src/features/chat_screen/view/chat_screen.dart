@@ -34,8 +34,9 @@ class ChatScreen extends StatelessWidget {
     final dependencyContainer = DependenciesScope.of(context, listen: false);
     return BlocProvider<ChatScreenBloc>(
       create: (context) => ChatScreenBlocFactory(
-        dependencyContainer.authBloc.state.authStateModel.user,
-        dependencyContainer.pusherClientService.options,
+        user: dependencyContainer.authBloc.state.authStateModel.user,
+        channelsOptions: dependencyContainer.pusherClientService.options,
+        dioSettings: dependencyContainer.dioSettings,
       ).create(),
       child: _ChatScreenUI(chat: chat, user: user),
     );
@@ -100,7 +101,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
           case InitialChatScreenState():
             return const SizedBox();
           case LoadingChatScreenState():
-            return  const LoadingMessagesWidget();
+            return const LoadingMessagesWidget();
           case ErrorChatScreenState():
             return const Center(
               child: Text(Constants.somethingWentWrong),

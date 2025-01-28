@@ -50,11 +50,11 @@ class DependencyContainer {
   });
 
   void initChatBlocAfterAuthorization() {
-    debugPrint("user after check auth state: ${ authBloc.state.authStateModel.user}");
     chatsBloc = ChatsBlocFactory(
       currentUser: authBloc.state.authStateModel.user,
       pusherChannelsOption: pusherClientService.options,
       logger: logger,
+      dioSettings: dioSettings,
     ).create();
   }
 }

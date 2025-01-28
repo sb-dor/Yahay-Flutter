@@ -1,5 +1,6 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
+import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
 import 'package:yahay/src/features/chats/bloc/state_model/chats_state_model.dart';
@@ -10,22 +11,26 @@ import 'package:yahay/src/features/chats/domain/repo/chats_repo.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 
 final class ChatsBlocFactory extends Factory<ChatsBloc> {
+  ChatsBlocFactory({
+    required final UserModel? currentUser,
+    required final PusherChannelsOptions pusherChannelsOption,
+    required final Logger logger,
+    required final DioSettings dioSettings,
+  })  : _currentUser = currentUser,
+        _pusherChannelsOptions = pusherChannelsOption,
+        _logger = logger,
+        _dioSettings = dioSettings;
+
   final UserModel? _currentUser;
   final PusherChannelsOptions _pusherChannelsOptions;
   final Logger _logger;
-
-  ChatsBlocFactory(
-      {required UserModel? currentUser,
-      required PusherChannelsOptions pusherChannelsOption,
-      required Logger logger,
-      r})
-      : _currentUser = currentUser,
-        _pusherChannelsOptions = pusherChannelsOption,
-        _logger = logger;
+  final DioSettings _dioSettings;
 
   @override
   ChatsBloc create() {
-    final ChatsDataSource chatsDataSource = ChatsDataSourceImpl();
+    final ChatsDataSource chatsDataSource = ChatsDataSourceImpl(
+      dioSettings: _dioSettings,
+    );
 
     final ChatsRepo chatsRepo = ChatsRepoImpl(chatsDataSource);
 

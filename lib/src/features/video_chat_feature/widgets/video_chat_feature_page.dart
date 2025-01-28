@@ -25,9 +25,10 @@ class VideoChatFeaturePage extends StatelessWidget {
     final depContainer = DependenciesScope.of(context, listen: false);
     return BlocProvider(
       create: (_) => VideoChatBlocFactory(
-        depContainer.authBloc.state.authStateModel.user,
-        depContainer.pusherClientService,
-        depContainer.logger,
+        user: depContainer.authBloc.state.authStateModel.user,
+        pusherClientService: depContainer.pusherClientService,
+        logger: depContainer.logger,
+        dioSettings: depContainer.dioSettings,
       ).create(),
       child: _VideoChatFeaturePageUI(chat: chat),
     );
