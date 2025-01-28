@@ -14,12 +14,16 @@ typedef LaravelStreamStateCallback = void Function(MediaStream stream);
 typedef SetStateCallbackSignal = void Function();
 
 class WebrtcLaravelService {
+  //
+  WebrtcLaravelService({
+    required final PusherClientService pusherClientService,
+    required DioSettings dioSettings,
+  })  : _pusherClientService = pusherClientService,
+        _dioHelper = dioSettings;
+
+  final DioSettings _dioHelper;
+  final PusherClientService _pusherClientService;
   final String _url = "http://192.168.100.3:8000/api";
-  final _dioHelper = DioSettings.instance;
-
-  final PusherClientService pusherClientService;
-
-  WebrtcLaravelService(this.pusherClientService);
 
   // configuration for iceServers
   // they can be used for free
@@ -113,7 +117,7 @@ class WebrtcLaravelService {
       ///
       ///
       try {
-        final pusherService = await pusherClientService.subscriptionCreator();
+        final pusherService = await _pusherClientService.subscriptionCreator();
 
         final channel = pusherService.publicChannel(Constants.webRtcChannelName);
 
@@ -300,7 +304,7 @@ class WebrtcLaravelService {
       }
 
       //
-      final pusherService = await pusherClientService.subscriptionCreator();
+      final pusherService = await _pusherClientService.subscriptionCreator();
 
       final channel = pusherService.publicChannel(Constants.webRtcChannelName);
 

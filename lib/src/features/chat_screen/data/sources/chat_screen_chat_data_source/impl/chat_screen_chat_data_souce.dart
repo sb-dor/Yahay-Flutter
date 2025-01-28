@@ -10,10 +10,15 @@ import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_chat_data_source/chat_screen_chat_data_souce.dart';
 
 class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
-  final _dioSettings = DioSettings.instance;
+  //
+  ChatScreenChatDataSourceImpl({
+    required final DioSettings dioSettings,
+  }) : _dioSettings = dioSettings;
 
-  static const String _getChatUrl = "${AppHttpRoutes.chatsPrefix}/get/chat/on/entrance";
-  static const String _deleteTempCreatedChatsUrl =
+  final DioSettings _dioSettings;
+
+  final String _getChatUrl = "${AppHttpRoutes.chatsPrefix}/get/chat/on/entrance";
+  final String _deleteTempCreatedChatsUrl =
       "${AppHttpRoutes.chatsPrefix}/delete/temp/created/chats";
 
   @override

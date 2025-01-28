@@ -2,6 +2,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
+import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
@@ -13,20 +14,25 @@ import 'package:yahay/src/features/initialization/models/dependency_container.da
 
 final class CompositionRoot extends AsyncFactory<CompositionResult> {
   //
-  final Logger _logger;
-  final SharedPreferHelper _sharedPreferHelper;
 
   CompositionRoot({
     required Logger logger,
     required SharedPreferHelper sharedPreferHelper,
+    required DioSettings dioSettings,
   })  : _logger = logger,
-        _sharedPreferHelper = sharedPreferHelper;
+        _sharedPreferHelper = sharedPreferHelper,
+        _dioSettings = dioSettings;
+
+  final Logger _logger;
+  final SharedPreferHelper _sharedPreferHelper;
+  final DioSettings _dioSettings;
 
   @override
   Future<CompositionResult> create() async {
     final dependencyContainer = await DependencyContainerFactory(
       logger: _logger,
       sharedPreferHelper: _sharedPreferHelper,
+      dioSettings: _dioSettings,
     ).create();
 
     return CompositionResult(dependencyContainer);
@@ -40,14 +46,17 @@ class CompositionResult {
 }
 
 final class DependencyContainerFactory extends AsyncFactory<DependencyContainer> {
-  final Logger _logger;
-  final SharedPreferHelper _sharedPreferHelper;
-
   DependencyContainerFactory({
     required Logger logger,
     required SharedPreferHelper sharedPreferHelper,
+    required DioSettings dioSettings,
   })  : _logger = logger,
-        _sharedPreferHelper = sharedPreferHelper;
+        _sharedPreferHelper = sharedPreferHelper,
+        _dioSettings = dioSettings;
+
+  final Logger _logger;
+  final SharedPreferHelper _sharedPreferHelper;
+  final DioSettings _dioSettings;
 
   @override
   Future<DependencyContainer> create() async {
@@ -71,15 +80,17 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
     await pusherClientService.init();
 
     return DependencyContainer(
-        logger: _logger,
-        appThemeBloc: AppThemeBloc(),
-        authBloc: authBloc,
-        profileBloc: profileBloc,
-        addContactBloc: addContactBloc,
-        appRouter: AppRouter(),
-        sharedPreferHelper: _sharedPreferHelper,
-        pusherClientService: pusherClientService,
-        cameraHelperService: cameraHelperService);
+      logger: _logger,
+      sharedPreferHelper: _sharedPreferHelper,
+      dioSettings: _dioSettings,
+      appThemeBloc: AppThemeBloc(),
+      authBloc: authBloc,
+      profileBloc: profileBloc,
+      addContactBloc: addContactBloc,
+      appRouter: AppRouter(),
+      pusherClientService: pusherClientService,
+      cameraHelperService: cameraHelperService,
+    );
   }
 }
 

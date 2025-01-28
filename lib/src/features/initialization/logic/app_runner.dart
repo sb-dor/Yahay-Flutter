@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,17 @@ class AppRunner with FolderCreator {
       logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
     ).create();
 
+    final sharedPreferences = SharedPreferHelper();
+    await sharedPreferences.initSharedPrefer();
+
+    final dioSettings = DioSettings(
+      sharedPreferHelper: sharedPreferences,
+      logger: logger,
+      dio: Dio(),
+    );
+
+    await dioSettings.initOptions();
+
     await runZonedGuarded(
       () async {
         final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -39,9 +51,6 @@ class AppRunner with FolderCreator {
             Bloc.observer = BlocObserverManager(logger);
 
             await DotEnvHelper.instance.initEnv();
-            final sharedPreferences = SharedPreferHelper();
-            await sharedPreferences.initSharedPrefer();
-            await DioSettings.instance.init(sharedPreferences);
 
             await Firebase.initializeApp(
               options: DefaultFirebaseOptions.currentPlatform,
@@ -50,6 +59,7 @@ class AppRunner with FolderCreator {
             FlutterError.onError = (errorDetails) {
               FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
             };
+
             PlatformDispatcher.instance.onError = (error, stack) {
               FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
               return true;
@@ -60,11 +70,13 @@ class AppRunner with FolderCreator {
             final compositionRoot = await CompositionRoot(
               logger: logger,
               sharedPreferHelper: sharedPreferences,
+              dioSettings: dioSettings,
             ).create();
 
             if (kDebugMode) {
               await DebugImageCreatorInAppsFolder(
-                compositionRoot.dependencies.sharedPreferHelper,
+                sharedPreferHelper: compositionRoot.dependencies.sharedPreferHelper,
+                dioSettings: dioSettings,
               ).createImagesInAppsFolder();
             }
 

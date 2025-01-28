@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/app_settings/dio/http_status_codes.dart';
@@ -10,11 +10,20 @@ import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart'
 import 'package:yahay/src/features/authorization/data/sources/laravel/laravel_auth_data_source.dart';
 
 class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
-  final _dioSettings = DioSettings.instance;
-  final _screenMessaging = ScreenMessaging.instance;
+  LaravelAuthDataSourceImpl({
+    required final SharedPreferHelper sharedPreferences,
+    required final Logger logger,
+    required final DioSettings dioSettings,
+    required final ScreenMessaging screenMessaging,
+  })  : _sharedPreferences = sharedPreferences,
+        _logger = logger,
+        _dioSettings = dioSettings,
+        _screenMessaging = screenMessaging;
 
   final SharedPreferHelper _sharedPreferences;
-  LaravelAuthDataSourceImpl(this._sharedPreferences);
+  final Logger _logger;
+  final DioSettings _dioSettings;
+  final ScreenMessaging _screenMessaging;
 
   final String _checkAuth = "/check-auth";
   final String _register = "/register";
@@ -28,7 +37,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       final response = await _dioSettings.dio.get(url);
 
-      debugPrint("check auth response: ${response.data}");
+      _logger.log(Level.debug, "check auth response: ${response.data}");
 
       if (response.statusCode != HttpStatusCodes.success) return null;
 
@@ -42,7 +51,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       return UserModel.fromJson(json['user']);
     } catch (e) {
-      debugPrint("error is: $e");
+      _logger.log(Level.debug, "error is: $e");
       return null;
     }
   }
@@ -62,7 +71,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       final response = await _dioSettings.dio.post(url, data: body);
 
-      debugPrint("login response: ${response.data} | ${response.data.runtimeType}");
+      _logger.log(Level.debug, "login response: ${response.data} | ${response.data.runtimeType}");
 
       if (response.statusCode != HttpStatusCodes.success) return null;
 
@@ -85,16 +94,16 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
-        print(e.response?.data);
-        print(e.response?.headers);
-        print(e.response?.requestOptions);
+        _logger.log(Level.debug, e.response?.data);
+        _logger.log(Level.debug, e.response?.headers);
+        _logger.log(Level.debug, e.response?.requestOptions);
       } else {
         // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
+        _logger.log(Level.debug, e.requestOptions);
+        _logger.log(Level.debug, e.message);
       }
     } catch (e) {
-      debugPrint("login error is $e");
+      _logger.log(Level.debug, "login error is $e");
       return null;
     }
     return null;
@@ -117,7 +126,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       final response = await _dioSettings.dio.post(url, data: body);
 
-      debugPrint("register response: ${response.realUri.path} | ${response.data}");
+      _logger.log(Level.debug, "register response: ${response.realUri.path} | ${response.data}");
 
       if (response.statusCode != HttpStatusCodes.success) return null;
 
@@ -137,7 +146,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       return UserModel.fromJson(json['user']);
     } catch (e) {
-      debugPrint("register error is $e");
+      _logger.log(Level.debug, "register error is $e");
       return null;
     }
   }
@@ -149,7 +158,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       final response = await _dioSettings.dio.delete(url);
 
-      debugPrint("logout response: ${response.data}");
+      _logger.log(Level.debug, "logout response: ${response.data}");
 
       if (response.statusCode != HttpStatusCodes.success) return false;
 
@@ -164,7 +173,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       return false;
     } catch (e) {
-      debugPrint("logout error is: $e");
+      _logger.log(Level.debug, "logout error is: $e");
       return false;
     }
   }

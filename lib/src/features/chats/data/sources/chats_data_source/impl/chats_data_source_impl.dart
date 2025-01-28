@@ -8,9 +8,14 @@ import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/features/chats/data/sources/chats_data_source/chats_data_source.dart';
 
 class ChatsDataSourceImpl implements ChatsDataSource {
-  final _dioHelper = DioSettings.instance;
+  //
+  ChatsDataSourceImpl({
+    required final DioSettings dioSettings,
+  }) : _dioHelper = dioSettings;
 
-  static const String _getUserChatsUrl = "${AppHttpRoutes.chatsPrefix}/get/chats";
+  final DioSettings _dioHelper;
+
+  final String _getUserChatsUrl = "${AppHttpRoutes.chatsPrefix}/get/chats";
 
   @override
   Future<List<ChatModel>> chats() async {

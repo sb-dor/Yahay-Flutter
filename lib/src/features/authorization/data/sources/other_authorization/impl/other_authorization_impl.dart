@@ -12,21 +12,25 @@ import 'package:yahay/src/features/authorization/data/sources/other_authorizatio
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
-  final DioSettings _dioSettings = DioSettings.instance;
-  final String _googleAuthPath = "${AppHttpRoutes.authPrefix}/google-auth";
-  final String _facebookAuthPath = "${AppHttpRoutes.authPrefix}/facebook-auth";
-
-  final GoogleSignIn _googleSignIn;
-  final FacebookAuth _facebookAuth;
-  final SharedPreferHelper _sharedPreferHelper;
-
+  //
   OtherAuthorizationImpl({
     required final GoogleSignIn googleSignIn,
     required final FacebookAuth facebookAuth,
     required final SharedPreferHelper sharedPreferHelper,
+    required final DioSettings dioSettings,
   })  : _googleSignIn = googleSignIn,
         _facebookAuth = facebookAuth,
-        _sharedPreferHelper = sharedPreferHelper;
+        _sharedPreferHelper = sharedPreferHelper,
+        _dioSettings = dioSettings;
+
+  final GoogleSignIn _googleSignIn;
+  final FacebookAuth _facebookAuth;
+  final SharedPreferHelper _sharedPreferHelper;
+  final DioSettings _dioSettings;
+
+  final String _googleAuthPath = "${AppHttpRoutes.authPrefix}/google-auth";
+
+  final String _facebookAuthPath = "${AppHttpRoutes.authPrefix}/facebook-auth";
 
   @override
   Future<UserModel?> faceBookAuth() async {

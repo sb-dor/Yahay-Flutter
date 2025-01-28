@@ -15,13 +15,18 @@ abstract class AddContactSource {
 
 class AddContactSourceImpl implements AddContactSource {
   //
-  AddContactSourceImpl({required Logger logger}) : _logger = logger;
+  AddContactSourceImpl({
+    required final Logger logger,
+    required final DioSettings dioSettings,
+  })  : _logger = logger,
+        _dioSettings = dioSettings;
 
   final Logger _logger;
 
-  final DioSettings _dioSettings = DioSettings.instance;
+  final DioSettings _dioSettings;
 
   final String _searchContactUrl = "${AppHttpRoutes.contactsPrefix}/search";
+
   final String _addContactUrl = "${AppHttpRoutes.contactsPrefix}/add-contact";
 
   @override

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
+import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
@@ -70,17 +71,20 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   final UserModel? _currentUser;
   final PusherClientService _pusherClientService;
   final Logger _logger;
+  final DioSettings _dioSettings;
 
   VideoChatBloc({
-    required VideoChatFeatureRepo iVideoChatFeatureRepo,
-    required UserModel? currentUser,
-    required PusherClientService pusherClientService,
-    required VideoChatFeatureStates initialState,
-    required Logger logger,
+    required final VideoChatFeatureRepo iVideoChatFeatureRepo,
+    required final UserModel? currentUser,
+    required final PusherClientService pusherClientService,
+    required final VideoChatFeatureStates initialState,
+    required final Logger logger,
+    required final DioSettings dioSettings,
   })  : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
         _currentUser = currentUser,
         _pusherClientService = pusherClientService,
         _logger = logger,
+        _dioSettings = dioSettings,
         super(initialState) {
     //
 
@@ -113,7 +117,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
 
-    final currentChatVideoEntity = await _initLocalRenderer(_pusherClientService);
+    final currentChatVideoEntity = await _initLocalRenderer();
 
     currentStateModel = currentStateModel.copyWith(
       currentVideoChatEntity: currentChatVideoEntity,
@@ -298,9 +302,12 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     return true;
   }
 
-  Future<VideoChatModel> _initLocalRenderer(PusherClientService pusherClientService) async {
+  Future<VideoChatModel> _initLocalRenderer() async {
     // helper initialization first
-    _webrtcLaravelHelper = WebrtcLaravelService(pusherClientService);
+    _webrtcLaravelHelper = WebrtcLaravelService(
+      pusherClientService: _pusherClientService,
+      dioSettings: _dioSettings,
+    );
 
     final currentVideoChatEntity = VideoChatModel(
       videoRenderer: RTCVideoRenderer(),

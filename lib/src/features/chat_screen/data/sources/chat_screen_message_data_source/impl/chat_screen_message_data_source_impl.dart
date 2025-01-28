@@ -10,7 +10,12 @@ import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_message_data_source/chat_screen_message_data_source.dart';
 
 class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
-  final _dioSettings = DioSettings.instance;
+  //
+  ChatScreenMessageDataSourceImpl({
+    required final DioSettings dioSettings,
+  }) : _dioSettings = dioSettings;
+
+  final DioSettings _dioSettings;
 
   static const String _messageSendUrl = "${AppHttpRoutes.chatsPrefix}/message/handler";
 

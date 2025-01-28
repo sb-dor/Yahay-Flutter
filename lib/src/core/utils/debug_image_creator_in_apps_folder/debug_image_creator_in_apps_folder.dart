@@ -9,13 +9,18 @@ import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_cr
 
 class DebugImageCreatorInAppsFolder with FolderCreator {
   //
-  static const String _key = "generated_images_in_folder";
+
+  DebugImageCreatorInAppsFolder({
+    required final SharedPreferHelper sharedPreferHelper,
+    required final DioSettings dioSettings,
+  })  : _sharedPreferHelper = sharedPreferHelper,
+        _dioSettings = dioSettings;
 
   final SharedPreferHelper _sharedPreferHelper;
 
-  final DioSettings _dioSettings = DioSettings.instance;
+  final DioSettings _dioSettings;
 
-  DebugImageCreatorInAppsFolder(this._sharedPreferHelper);
+  final String _key = "generated_images_in_folder";
 
   int get _randomInt {
     Random rnd = Random();

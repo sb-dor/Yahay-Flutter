@@ -25,7 +25,11 @@ abstract interface class VideoChatFeatureDataSource {
 }
 
 class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
-  final _dioHelper = DioSettings.instance;
+  //
+  VideoChatFeatureDataSourceImpl({required DioSettings dioHelper}) : _dioHelper = dioHelper;
+
+  final DioSettings _dioHelper;
+
   final _joinChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
   final _startVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/start/videochat";
   final _leaveVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
