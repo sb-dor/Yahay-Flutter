@@ -53,7 +53,7 @@ final class RestClientDio extends RestClientBase {
         exception = DioExceptionHandler(error);
       }
 
-      Error.throwWithStackTrace(error, stackTrace);
+      Error.throwWithStackTrace(exception, stackTrace);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
     }
