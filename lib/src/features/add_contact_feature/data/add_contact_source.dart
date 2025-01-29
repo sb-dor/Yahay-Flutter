@@ -4,7 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
-import 'package:yahay/src/core/app_settings/dio/http_status_codes.dart';
+import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 abstract class AddContactSource {

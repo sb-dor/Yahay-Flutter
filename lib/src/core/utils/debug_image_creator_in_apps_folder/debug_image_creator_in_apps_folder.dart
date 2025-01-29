@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
-import 'package:yahay/src/core/app_settings/dio/http_status_codes.dart';
+import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
 
