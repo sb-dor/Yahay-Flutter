@@ -43,6 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final dependencies = DependenciesScope.of(context, listen: false);
     return BlocConsumer<AuthBloc, AuthStates>(
         bloc: _authBloc,
         listener: (context, state) {
@@ -120,8 +121,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               password: _passwordController.text,
                               userName: _userNameController.text,
                               initChatsBloc: () {
-                                DependenciesScope.of(context, listen: false)
-                                    .initChatBlocAfterAuthorization();
+                                dependencies.initChatBlocAfterAuthorization();
+                              },
+                              initDioOptions: () async {
+                                await dependencies.dioSettings.initOptions();
                               },
                             ),
                           ),
@@ -188,8 +191,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               onTap: () => _authBloc.add(
                                 AuthEvents.googleAuth(
                                   initChatsBloc: () {
-                                    DependenciesScope.of(context, listen: false)
-                                        .initChatBlocAfterAuthorization();
+                                    dependencies.initChatBlocAfterAuthorization();
+                                  },
+                                  initDioOptions: () async {
+                                    await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),
@@ -206,8 +211,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               onTap: () => _authBloc.add(
                                 AuthEvents.facebookAuth(
                                   initChatsBloc: () {
-                                    DependenciesScope.of(context, listen: false)
-                                        .initChatBlocAfterAuthorization();
+                                    dependencies.initChatBlocAfterAuthorization();
+                                  },
+                                  initDioOptions: () async {
+                                    await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),

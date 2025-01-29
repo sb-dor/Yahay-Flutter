@@ -62,7 +62,6 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
     return AuthBloc(
       authorizationRepo: authorizationRepo,
       otherAuthorizationRepo: otherAuthorizationRepo,
-      sharedPreferHelper: _sharedPreferHelper,
       initialState: initialState,
     );
   }

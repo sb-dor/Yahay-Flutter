@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -54,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final dependencies = DependenciesScope.of(context, listen: false);
     return BlocConsumer<AuthBloc, AuthStates>(
         listener: (context, state) {
           if (state is AuthorizedStateOnAuthStates) {
@@ -144,8 +144,10 @@ class _LoginPageState extends State<LoginPage> {
                               emailOrUserName: _emailOrUserNameController.text,
                               password: _passwordController.text,
                               initChatsBloc: () {
-                                DependenciesScope.of(context, listen: false)
-                                    .initChatBlocAfterAuthorization();
+                                dependencies.initChatBlocAfterAuthorization();
+                              },
+                              initDioOptions: () async {
+                                await dependencies.dioSettings.initOptions();
                               },
                             ),
                           ),
@@ -212,8 +214,11 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () => _authBloc.add(
                                 AuthEvents.googleAuth(
                                   initChatsBloc: () {
-                                    DependenciesScope.of(context, listen: false)
+                                    dependencies
                                         .initChatBlocAfterAuthorization();
+                                  },
+                                  initDioOptions: () async {
+                                    await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),
@@ -230,8 +235,11 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () => _authBloc.add(
                                 AuthEvents.facebookAuth(
                                   initChatsBloc: () {
-                                    DependenciesScope.of(context, listen: false)
+                                    dependencies
                                         .initChatBlocAfterAuthorization();
+                                  },
+                                  initDioOptions: () async {
+                                    await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),

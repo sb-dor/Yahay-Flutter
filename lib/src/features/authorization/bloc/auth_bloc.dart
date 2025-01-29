@@ -11,23 +11,29 @@ part 'auth_bloc.freezed.dart';
 @immutable
 @freezed
 class AuthEvents with _$AuthEvents {
-  const factory AuthEvents.googleAuth({required final void Function() initChatsBloc}) =
-      _GoogleAuthEventOnAuthEvents;
+  const factory AuthEvents.googleAuth({
+    required final void Function() initChatsBloc,
+    required final Future<void> Function() initDioOptions,
+  }) = _GoogleAuthEventOnAuthEvents;
 
-  const factory AuthEvents.facebookAuth({required final void Function() initChatsBloc}) =
-      _FacebookAuthEventsAuthEvents;
+  const factory AuthEvents.facebookAuth({
+    required final void Function() initChatsBloc,
+    required final Future<void> Function() initDioOptions,
+  }) = _FacebookAuthEventsAuthEvents;
 
   const factory AuthEvents.registerEvent({
     required final String email,
     required final String password,
     required final String userName,
     required final void Function() initChatsBloc,
+    required final Future<void> Function() initDioOptions,
   }) = _RegisterEventOnAuthEvents;
 
   const factory AuthEvents.loginEvent({
     required final String emailOrUserName,
     required final String password,
     required final void Function() initChatsBloc,
+    required final Future<void> Function() initDioOptions,
   }) = _LoginEventOnAuthEvents;
 
   const factory AuthEvents.checkAuthEvent({
@@ -58,16 +64,13 @@ sealed class AuthStates with _$AuthStates {
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   final AuthorizationRepo _iAuthorizationRepo;
   final OtherAuthorizationRepo _iOtherAuthorizationRepo;
-  final SharedPreferHelper _sharedPreferHelper;
 
   AuthBloc({
     required AuthorizationRepo authorizationRepo,
     required OtherAuthorizationRepo otherAuthorizationRepo,
-    required SharedPreferHelper sharedPreferHelper,
     required AuthStates initialState,
   })  : _iAuthorizationRepo = authorizationRepo,
         _iOtherAuthorizationRepo = otherAuthorizationRepo,
-        _sharedPreferHelper = sharedPreferHelper,
         super(initialState) {
     //
     //
@@ -102,9 +105,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await DioSettings.instance.updateDio(
-        _sharedPreferHelper,
-      );
+      await event.initDioOptions();
 
       emit(AuthStates.authorized(currentStateModel));
 
@@ -131,9 +132,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await DioSettings.instance.updateDio(
-        _sharedPreferHelper,
-      );
+      await event.initDioOptions();
 
       emit(AuthStates.authorized(currentStateModel));
 
@@ -175,10 +174,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await DioSettings.instance.updateDio(
-        _sharedPreferHelper,
-      );
-
+      await event.initDioOptions();
       emit(AuthStates.authorized(currentStateModel));
 
       event.initChatsBloc();
@@ -216,9 +212,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await DioSettings.instance.updateDio(
-        _sharedPreferHelper,
-      );
+      await event.initDioOptions();
 
       emit(AuthStates.authorized(currentStateModel));
 
