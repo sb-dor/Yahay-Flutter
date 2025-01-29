@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:yahay/src/core/utils/dio/src/exceptions/dio_exception_handler.dart';
+import 'package:yahay/src/core/utils/dio/src/exceptions/structered_back_end_exception.dart';
 import 'package:yahay/src/core/utils/dio/src/exceptions/unauthenticated_exception.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 
@@ -37,7 +38,7 @@ final class RestClientDio extends RestClientBase {
       }
 
       if (decodedBody case {"error": final Map<String, Object?> error}) {
-        throw StructeredBakendError;
+        throw StructuredBackendException(error: error);
       }
 
       return decodedBody;
