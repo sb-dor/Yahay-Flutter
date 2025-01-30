@@ -3,11 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
-import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
-import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/core/utils/screen_messaging/screen_messaging.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/features/authorization/data/sources/laravel/laravel_auth_data_source.dart';
 
 class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
@@ -36,21 +36,18 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     try {
       final url = "${AppHttpRoutes.authPrefix}$_checkAuth";
 
-      final response = await _dioSettings.dio.get(url);
+      final response = await _restClientBase.get(url);
 
-      _logger.log(Level.debug, "check auth response: ${response.data}");
+      if (response == null) return null;
 
-      if (response.statusCode != HttpStatusCodes.success) return null;
+      _logger.log(Level.debug, "check auth response: $response");
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
-
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse) &&
-          json[HttpStatusCodes.serverSuccessResponse] == false) {
+      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse) &&
+          response[HttpStatusCodes.serverSuccessResponse] == false) {
         return null;
       }
 
-      return UserModel.fromJson(json['user']);
+      return UserModel.fromJson(response.getNested(['user']));
     } catch (e) {
       _logger.log(Level.debug, "error is: $e");
       return null;

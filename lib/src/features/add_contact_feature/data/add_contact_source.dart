@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
-import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
-import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/extensions/extentions.dart';
 
 abstract class AddContactSource {
   Future<List<UserModel>> searchContact(String value, int page);
@@ -41,20 +39,19 @@ class AddContactSourceImpl implements AddContactSource {
         },
       );
 
-      _logger.log(Level.debug, "users search response: ${response.data}");
+      if (response == null) return <UserModel>[];
 
-      if (response.statusCode != HttpStatusCodes.success) return <UserModel>[];
+      _logger.log(Level.debug, "users search response: $response");
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
+      if (!response.containsKey("success")) return <UserModel>[];
 
-      if (!json.containsKey("success")) return <UserModel>[];
-
-      List<dynamic> usersList = json['users']['data'];
+      List<dynamic> usersList = response.getNested(['users', 'data']);
 
       final userList = usersList.map((e) => UserModel.fromJson(e)).toList();
 
       return userList;
+    } on RestClientException catch (error, stackTrace) {
+      Error.throwWithStackTrace(error, stackTrace);
     } catch (e) {
       _logger.log(Level.error, "getting value error is: $e");
       FirebaseCrashlytics.instance.log(e.toString());
@@ -69,23 +66,22 @@ class AddContactSourceImpl implements AddContactSource {
         "contact_id": user?.id,
       };
 
-      final response = await _dioSettings.dio.put(_addContactUrl, data: body);
+      final response = await _restClientBase.put(_addContactUrl, data: body);
 
-      _logger.log(Level.debug, "adding contact response is: ${response.data}");
+      _logger.log(Level.debug, "adding contact response is: $response");
 
-      if (response.statusCode != HttpStatusCodes.success) return false;
+      if (response == null) return false;
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
+      if (!response.containsKey("success")) return false;
 
-      if (!json.containsKey("success")) return false;
-
-      if (json['success'] == false) {
+      if (response['success'] == false) {
         // show error message
         return false;
       }
 
       return true;
+    } on RestClientException catch (error, stackTrace) {
+      Error.throwWithStackTrace(error, stackTrace);
     } catch (e) {
       _logger.log(Level.error, "add contact error is: $e");
       FirebaseCrashlytics.instance.log(e.toString());
