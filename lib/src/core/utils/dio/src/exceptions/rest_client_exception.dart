@@ -1,8 +1,5 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
-import 'package:flutter/foundation.dart';
-
-import 'rest_client_exception.dart';
 
 @immutable
 sealed class RestClientException implements Exception {
@@ -22,10 +19,12 @@ final class StructuredBackendException extends RestClientException {
   /// The error returned by the backend
 
   const StructuredBackendException({
-    required super.message,
+    required this.error,
     super.statusCode,
     super.cause,
-  });
+  }) : super(message: 'Backend returned structured error');
+
+  final Map<String, Object?> error;
 
   @override
   String toString() => 'StructuredBackendException('
@@ -36,35 +35,38 @@ final class StructuredBackendException extends RestClientException {
 }
 
 final class DioExceptionHandler extends RestClientException {
-  DioExceptionHandler(this.dioException);
+  //
+  const DioExceptionHandler({
+    super.statusCode,
+    super.cause,
+    required DioException dioException,
+  })  : _dioException = dioException,
+        super(message: "Dio Exception Handler error");
 
-  final DioException dioException;
+  final DioException _dioException;
 
   @override
   String toString() {
-    return "DioExceptionHandler: SERVER_ERROR: ${dioException.response?.data}"
-        " | MESSAGE: ${dioException.message} | ERROR: ${dioException.error}"
-        " | STATUS_MESSAGE: ${dioException.response?.statusMessage}"
-        " | STATUS_CODE: ${dioException.response?.statusCode}"
-        " | STACKTRACE: ${dioException.stackTrace}"
-        " | DIO_EXCEPTION_TYPE: ${dioException.type}"
-        " | REAL_URI: ${dioException.response?.realUri}";
+    return "$message: SERVER_ERROR: ${_dioException.response?.data}"
+        " | MESSAGE: ${_dioException.message} | ERROR: ${_dioException.error}"
+        " | STATUS_MESSAGE: ${_dioException.response?.statusMessage}"
+        " | STATUS_CODE: ${_dioException.response?.statusCode}"
+        " | STACKTRACE: ${_dioException.stackTrace}"
+        " | DIO_EXCEPTION_TYPE: ${_dioException.type}"
+        " | REAL_URI: ${_dioException.response?.realUri}";
   }
 }
 
 final class UnauthenticatedException extends RestClientException {
-  final String error;
-  final int? statusCode;
-
-  UnauthenticatedException({
-    required this.error,
-    this.statusCode,
-  });
+  const UnauthenticatedException({
+    super.statusCode,
+    super.cause,
+  }) : super(message: "User is Unauthenticated");
 
   @override
   String toString() => 'StructuredBackendException('
-      'message: Unauthenticated, '
-      'error: $error, '
+      'message: $message, '
+      'cause: $cause, '
       'statusCode: $statusCode, '
       ')';
 }

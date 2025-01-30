@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:yahay/src/core/utils/dio/src/exceptions/dio_exception_handler.dart';
-import 'package:yahay/src/core/utils/dio/src/exceptions/structered_back_end_exception.dart';
-import 'package:yahay/src/core/utils/dio/src/exceptions/unauthenticated_exception.dart';
+import 'package:yahay/src/core/utils/dio/src/exceptions/rest_client_exception.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 
 final class RestClientDio extends RestClientBase {
@@ -48,9 +46,9 @@ final class RestClientDio extends RestClientBase {
       Exception? exception;
 
       if (error.response?.statusCode == 401) {
-        exception = UnauthenticatedException(error: error.toString());
+        exception = const UnauthenticatedException(statusCode: 401);
       } else {
-        exception = DioExceptionHandler(error);
+        exception = DioExceptionHandler(dioException: error);
       }
 
       Error.throwWithStackTrace(exception, stackTrace);
