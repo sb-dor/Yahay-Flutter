@@ -67,39 +67,28 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
         "password": password,
       };
 
-      final response = await _dioSettings.dio.post(url, data: body);
+      final response = await _restClientBase.post(url, data: body);
 
-      _logger.log(Level.debug, "login response: ${response.data} | ${response.data.runtimeType}");
+      if (response == null) return null;
 
-      if (response.statusCode != HttpStatusCodes.success) return null;
+      _logger.log(Level.debug, "login response: $response | ${response.runtimeType}");
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
-
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
         return null;
       }
 
-      if (json[HttpStatusCodes.serverSuccessResponse] == false) {
-        _screenMessaging.toast(json['message'] ?? '');
+      if (response[HttpStatusCodes.serverSuccessResponse] == false) {
+        _screenMessaging.toast((response['message'] ?? '') as String);
         return null;
       }
 
-      await _sharedPreferences.setStringByKey(key: "token", value: json['token']);
+      await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
 
-      return UserModel.fromJson(json['user']);
-    } on DioException catch (e) {
+      return UserModel.fromJson(response.getNested(['user']));
+    } on ClientException catch (error, stackTrace) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
-      if (e.response != null) {
-        _logger.log(Level.debug, e.response?.data);
-        _logger.log(Level.debug, e.response?.headers);
-        _logger.log(Level.debug, e.response?.requestOptions);
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        _logger.log(Level.debug, e.requestOptions);
-        _logger.log(Level.debug, e.message);
-      }
+      Error.throwWithStackTrace(error, stackTrace);
     } catch (e) {
       _logger.log(Level.debug, "login error is $e");
       return null;
@@ -122,27 +111,26 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
         "user_name": userName,
       };
 
-      final response = await _dioSettings.dio.post(url, data: body);
+      final response = await _restClientBase.post(url, data: body);
 
-      _logger.log(Level.debug, "register response: ${response.realUri.path} | ${response.data}");
+      if (response == null) return null;
 
-      if (response.statusCode != HttpStatusCodes.success) return null;
+      _logger.log(Level.debug, "register response: $response");
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
-
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
         return null;
       }
 
-      if (json[HttpStatusCodes.serverSuccessResponse] == false) {
-        _screenMessaging.toast(json['message'] ?? '');
+      if (response[HttpStatusCodes.serverSuccessResponse] == false) {
+        _screenMessaging.toast(response.getNested(['message']));
         return null;
       }
 
-      await _sharedPreferences.setStringByKey(key: "token", value: json['token']);
+      await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
 
-      return UserModel.fromJson(json['user']);
+      return UserModel.fromJson(response.getNested(['user']));
+    } on ClientException catch (error, stackTrace) {
+      Error.throwWithStackTrace(error, stackTrace);
     } catch (e) {
       _logger.log(Level.debug, "register error is $e");
       return null;
@@ -154,22 +142,21 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     try {
       final url = "${AppHttpRoutes.authPrefix}$_logout";
 
-      final response = await _dioSettings.dio.delete(url);
+      final response = await _restClientBase.delete(url);
 
-      _logger.log(Level.debug, "logout response: ${response.data}");
+      if (response == null) return false;
 
-      if (response.statusCode != HttpStatusCodes.success) return false;
+      _logger.log(Level.debug, "logout response: $response");
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
+      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) return false;
 
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) return false;
-
-      if (json[HttpStatusCodes.serverSuccessResponse] == true) {
+      if (response[HttpStatusCodes.serverSuccessResponse] == true) {
         return true;
       }
 
       return false;
+    } on ClientException catch (error, stackTrace) {
+      Error.throwWithStackTrace(error, stackTrace);
     } catch (e) {
       _logger.log(Level.debug, "logout error is: $e");
       return false;
