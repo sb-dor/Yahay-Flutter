@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/features/chats/data/sources/chats_data_source/chats_data_source.dart';
@@ -10,10 +11,10 @@ import 'package:yahay/src/features/chats/data/sources/chats_data_source/chats_da
 class ChatsDataSourceImpl implements ChatsDataSource {
   //
   ChatsDataSourceImpl({
-    required final DioSettings dioSettings,
-  }) : _dioHelper = dioSettings;
+    required final RestClientBase restClientBase,
+  }) : _restClientBase = restClientBase;
 
-  final DioSettings _dioHelper;
+  final RestClientBase _restClientBase;
 
   final String _getUserChatsUrl = "${AppHttpRoutes.chatsPrefix}/get/chats";
 

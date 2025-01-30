@@ -9,6 +9,8 @@ import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/bloc_observer_manager/bloc_observer_manager.dart';
 import 'package:yahay/src/core/utils/debug_image_creator_in_apps_folder/debug_image_creator_in_apps_folder.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_dio.dart';
 import 'package:yahay/src/core/utils/dotenv/dotenv.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
@@ -28,13 +30,10 @@ class AppRunner with FolderCreator {
     final sharedPreferences = SharedPreferHelper();
     await sharedPreferences.initSharedPrefer();
 
-    final dioSettings = DioSettings(
-      sharedPreferHelper: sharedPreferences,
-      logger: logger,
-      dio: Dio(),
+    final RestClientBase restClientBase = RestClientDio(
+      baseURL: DotEnvHelper.instance.dotEnv.get('MAIN_URL'),
+      sharedPrefer: sharedPreferences,
     );
-
-    await dioSettings.initOptions();
 
     await runZonedGuarded(
       () async {

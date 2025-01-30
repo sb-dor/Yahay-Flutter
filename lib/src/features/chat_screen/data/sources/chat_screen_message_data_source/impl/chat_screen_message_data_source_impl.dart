@@ -7,15 +7,16 @@ import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_message_data_source/chat_screen_message_data_source.dart';
 
 class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
   //
   ChatScreenMessageDataSourceImpl({
-    required final DioSettings dioSettings,
-  }) : _dioSettings = dioSettings;
+    required final RestClientBase restClientBase,
+  }) : _restClientBase = restClientBase;
 
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   static const String _messageSendUrl = "${AppHttpRoutes.chatsPrefix}/message/handler";
 
@@ -45,9 +46,9 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
 
       final formData = FormData.fromMap(toJson);
 
-      final response = await _dioSettings.dio.post(_messageSendUrl, data: formData);
+      final response = await _restClientBase.post(_messageSendUrl, data: toJson);
 
-      debugPrint("reponseddata: ${response.data}");
+      debugPrint("reponseddata: ${response}");
     } catch (e) {
       debugPrint("ChatScreenMessageDataSourceImpl sendMessage error is: $e");
     }

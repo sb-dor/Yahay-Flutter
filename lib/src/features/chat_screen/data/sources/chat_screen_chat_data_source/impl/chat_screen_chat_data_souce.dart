@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
@@ -12,10 +13,10 @@ import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_chat_dat
 class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
   //
   ChatScreenChatDataSourceImpl({
-    required final DioSettings dioSettings,
-  }) : _dioSettings = dioSettings;
+    required final RestClientBase restClientBase,
+  }) : _restClientBase = restClientBase;
 
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   final String _getChatUrl = "${AppHttpRoutes.chatsPrefix}/get/chat/on/entrance";
   final String _deleteTempCreatedChatsUrl =

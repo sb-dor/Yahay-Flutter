@@ -4,6 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 
@@ -17,13 +18,13 @@ class AddContactSourceImpl implements AddContactSource {
   //
   AddContactSourceImpl({
     required final Logger logger,
-    required final DioSettings dioSettings,
+    required final RestClientBase restClientBase,
   })  : _logger = logger,
-        _dioSettings = dioSettings;
+        _restClientBase = restClientBase;
 
   final Logger _logger;
 
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   final String _searchContactUrl = "${AppHttpRoutes.contactsPrefix}/search";
 
@@ -32,11 +33,11 @@ class AddContactSourceImpl implements AddContactSource {
   @override
   Future<List<UserModel>> searchContact(String value, int page) async {
     try {
-      final response = await _dioSettings.dio.get(
+      final response = await _restClientBase.get(
         _searchContactUrl,
-        data: {
+        queryParams: {
           "value": value.trim(),
-          "page": page,
+          "page": page.toString(),
         },
       );
 

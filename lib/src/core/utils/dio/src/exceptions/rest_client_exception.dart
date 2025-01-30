@@ -34,6 +34,21 @@ final class StructuredBackendException extends RestClientException {
       ')';
 }
 
+final class ClientException extends RestClientException {
+  const ClientException({
+    required super.message,
+    super.statusCode,
+    super.cause,
+  });
+
+  @override
+  String toString() => 'ClientException('
+      'message: $message, '
+      'statusCode: $statusCode, '
+      'cause: $cause'
+      ')';
+}
+
 final class DioExceptionHandler extends RestClientException {
   //
   const DioExceptionHandler({

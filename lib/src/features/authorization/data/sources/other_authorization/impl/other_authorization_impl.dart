@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
@@ -17,16 +18,16 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
     required final GoogleSignIn googleSignIn,
     required final FacebookAuth facebookAuth,
     required final SharedPreferHelper sharedPreferHelper,
-    required final DioSettings dioSettings,
+    required final RestClientBase restClientBase,
   })  : _googleSignIn = googleSignIn,
         _facebookAuth = facebookAuth,
         _sharedPreferHelper = sharedPreferHelper,
-        _dioSettings = dioSettings;
+        _restClientBase = restClientBase;
 
   final GoogleSignIn _googleSignIn;
   final FacebookAuth _facebookAuth;
   final SharedPreferHelper _sharedPreferHelper;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   final String _googleAuthPath = "${AppHttpRoutes.authPrefix}/google-auth";
 

@@ -6,6 +6,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/models/candidate_model/candidate_model.dart';
 
@@ -17,11 +18,11 @@ class WebrtcLaravelService {
   //
   WebrtcLaravelService({
     required final PusherClientService pusherClientService,
-    required DioSettings dioSettings,
+    required RestClientBase restClientBase,
   })  : _pusherClientService = pusherClientService,
-        _dioHelper = dioSettings;
+        _restClientBase = restClientBase;
 
-  final DioSettings _dioHelper;
+  final RestClientBase _restClientBase;
   final PusherClientService _pusherClientService;
   final String _url = "http://192.168.100.3:8000/api";
 
@@ -87,7 +88,7 @@ class WebrtcLaravelService {
       // print('Created offer ${await peerConnection?.getLocalDescription()}');
 
       // Send offer to backend
-      var response = await _dioHelper.dio.post(
+      var response = await _restClientBase.post(
         '$_url/create-room',
         data: {
           'offer': offer.toMap(),

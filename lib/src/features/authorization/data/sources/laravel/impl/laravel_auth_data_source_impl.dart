@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/screen_messaging/screen_messaging.dart';
@@ -13,16 +14,16 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   LaravelAuthDataSourceImpl({
     required final SharedPreferHelper sharedPreferences,
     required final Logger logger,
-    required final DioSettings dioSettings,
+    required final RestClientBase restClientBase,
     required final ScreenMessaging screenMessaging,
   })  : _sharedPreferences = sharedPreferences,
         _logger = logger,
-        _dioSettings = dioSettings,
+        _restClientBase = restClientBase,
         _screenMessaging = screenMessaging;
 
   final SharedPreferHelper _sharedPreferences;
   final Logger _logger;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
   final ScreenMessaging _screenMessaging;
 
   final String _checkAuth = "/check-auth";

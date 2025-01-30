@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
@@ -12,13 +13,13 @@ class DebugImageCreatorInAppsFolder with FolderCreator {
 
   DebugImageCreatorInAppsFolder({
     required final SharedPreferHelper sharedPreferHelper,
-    required final DioSettings dioSettings,
+    Dio? dio,
   })  : _sharedPreferHelper = sharedPreferHelper,
-        _dioSettings = dioSettings;
+        _dio = dio ?? Dio();
 
   final SharedPreferHelper _sharedPreferHelper;
 
-  final DioSettings _dioSettings;
+  final Dio _dio;
 
   final String _key = "generated_images_in_folder";
 
@@ -40,7 +41,7 @@ class DebugImageCreatorInAppsFolder with FolderCreator {
 
     for (final each in foldersName) {
       for (int i = 0; i < 30; i++) {
-        final response = await _dioSettings.dio.get<List<int>>(
+        final response = await _dio.get<List<int>>(
           "https://picsum.photos/seed/$_randomInt/300/300",
           options: Options(responseType: ResponseType.bytes),
         );

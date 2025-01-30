@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
+import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
@@ -18,14 +19,14 @@ final class CompositionRoot extends AsyncFactory<CompositionResult> {
   CompositionRoot({
     required Logger logger,
     required SharedPreferHelper sharedPreferHelper,
-    required DioSettings dioSettings,
+    required RestClientBase restClientBase,
   })  : _logger = logger,
         _sharedPreferHelper = sharedPreferHelper,
-        _dioSettings = dioSettings;
+        _restClientBase = restClientBase;
 
   final Logger _logger;
   final SharedPreferHelper _sharedPreferHelper;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   @override
   Future<CompositionResult> create() async {
@@ -49,14 +50,14 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
   DependencyContainerFactory({
     required Logger logger,
     required SharedPreferHelper sharedPreferHelper,
-    required DioSettings dioSettings,
+    required RestClientBase restClientBase,
   })  : _logger = logger,
         _sharedPreferHelper = sharedPreferHelper,
-        _dioSettings = dioSettings;
+        _restClientBase = restClientBase;
 
   final Logger _logger;
   final SharedPreferHelper _sharedPreferHelper;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   @override
   Future<DependencyContainer> create() async {
