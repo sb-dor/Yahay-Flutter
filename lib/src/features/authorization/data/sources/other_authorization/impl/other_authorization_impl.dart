@@ -1,11 +1,7 @@
-import 'dart:convert';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
-import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
-import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
@@ -51,22 +47,22 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
         "image_url": userData['picture']['data']['url'],
       };
 
-      final response = await _dioSettings.dio.post(_facebookAuthPath, data: body);
+      final response = await _restClientBase.post(_facebookAuthPath, data: body);
 
-      debugPrint("facebook auth laravel response: ${response.data}");
+      if (response == null) return null;
 
-      if (response.statusCode != HttpStatusCodes.success) return null;
-
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
-
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
         return null;
       }
 
-      await _sharedPreferHelper.setStringByKey(key: "token", value: json['token']);
+      await _sharedPreferHelper.setStringByKey(
+        key: "token",
+        value: response.getNested(
+          ['token'],
+        ),
+      );
 
-      return UserModel.fromJson(json['user']);
+      return UserModel.fromJson(response.getNested(['user']));
     } catch (e) {
       debugPrint("faceBookAuth error is $e");
       return null;
@@ -75,7 +71,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
 
   @override
   Future<UserModel?> googleAuth() async {
-    debugPrint("sending after url: ${_dioSettings.dio.options.baseUrl}$_googleAuthPath");
+    // debugPrint("sending after url: ${_dioSettings.dio.options.baseUrl}$_googleAuthPath");
     try {
       final googleAccount = await _googleSignIn.signIn();
 
@@ -89,22 +85,26 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
 
       debugPrint("sending body is: $body");
 
-      final response = await _dioSettings.dio.post(_googleAuthPath, data: body);
+      final response = await _restClientBase.post(_googleAuthPath, data: body);
 
-      debugPrint("google auth laravel response: ${response.data}");
+      if (response == null) return null;
 
-      if (response.statusCode != HttpStatusCodes.success) return null;
-
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
-
-      if (!json.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
         return null;
       }
 
-      await _sharedPreferHelper.setStringByKey(key: "token", value: json['token']);
+      await _sharedPreferHelper.setStringByKey(
+        key: "token",
+        value: response.getNested(
+          ['token'],
+        ),
+      );
 
-      return UserModel.fromJson(json['user']);
+      return UserModel.fromJson(
+        response.getNested(
+          ['user'],
+        ),
+      );
     } catch (e) {
       debugPrint("google auth error is: $e");
       return null;

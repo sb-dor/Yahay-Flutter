@@ -33,7 +33,7 @@ final class CompositionRoot extends AsyncFactory<CompositionResult> {
     final dependencyContainer = await DependencyContainerFactory(
       logger: _logger,
       sharedPreferHelper: _sharedPreferHelper,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     ).create();
 
     return CompositionResult(dependencyContainer);
@@ -66,7 +66,7 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
       facebookAuth: FacebookAuth.instance,
       sharedPreferHelper: _sharedPreferHelper,
       logger: _logger,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     ).create();
 
     final cameraHelperService = CameraHelperService();
@@ -76,7 +76,7 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
 
     final addContactBloc = AddContactBlocFactory(
       logger: _logger,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     ).create();
 
     final pusherClientService = PusherClientService();
@@ -86,7 +86,7 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
     return DependencyContainer(
       logger: _logger,
       sharedPreferHelper: _sharedPreferHelper,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
       appThemeBloc: AppThemeBloc(),
       authBloc: authBloc,
       profileBloc: profileBloc,

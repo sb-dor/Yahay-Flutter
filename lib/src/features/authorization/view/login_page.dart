@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                                 dependencies.initChatBlocAfterAuthorization();
                               },
                               initDioOptions: () async {
-                                await dependencies.dioSettings.initOptions();
+                                // await dependencies.restClientBase.initOptions();
                               },
                             ),
                           ),
@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                                         .initChatBlocAfterAuthorization();
                                   },
                                   initDioOptions: () async {
-                                    await dependencies.dioSettings.initOptions();
+                                    // await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),
@@ -239,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                                         .initChatBlocAfterAuthorization();
                                   },
                                   initDioOptions: () async {
-                                    await dependencies.dioSettings.initOptions();
+                                    // await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),

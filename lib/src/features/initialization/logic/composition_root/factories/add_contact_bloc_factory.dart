@@ -1,5 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
 import 'package:yahay/src/features/add_contact_feature/bloc/state_model/add_contact_state_model.dart';
 import 'package:yahay/src/features/add_contact_feature/data/add_contact_source.dart';
@@ -11,19 +12,19 @@ final class AddContactBlocFactory extends Factory<AddContactBloc> {
 
   AddContactBlocFactory({
     required final Logger logger,
-    required final DioSettings dioSettings,
+    required final RestClientBase restClientBase,
   })  : _logger = logger,
-        _dioSettings = dioSettings;
+        _restClientBase = restClientBase;
 
   final Logger _logger;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   @override
   AddContactBloc create() {
     //
     final AddContactSource addContactSource = AddContactSourceImpl(
       logger: _logger,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     );
 
     final AddContactRepo addContactRepo = AddContactRepoImpl(addContactSource);

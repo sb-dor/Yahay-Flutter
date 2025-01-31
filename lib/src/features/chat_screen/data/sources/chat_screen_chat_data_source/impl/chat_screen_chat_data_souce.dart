@@ -8,6 +8,7 @@ import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/status_codes/http_status_codes.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_chat_data_source/chat_screen_chat_data_souce.dart';
 
 class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
@@ -30,24 +31,17 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
         'with_user_id': withUser?.id,
       };
 
-      late Response response;
+      final response = await _restClientBase.post(_getChatUrl, data: body);
 
-      if (kIsWeb) {
-        response = await _dioSettings.dio.post(_getChatUrl, data: body);
-      } else {
-        response = await _dioSettings.dio.get(_getChatUrl, data: body);
-      }
+      if (response == null) return null;
 
-      debugPrint("chat response is: ${response.data}");
+      if (!response.containsKey("chat")) return null;
 
-      if (response.statusCode != HttpStatusCodes.success) return null;
-
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
-
-      if (!json.containsKey("chat")) return null;
-
-      final gettingChat = ChatModel.fromJson(json['chat']);
+      final gettingChat = ChatModel.fromJson(
+        response.getNested(
+          ['chat'],
+        ),
+      );
 
       return gettingChat.copyWith(
           messages: gettingChat.messages?.map((e) {
@@ -64,9 +58,9 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
     try {
       final body = {"chat_id": chat?.id, "chat_uuid": chat?.uuid};
 
-      final response = await _dioSettings.dio.delete(_deleteTempCreatedChatsUrl, data: body);
+      final response = await _restClientBase.delete(_deleteTempCreatedChatsUrl, data: body);
 
-      debugPrint("coming remove temp created chats: ${response.data}");
+      debugPrint("coming remove temp created chats: $response");
     } catch (e) {
       debugPrint("removeAllTempCreatedChats error is: $e");
     }

@@ -2,6 +2,7 @@ import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
 import 'package:yahay/src/features/chats/bloc/state_model/chats_state_model.dart';
 import 'package:yahay/src/features/chats/data/repo/chat_repo_impl.dart';
@@ -15,21 +16,21 @@ final class ChatsBlocFactory extends Factory<ChatsBloc> {
     required final UserModel? currentUser,
     required final PusherChannelsOptions pusherChannelsOption,
     required final Logger logger,
-    required final DioSettings dioSettings,
+    required final RestClientBase restClientBase
   })  : _currentUser = currentUser,
         _pusherChannelsOptions = pusherChannelsOption,
         _logger = logger,
-        _dioSettings = dioSettings;
+        _restClientBase = restClientBase;
 
   final UserModel? _currentUser;
   final PusherChannelsOptions _pusherChannelsOptions;
   final Logger _logger;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   @override
   ChatsBloc create() {
     final ChatsDataSource chatsDataSource = ChatsDataSourceImpl(
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     );
 
     final ChatsRepo chatsRepo = ChatsRepoImpl(chatsDataSource);

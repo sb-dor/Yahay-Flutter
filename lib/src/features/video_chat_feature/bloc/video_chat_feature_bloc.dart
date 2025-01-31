@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/data/video_chat_feature_repo.dart';
 import 'package:yahay/src/features/video_chat_feature/models/video_chat_model.dart';
@@ -71,7 +72,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
   final UserModel? _currentUser;
   final PusherClientService _pusherClientService;
   final Logger _logger;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   VideoChatBloc({
     required final VideoChatFeatureRepo iVideoChatFeatureRepo,
@@ -79,12 +80,12 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     required final PusherClientService pusherClientService,
     required final VideoChatFeatureStates initialState,
     required final Logger logger,
-    required final DioSettings dioSettings,
+    required final RestClientBase restClientBase,
   })  : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
         _currentUser = currentUser,
         _pusherClientService = pusherClientService,
         _logger = logger,
-        _dioSettings = dioSettings,
+        _restClientBase = restClientBase,
         super(initialState) {
     //
 
@@ -306,7 +307,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     // helper initialization first
     _webrtcLaravelHelper = WebrtcLaravelService(
       pusherClientService: _pusherClientService,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     );
 
     final currentVideoChatEntity = VideoChatModel(

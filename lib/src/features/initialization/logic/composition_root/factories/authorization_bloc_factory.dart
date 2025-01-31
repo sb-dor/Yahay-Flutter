@@ -40,7 +40,7 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
   AuthBloc create() {
     final LaravelAuthDataSource laravelAuthDataSource = LaravelAuthDataSourceImpl(
       sharedPreferences: _sharedPreferHelper,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
       screenMessaging: ScreenMessaging.instance,
       logger: _logger,
     );
@@ -49,7 +49,7 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
       googleSignIn: _googleSignIn,
       facebookAuth: _facebookAuth,
       sharedPreferHelper: _sharedPreferHelper,
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     );
 
     final AuthorizationRepo authorizationRepo = AuthorizationRepoImpl(laravelAuthDataSource);

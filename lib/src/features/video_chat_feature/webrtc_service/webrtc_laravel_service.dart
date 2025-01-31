@@ -7,6 +7,7 @@ import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
+import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/models/candidate_model/candidate_model.dart';
 
@@ -96,9 +97,7 @@ class WebrtcLaravelService {
         },
       );
 
-      var data = response.data is String ? jsonDecode(response.data) : response.data;
-
-      var roomId = data['roomId'];
+      var roomId = response?['roomId'];
 
       peerConnection?.onTrack = (RTCTrackEvent event) {
         event.streams[0].getTracks().forEach((track) {
@@ -145,16 +144,13 @@ class WebrtcLaravelService {
             //     RTCSignalingState.RTCSignalingStateHaveLocalOffer) {
             if (await peerConnection?.getRemoteDescription() == null) {
               await peerConnection?.setRemoteDescription(answer);
-              final responseCandidates = await _dioHelper.dio.get(
+              final responseCandidates = await _restClientBase.get(
                 "$_url/get-ice-candidates/$roomId/callee",
               );
 
-              Map<String, dynamic> mapOfData = responseCandidates.data is String
-                  ? jsonDecode(responseCandidates.data)
-                  : responseCandidates.data;
-
+              if (responseCandidates == null) return;
               //
-              List<dynamic> listOfCandidates = mapOfData['candidates'];
+              List<dynamic> listOfCandidates = responseCandidates.getNested(['candidates']);
 
               List<CandidateModel> candidates =
                   listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
@@ -206,12 +202,14 @@ class WebrtcLaravelService {
   Future<void> joinRoom(String roomId) async {
     try {
       // for getting room configuration
-      var responseForRemoteConfig = await _dioHelper.dio.post(
+      var responseForRemoteConfig = await _restClientBase.post(
         '$_url/join-room',
         data: {
           'roomId': roomId,
         },
       );
+
+      if (responseForRemoteConfig == null) return;
 
       peerConnection = await createPeerConnection(configuration);
 
@@ -234,11 +232,7 @@ class WebrtcLaravelService {
         });
       };
 
-      var data = responseForRemoteConfig.data is String
-          ? jsonDecode(responseForRemoteConfig.data)
-          : responseForRemoteConfig.data;
-
-      var offer = data['offer'];
+      var offer = responseForRemoteConfig.getNested(['offer']);
 
       String sdp = offer['sdp'] + "\n";
       String type = offer['type'];
@@ -263,7 +257,7 @@ class WebrtcLaravelService {
 
         await peerConnection!.setLocalDescription(answer);
 
-        var response = await _dioHelper.dio.post(
+        var response = await _restClientBase.post(
           '$_url/join-room',
           data: {
             'roomId': roomId,
@@ -283,15 +277,12 @@ class WebrtcLaravelService {
       ///
 
       // get candidates data before listening them
-      final responseCandidates = await _dioHelper.dio.get(
+      final responseCandidates = await _restClientBase.get(
         "$_url/get-ice-candidates/$roomId/caller",
       );
 
-      Map<String, dynamic> mapOfData = responseCandidates.data is String
-          ? jsonDecode(responseCandidates.data)
-          : responseCandidates.data;
       //
-      List<dynamic> listOfCandidates = mapOfData['candidates'];
+      List<dynamic> listOfCandidates = responseCandidates?.getNested(['candidates']);
 
       List<CandidateModel> candidates =
           listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
@@ -398,7 +389,7 @@ class WebrtcLaravelService {
     String roomId,
     String role,
   ) async {
-    final response = await _dioHelper.dio.post(
+    final response = await _restClientBase.post(
       '$_url/add-ice-candidate',
       data: {
         'roomId': roomId,
@@ -409,12 +400,11 @@ class WebrtcLaravelService {
   }
 
   Future<void> getIceCandidates(String roomId, String role) async {
-    var response = await _dioHelper.dio.get(
+    var response = await _restClientBase.get(
       '$_url/api/get-ice-candidates/$roomId/$role',
     );
 
-    var data = response.data is String ? jsonDecode(response.data) : response.data;
-    var candidates = data['candidates'];
+    var candidates = response?.getNested(['candidates']);
 
     for (var candidate in candidates) {
       peerConnection!.addCandidate(

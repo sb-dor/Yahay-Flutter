@@ -124,7 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 dependencies.initChatBlocAfterAuthorization();
                               },
                               initDioOptions: () async {
-                                await dependencies.dioSettings.initOptions();
+                                // await dependencies.dioSettings.initOptions();
                               },
                             ),
                           ),
@@ -194,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     dependencies.initChatBlocAfterAuthorization();
                                   },
                                   initDioOptions: () async {
-                                    await dependencies.dioSettings.initOptions();
+                                    // await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),
@@ -214,7 +214,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     dependencies.initChatBlocAfterAuthorization();
                                   },
                                   initDioOptions: () async {
-                                    await dependencies.dioSettings.initOptions();
+                                    // await dependencies.dioSettings.initOptions();
                                   },
                                 ),
                               ),

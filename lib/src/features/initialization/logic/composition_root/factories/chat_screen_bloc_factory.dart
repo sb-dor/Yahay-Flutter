@@ -1,6 +1,7 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/chat_screen/bloc/state_model/chat_screen_state_model.dart';
 import 'package:yahay/src/features/chat_screen/data/repo/chat_screen_chat_repo_impl.dart';
@@ -17,23 +18,23 @@ final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
   ChatScreenBlocFactory({
     required final UserModel? user,
     required final PusherChannelsOptions channelsOptions,
-    required final DioSettings dioSettings,
+    required final RestClientBase restClientBase,
   })  : _user = user,
         _channelsOptions = channelsOptions,
-        _dioSettings = dioSettings;
+        _restClientBase = restClientBase;
 
   final UserModel? _user;
   final PusherChannelsOptions _channelsOptions;
-  final DioSettings _dioSettings;
+  final RestClientBase _restClientBase;
 
   @override
   ChatScreenBloc create() {
     final ChatScreenMessageDataSource messageDataSource = ChatScreenMessageDataSourceImpl(
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     );
 
     final ChatScreenChatDataSource chatScreenChatDataSource = ChatScreenChatDataSourceImpl(
-      dioSettings: _dioSettings,
+      restClientBase: _restClientBase,
     );
 
     final ChatScreenRepo chatScreenRepo = ChatScreenRepoImpl(messageDataSource);

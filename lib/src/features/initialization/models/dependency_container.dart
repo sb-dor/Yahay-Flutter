@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
@@ -32,7 +33,7 @@ class DependencyContainer {
 
   final CameraHelperService cameraHelperService;
 
-  final DioSettings dioSettings;
+  final RestClientBase restClientBase;
 
   ChatsBloc? chatsBloc;
 
@@ -46,7 +47,7 @@ class DependencyContainer {
     required this.sharedPreferHelper,
     required this.pusherClientService,
     required this.cameraHelperService,
-    required this.dioSettings,
+    required this.restClientBase,
   });
 
   void initChatBlocAfterAuthorization() {
@@ -54,7 +55,7 @@ class DependencyContainer {
       currentUser: authBloc.state.authStateModel.user,
       pusherChannelsOption: pusherClientService.options,
       logger: logger,
-      dioSettings: dioSettings,
+      restClientBase: restClientBase,
     ).create();
   }
 }

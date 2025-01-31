@@ -28,7 +28,7 @@ class VideoChatFeaturePage extends StatelessWidget {
         user: depContainer.authBloc.state.authStateModel.user,
         pusherClientService: depContainer.pusherClientService,
         logger: depContainer.logger,
-        dioSettings: depContainer.dioSettings,
+        restClientBase: depContainer.restClientBase,
       ).create(),
       child: _VideoChatFeaturePageUI(chat: chat),
     );

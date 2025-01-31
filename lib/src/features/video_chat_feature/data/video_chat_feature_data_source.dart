@@ -41,24 +41,19 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   @override
   Future<bool> startVideoChat(VideoChatModel videoChatEntity) async {
     try {
-      final response = await _dioHelper.dio.put(
+      final response = await _restClientBase.put(
         _startVideoChatPath,
         data: videoChatEntity.toJson(),
       );
 
-      debugPrint("start video chat response is: ${response.data}");
+      if (response == null) return false;
 
-      if (response.statusCode != HttpStatusCodes.success) return false;
+      if (!response.containsKey("success")) return false;
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
-
-      if (!json.containsKey("success")) return false;
-
-      if (bool.tryParse("${json['success']}") == null) return false;
+      if (bool.tryParse("${response['success']}") == null) return false;
 
       // start from here tomorrow
-      return bool.parse("${json['success']}");
+      return bool.parse("${response['success']}");
     } catch (e) {
       debugPrint("start chat error is: $e");
       return false;
@@ -68,23 +63,18 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   @override
   Future<bool> videoChatEntrance(VideoChatModel videoChatEntity) async {
     try {
-      final response = await _dioHelper.dio.put(
+      final response = await _restClientBase.put(
         _joinChatPath,
         data: videoChatEntity.toJson(),
       );
 
-      debugPrint("joinToChat response is: ${response.data}");
+      if (response == null) return false;
 
-      if (response.statusCode != HttpStatusCodes.success) return false;
+      if (!response.containsKey("success")) return false;
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
+      if (bool.tryParse("${response['success']}") == null) return false;
 
-      if (!json.containsKey("success")) return false;
-
-      if (bool.tryParse("${json['success']}") == null) return false;
-
-      return bool.parse("${json['success']}");
+      return bool.parse("${response['success']}");
     } catch (e) {
       debugPrint("joinToChat error is: $e");
       return false;
@@ -94,23 +84,18 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   @override
   Future<bool> leaveTheChat(VideoChatModel videoChatEntity) async {
     try {
-      final response = await _dioHelper.dio.put(
+      final response = await _restClientBase.put(
         _leaveVideoChatPath,
         data: videoChatEntity.toJson(),
       );
 
-      debugPrint("leaveTheChat response is: ${response.data}");
+      if (response == null) return false;
 
-      if (response.statusCode != HttpStatusCodes.success) return false;
+      if (!response.containsKey("success")) return false;
 
-      Map<String, dynamic> json =
-          response.data is String ? jsonDecode(response.data) : response.data;
+      if (bool.tryParse("${response['success']}") == null) return false;
 
-      if (!json.containsKey("success")) return false;
-
-      if (bool.tryParse("${json['success']}") == null) return false;
-
-      return bool.parse("${json['success']}");
+      return bool.parse("${response['success']}");
     } catch (e) {
       debugPrint("leave the chat error is: $e");
       return false;
@@ -125,12 +110,12 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
       final jsonBody = videoChatEntity.toJson();
       log("sending uint8list data: $jsonBody");
 
-      final response = await _dioHelper.dio.put(
+      final response = await _restClientBase.put(
         _steamTheVideoPath,
         data: jsonBody,
       );
 
-      debugPrint("coming response from stream video: ${response.data}");
+      debugPrint("coming response from stream video: $response");
     } on DioException {
       // error
     }

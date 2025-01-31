@@ -69,13 +69,12 @@ class AppRunner with FolderCreator {
             final compositionRoot = await CompositionRoot(
               logger: logger,
               sharedPreferHelper: sharedPreferences,
-              dioSettings: dioSettings,
+              restClientBase: restClientBase,
             ).create();
 
             if (kDebugMode) {
               await DebugImageCreatorInAppsFolder(
                 sharedPreferHelper: compositionRoot.dependencies.sharedPreferHelper,
-                dioSettings: dioSettings,
               ).createImagesInAppsFolder();
             }
 
