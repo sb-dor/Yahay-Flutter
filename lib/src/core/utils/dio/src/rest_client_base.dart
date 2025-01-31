@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'exceptions/rest_client_exception.dart';
 import 'rest_client.dart';
 import 'package:path/path.dart' as p;
@@ -78,10 +79,18 @@ abstract base class RestClientBase implements RestClient {
       );
 
   Uri buildUri({required String path, Map<String, String?>? queryParams}) {
-    final finalPath = p.join(_baseURL.path, path);
+    final String finalPath = Uri.parse("${_baseURL.path}/api$path").normalizePath().toString();
+
+    final Map<String, Object?> params = Map.of(_baseURL.queryParameters);
+
+    if (queryParams != null) {
+      params.addAll(queryParams);
+      params.removeWhere((key, value) => value == null);
+    }
+
     return _baseURL.replace(
       path: finalPath,
-      queryParameters: {..._baseURL.queryParameters, ...?queryParams},
+      queryParameters: params.isEmpty ? null : params,
     );
   }
 
@@ -101,16 +110,6 @@ abstract base class RestClientBase implements RestClient {
       return data;
     } on RestClientException {
       rethrow;
-    } on DioException catch (error, stackTrace) {
-      Exception? exception;
-
-      if (error.response?.statusCode == 401) {
-        exception = const UnauthenticatedException(statusCode: 401);
-      } else {
-        exception = DioExceptionHandler(dioException: error);
-      }
-
-      Error.throwWithStackTrace(exception, stackTrace);
     } on Object catch (error, stackTrace) {
       //
       Error.throwWithStackTrace(

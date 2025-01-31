@@ -22,6 +22,9 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as concurrency;
 
 class AppRunner with FolderCreator {
   Future<void> initialize() async {
+    final binding = WidgetsFlutterBinding.ensureInitialized();
+
+    binding.deferFirstFrame();
     //
     final Logger logger = AppLoggerFactory(
       logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
@@ -30,6 +33,8 @@ class AppRunner with FolderCreator {
     final sharedPreferences = SharedPreferHelper();
     await sharedPreferences.initSharedPrefer();
 
+    await DotEnvHelper.instance.initEnv();
+
     final RestClientBase restClientBase = RestClientDio(
       baseURL: DotEnvHelper.instance.dotEnv.get('MAIN_URL'),
       sharedPrefer: sharedPreferences,
@@ -37,10 +42,6 @@ class AppRunner with FolderCreator {
 
     await runZonedGuarded(
       () async {
-        final binding = WidgetsFlutterBinding.ensureInitialized();
-
-        binding.deferFirstFrame();
-
         Future<void> init() async {
           try {
             // all blocs events are sequential by default, you can change inside the bloc's transformer (any bloc class)
@@ -48,8 +49,6 @@ class AppRunner with FolderCreator {
             Bloc.transformer = concurrency.sequential();
             // handles bloc errors, creations, changes, events etc.
             Bloc.observer = BlocObserverManager(logger);
-
-            await DotEnvHelper.instance.initEnv();
 
             await Firebase.initializeApp(
               options: DefaultFirebaseOptions.currentPlatform,

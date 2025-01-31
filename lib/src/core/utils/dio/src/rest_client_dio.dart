@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:yahay/src/core/utils/dio/src/exceptions/rest_client_exception.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
@@ -25,6 +26,9 @@ final class RestClientDio extends RestClientBase {
   }) async {
     try {
       final uri = buildUri(path: path, queryParams: queryParams);
+
+      debugPrint("building uri: $uri");
+
       final request = await _dio.requestUri(
         uri,
         data: data,
@@ -44,6 +48,16 @@ final class RestClientDio extends RestClientBase {
       //
       // rethrow also throws error and stacktrace
       rethrow;
+    } on DioException catch (error, stackTrace) {
+      Exception? exception;
+
+      if (error.response?.statusCode == 401) {
+        exception = const UnauthenticatedException(statusCode: 401);
+      } else {
+        exception = DioExceptionHandler(dioException: error);
+      }
+
+      Error.throwWithStackTrace(exception, stackTrace);
     } catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
     }
