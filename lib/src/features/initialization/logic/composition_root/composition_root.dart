@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
@@ -30,11 +31,21 @@ final class CompositionRoot extends AsyncFactory<CompositionResult> {
 
   @override
   Future<CompositionResult> create() async {
+    final stopWatch = clock.stopwatch()..start();
+
+    _logger.log(Level.info, 'Initializing dependencies...');
+
     final dependencyContainer = await DependencyContainerFactory(
       logger: _logger,
       sharedPreferHelper: _sharedPreferHelper,
       restClientBase: _restClientBase,
     ).create();
+
+    stopWatch.stop();
+    _logger.log(
+      Level.info,
+      'Dependencies initialized successfully in ${stopWatch.elapsedMilliseconds} ms.',
+    );
 
     return CompositionResult(dependencyContainer);
   }
