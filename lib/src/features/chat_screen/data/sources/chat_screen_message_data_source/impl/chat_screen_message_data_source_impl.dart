@@ -46,7 +46,10 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
 
       final formData = FormData.fromMap(toJson);
 
-      final response = await _restClientBase.post(_messageSendUrl, data: toJson);
+      final response = await _restClientBase.post(
+        _messageSendUrl,
+        formData: formData,
+      );
 
       debugPrint("reponseddata: ${response}");
     } catch (e) {

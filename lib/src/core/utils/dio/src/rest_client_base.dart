@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'exceptions/rest_client_exception.dart';
 import 'rest_client.dart';
-import 'package:path/path.dart' as p;
 
 enum DioMethod { get, post, put, delete }
 
@@ -16,6 +14,7 @@ abstract base class RestClientBase implements RestClient {
     required String path,
     required DioMethod method,
     Map<String, Object?>? data,
+    FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
   });
@@ -36,7 +35,8 @@ abstract base class RestClientBase implements RestClient {
   @override
   Future<Map<String, Object?>?> post(
     String path, {
-    required Map<String, Object?> data,
+    Map<String, Object?>? data,
+    FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
   }) =>
@@ -44,6 +44,7 @@ abstract base class RestClientBase implements RestClient {
         path: path,
         method: DioMethod.post,
         data: data,
+        formData: formData,
         headers: headers,
         queryParams: queryParams,
       );
@@ -51,7 +52,8 @@ abstract base class RestClientBase implements RestClient {
   @override
   Future<Map<String, Object?>?> put(
     String path, {
-    required Map<String, Object?> data,
+    Map<String, Object?>? data,
+    FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
   }) =>
@@ -59,6 +61,7 @@ abstract base class RestClientBase implements RestClient {
         path: path,
         method: DioMethod.put,
         data: data,
+        formData: formData,
         headers: headers,
         queryParams: queryParams,
       );
@@ -67,6 +70,7 @@ abstract base class RestClientBase implements RestClient {
   Future<Map<String, Object?>?> delete(
     String path, {
     Map<String, Object?>? data,
+    FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
   }) =>
@@ -74,6 +78,7 @@ abstract base class RestClientBase implements RestClient {
         path: path,
         method: DioMethod.delete,
         data: data,
+        formData: formData,
         headers: headers,
         queryParams: queryParams,
       );

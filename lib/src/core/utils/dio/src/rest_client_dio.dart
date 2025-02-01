@@ -21,6 +21,7 @@ final class RestClientDio extends RestClientBase {
     required String path,
     required DioMethod method,
     Map<String, Object?>? data,
+    FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
   }) async {
@@ -31,7 +32,7 @@ final class RestClientDio extends RestClientBase {
 
       final request = await _dio.requestUri(
         uri,
-        data: data,
+        data: formData ?? data,
         options: Options(
           method: method.name.toUpperCase(),
           headers: headers ?? await this.headers,
