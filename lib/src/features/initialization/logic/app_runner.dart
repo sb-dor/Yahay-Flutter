@@ -22,28 +22,29 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as concurrency;
 
 class AppRunner with FolderCreator {
   Future<void> initialize() async {
-    final binding = WidgetsFlutterBinding.ensureInitialized();
-
-    binding.deferFirstFrame();
-    //
     final Logger logger = AppLoggerFactory(
       logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
     ).create();
 
-    final sharedPreferences = SharedPreferHelper();
-    await sharedPreferences.initSharedPrefer();
-
-    await DotEnvHelper.instance.initEnv();
-
-    final RestClientBase restClientBase = RestClientDio(
-      baseURL: DotEnvHelper.instance.dotEnv.get('MAIN_URL'),
-      sharedPrefer: sharedPreferences,
-      logger: logger,
-    );
-
     await runZonedGuarded(
       () async {
         Future<void> init() async {
+          final binding = WidgetsFlutterBinding.ensureInitialized();
+
+          binding.deferFirstFrame();
+          //
+
+          final sharedPreferences = SharedPreferHelper();
+          await sharedPreferences.initSharedPrefer();
+
+          await DotEnvHelper.instance.initEnv();
+
+          final RestClientBase restClientBase = RestClientDio(
+            baseURL: DotEnvHelper.instance.dotEnv.get('MAIN_URL'),
+            sharedPrefer: sharedPreferences,
+            logger: logger,
+          );
+
           try {
             // all blocs events are sequential by default, you can change inside the bloc's transformer (any bloc class)
             // or you can change here for all blocs
