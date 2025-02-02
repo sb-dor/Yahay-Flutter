@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/authorization/domain/repo/authorization_repo.dart';
 import 'package:yahay/src/features/authorization/domain/repo/other_authorization_repo.dart';
@@ -111,8 +113,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       emit(AuthStates.authorized(currentStateModel));
 
       event.initChatsBloc();
-    } catch (error) {
+    } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
+      Error.throwWithStackTrace(error, stackTrace);
     }
   }
 
@@ -179,8 +182,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       emit(AuthStates.authorized(currentStateModel));
 
       event.initChatsBloc();
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
+      Error.throwWithStackTrace(error, stackTrace);
     }
   }
 
@@ -218,8 +222,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       emit(AuthStates.authorized(currentStateModel));
 
       event.initChatsBloc();
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
+      Error.throwWithStackTrace(error, stackTrace);
     }
   }
 
@@ -229,9 +234,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   ) async {
     var currentStateModel = state.authStateModel.copyWith();
     try {
-      final user = await _iAuthorizationRepo.checkAuth(
-        onMessage: event.onMessage,
-      );
+      final user = await _iAuthorizationRepo.checkAuth();
+
+      debugPrint("coming till user: $user");
 
       if (user == null) {
         emit(AuthStates.unAuthorized(currentStateModel));
@@ -245,8 +250,17 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
       emit(AuthStates.authorized(currentStateModel));
 
       event.initChatsBloc();
-    } catch (e) {
+    } on RestClientException catch (error, stackTrace) {
+      if (error is UnauthenticatedException) {
+        event.onMessage(error.message);
+        emit(AuthStates.unAuthorized(currentStateModel));
+        return;
+      }
+
+      Error.throwWithStackTrace(error, stackTrace);
+    } on Object catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
+      Error.throwWithStackTrace(error, stackTrace);
     }
   }
 
@@ -276,8 +290,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         );
         emit(AuthStates.unAuthorized(currentStateModel));
       }
-    } catch (e) {
+    } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
+      Error.throwWithStackTrace(error, stackTrace);
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
+import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'authorization/bloc/auth_bloc.dart';
 
@@ -47,6 +48,11 @@ class _HomePageState extends State<LoadingPage> {
         } else if (state is UnAuthorizedStateOnAuthStates) {
           AutoRouter.of(context).replaceAll([const LoginRoute()]);
         } else if (state is ErrorStateOnAuthStates) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(Constants.somethingWentWrong),
+            ),
+          );
         } else {
           // TODO something on error state
         }

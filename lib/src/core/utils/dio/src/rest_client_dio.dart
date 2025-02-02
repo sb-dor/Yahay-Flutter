@@ -45,6 +45,8 @@ final class RestClientDio extends RestClientBase {
         ),
       );
 
+      _logger.log(Level.debug, request);
+
       // link
       // https://github.com/hawkkiller/sizzle_starter/blob/main/packages/rest_client/lib/src/rest_client_base.dart
       return decodeResponse(
@@ -56,6 +58,7 @@ final class RestClientDio extends RestClientBase {
       // rethrow also throws error and stacktrace
       rethrow;
     } on DioException catch (error, stackTrace) {
+      _logger.log(Level.error, error);
       if (error.response?.statusCode == HttpStatus.unauthorized) {
         throw UnauthenticatedException(
           exception: error,
@@ -68,11 +71,6 @@ final class RestClientDio extends RestClientBase {
         stackTrace,
       );
       //
-    } on Object catch (error, stackTrace) {
-      Error.throwWithStackTrace(
-        error,
-        stackTrace,
-      );
     }
   }
 

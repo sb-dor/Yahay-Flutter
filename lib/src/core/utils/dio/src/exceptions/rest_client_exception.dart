@@ -49,20 +49,17 @@ final class ClientException extends RestClientException {
       ')';
 }
 
-final class DioExceptionHandler extends RestClientException {
+final class DioExceptionHandler {
   //
   const DioExceptionHandler({
-    super.statusCode,
-    super.cause,
     required DioException dioException,
-  })  : _dioException = dioException,
-        super(message: "Dio Exception Handler error");
+  }) : _dioException = dioException;
 
   final DioException _dioException;
 
   @override
   String toString() {
-    return "$message: SERVER_ERROR: ${_dioException.response?.data}"
+    return "DioExceptionHandler: ${_dioException.message}: SERVER_ERROR: ${_dioException.response?.data}"
         " | MESSAGE: ${_dioException.message} | ERROR: ${_dioException.error}"
         " | STATUS_MESSAGE: ${_dioException.response?.statusMessage}"
         " | STATUS_CODE: ${_dioException.response?.statusCode}"
