@@ -38,6 +38,7 @@ class AppRunner with FolderCreator {
     final RestClientBase restClientBase = RestClientDio(
       baseURL: DotEnvHelper.instance.dotEnv.get('MAIN_URL'),
       sharedPrefer: sharedPreferences,
+      logger: logger,
     );
 
     await runZonedGuarded(

@@ -12,7 +12,9 @@ abstract class AuthorizationRepo {
     required final String password,
   });
 
-  Future<UserModel?> checkAuth();
+  Future<UserModel?> checkAuth({
+    required void Function(String message) onMessage,
+  });
 
   Future<bool> logout();
 }

@@ -74,13 +74,18 @@ final class DioExceptionHandler extends RestClientException {
 
 final class UnauthenticatedException extends RestClientException {
   const UnauthenticatedException({
+    required DioException exception,
     super.statusCode,
     super.cause,
-  }) : super(message: "User is Unauthenticated");
+  })  : _dioException = exception,
+        super(message: "User is Unauthenticated");
+
+  final DioException _dioException;
 
   @override
   String toString() => 'StructuredBackendException('
-      'message: $message, '
+      'message: $message | SERVER_ERROR: ${_dioException.response?.data}'
+      ' | ERROR: ${_dioException.error}, '
       'cause: $cause, '
       'statusCode: $statusCode, '
       ')';

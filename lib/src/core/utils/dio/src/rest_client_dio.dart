@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 import 'package:yahay/src/core/utils/dio/src/exceptions/rest_client_exception.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
@@ -8,13 +11,16 @@ final class RestClientDio extends RestClientBase {
   //
   RestClientDio({
     required super.baseURL,
-    required SharedPreferHelper sharedPrefer,
+    required final SharedPreferHelper sharedPrefer,
+    required final Logger logger,
     Dio? dio,
   })  : _dio = dio ?? Dio(),
-        _sharedPreferHelper = sharedPrefer;
+        _sharedPreferHelper = sharedPrefer,
+        _logger = logger;
 
   final Dio _dio;
   final SharedPreferHelper _sharedPreferHelper;
+  final Logger _logger;
 
   @override
   Future<Map<String, Object?>?> send({
@@ -28,7 +34,7 @@ final class RestClientDio extends RestClientBase {
     try {
       final uri = buildUri(path: path, queryParams: queryParams);
 
-      debugPrint("building uri: $uri");
+      _logger.log(Level.debug, "building uri: $uri");
 
       final request = await _dio.requestUri(
         uri,
@@ -50,17 +56,23 @@ final class RestClientDio extends RestClientBase {
       // rethrow also throws error and stacktrace
       rethrow;
     } on DioException catch (error, stackTrace) {
-      Exception? exception;
-
-      if (error.response?.statusCode == 401) {
-        exception = const UnauthenticatedException(statusCode: 401);
-      } else {
-        exception = DioExceptionHandler(dioException: error);
+      if (error.response?.statusCode == HttpStatus.unauthorized) {
+        throw UnauthenticatedException(
+          exception: error,
+          statusCode: 401,
+        );
       }
 
-      Error.throwWithStackTrace(exception, stackTrace);
-    } catch (error, stackTrace) {
-      Error.throwWithStackTrace(error, stackTrace);
+      Error.throwWithStackTrace(
+        DioExceptionHandler(dioException: error),
+        stackTrace,
+      );
+      //
+    } on Object catch (error, stackTrace) {
+      Error.throwWithStackTrace(
+        error,
+        stackTrace,
+      );
     }
   }
 

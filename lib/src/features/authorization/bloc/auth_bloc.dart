@@ -38,6 +38,7 @@ class AuthEvents with _$AuthEvents {
 
   const factory AuthEvents.checkAuthEvent({
     required final void Function() initChatsBloc,
+    required void Function(String message) onMessage,
   }) = _CheckAuthEventOnAuthEvents;
 
   const factory AuthEvents.changePasswordVisibility() = _ChangePasswordVisibilityEvent;
@@ -228,7 +229,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   ) async {
     var currentStateModel = state.authStateModel.copyWith();
     try {
-      final user = await _iAuthorizationRepo.checkAuth();
+      final user = await _iAuthorizationRepo.checkAuth(
+        onMessage: event.onMessage,
+      );
 
       if (user == null) {
         emit(AuthStates.unAuthorized(currentStateModel));

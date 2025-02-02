@@ -46,7 +46,7 @@ class DebugImageCreatorInAppsFolder with FolderCreator {
           options: Options(responseType: ResponseType.bytes),
         );
 
-        if (response.statusCode == HttpStatusCodes.success) {
+        if (response.statusCode == HttpStatus.ok) {
           final pathImageForCreation = "${dir?.path}/$each/${DateTime.now()}.jpg";
           File file = File(pathImageForCreation);
           if ((response.data ?? <int>[]).isNotEmpty) {

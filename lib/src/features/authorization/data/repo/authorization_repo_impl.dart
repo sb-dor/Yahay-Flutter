@@ -8,7 +8,10 @@ class AuthorizationRepoImpl implements AuthorizationRepo {
   AuthorizationRepoImpl(this._laravelAuthDataSource);
 
   @override
-  Future<UserModel?> checkAuth() => _laravelAuthDataSource.checkAuth();
+  Future<UserModel?> checkAuth({
+    required void Function(String message) onMessage,
+  }) =>
+      _laravelAuthDataSource.checkAuth(onMessage: onMessage);
 
   @override
   Future<UserModel?> login({

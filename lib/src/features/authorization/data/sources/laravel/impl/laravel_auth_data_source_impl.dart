@@ -32,7 +32,9 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   final String _logout = "/logout";
 
   @override
-  Future<UserModel?> checkAuth() async {
+  Future<UserModel?> checkAuth({
+    required void Function(String message) onMessage,
+  }) async {
     try {
       final url = "${AppHttpRoutes.authPrefix}$_checkAuth";
 
@@ -48,9 +50,13 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       }
 
       return UserModel.fromJson(response.getNested(['user']));
-    } catch (e) {
-      _logger.log(Level.debug, "error is: $e");
-      return null;
+    } on RestClientException catch (error, stackTrace) {
+      if (error is UnauthenticatedException) {
+        // send message to user
+        onMessage(error.message);
+      }
+
+      Error.throwWithStackTrace(error, stackTrace);
     }
   }
 
