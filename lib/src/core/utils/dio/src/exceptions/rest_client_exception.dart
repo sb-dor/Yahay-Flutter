@@ -49,6 +49,25 @@ final class ClientException extends RestClientException {
       ')';
 }
 
+final class UnauthenticatedException extends RestClientException {
+  const UnauthenticatedException({
+    required DioException exception,
+    super.statusCode,
+    super.cause,
+  })  : _dioException = exception,
+        super(message: "User is Unauthenticated");
+
+  final DioException _dioException;
+
+  @override
+  String toString() => 'StructuredBackendException('
+      'message: $message | SERVER_ERROR: ${_dioException.response?.data}'
+      ' | ERROR: ${_dioException.error}, '
+      'cause: $cause, '
+      'statusCode: $statusCode, '
+      ')';
+}
+
 final class DioExceptionHandler {
   //
   const DioExceptionHandler({
@@ -67,23 +86,4 @@ final class DioExceptionHandler {
         " | DIO_EXCEPTION_TYPE: ${_dioException.type}"
         " | REAL_URI: ${_dioException.response?.realUri}";
   }
-}
-
-final class UnauthenticatedException extends RestClientException {
-  const UnauthenticatedException({
-    required DioException exception,
-    super.statusCode,
-    super.cause,
-  })  : _dioException = exception,
-        super(message: "User is Unauthenticated");
-
-  final DioException _dioException;
-
-  @override
-  String toString() => 'StructuredBackendException('
-      'message: $message | SERVER_ERROR: ${_dioException.response?.data}'
-      ' | ERROR: ${_dioException.error}, '
-      'cause: $cause, '
-      'statusCode: $statusCode, '
-      ')';
 }

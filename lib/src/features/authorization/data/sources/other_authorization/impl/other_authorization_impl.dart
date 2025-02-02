@@ -51,7 +51,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
 
       if (response == null) return null;
 
-      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
         return null;
       }
 
@@ -89,7 +89,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
 
       if (response == null) return null;
 
-      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
         return null;
       }
 

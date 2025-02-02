@@ -40,8 +40,8 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       if (response == null) return null;
 
-      if (response.containsKey(HttpStatusCodes.serverSuccessResponse) &&
-          response[HttpStatusCodes.serverSuccessResponse] == false) {
+      if (response.containsKey(HttpServerResponses.serverSuccessResponse) &&
+          response[HttpServerResponses.serverSuccessResponse] == false) {
         return null;
       }
 
@@ -70,11 +70,11 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       _logger.log(Level.debug, "login response: $response | ${response.runtimeType}");
 
-      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
         return null;
       }
 
-      if (response[HttpStatusCodes.serverSuccessResponse] == false) {
+      if (response[HttpServerResponses.serverSuccessResponse] == false) {
         _screenMessaging.toast((response['message'] ?? '') as String);
         return null;
       }
@@ -114,11 +114,11 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       _logger.log(Level.debug, "register response: $response");
 
-      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) {
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
         return null;
       }
 
-      if (response[HttpStatusCodes.serverSuccessResponse] == false) {
+      if (response[HttpServerResponses.serverSuccessResponse] == false) {
         _screenMessaging.toast(response.getNested(['message']));
         return null;
       }
@@ -145,9 +145,9 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       _logger.log(Level.debug, "logout response: $response");
 
-      if (!response.containsKey(HttpStatusCodes.serverSuccessResponse)) return false;
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) return false;
 
-      if (response[HttpStatusCodes.serverSuccessResponse] == true) {
+      if (response[HttpServerResponses.serverSuccessResponse] == true) {
         return true;
       }
 
