@@ -103,7 +103,11 @@ class AppRunner with FolderCreator {
           stackTrace: trace,
         );
         final IErrorReporter errorReporter = kReleaseMode
-            ? FirebaseErrorReporter(exception: error, stackTrace: trace)
+            ? FirebaseErrorReporter(
+                exception: error,
+                stackTrace: trace,
+                firebaseCrashlytics: FirebaseCrashlytics.instance,
+              )
             : NoOpIErrorReporter();
 
         await errorReporter.report();
