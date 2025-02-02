@@ -12,6 +12,8 @@ import 'package:yahay/src/core/utils/debug_image_creator_in_apps_folder/debug_im
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_dio.dart';
 import 'package:yahay/src/core/utils/dotenv/dotenv.dart';
+import 'package:yahay/src/core/utils/error_reporter/firebase_error_reporter.dart';
+import 'package:yahay/src/core/utils/error_reporter/i_error_reporter.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/app_logger_factory.dart';
@@ -93,13 +95,18 @@ class AppRunner with FolderCreator {
 
         await init();
       },
-      (error, trace) {
+      (error, trace) async {
         logger.log(
           Level.error,
           "Zone error",
           error: error,
           stackTrace: trace,
         );
+        final IErrorReporter errorReporter = kReleaseMode
+            ? FirebaseErrorReporter(exception: error, stackTrace: trace)
+            : NoOpIErrorReporter();
+
+        await errorReporter.report();
       },
     );
   }
