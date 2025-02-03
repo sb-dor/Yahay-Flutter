@@ -108,7 +108,7 @@ class AppRunner with FolderCreator {
                 stackTrace: trace,
                 firebaseCrashlytics: FirebaseCrashlytics.instance,
               )
-            : NoOpIErrorReporter();
+            : NoOpErrorReporter();
 
         await errorReporter.report();
       },

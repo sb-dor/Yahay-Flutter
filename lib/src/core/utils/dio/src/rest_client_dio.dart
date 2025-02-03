@@ -62,7 +62,7 @@ final class RestClientDio extends RestClientBase {
       if (error.response?.statusCode == HttpStatus.unauthorized) {
         throw UnauthenticatedException(
           exception: error,
-          statusCode: 401,
+          statusCode: HttpStatus.unauthorized,
         );
       }
 

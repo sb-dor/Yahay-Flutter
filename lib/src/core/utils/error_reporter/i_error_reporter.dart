@@ -2,7 +2,7 @@ abstract interface class IErrorReporter {
   Future<void> report();
 }
 
-final class NoOpIErrorReporter implements IErrorReporter {
+final class NoOpErrorReporter implements IErrorReporter {
   @override
   Future<void> report() async {
     // No implementation inside
