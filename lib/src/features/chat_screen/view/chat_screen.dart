@@ -37,6 +37,7 @@ class ChatScreen extends StatelessWidget {
         user: dependencyContainer.authBloc.state.authStateModel.user,
         channelsOptions: dependencyContainer.pusherClientService.options,
         restClientBase: dependencyContainer.restClientBase,
+        logger: dependencyContainer.logger,
       ).create(),
       child: _ChatScreenUI(chat: chat, user: user),
     );

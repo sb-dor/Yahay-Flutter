@@ -1,4 +1,5 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
+import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
@@ -19,13 +20,16 @@ final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
     required final UserModel? user,
     required final PusherChannelsOptions channelsOptions,
     required final RestClientBase restClientBase,
+    required final Logger logger,
   })  : _user = user,
         _channelsOptions = channelsOptions,
-        _restClientBase = restClientBase;
+        _restClientBase = restClientBase,
+        _logger = logger;
 
   final UserModel? _user;
   final PusherChannelsOptions _channelsOptions;
   final RestClientBase _restClientBase;
+  final Logger _logger;
 
   @override
   ChatScreenBloc create() {
@@ -51,6 +55,7 @@ final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
       currentUser: _user,
       options: _channelsOptions,
       initialState: initialState,
+      logger: _logger,
     );
   }
 }

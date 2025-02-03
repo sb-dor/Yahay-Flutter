@@ -5,15 +5,18 @@ import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 import 'package:uuid/uuid.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
+import 'package:yahay/src/features/chat_screen/bloc/stream_transformers/models/chat_message_transformer.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_chat_repo.dart';
 import 'package:yahay/src/features/chat_screen/domain/repo/chat_screen_repo.dart';
 
 import 'state_model/chat_screen_state_model.dart';
+import 'stream_transformers/chat_message_stream_transformer.dart';
 
 part 'chat_screen_bloc.freezed.dart';
 
@@ -28,8 +31,8 @@ abstract class ChatScreenEvents with _$ChatScreenEvents {
 
   const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _RemoveAllTempCreatedChatsEvent;
 
-  const factory ChatScreenEvents.handleChatMessageEvent(ChannelReadEvent event) =
-      _HandleChatMessageEvent;
+  const factory ChatScreenEvents.handleChatMessageEvent(
+      ChatMessageTransformer chatMessageTransformer) = _HandleChatMessageEvent;
 
   const factory ChatScreenEvents.sendMessageEvent({
     required final String message,
@@ -68,6 +71,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   final ChatScreenChatRepo _iChatScreenChatRepo;
   final UserModel? _currentUser;
   final PusherChannelsOptions _options;
+  final Logger _logger;
 
   ChatScreenBloc({
     required ChatScreenRepo chatScreenRepo,
@@ -75,10 +79,12 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     required UserModel? currentUser,
     required PusherChannelsOptions options,
     required ChatScreenStates initialState,
+    required Logger logger,
   })  : _iChatScreenRepo = chatScreenRepo,
         _iChatScreenChatRepo = chatScreenChatRepo,
         _currentUser = currentUser,
         _options = options,
+        _logger = logger,
         super(initialState) {
     //
     on<ChatScreenEvents>(
@@ -142,7 +148,14 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 
       await _pusherChannelsClient?.connect();
 
-      _channelSubscription = channel?.bind(Constants.chatChannelEventName).listen((pusherEvent) {
+      _channelSubscription = channel
+          ?.bind(Constants.chatChannelEventName)
+          .transform(
+            ChatMessageStreamTransformer(
+              logger: _logger,
+            ),
+          )
+          .listen((pusherEvent) {
         add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
       });
 
@@ -174,30 +187,23 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
     try {
-      Map<String, dynamic> messageJson = jsonDecode(event.event.data ?? '');
-
-      if (messageJson.containsKey('message') && messageJson['message'] != null) {
-        ChatMessageModel message =
-            ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
+      if (event.chatMessageTransformer.chatMessageModel != null) {
         currentStateModel = _addMessage(
-          message: message,
+          message: event.chatMessageTransformer.chatMessageModel!,
           currentStateModel: currentStateModel,
         );
       }
 
       // find problem here
-      if (messageJson.containsKey('chat') && messageJson['chat'] != null) {
-        debugPrint("chat has chat room: ${currentStateModel.currentChat?.videoChatRoom}");
-        ChatModel chat = ChatModel.fromJson(messageJson['chat']);
+      if (event.chatMessageTransformer.chatModel != null) {
         currentStateModel = _setChat(
           chat: currentStateModel.currentChat?.copyWith(
-            videoChatRoom: chat.videoChatRoom,
-            videoChatStreaming: chat.videoChatStreaming,
+            videoChatRoom: event.chatMessageTransformer.chatModel!.videoChatRoom,
+            videoChatStreaming: event.chatMessageTransformer.chatModel!.videoChatStreaming,
           ),
           setChatMessages: false,
           currentStateModel: currentStateModel,
         );
-        debugPrint("chat has chat room 2: ${currentStateModel.currentChat?.videoChatRoom}");
       }
 
       _emitter(emit: emit, currentStateModel: currentStateModel);
