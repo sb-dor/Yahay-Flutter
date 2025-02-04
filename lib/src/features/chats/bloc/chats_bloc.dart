@@ -11,6 +11,7 @@ import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/chats/domain/repo/chats_repo.dart';
 import 'state_model/chats_state_model.dart';
+import 'stream_transformers/chats_stream_transformers.dart';
 
 part 'chats_bloc.freezed.dart';
 
@@ -21,7 +22,7 @@ class ChatsEvents with _$ChatsEvents {
 
   const factory ChatsEvents.chatListenerInitialEvent() = _ChatListenerInitialEvent;
 
-  const factory ChatsEvents.chatListenerEvent(final ChannelReadEvent? event) = _ChatListenerEvent;
+  const factory ChatsEvents.chatListenerEvent(final ChatModel? chatModel) = _ChatListenerEvent;
 
   const factory ChatsEvents.changeToLoadingState() = _ChangeToLoadingState;
 }
@@ -121,9 +122,12 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       await _pusherClientService?.connect();
 
-      _channelSubscription = chatChannel?.bind(Constants.channelNotifyOfUserEventName).listen(
-        (pusherData) {
-          add(ChatsEvents.chatListenerEvent(pusherData));
+      _channelSubscription = chatChannel
+          ?.bind(Constants.channelNotifyOfUserEventName)
+          .transform(ChatsStreamTransformers(logger: _logger))
+          .listen(
+        (chatModel) {
+          add(ChatsEvents.chatListenerEvent(chatModel));
         },
       );
     } catch (e) {
@@ -136,30 +140,23 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     Emitter<ChatsStates> emit,
   ) async {
     try {
-      final data = event.event?.data;
-
       _logger.log(
         Level.debug,
-        "$data",
+        "${event.chatModel}",
       );
-
-      Map<String, dynamic> json = data is String
-          ? jsonDecode(data)
-          : data is Map
-              ? data
-              : {};
-
-      ChatModel chat = ChatModel.fromJson(json['chat']);
-
-      _logger.log(Level.debug, "is this chat: $chat");
 
       // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
-      var currentStateModel = state.chatsStateModel.copyWith(
-        chats: addChat(chat: chat, currentChats: state.chatsStateModel.chats),
-      );
+      if (event.chatModel != null) {
+        var currentStateModel = state.chatsStateModel.copyWith(
+          chats: addChat(
+            chat: event.chatModel,
+            currentChats: state.chatsStateModel.chats,
+          ),
+        );
 
-      _emitter(currentStateModel: currentStateModel, emit: emit);
+        _emitter(currentStateModel: currentStateModel, emit: emit);
+      }
     } catch (e) {
       _logger.log(Level.error, "_channelListenerEvent error is: $e");
     }

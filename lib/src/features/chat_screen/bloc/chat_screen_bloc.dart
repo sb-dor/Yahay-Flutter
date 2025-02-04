@@ -155,9 +155,13 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
               logger: _logger,
             ),
           )
-          .listen((pusherEvent) {
-        add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
-      });
+          .listen(
+        (pusherEvent) {
+          add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
+        },
+        onError: (error, stackTrace) => Error.throwWithStackTrace(error, stackTrace),
+        onDone: () => _channelSubscription?.cancel(),
+      );
 
       emit(ChatScreenStates.loaded(currentStateModel));
 
