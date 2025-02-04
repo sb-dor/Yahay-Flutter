@@ -7,6 +7,7 @@ import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
+import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_message_data_source/chat_screen_message_data_source.dart';
 
@@ -52,8 +53,8 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
       );
 
       debugPrint("reponseddata: ${response}");
-    } catch (e) {
-      debugPrint("ChatScreenMessageDataSourceImpl sendMessage error is: $e");
+    } on RestClientException {
+      rethrow;
     }
   }
 

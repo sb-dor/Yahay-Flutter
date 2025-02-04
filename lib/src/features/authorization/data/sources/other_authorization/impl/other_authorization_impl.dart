@@ -31,83 +31,73 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
 
   @override
   Future<UserModel?> faceBookAuth() async {
-    try {
-      final LoginResult loginResult = await _facebookAuth.login();
+    final LoginResult loginResult = await _facebookAuth.login();
 
-      if (loginResult.status == LoginStatus.failed || loginResult.status == LoginStatus.cancelled) {
-        return null;
-      }
-
-      final userData = await FacebookAuth.instance.getUserData();
-
-      final body = {
-        "facebook_id": loginResult.accessToken?.userId,
-        "name": userData.getValueByKey("name"),
-        "email": userData.getValueByKey("email"),
-        "image_url": userData['picture']['data']['url'],
-      };
-
-      final response = await _restClientBase.post(_facebookAuthPath, data: body);
-
-      if (response == null) return null;
-
-      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
-        return null;
-      }
-
-      await _sharedPreferHelper.setStringByKey(
-        key: "token",
-        value: response.getNested(
-          ['token'],
-        ),
-      );
-
-      return UserModel.fromJson(response.getNested(['user']));
-    } catch (e) {
-      debugPrint("faceBookAuth error is $e");
+    if (loginResult.status == LoginStatus.failed || loginResult.status == LoginStatus.cancelled) {
       return null;
     }
+
+    final userData = await FacebookAuth.instance.getUserData();
+
+    final body = {
+      "facebook_id": loginResult.accessToken?.userId,
+      "name": userData.getValueByKey("name"),
+      "email": userData.getValueByKey("email"),
+      "image_url": userData['picture']['data']['url'],
+    };
+
+    final response = await _restClientBase.post(_facebookAuthPath, data: body);
+
+    if (response == null) return null;
+
+    if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
+      return null;
+    }
+
+    await _sharedPreferHelper.setStringByKey(
+      key: "token",
+      value: response.getNested(
+        ['token'],
+      ),
+    );
+
+    return UserModel.fromJson(response.getNested(['user']));
   }
 
   @override
   Future<UserModel?> googleAuth() async {
     // debugPrint("sending after url: ${_dioSettings.dio.options.baseUrl}$_googleAuthPath");
-    try {
-      final googleAccount = await _googleSignIn.signIn();
+    final googleAccount = await _googleSignIn.signIn();
 
-      if (googleAccount == null) return null;
+    if (googleAccount == null) return null;
 
-      final body = {
-        "email": googleAccount.email,
-        "google_id": googleAccount.id,
-        "image_url": googleAccount.photoUrl,
-      };
+    final body = {
+      "email": googleAccount.email,
+      "google_id": googleAccount.id,
+      "image_url": googleAccount.photoUrl,
+    };
 
-      debugPrint("sending body is: $body");
+    debugPrint("sending body is: $body");
 
-      final response = await _restClientBase.post(_googleAuthPath, data: body);
+    final response = await _restClientBase.post(_googleAuthPath, data: body);
 
-      if (response == null) return null;
+    if (response == null) return null;
 
-      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
-        return null;
-      }
-
-      await _sharedPreferHelper.setStringByKey(
-        key: "token",
-        value: response.getNested(
-          ['token'],
-        ),
-      );
-
-      return UserModel.fromJson(
-        response.getNested(
-          ['user'],
-        ),
-      );
-    } catch (e) {
-      debugPrint("google auth error is: $e");
+    if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
       return null;
     }
+
+    await _sharedPreferHelper.setStringByKey(
+      key: "token",
+      value: response.getNested(
+        ['token'],
+      ),
+    );
+
+    return UserModel.fromJson(
+      response.getNested(
+        ['user'],
+      ),
+    );
   }
 }

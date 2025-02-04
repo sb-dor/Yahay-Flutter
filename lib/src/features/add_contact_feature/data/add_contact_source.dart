@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
@@ -50,12 +48,10 @@ class AddContactSourceImpl implements AddContactSource {
       final userList = usersList.map((e) => UserModel.fromJson(e)).toList();
 
       return userList;
-    } on RestClientException catch (error, stackTrace) {
+    } on RestClientException {
+      rethrow;
+    } catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
-    } catch (e) {
-      _logger.log(Level.error, "getting value error is: $e");
-      FirebaseCrashlytics.instance.log(e.toString());
-      return <UserModel>[];
     }
   }
 
@@ -80,12 +76,11 @@ class AddContactSourceImpl implements AddContactSource {
       }
 
       return true;
-    } on RestClientException catch (error, stackTrace) {
+    } on RestClientException {
+      rethrow;
+    } catch (error, stackTrace) {
+      _logger.log(Level.error, "add contact error is: $error");
       Error.throwWithStackTrace(error, stackTrace);
-    } catch (e) {
-      _logger.log(Level.error, "add contact error is: $e");
-      FirebaseCrashlytics.instance.log(e.toString());
-      return false;
     }
   }
 }

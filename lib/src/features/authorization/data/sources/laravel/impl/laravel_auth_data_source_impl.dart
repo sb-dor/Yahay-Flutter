@@ -56,41 +56,31 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     required final String emailOrUserName,
     required final String password,
   }) async {
-    try {
-      final url = "${AppHttpRoutes.authPrefix}$_login";
+    final url = "${AppHttpRoutes.authPrefix}$_login";
 
-      Map<String, dynamic> body = {
-        "email_or_username": emailOrUserName,
-        "password": password,
-      };
+    Map<String, dynamic> body = {
+      "email_or_username": emailOrUserName,
+      "password": password,
+    };
 
-      final response = await _restClientBase.post(url, data: body);
+    final response = await _restClientBase.post(url, data: body);
 
-      if (response == null) return null;
+    if (response == null) return null;
 
-      _logger.log(Level.debug, "login response: $response | ${response.runtimeType}");
+    _logger.log(Level.debug, "login response: $response | ${response.runtimeType}");
 
-      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
-        return null;
-      }
-
-      if (response[HttpServerResponses.serverSuccessResponse] == false) {
-        _screenMessaging.toast((response['message'] ?? '') as String);
-        return null;
-      }
-
-      await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
-
-      return UserModel.fromJson(response.getNested(['user']));
-    } on ClientException catch (error, stackTrace) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx and is also not 304.
-      Error.throwWithStackTrace(error, stackTrace);
-    } catch (e) {
-      _logger.log(Level.debug, "login error is $e");
+    if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
       return null;
     }
-    return null;
+
+    if (response[HttpServerResponses.serverSuccessResponse] == false) {
+      _screenMessaging.toast((response['message'] ?? '') as String);
+      return null;
+    }
+
+    await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
+
+    return UserModel.fromJson(response.getNested(['user']));
   }
 
   @override
@@ -99,39 +89,32 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     required final String password,
     required final String userName,
   }) async {
-    try {
-      final url = "${AppHttpRoutes.authPrefix}$_register";
+    final url = "${AppHttpRoutes.authPrefix}$_register";
 
-      Map<String, dynamic> body = {
-        "email": email,
-        "password": password,
-        "user_name": userName,
-      };
+    Map<String, dynamic> body = {
+      "email": email,
+      "password": password,
+      "user_name": userName,
+    };
 
-      final response = await _restClientBase.post(url, data: body);
+    final response = await _restClientBase.post(url, data: body);
 
-      if (response == null) return null;
+    if (response == null) return null;
 
-      _logger.log(Level.debug, "register response: $response");
+    _logger.log(Level.debug, "register response: $response");
 
-      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
-        return null;
-      }
-
-      if (response[HttpServerResponses.serverSuccessResponse] == false) {
-        _screenMessaging.toast(response.getNested(['message']));
-        return null;
-      }
-
-      await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
-
-      return UserModel.fromJson(response.getNested(['user']));
-    } on ClientException catch (error, stackTrace) {
-      Error.throwWithStackTrace(error, stackTrace);
-    } catch (e) {
-      _logger.log(Level.debug, "register error is $e");
+    if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
       return null;
     }
+
+    if (response[HttpServerResponses.serverSuccessResponse] == false) {
+      _screenMessaging.toast(response.getNested(['message']));
+      return null;
+    }
+
+    await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
+
+    return UserModel.fromJson(response.getNested(['user']));
   }
 
   @override
@@ -152,11 +135,10 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       }
 
       return false;
-    } on ClientException catch (error, stackTrace) {
+    } on RestClientException {
+      rethrow;
+    } catch (error, stackTrace) {
       Error.throwWithStackTrace(error, stackTrace);
-    } catch (e) {
-      _logger.log(Level.debug, "logout error is: $e");
-      return false;
     }
   }
 }

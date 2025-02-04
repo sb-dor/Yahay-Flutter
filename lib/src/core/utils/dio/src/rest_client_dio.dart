@@ -71,7 +71,7 @@ final class RestClientDio extends RestClientBase {
         stackTrace,
       );
       //
-    }
+    } 
   }
 
   Future<Map<String, String>> get headers async {
