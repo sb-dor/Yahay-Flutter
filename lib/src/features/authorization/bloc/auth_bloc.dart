@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
-import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/authorization/domain/repo/authorization_repo.dart';
 import 'package:yahay/src/features/authorization/domain/repo/other_authorization_repo.dart';
 import 'state_model/auth_state_model.dart';

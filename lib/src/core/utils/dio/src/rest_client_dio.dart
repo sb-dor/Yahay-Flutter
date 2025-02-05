@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/utils/dio/src/exceptions/rest_client_exception.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';

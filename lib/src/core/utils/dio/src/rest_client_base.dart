@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'exceptions/rest_client_exception.dart';
 import 'rest_client.dart';

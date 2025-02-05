@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';

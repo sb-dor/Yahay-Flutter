@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
 import 'package:yahay/src/core/utils/screen_messaging/screen_messaging.dart';

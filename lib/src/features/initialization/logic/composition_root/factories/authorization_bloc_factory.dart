@@ -1,7 +1,6 @@
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/screen_messaging/screen_messaging.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:flutter/foundation.dart';

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';

@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/features/add_contact_feature/bloc/add_contact_bloc.dart';
 import 'package:yahay/src/features/add_contact_feature/bloc/state_model/add_contact_state_model.dart';

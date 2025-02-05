@@ -1,6 +1,5 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';

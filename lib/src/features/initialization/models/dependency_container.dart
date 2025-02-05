@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/camera_helper_service/camera_helper_service.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';

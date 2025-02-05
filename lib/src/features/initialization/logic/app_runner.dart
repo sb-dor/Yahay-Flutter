@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/bloc_observer_manager/bloc_observer_manager.dart';
 import 'package:yahay/src/core/utils/debug_image_creator_in_apps_folder/debug_image_creator_in_apps_folder.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';

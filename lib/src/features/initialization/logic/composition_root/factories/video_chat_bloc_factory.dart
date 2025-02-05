@@ -1,5 +1,4 @@
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';

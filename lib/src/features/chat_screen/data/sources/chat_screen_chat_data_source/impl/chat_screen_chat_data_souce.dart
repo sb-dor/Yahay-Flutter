@@ -1,12 +1,7 @@
-import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
-import 'package:yahay/src/core/app_settings/dio/dio_settings.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
-import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
-import 'package:yahay/src/core/utils/dio/src/status_codes/http_server_responses.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/core/utils/extensions/extentions.dart';
