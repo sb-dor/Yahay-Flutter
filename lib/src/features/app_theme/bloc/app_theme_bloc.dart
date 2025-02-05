@@ -47,8 +47,6 @@ class AppThemeBloc {
         return AppColorsScheme.light;
       case Brightness.light:
         return AppColorsScheme.dark;
-      default:
-        return AppColorsScheme.dark;
-    }
+      }
   }
 }
