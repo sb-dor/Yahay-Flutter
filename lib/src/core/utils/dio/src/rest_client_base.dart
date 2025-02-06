@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'exceptions/rest_client_exception.dart';
 import 'rest_client.dart';
 
@@ -9,6 +12,8 @@ abstract base class RestClientBase implements RestClient {
   RestClientBase({required String baseURL}) : _baseURL = Uri.parse(baseURL);
 
   final Uri _baseURL;
+
+  static final _jsonUTF8 = json.fuse(utf8);
 
   Future<Map<String, Object?>?> send({
     required String path,
@@ -83,7 +88,10 @@ abstract base class RestClientBase implements RestClient {
         queryParams: queryParams,
       );
 
-  Uri buildUri({required String path, Map<String, String?>? queryParams}) {
+  Uri buildUri({
+    required String path,
+    Map<String, String?>? queryParams,
+  }) {
     final String finalPath = Uri.parse("${_baseURL.path}/api$path").normalizePath().toString();
 
     final Map<String, Object?> params = Map.of(_baseURL.queryParameters);
@@ -100,19 +108,26 @@ abstract base class RestClientBase implements RestClient {
   }
 
   Future<Map<String, Object?>?> decodeResponse(
-    final Map<String, Object?>? data, {
+    final ResponseBody<Object?>? data, {
     final int? statusCode,
   }) async {
     try {
-      if (data case {"data": final Map<String, Object?> data}) {
+      final decodedResponse = switch (data) {
+        StringResponseBody(body: final String body) => await _decodeString(body),
+        BytesResponseBody(body: final List<int> bytes) => await _decodeBytes(bytes),
+        MapResponseBody(body: final Map<String, dynamic> map) => map,
+        _ => <String, dynamic>{},
+      };
+
+      if (decodedResponse case {"data": final Map<String, Object?> data}) {
         return data;
       }
 
-      if (data case {"error": final Map<String, Object?> error}) {
+      if (decodedResponse case {"error": final Map<String, Object?> error}) {
         throw StructuredBackendException(error: error);
       }
 
-      return data;
+      return decodedResponse;
     } on RestClientException {
       rethrow;
     } on Object catch (error, stackTrace) {
@@ -127,4 +142,42 @@ abstract base class RestClientBase implements RestClient {
       );
     }
   }
+
+  Future<Map<String, dynamic>?> _decodeString(String data) async {
+    if (data.isEmpty) return null;
+
+    if (data.length > 1000) {
+      return (await compute(jsonDecode, data)) as Map<String, dynamic>;
+    }
+
+    return jsonDecode(data) as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>?> _decodeBytes(List<int> bytes) async {
+    if (bytes.isEmpty) return null;
+
+    if (bytes.length > 1000) {
+      return (await compute(_jsonUTF8.decode, bytes)) as Map<String, dynamic>;
+    }
+
+    return _jsonUTF8.decode(bytes) as Map<String, dynamic>;
+  }
+}
+
+sealed class ResponseBody<T> {
+  ResponseBody({required this.body});
+
+  T? body;
+}
+
+final class StringResponseBody extends ResponseBody<String> {
+  StringResponseBody({required super.body});
+}
+
+final class BytesResponseBody extends ResponseBody<List<int>> {
+  BytesResponseBody({required super.body});
+}
+
+final class MapResponseBody extends ResponseBody<Map<String, dynamic>> {
+  MapResponseBody({required super.body});
 }

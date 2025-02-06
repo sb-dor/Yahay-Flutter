@@ -5,21 +5,26 @@ import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
-import 'package:yahay/src/features/chat_screen/bloc/stream_transformers/models/chat_message_transformer.dart';
 
-// TODO: write code that returns or chatMessage or chat itself
+typedef ChatMessageStreamTransformerRecord = ({
+  ChatModel? chatModel,
+  ChatMessageModel? chageMessageModel
+});
+
+// I know that I could create a class that holds chatModel and message
+// but in order to improve records i had to write
 final class ChatMessageStreamTransformer
-    extends StreamTransformerBase<ChannelReadEvent, ChatMessageTransformer> {
+    extends StreamTransformerBase<ChannelReadEvent, ChatMessageStreamTransformerRecord> {
   //
   ChatMessageStreamTransformer({required final Logger logger}) : _logger = logger;
 
   final Logger _logger;
 
   @override
-  Stream<ChatMessageTransformer> bind(Stream<ChannelReadEvent> stream) {
+  Stream<ChatMessageStreamTransformerRecord> bind(Stream<ChannelReadEvent> stream) {
     StreamSubscription? subscription;
 
-    final controller = StreamController<ChatMessageTransformer>(
+    final controller = StreamController<ChatMessageStreamTransformerRecord>(
       onResume: () => subscription?.resume(),
       onCancel: () => subscription?.cancel(),
       onPause: () => subscription?.pause(),
@@ -29,35 +34,27 @@ final class ChatMessageStreamTransformer
       (event) {
         Map<String, dynamic> messageJson = jsonDecode(event.data ?? '');
 
-        ChatMessageTransformer chatMessageTransformer = const ChatMessageTransformer();
+        ChatMessageModel? message;
+        ChatModel? chat;
 
         if (messageJson.containsKey('message') && messageJson['message'] != null) {
-          ChatMessageModel message =
-              ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
-          chatMessageTransformer = chatMessageTransformer.copyWith(
-            chatMessageModel: message,
-          );
+          message = ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
         }
 
         // find problem here
         if (messageJson.containsKey('chat') && messageJson['chat'] != null) {
-          _logger.log(
-            Level.debug,
-            "chat has chat room: ${chatMessageTransformer.chatModel?.videoChatRoom}",
-          );
-          ChatModel chat = ChatModel.fromJson(messageJson['chat']);
-
-          chatMessageTransformer = chatMessageTransformer.copyWith(chatModel: chat);
-
-          _logger.log(
-            Level.debug,
-            "chat has chat room 2: ${chatMessageTransformer.chatModel?.videoChatRoom}",
-          );
+          // _logger.log(
+          //   Level.debug,
+          //   "chat has chat room: ${chatMessageTransformer.chatModel?.videoChatRoom}",
+          // );
+          chat = ChatModel.fromJson(messageJson['chat']);
+          // _logger.log(
+          //   Level.debug,
+          //   "chat has chat room 2: ${chatMessageTransformer.chatModel?.videoChatRoom}",
+          // );
         }
 
-        controller.add(
-          chatMessageTransformer,
-        );
+        controller.add((chatModel: chat, chageMessageModel: message));
       },
       onError: (error) => controller.addError(error),
       onDone: () => controller.close(),

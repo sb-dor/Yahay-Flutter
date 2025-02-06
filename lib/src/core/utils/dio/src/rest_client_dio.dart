@@ -13,7 +13,8 @@ final class RestClientDio extends RestClientBase {
     required final SharedPreferHelper sharedPrefer,
     required final Logger logger,
     Dio? dio,
-  })  : _dio = dio ?? Dio(),
+  })
+      : _dio = dio ?? Dio(),
         _sharedPreferHelper = sharedPrefer,
         _logger = logger;
 
@@ -41,6 +42,7 @@ final class RestClientDio extends RestClientBase {
         options: Options(
           method: method.name.toUpperCase(),
           headers: headers ?? await this.headers,
+          responseType: ResponseType.bytes, // change here for decoding response
         ),
       );
 
@@ -49,7 +51,7 @@ final class RestClientDio extends RestClientBase {
       // link
       // https://github.com/hawkkiller/sizzle_starter/blob/main/packages/rest_client/lib/src/rest_client_base.dart
       return decodeResponse(
-        request.data,
+        BytesResponseBody(body: request.data),
         statusCode: request.statusCode,
       );
     } on RestClientException {
@@ -70,7 +72,7 @@ final class RestClientDio extends RestClientBase {
         stackTrace,
       );
       //
-    } 
+    }
   }
 
   Future<Map<String, String>> get headers async {

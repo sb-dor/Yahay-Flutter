@@ -31,7 +31,7 @@ abstract class ChatScreenEvents with _$ChatScreenEvents {
   const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _RemoveAllTempCreatedChatsEvent;
 
   const factory ChatScreenEvents.handleChatMessageEvent(
-      ChatMessageTransformer chatMessageTransformer) = _HandleChatMessageEvent;
+      ChatMessageStreamTransformerRecord chatMessageTransformer) = _HandleChatMessageEvent;
 
   const factory ChatScreenEvents.sendMessageEvent({
     required final String message,
@@ -104,84 +104,75 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
 
-    try {
-      emit(ChatScreenStates.loading(currentStateModel));
+    emit(ChatScreenStates.loading(currentStateModel));
 
-      currentStateModel = currentStateModel.copyWith(currentUser: _currentUser);
+    currentStateModel = currentStateModel.copyWith(currentUser: _currentUser);
 
-      final chat = await _iChatScreenChatRepo.chat(chat: event.chat, withUser: event.user);
+    final chat = await _iChatScreenChatRepo.chat(chat: event.chat, withUser: event.user);
 
-      // i don't know why after calling function above currentUser from "_currentStateModel.currentUser" disappears
-      // i didn't find a bug
-      // if (_currentStateModel.currentUser == null) {
-      //   _currentStateModel.setToCurrentUser(
-      //     _currentUser,
-      //   );
-      // }
+    // i don't know why after calling function above currentUser from "_currentStateModel.currentUser" disappears
+    // i didn't find a bug
+    // if (_currentStateModel.currentUser == null) {
+    //   _currentStateModel.setToCurrentUser(
+    //     _currentUser,
+    //   );
+    // }
 
-      if (chat == null || chat.uuid == null) {
-        currentStateModel = _setChat(currentStateModel: currentStateModel, chat: null);
-        emit(ChatScreenStates.error(currentStateModel));
-        return;
-      }
-
-      currentStateModel = _setChat(currentStateModel: currentStateModel, chat: chat);
-
-      final channelName =
-          "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
-
-      debugPrint("channel name: $channelName");
-
-      _pusherChannelsClient = PusherChannelsClient.websocket(
-        options: _options,
-        connectionErrorHandler: (f, s, t) {},
-      );
-
-      final channel = _pusherChannelsClient?.publicChannel(channelName);
-
-      _channelInformationSubscription = _pusherChannelsClient?.onConnectionEstablished.listen(
-        (e) {
-          channel?.subscribeIfNotUnsubscribed();
-        },
-      );
-
-      await _pusherChannelsClient?.connect();
-
-      _channelSubscription = channel
-          ?.bind(Constants.chatChannelEventName)
-          .transform(
-            ChatMessageStreamTransformer(
-              logger: _logger,
-            ),
-          )
-          .listen(
-        (pusherEvent) {
-          add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
-        },
-        onError: (error, stackTrace) => Error.throwWithStackTrace(error, stackTrace),
-        onDone: () => _channelSubscription?.cancel(),
-      );
-
-      emit(ChatScreenStates.loaded(currentStateModel));
-
-      // get all chat messages here
-    } catch (e) {
-      debugPrint("channel connecting error: $e");
+    if (chat == null || chat.uuid == null) {
+      currentStateModel = _setChat(currentStateModel: currentStateModel, chat: null);
       emit(ChatScreenStates.error(currentStateModel));
+      return;
     }
+
+    currentStateModel = _setChat(currentStateModel: currentStateModel, chat: chat);
+
+    final channelName =
+        "${Constants.chatChannelName}${chat.id}${Constants.chatChannelUUID}${chat.uuid}";
+
+    debugPrint("channel name: $channelName");
+
+    _pusherChannelsClient = PusherChannelsClient.websocket(
+      options: _options,
+      connectionErrorHandler: (f, s, t) {},
+    );
+
+    final channel = _pusherChannelsClient?.publicChannel(channelName);
+
+    _channelInformationSubscription = _pusherChannelsClient?.onConnectionEstablished.listen(
+      (e) {
+        channel?.subscribeIfNotUnsubscribed();
+      },
+    );
+
+    await _pusherChannelsClient?.connect();
+
+    _channelSubscription = channel
+        ?.bind(Constants.chatChannelEventName)
+        .transform(
+          ChatMessageStreamTransformer(
+            logger: _logger,
+          ),
+        )
+        .listen(
+      (pusherEvent) {
+        add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
+      },
+      onError: (error, stackTrace) => Error.throwWithStackTrace(error, stackTrace),
+      onDone: () => _channelSubscription?.cancel(),
+    );
+
+    emit(ChatScreenStates.loaded(currentStateModel));
+
+    // get all chat messages here
   }
 
   void _removeAllTempCreatedChatsEvent(
     _RemoveAllTempCreatedChatsEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
-    try {
-      _iChatScreenChatRepo.removeAllTempCreatedChats(
-        chat: state.chatScreenStateModel.currentChat,
-      );
-    } catch (e) {
-      debugPrint("_removeAllTempCreatedChatsEvent error is: $e");
-    }
+    _iChatScreenChatRepo.removeAllTempCreatedChats(
+      chat: state.chatScreenStateModel.currentChat,
+    );
   }
 
   void _handleChatMessageEvent(
@@ -189,30 +180,26 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     Emitter<ChatScreenStates> emit,
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
-    try {
-      if (event.chatMessageTransformer.chatMessageModel != null) {
-        currentStateModel = _addMessage(
-          message: event.chatMessageTransformer.chatMessageModel!,
-          currentStateModel: currentStateModel,
-        );
-      }
-
-      // find problem here
-      if (event.chatMessageTransformer.chatModel != null) {
-        currentStateModel = _setChat(
-          chat: currentStateModel.currentChat?.copyWith(
-            videoChatRoom: event.chatMessageTransformer.chatModel!.videoChatRoom,
-            videoChatStreaming: event.chatMessageTransformer.chatModel!.videoChatStreaming,
-          ),
-          setChatMessages: false,
-          currentStateModel: currentStateModel,
-        );
-      }
-
-      _emitter(emit: emit, currentStateModel: currentStateModel);
-    } catch (e) {
-      emit(ChatScreenStates.error(currentStateModel));
+    if (event.chatMessageTransformer.chageMessageModel != null) {
+      currentStateModel = _addMessage(
+        message: event.chatMessageTransformer.chageMessageModel!,
+        currentStateModel: currentStateModel,
+      );
     }
+
+    // find problem here
+    if (event.chatMessageTransformer.chatModel != null) {
+      currentStateModel = _setChat(
+        chat: currentStateModel.currentChat?.copyWith(
+          videoChatRoom: event.chatMessageTransformer.chatModel!.videoChatRoom,
+          videoChatStreaming: event.chatMessageTransformer.chatModel!.videoChatStreaming,
+        ),
+        setChatMessages: false,
+        currentStateModel: currentStateModel,
+      );
+    }
+
+    _emitter(emit: emit, currentStateModel: currentStateModel);
   }
 
   void _sendMessageEvent(
@@ -220,52 +207,44 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     Emitter<ChatScreenStates> emit,
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
-    try {
-      // if (currentStateModel.pickedFile == null) {
-      //   return;
-      // }
+    // if (currentStateModel.pickedFile == null) {
+    //   return;
+    // }
 
-      final chatMessage = ChatMessageModel(
-        chat: currentStateModel.currentChat,
-        user: currentStateModel.currentUser,
-        relatedToUser: currentStateModel.relatedUser,
-        message: event.message.trim(),
-        chatMessageUUID: const Uuid().v4(),
-        file: currentStateModel.pickedFile,
-        createdAt: DateTime.now().toString().substring(0, 19),
-        messageSent: false,
-      );
+    final chatMessage = ChatMessageModel(
+      chat: currentStateModel.currentChat,
+      user: currentStateModel.currentUser,
+      relatedToUser: currentStateModel.relatedUser,
+      message: event.message.trim(),
+      chatMessageUUID: const Uuid().v4(),
+      file: currentStateModel.pickedFile,
+      createdAt: DateTime.now().toString().substring(0, 19),
+      messageSent: false,
+    );
 
-      currentStateModel = _addMessage(
-        message: chatMessage,
-        currentStateModel: currentStateModel,
-      );
+    currentStateModel = _addMessage(
+      message: chatMessage,
+      currentStateModel: currentStateModel,
+    );
 
-      event.clearMessage();
+    event.clearMessage();
 
-      _emitter(emit: emit, currentStateModel: currentStateModel);
+    _emitter(emit: emit, currentStateModel: currentStateModel);
 
-      await _iChatScreenRepo.sendMessage(
-        chatMessage: chatMessage,
-      );
-    } catch (e) {
-      emit(ChatScreenStates.error(currentStateModel));
-    }
+    await _iChatScreenRepo.sendMessage(
+      chatMessage: chatMessage,
+    );
   }
 
   void _changeEmojiPicker(
     _ChangeEmojiPicker event,
     Emitter<ChatScreenStates> emit,
   ) async {
-    try {
-      var currentStateModel = _changeEmojiPickerHelper(
-        currentStateModel: state.chatScreenStateModel,
-        value: event.value,
-      );
-      _emitter(emit: emit, currentStateModel: currentStateModel);
-    } catch (e) {
-      debugPrint("_chaneEmojiPicker error is: $e");
-    }
+    var currentStateModel = _changeEmojiPickerHelper(
+      currentStateModel: state.chatScreenStateModel,
+      value: event.value,
+    );
+    _emitter(emit: emit, currentStateModel: currentStateModel);
   }
 
   // logic
