@@ -180,19 +180,23 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     Emitter<ChatScreenStates> emit,
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
-    if (event.chatMessageTransformer.chageMessageModel != null) {
+
+    // patterns
+    final (:chageMessageModel, :chatModel) = event.chatMessageTransformer;
+
+    if (chageMessageModel != null) {
       currentStateModel = _addMessage(
-        message: event.chatMessageTransformer.chageMessageModel!,
+        message: chageMessageModel,
         currentStateModel: currentStateModel,
       );
     }
 
     // find problem here
-    if (event.chatMessageTransformer.chatModel != null) {
+    if (chatModel != null) {
       currentStateModel = _setChat(
         chat: currentStateModel.currentChat?.copyWith(
-          videoChatRoom: event.chatMessageTransformer.chatModel!.videoChatRoom,
-          videoChatStreaming: event.chatMessageTransformer.chatModel!.videoChatStreaming,
+          videoChatRoom: chatModel.videoChatRoom,
+          videoChatStreaming: chatModel.videoChatStreaming,
         ),
         setChatMessages: false,
         currentStateModel: currentStateModel,
