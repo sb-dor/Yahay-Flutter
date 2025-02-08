@@ -22,6 +22,7 @@ abstract base class RestClientBase implements RestClient {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log,
   });
 
   @override
@@ -29,12 +30,14 @@ abstract base class RestClientBase implements RestClient {
     String path, {
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log = false,
   }) =>
       send(
         path: path,
         method: DioMethod.get,
         headers: headers,
         queryParams: queryParams,
+        log: log,
       );
 
   @override
@@ -44,6 +47,7 @@ abstract base class RestClientBase implements RestClient {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log = false,
   }) =>
       send(
         path: path,
@@ -52,6 +56,7 @@ abstract base class RestClientBase implements RestClient {
         formData: formData,
         headers: headers,
         queryParams: queryParams,
+        log: log,
       );
 
   @override
@@ -61,6 +66,7 @@ abstract base class RestClientBase implements RestClient {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log = false,
   }) =>
       send(
         path: path,
@@ -69,6 +75,7 @@ abstract base class RestClientBase implements RestClient {
         formData: formData,
         headers: headers,
         queryParams: queryParams,
+        log: log,
       );
 
   @override
@@ -78,6 +85,7 @@ abstract base class RestClientBase implements RestClient {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log = false,
   }) =>
       send(
         path: path,
@@ -86,6 +94,7 @@ abstract base class RestClientBase implements RestClient {
         formData: formData,
         headers: headers,
         queryParams: queryParams,
+        log: log,
       );
 
   Uri buildUri({

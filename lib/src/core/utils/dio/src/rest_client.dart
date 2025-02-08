@@ -5,6 +5,7 @@ abstract interface class RestClient {
     String path, {
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log,
   });
 
   Future<Map<String, Object?>?> post(
@@ -13,6 +14,7 @@ abstract interface class RestClient {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log,
   });
 
   Future<Map<String, Object?>?> put(
@@ -21,6 +23,7 @@ abstract interface class RestClient {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log,
   });
 
   Future<Map<String, Object?>?> delete(
@@ -29,5 +32,6 @@ abstract interface class RestClient {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log,
   });
 }

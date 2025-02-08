@@ -13,8 +13,7 @@ final class RestClientDio extends RestClientBase {
     required final SharedPreferHelper sharedPrefer,
     required final Logger logger,
     Dio? dio,
-  })
-      : _dio = dio ?? Dio(),
+  })  : _dio = dio ?? Dio(),
         _sharedPreferHelper = sharedPrefer,
         _logger = logger;
 
@@ -30,6 +29,7 @@ final class RestClientDio extends RestClientBase {
     FormData? formData,
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
+    bool log = false,
   }) async {
     try {
       final uri = buildUri(path: path, queryParams: queryParams);
@@ -46,7 +46,7 @@ final class RestClientDio extends RestClientBase {
         ),
       );
 
-      _logger.log(Level.debug, request);
+      if (log) _logger.log(Level.debug, request);
 
       // link
       // https://github.com/hawkkiller/sizzle_starter/blob/main/packages/rest_client/lib/src/rest_client_base.dart
