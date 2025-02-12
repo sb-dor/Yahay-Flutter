@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:rive/rive.dart';
+// import 'package:rive/rive.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailOrUserNameController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
   late final AuthBloc _authBloc;
-  final AnimatedLoginCharacter _animatedLoginCharacter = AnimatedLoginCharacter();
+  // final AnimatedLoginCharacter _animatedLoginCharacter = AnimatedLoginCharacter();
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _loadLoginArt() async {
-    await _animatedLoginCharacter.loadLoginArt();
+    // await _animatedLoginCharacter.loadLoginArt();
     setState(() {});
   }
 
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     _emailOrUserNameController.dispose();
     _passwordController.dispose();
-    _animatedLoginCharacter.dispose();
+    // _animatedLoginCharacter.dispose();
     super.dispose();
   }
 
@@ -59,11 +59,11 @@ class _LoginPageState extends State<LoginPage> {
           if (state is AuthorizedStateOnAuthStates) {
             AutoRouter.of(context).replaceAll([const HomeRoute()]);
           }
-          if (state.authStateModel.showPassword) {
-            _animatedLoginCharacter.handsUp(false);
-          } else {
-            _animatedLoginCharacter.handsUp(true);
-          }
+          // if (state.authStateModel.showPassword) {
+          //   _animatedLoginCharacter.handsUp(false);
+          // } else {
+          //   _animatedLoginCharacter.handsUp(true);
+          // }
         },
         bloc: _authBloc,
         builder: (context, state) {
@@ -81,15 +81,15 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // 650 was solved before putting value
-                      if (MediaQuery.of(context).size.hashCode >=
-                              Constants.minimumHeightForShowingRiveTextFieldAnim &&
-                          _animatedLoginCharacter.artBoard != null)
-                        SizedBox(
-                          height: 200,
-                          child: Rive(
-                            artboard: _animatedLoginCharacter.artBoard!,
-                          ),
-                        ),
+                      // if (MediaQuery.of(context).size.hashCode >=
+                      //         Constants.minimumHeightForShowingRiveTextFieldAnim &&
+                      //     _animatedLoginCharacter.artBoard != null)
+                      //   SizedBox(
+                      //     height: 200,
+                      //     child: Rive(
+                      //       artboard: _animatedLoginCharacter.artBoard!,
+                      //     ),
+                      //   ),
                       Text(
                         "Sign In",
                         style: GoogleFonts.aBeeZee(
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                             title: Constants.password,
                             controller: _passwordController,
                             hintText: Constants.enterPassword,
-                            obscureText: _animatedLoginCharacter.isHandsUp,
+                            obscureText: true,
                           ),
                           Positioned(
                             right: 0,

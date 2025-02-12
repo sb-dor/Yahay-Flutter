@@ -85,7 +85,7 @@ dependencies:
   flutter_bloc: ^9.0.0
   bloc_concurrency: ^0.3.0
   provider: ^6.1.2
-  rive: ^0.13.20
+#  rive: ^0.13.20
   hexcolor: ^3.0.1
   clock: ^1.1.1
 #  flutter_bloc: ^8.1.6
