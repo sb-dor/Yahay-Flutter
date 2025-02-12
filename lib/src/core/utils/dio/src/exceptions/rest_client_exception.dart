@@ -72,13 +72,15 @@ final class DioExceptionHandler {
   //
   const DioExceptionHandler({
     required DioException dioException,
+    required this.serverError,
   }) : _dioException = dioException;
 
   final DioException _dioException;
+  final String serverError;
 
   @override
   String toString() {
-    return "DioExceptionHandler: ${_dioException.message}: SERVER_ERROR: ${_dioException.response?.data}"
+    return "DioExceptionHandler: ${_dioException.message}: SERVER_ERROR: $serverError"
         " | MESSAGE: ${_dioException.message} | ERROR: ${_dioException.error}"
         " | STATUS_MESSAGE: ${_dioException.response?.statusMessage}"
         " | STATUS_CODE: ${_dioException.response?.statusCode}"

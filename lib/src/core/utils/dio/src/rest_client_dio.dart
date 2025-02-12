@@ -67,8 +67,17 @@ final class RestClientDio extends RestClientBase {
         );
       }
 
+      final serverError = await decodeResponse(
+        BytesResponseBody(
+          body: error.response?.data,
+        ),
+      );
+
       Error.throwWithStackTrace(
-        DioExceptionHandler(dioException: error),
+        DioExceptionHandler(
+          dioException: error,
+          serverError: "$serverError",
+        ),
         stackTrace,
       );
       //
