@@ -1,5 +1,5 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
-import 'package:yahay/src/core/utils/dotenv/dotenv.dart';
+import 'package:yahay/env/env.dart';
 
 class PusherClientService {
   late final PusherChannelsOptions _options;
@@ -7,15 +7,14 @@ class PusherClientService {
   PusherChannelsOptions get options => _options;
 
   Future<void> init() async {
-    final DotEnvHelper envHelper = DotEnvHelper.instance;
     // just for showing logs
     PusherChannelsPackageLogger.enableLogs();
 
-    _options = PusherChannelsOptions.fromHost(
-      scheme: envHelper.dotEnv.get('PUSHER_SCHEME'), // should be -> ws
-      host: envHelper.dotEnv.get('PUSHER_HOST'),
-      port: int.parse(envHelper.dotEnv.get("PUSHER_PORT")),
-      key: envHelper.dotEnv.get("PUSHER_APP_KEY"),
+    _options = const PusherChannelsOptions.fromHost(
+      scheme: Env.pusherScheme, // should be -> ws
+      host: Env.pusherHost,
+      port: Env.pusherPort,
+      key: Env.pusherAppKey,
     );
   }
 

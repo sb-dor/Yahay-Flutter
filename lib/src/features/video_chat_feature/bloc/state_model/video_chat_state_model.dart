@@ -66,8 +66,7 @@ class VideoChatStateModel {
 
   @override
   String toString() {
-    return 'VideoChatStateModel{' ' chatStarted: $chatStarted,' ' hasAudio: $hasAudio,' ' hasVideo: $hasVideo,' ' cameraSwitched: $cameraSwitched,' ' chat: $chat,' ' currentUser: $currentUser,' ' _currentVideoChatEntity: $currentVideoChatEntity,' ' _videoChatEntities: $videoChatEntities,' +
-        '}';
+    return 'VideoChatStateModel{' ' chatStarted: $chatStarted,' ' hasAudio: $hasAudio,' ' hasVideo: $hasVideo,' ' cameraSwitched: $cameraSwitched,' ' chat: $chat,' ' currentUser: $currentUser,' ' _currentVideoChatEntity: $currentVideoChatEntity,' ' _videoChatEntities: $videoChatEntities,' '}';
   }
 
   VideoChatStateModel copyWith({

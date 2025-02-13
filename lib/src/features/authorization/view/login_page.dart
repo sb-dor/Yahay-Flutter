@@ -10,7 +10,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/authorization/bloc/auth_bloc.dart';
-import 'package:yahay/src/features/authorization/rives/animated_login_character.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 
 import 'widgets/authorization_input_widget.dart';

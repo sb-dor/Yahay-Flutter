@@ -78,11 +78,7 @@ class TelegramFilePickerStateModel {
 
   @override
   String toString() {
-    return 'TelegramFilePickerStateModel{' ' getPathForGettingImagesFrom: $getPathForGettingImagesFrom,' ' openBottomSectionButton: $openBottomSectionButton,' ' filePickerScreenSelectedScreen: $filePickerScreenSelectedScreen,' ' galleryPathFiles: $galleryPathFiles,' +
-        ' galleryPathPagination: $galleryPathPagination,' +
-        ' recentFiles: $recentFiles,' +
-        ' recentFilesPagination: $recentFilesPagination,' +
-        ' pickedFiles: $pickedFiles,' +
+    return 'TelegramFilePickerStateModel{' ' getPathForGettingImagesFrom: $getPathForGettingImagesFrom,' ' openBottomSectionButton: $openBottomSectionButton,' ' filePickerScreenSelectedScreen: $filePickerScreenSelectedScreen,' ' galleryPathFiles: $galleryPathFiles,' ' galleryPathPagination: $galleryPathPagination,' ' recentFiles: $recentFiles,' ' recentFilesPagination: $recentFilesPagination,' ' pickedFiles: $pickedFiles,' +
         ' specificFolderFilesAll: $specificFolderFilesAll,' +
         ' specificFolderFilesPagination: $specificFolderFilesPagination,' +
         '}';

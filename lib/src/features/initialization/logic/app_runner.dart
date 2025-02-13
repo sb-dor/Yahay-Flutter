@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:yahay/env/env.dart';
 import 'package:yahay/src/core/utils/bloc_observer_manager/bloc_observer_manager.dart';
 import 'package:yahay/src/core/utils/debug_image_creator_in_apps_folder/debug_image_creator_in_apps_folder.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_dio.dart';
-import 'package:yahay/src/core/utils/dotenv/dotenv.dart';
 import 'package:yahay/src/core/utils/error_reporter/firebase_error_reporter.dart';
 import 'package:yahay/src/core/utils/error_reporter/i_error_reporter.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
@@ -37,10 +37,8 @@ class AppRunner with FolderCreator {
           final sharedPreferences = SharedPreferHelper();
           await sharedPreferences.initSharedPrefer();
 
-          await DotEnvHelper.instance.initEnv();
-
           final RestClientBase restClientBase = RestClientDio(
-            baseURL: DotEnvHelper.instance.dotEnv.get('MAIN_URL'),
+            baseURL: Env.mainUrl,
             sharedPrefer: sharedPreferences,
             logger: logger,
           );
