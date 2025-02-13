@@ -89,11 +89,11 @@ class _AddContactsPageState extends State<AddContactsPage> {
               builder: (context, states) {
                 switch (states) {
                   case InitialAddConstactsState():
-                  case LoadingAddContactsState():
+                  case AddContacts$InProgressState():
                     return const Center(child: CircularProgressIndicator());
-                  case ErrorAddContactsState():
+                  case AddContacts$ErrorState():
                     return const Text("error");
-                  case LoadedAddContactsState():
+                  case AddContacts$SuccessfulState():
                     final currentStateModel = states.addContactStateModel;
                     return ListView.separated(
                       separatorBuilder: (context, index) => const SizedBox(height: 10),

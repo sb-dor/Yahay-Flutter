@@ -36,7 +36,7 @@ final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
       videoChatFeatureDataSource,
     );
 
-    final initialState = VideoChatFeatureStates.initialVideoChatState(VideoChatStateModel.idle());
+    final initialState = VideoChatFeatureStates.initial(VideoChatStateModel.idle());
 
     return VideoChatBloc(
       iVideoChatFeatureRepo: videoChatFeatureRepo,

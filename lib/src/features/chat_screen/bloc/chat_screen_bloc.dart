@@ -25,37 +25,37 @@ abstract class ChatScreenEvents with _$ChatScreenEvents {
   const factory ChatScreenEvents.initChatScreenEvent({
     final ChatModel? chat,
     final UserModel? user, // temp for creating temp chat if chat does not exist
-  }) = _InitChatScreenEvent;
+  }) = _ChatScreen$InitEvent;
 
-  const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _RemoveAllTempCreatedChatsEvent;
+  const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _ChatsScreen$RemoveAllTempCreatedEvent;
 
   const factory ChatScreenEvents.handleChatMessageEvent(
-      ChatMessageStreamTransformerRecord chatMessageTransformer) = _HandleChatMessageEvent;
+      ChatMessageStreamTransformerRecord chatMessageTransformer) = _Chat$HandleMessageEvent;
 
   const factory ChatScreenEvents.sendMessageEvent({
     required final String message,
     required void Function() clearMessage,
-  }) = _SendMessageEvent;
+  }) = _Chat$SendMessageEvent;
 
   const factory ChatScreenEvents.changeEmojiPicker({
     final bool? value,
-  }) = _ChangeEmojiPicker;
+  }) = _Chat$ChangeEmojiPickerEvent;
 }
 
 @immutable
 @freezed
 sealed class ChatScreenStates with _$ChatScreenStates {
   const factory ChatScreenStates.initial(final ChatScreenStateModel chatScreenStateModel) =
-      InitialChatScreenState;
+      ChatScreen$InitialState;
 
-  const factory ChatScreenStates.loading(final ChatScreenStateModel chatScreenStateModel) =
-      LoadingChatScreenState;
+  const factory ChatScreenStates.inProgress(final ChatScreenStateModel chatScreenStateModel) =
+      ChatScreen$InProgressState;
 
   const factory ChatScreenStates.error(final ChatScreenStateModel chatScreenStateModel) =
       ErrorChatScreenState;
 
-  const factory ChatScreenStates.loaded(final ChatScreenStateModel chatScreenStateModel) =
-      LoadedChatScreenState;
+  const factory ChatScreenStates.successful(final ChatScreenStateModel chatScreenStateModel) =
+      ChatScreen$SuccessfulState;
 }
 
 class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
@@ -98,12 +98,12 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   }
 
   void _initChatScreenEvent(
-    _InitChatScreenEvent event,
+    _ChatScreen$InitEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
 
-    emit(ChatScreenStates.loading(currentStateModel));
+    emit(ChatScreenStates.inProgress(currentStateModel));
 
     currentStateModel = currentStateModel.copyWith(currentUser: _currentUser);
 
@@ -160,13 +160,13 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       onDone: () => _channelSubscription?.cancel(),
     );
 
-    emit(ChatScreenStates.loaded(currentStateModel));
+    emit(ChatScreenStates.successful(currentStateModel));
 
     // get all chat messages here
   }
 
   void _removeAllTempCreatedChatsEvent(
-    _RemoveAllTempCreatedChatsEvent event,
+    _ChatsScreen$RemoveAllTempCreatedEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
     _iChatScreenChatRepo.removeAllTempCreatedChats(
@@ -175,7 +175,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   }
 
   void _handleChatMessageEvent(
-    _HandleChatMessageEvent event,
+    _Chat$HandleMessageEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
@@ -206,7 +206,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   }
 
   void _sendMessageEvent(
-    _SendMessageEvent event,
+    _Chat$SendMessageEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
@@ -240,7 +240,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
   }
 
   void _changeEmojiPicker(
-    _ChangeEmojiPicker event,
+    _Chat$ChangeEmojiPickerEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
     var currentStateModel = _changeEmojiPickerHelper(
@@ -315,17 +315,17 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     required ChatScreenStateModel currentStateModel,
   }) {
     switch (state) {
-      case InitialChatScreenState():
+      case ChatScreen$InitialState():
         emit(ChatScreenStates.initial(currentStateModel));
         break;
-      case LoadingChatScreenState():
-        emit(ChatScreenStates.loading(currentStateModel));
+      case ChatScreen$InProgressState():
+        emit(ChatScreenStates.inProgress(currentStateModel));
         break;
       case ErrorChatScreenState():
         emit(ChatScreenStates.error(currentStateModel));
         break;
-      case LoadedChatScreenState():
-        emit(ChatScreenStates.loaded(currentStateModel));
+      case ChatScreen$SuccessfulState():
+        emit(ChatScreenStates.successful(currentStateModel));
         break;
     }
   }

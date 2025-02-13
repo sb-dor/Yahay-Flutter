@@ -47,13 +47,13 @@ class _ChatsPageState extends State<ChatsPage> {
               bloc: _chatsBloc,
               builder: (context, state) {
                 switch (state) {
-                  case InitialChatsState():
+                  case Chats$InitialState():
                     return const SizedBox.shrink();
-                  case LoadingChatsState():
+                  case Chats$InProgressState():
                     return const ChatLoadingWidget();
-                  case ErrorChatsState():
+                  case Chats$ErrorState():
                     return const Text(Constants.somethingWentWrong);
-                  case LoadedChatsState():
+                  case Chats$SuccessfulState():
                     final currentStateModel = state.chatsStateModel;
                     return ListView.separated(
                       separatorBuilder: (context, index) => const SizedBox(height: 15),

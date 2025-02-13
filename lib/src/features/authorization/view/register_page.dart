@@ -47,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return BlocConsumer<AuthBloc, AuthStates>(
         bloc: _authBloc,
         listener: (context, state) {
-          if (state is AuthorizedStateOnAuthStates) {
+          if (state is Auth$AuthorizedState) {
             AutoRouter.of(context).replaceAll([const HomeRoute()]);
           }
         },

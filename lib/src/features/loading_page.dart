@@ -43,9 +43,9 @@ class _HomePageState extends State<LoadingPage> {
     return BlocListener(
       bloc: _authBloc,
       listener: (context, state) {
-        if (state is AuthorizedStateOnAuthStates) {
+        if (state is Auth$AuthorizedState) {
           AutoRouter.of(context).replaceAll([const HomeRoute()]);
-        } else if (state is UnAuthorizedStateOnAuthStates) {
+        } else if (state is Auth$UnAuthorizedState) {
           AutoRouter.of(context).replaceAll([const LoginRoute()]);
         } else if (state is ErrorStateOnAuthStates) {
           ScaffoldMessenger.of(context).showSnackBar(

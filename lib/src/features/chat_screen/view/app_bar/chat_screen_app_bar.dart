@@ -45,7 +45,7 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
             },
             icon: const Icon(CupertinoIcons.back),
           ),
-          title: state is LoadingChatScreenState
+          title: state is ChatScreen$InProgressState
               ? ShimmerLoader(
                   isLoading: true,
                   mode: widget.themeData,
@@ -61,7 +61,7 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
               : _ChatAppBarTitle(
                   chat: currentStateModel.currentChat,
                 ),
-          actions: state is LoadingChatScreenState
+          actions: state is ChatScreen$InProgressState
               ? [
                   ShimmerLoader(
                     isLoading: true,

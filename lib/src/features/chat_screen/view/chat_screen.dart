@@ -99,15 +99,15 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
       bloc: Provider.of<ChatScreenBloc>(context, listen: false),
       builder: (context, state) {
         switch (state) {
-          case InitialChatScreenState():
+          case ChatScreen$InitialState():
             return const SizedBox();
-          case LoadingChatScreenState():
+          case ChatScreen$InProgressState():
             return const LoadingMessagesWidget();
           case ErrorChatScreenState():
             return const Center(
               child: Text(Constants.somethingWentWrong),
             );
-          case LoadedChatScreenState():
+          case ChatScreen$SuccessfulState():
             final currentStateModel = state.chatScreenStateModel;
             return PopScope(
               canPop: !currentStateModel.showEmojiPicker,
@@ -125,7 +125,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                     ),
                   ),
                   body: ShimmerLoader(
-                    isLoading: state is LoadingChatScreenState,
+                    isLoading: state is ChatScreen$InProgressState,
                     mode: _appThemeBloc.theme.value,
                     child: Column(
                       children: [

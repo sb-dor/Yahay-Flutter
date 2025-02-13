@@ -17,28 +17,28 @@ part 'chats_bloc.freezed.dart';
 @immutable
 @freezed
 class ChatsEvents with _$ChatsEvents {
-  const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) = _GetUserChatsEvent;
+  const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) = _Chats$GetUserEvent;
 
-  const factory ChatsEvents.chatListenerInitialEvent() = _ChatListenerInitialEvent;
+  const factory ChatsEvents.chatListenerInitialEvent() = _Chats$ListenerInitialEvent;
 
-  const factory ChatsEvents.chatListenerEvent(final ChatModel? chatModel) = _ChatListenerEvent;
+  const factory ChatsEvents.chatListenerEvent(final ChatModel? chatModel) = _Chat$ListenerEvent;
 
-  const factory ChatsEvents.changeToLoadingState() = _ChangeToLoadingState;
+  const factory ChatsEvents.changeToLoadingState() = _Chats$ChangeToLoadingStateEvent;
 }
 
 @immutable
 @freezed
 sealed class ChatsStates with _$ChatsStates {
-  const factory ChatsStates.initial(final ChatsStateModel chatsStateModel) = InitialChatsState;
+  const factory ChatsStates.initial(final ChatsStateModel chatsStateModel) = Chats$InitialState;
 
-  const factory ChatsStates.loadingChatsState(final ChatsStateModel chatsStateModel) =
-      LoadingChatsState;
+  const factory ChatsStates.inProgress(final ChatsStateModel chatsStateModel) =
+      Chats$InProgressState;
 
-  const factory ChatsStates.errorChatsState(final ChatsStateModel chatsStateModel) =
-      ErrorChatsState;
+  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) =
+      Chats$ErrorState;
 
-  const factory ChatsStates.loadedChatsState(final ChatsStateModel chatsStateModel) =
-      LoadedChatsState;
+  const factory ChatsStates.successful(final ChatsStateModel chatsStateModel) =
+      Chats$SuccessfulState;
 }
 
 class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
@@ -76,13 +76,13 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
   }
 
   void _getUserChatsEvent(
-    _GetUserChatsEvent event,
+    _Chats$GetUserEvent event,
     Emitter<ChatsStates> emit,
   ) async {
     try {
-      if (state is LoadedChatsState && !event.refresh) return;
+      if (state is Chats$SuccessfulState && !event.refresh) return;
 
-      emit(ChatsStates.loadingChatsState(state.chatsStateModel));
+      emit(ChatsStates.inProgress(state.chatsStateModel));
 
       var currentStateModel = state.chatsStateModel.copyWith(
         chats: await _chatsRepo.chats(),
@@ -90,15 +90,15 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       _logger.log(Level.debug, "chat length is: ${currentStateModel.chats.length}");
 
-      emit(ChatsStates.loadedChatsState(currentStateModel));
+      emit(ChatsStates.successful(currentStateModel));
     } catch (e) {
       _logger.log(Level.error, "_getUserChatsEvent error is: $e");
-      emit(ChatsStates.errorChatsState(state.chatsStateModel));
+      emit(ChatsStates.error(state.chatsStateModel));
     }
   }
 
   void _chatListenerInitialEvent(
-    _ChatListenerInitialEvent event,
+    _Chats$ListenerInitialEvent event,
     Emitter<ChatsStates> emit,
   ) async {
     try {
@@ -135,7 +135,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
   }
 
   void _chatListenerEvent(
-    _ChatListenerEvent event,
+    _Chat$ListenerEvent event,
     Emitter<ChatsStates> emit,
   ) async {
     try {
@@ -162,7 +162,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
   }
 
   void _changeToLoadingState(
-    _ChangeToLoadingState event,
+    _Chats$ChangeToLoadingStateEvent event,
     Emitter<ChatsStates> emit,
   ) async {
     var currentState = state.chatsStateModel.copyWith(chats: <ChatModel>[]);
@@ -174,17 +174,17 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     required Emitter<ChatsStates> emit,
   }) {
     switch (state) {
-      case InitialChatsState():
+      case Chats$InitialState():
         emit(ChatsStates.initial(currentStateModel));
         break;
-      case LoadingChatsState():
-        emit(ChatsStates.loadingChatsState(currentStateModel));
+      case Chats$InProgressState():
+        emit(ChatsStates.inProgress(currentStateModel));
         break;
-      case ErrorChatsState():
-        emit(ChatsStates.errorChatsState(currentStateModel));
+      case Chats$ErrorState():
+        emit(ChatsStates.error(currentStateModel));
         break;
-      case LoadedChatsState():
-        emit(ChatsStates.loadedChatsState(currentStateModel));
+      case Chats$SuccessfulState():
+        emit(ChatsStates.successful(currentStateModel));
         break;
     }
   }

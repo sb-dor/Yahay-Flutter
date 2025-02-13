@@ -58,8 +58,8 @@ class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
 @immutable
 @freezed
 class VideoChatFeatureStates with _$VideoChatFeatureStates {
-  const factory VideoChatFeatureStates.initialVideoChatState(
-      final VideoChatStateModel videoChatStateModel) = _InitialVideoChatState;
+  const factory VideoChatFeatureStates.initial(
+      final VideoChatStateModel videoChatStateModel) = _VideoChat$InitialState;
 }
 
 class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates> {
@@ -115,7 +115,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
       currentUser: _currentUser,
     );
 
-    emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+    emit(VideoChatFeatureStates.initial(currentStateModel));
 
     final currentChatVideoEntity = await _initLocalRenderer();
 
@@ -127,7 +127,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
       add(VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(stream));
     });
 
-    emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+    emit(VideoChatFeatureStates.initial(currentStateModel));
   }
 
   void _startVideoChatEvent(
@@ -147,7 +147,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     debugPrint("creating room id: $roomId");
     // -------------------------------------------------
 
-    emit(VideoChatFeatureStates.initialVideoChatState(state.videoChatStateModel));
+    emit(VideoChatFeatureStates.initial(state.videoChatStateModel));
   }
 
   void _videoChatEntranceEvent(
@@ -179,7 +179,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     debugPrint("chat started or not: ${currentStateModel.chatStarted}");
 
-    emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+    emit(VideoChatFeatureStates.initial(currentStateModel));
   }
 
   void _finishVideoChatEvent(
@@ -226,7 +226,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
         videoChatEntities: currentChatEntities,
       );
 
-      emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+      emit(VideoChatFeatureStates.initial(currentStateModel));
     } catch (error, stackTrace) {
       debugPrint("getting error in stream handler: $error");
       Error.throwWithStackTrace(error, stackTrace);
@@ -247,7 +247,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
       _webrtcLaravelHelper?.localStream,
     );
 
-    emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+    emit(VideoChatFeatureStates.initial(currentStateModel));
   }
 
   void _turnMicOffAndOnEvent(
@@ -267,7 +267,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
       currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getAudioTracks()[0],
     );
 
-    emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+    emit(VideoChatFeatureStates.initial(currentStateModel));
   }
 
   void _turnCameraOffAndEvent(
@@ -283,7 +283,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     videoTrack.enabled = currentStateModel.hasVideo;
 
-    emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+    emit(VideoChatFeatureStates.initial(currentStateModel));
   }
 
   Future<bool> _initVideoPusher(Emitter<VideoChatFeatureStates> emit) async {
@@ -297,7 +297,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
       chatStarted: resultOfStart,
     );
 
-    emit(VideoChatFeatureStates.initialVideoChatState(currentStateModel));
+    emit(VideoChatFeatureStates.initial(currentStateModel));
 
     return true;
   }

@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
     return BlocConsumer<AuthBloc, AuthStates>(
       bloc: _authBloc,
       listener: (context, state) {
-        if (state is UnAuthorizedStateOnAuthStates) {
+        if (state is Auth$UnAuthorizedState) {
           AutoRouter.of(context).replaceAll([const LoginRoute()]);
         }
       },

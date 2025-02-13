@@ -10,7 +10,7 @@ part 'profile_bloc.freezed.dart';
 @freezed
 class ProfileEvents with _$ProfileEvents {
   const factory ProfileEvents.profileLogoutEvent(final void Function() logoutEvent) =
-      _ProfileLogoutEvent;
+      _Profile$LogoutEvent;
 }
 
 @immutable
@@ -19,14 +19,14 @@ class ProfileStates with _$ProfileStates {
   const factory ProfileStates.initial(final ProfileStateModel profileStateModel) =
       InitialProfileState;
 
-  const factory ProfileStates.loadingProfileState(final ProfileStateModel profileStateModel) =
-      LoadingProfileState;
+  const factory ProfileStates.inProgress(final ProfileStateModel profileStateModel) =
+      Profile$InProgressState;
 
-  const factory ProfileStates.errorProfileState(final ProfileStateModel profileStateModel) =
-      ErrorProfileState;
+  const factory ProfileStates.error(final ProfileStateModel profileStateModel) =
+      Profile$ErrorState;
 
-  const factory ProfileStates.loadedProfileState(final ProfileStateModel profileStateModel) =
-      LoadedProfileState;
+  const factory ProfileStates.successful(final ProfileStateModel profileStateModel) =
+      Profile$SuccessfulState;
 }
 
 class ProfileBloc extends Bloc<ProfileEvents, ProfileStates> {
@@ -42,7 +42,7 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileStates> {
   }
 
   void _profileLogoutEvent(
-    _ProfileLogoutEvent event,
+    _Profile$LogoutEvent event,
     Emitter<ProfileStates> emit,
   ) async {}
 }

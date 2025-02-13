@@ -49,15 +49,15 @@ class AuthEvents with _$AuthEvents {
 @immutable
 @freezed
 sealed class AuthStates with _$AuthStates {
-  const factory AuthStates.initial(final AuthStateModel authStateModel) = InitialStateOnAuthStates;
+  const factory AuthStates.initial(final AuthStateModel authStateModel) = Auth$InitialState;
 
-  const factory AuthStates.loading(final AuthStateModel authStateModel) = LoadingStateOnAuthStates;
+  const factory AuthStates.inProgress(final AuthStateModel authStateModel) =
+      AuthStates$InProgressState;
 
-  const factory AuthStates.authorized(final AuthStateModel authStateModel) =
-      AuthorizedStateOnAuthStates;
+  const factory AuthStates.authorized(final AuthStateModel authStateModel) = Auth$AuthorizedState;
 
   const factory AuthStates.unAuthorized(final AuthStateModel authStateModel) =
-      UnAuthorizedStateOnAuthStates;
+      Auth$UnAuthorizedState;
 
   const factory AuthStates.error(final AuthStateModel authStateModel) = ErrorStateOnAuthStates;
 }
@@ -299,16 +299,16 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     Emitter<AuthStates> emit,
   ) {
     switch (state) {
-      case InitialStateOnAuthStates():
+      case Auth$InitialState():
         emit(AuthStates.initial(authStateModel));
         break;
-      case LoadingStateOnAuthStates():
-        emit(AuthStates.loading(authStateModel));
+      case AuthStates$InProgressState():
+        emit(AuthStates.inProgress(authStateModel));
         break;
-      case AuthorizedStateOnAuthStates():
+      case Auth$AuthorizedState():
         emit(AuthStates.authorized(authStateModel));
         break;
-      case UnAuthorizedStateOnAuthStates():
+      case Auth$UnAuthorizedState():
         emit(AuthStates.unAuthorized(authStateModel));
         break;
       case ErrorStateOnAuthStates():

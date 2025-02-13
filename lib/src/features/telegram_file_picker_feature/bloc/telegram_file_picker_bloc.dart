@@ -41,7 +41,7 @@ class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
 
   const factory TelegramFilePickerEvents.changeStateToAllFilesState() = _ChangeStateToAllFilesState;
 
-  const factory TelegramFilePickerEvents.initAllMusicsEvent() = _InitAllMusicsEvent;
+  const factory TelegramFilePickerEvents.initAllAudioEvent() = _InitAllAudioEvent;
 
   const factory TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(final bool value) =
       _OpenHideBottomTelegramButtonEvent;
@@ -90,19 +90,19 @@ class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
 sealed class TelegramFilePickerStates with _$TelegramFilePickerStates {
   const factory TelegramFilePickerStates.initial(
     final TelegramFilePickerStateModel telegramFilePickerStateModel,
-  ) = InitialPickerState;
+  ) = Picker$InitialState;
 
   const factory TelegramFilePickerStates.galleryFilePickerState(
     final TelegramFilePickerStateModel telegramFilePickerStateModel,
-  ) = GalleryFilePickerState;
+  ) = Picker$GalleryFileState;
 
   const factory TelegramFilePickerStates.filesPickerState(
     final TelegramFilePickerStateModel telegramFilePickerStateModel,
-  ) = FilesPickerState;
+  ) = Picker$FilesState;
 
-  const factory TelegramFilePickerStates.musicFilesPickerState(
+  const factory TelegramFilePickerStates.audioFilesPickerState(
     final TelegramFilePickerStateModel telegramFilePickerStateModel,
-  ) = MusicFilesPickerState;
+  ) = Picker$AudioFilesState;
 }
 
 class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFilePickerStates> {
@@ -137,7 +137,7 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
         changeStateToAllPicturesEvent: (event) => _changeStateToAllPicturesEvent(event, emit),
         initAllFilesEvent: (event) => _initAllFilesEvent(event, emit),
         changeStateToAllFilesState: (event) => _changeStateToAllFilesState(event, emit),
-        initAllMusicsEvent: (event) => _initAllMusicsEvent(event, emit),
+        initAllAudioEvent: (event) => _initAllAudioEvent(event, emit),
         openHideBottomTelegramButtonEvent: (event) =>
             _openHideBottomTelegramButtonEvent(event, emit),
         closePopupEvent: (event) => _closePopupEvent(event, emit),
@@ -249,8 +249,8 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     ));
   }
 
-  void _initAllMusicsEvent(
-    _InitAllMusicsEvent event,
+  void _initAllAudioEvent(
+    _InitAllAudioEvent event,
     Emitter<TelegramFilePickerStates> emit,
   ) async {}
 
@@ -581,17 +581,17 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     required Emitter<TelegramFilePickerStates> emit,
   }) async {
     switch (state) {
-      case InitialPickerState():
+      case Picker$InitialState():
         emit(TelegramFilePickerStates.initial(currentStateModel));
         break;
-      case GalleryFilePickerState():
+      case Picker$GalleryFileState():
         emit(TelegramFilePickerStates.galleryFilePickerState(currentStateModel));
         break;
-      case FilesPickerState():
+      case Picker$FilesState():
         emit(TelegramFilePickerStates.filesPickerState(currentStateModel));
         break;
-      case MusicFilesPickerState():
-        emit(TelegramFilePickerStates.musicFilesPickerState(currentStateModel));
+      case Picker$AudioFilesState():
+        emit(TelegramFilePickerStates.audioFilesPickerState(currentStateModel));
         break;
     }
   }

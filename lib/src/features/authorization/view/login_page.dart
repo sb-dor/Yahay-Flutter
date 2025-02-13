@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     final dependencies = DependenciesScope.of(context, listen: false);
     return BlocConsumer<AuthBloc, AuthStates>(
         listener: (context, state) {
-          if (state is AuthorizedStateOnAuthStates) {
+          if (state is Auth$AuthorizedState) {
             AutoRouter.of(context).replaceAll([const HomeRoute()]);
           }
           // if (state.authStateModel.showPassword) {

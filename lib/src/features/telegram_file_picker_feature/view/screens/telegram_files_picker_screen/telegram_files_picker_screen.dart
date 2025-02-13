@@ -35,7 +35,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==
               widget.parentScrollController.position.maxScrollExtent &&
-          _telegramFilePickerBloc.state is FilesPickerState) {
+          _telegramFilePickerBloc.state is Picker$FilesState) {
         if (_telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                 TelegramFileFolderEnum.browseTheGalleryFolder ||
             _telegramFilePickerStateModel.filePickerScreenSelectedScreen ==

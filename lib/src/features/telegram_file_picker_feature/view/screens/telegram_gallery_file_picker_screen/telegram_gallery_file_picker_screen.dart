@@ -29,7 +29,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==
               widget.parentScrollController.position.maxScrollExtent &&
-          _telegramFilePickerBloc.state is GalleryFilePickerState) {
+          _telegramFilePickerBloc.state is Picker$GalleryFileState) {
         // pagination here
         _telegramFilePickerBloc.add(const TelegramFilePickerEvents.imagesAndVideoPaginationEvent());
 

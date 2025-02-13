@@ -25,13 +25,13 @@ sealed class AddContactsStates with _$AddContactsStates {
       InitialAddConstactsState;
 
   const factory AddContactsStates.loadingAddContactsState(
-      final AddContactStateModel addContactStateModel) = LoadingAddContactsState;
+      final AddContactStateModel addContactStateModel) = AddContacts$InProgressState;
 
   const factory AddContactsStates.errorAddContactsState(
-      final AddContactStateModel addContactStateModel) = ErrorAddContactsState;
+      final AddContactStateModel addContactStateModel) = AddContacts$ErrorState;
 
   const factory AddContactsStates.loadedAddContactsState(
-      final AddContactStateModel addContactStateModel) = LoadedAddContactsState;
+      final AddContactStateModel addContactStateModel) = AddContacts$SuccessfulState;
 }
 
 class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
@@ -136,7 +136,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
     emit(AddContactsStates.loadedAddContactsState(currentStateModel));
 
     // } catch (e) {
-    //   yield ErrorAddContactsState(_currentStateModel);
+    //   yield AddContacts$ErrorState(_currentStateModel);
     // }
   }
 }
