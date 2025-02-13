@@ -24,7 +24,7 @@ class WebrtcLaravelService {
 
   final RestClientBase _restClientBase;
   final PusherClientService _pusherClientService;
-  final String _url = "http://192.168.100.3:8000/api";
+  // final String _url = "http://192.168.100.244:8000/api";
 
   // configuration for iceServers
   // they can be used for free
@@ -89,7 +89,7 @@ class WebrtcLaravelService {
 
       // Send offer to backend
       var response = await _restClientBase.post(
-        '$_url/create-room',
+        '/create-room',
         data: {
           'offer': offer.toMap(),
           "chat_id": chat?.id,
@@ -144,7 +144,7 @@ class WebrtcLaravelService {
             if (await peerConnection?.getRemoteDescription() == null) {
               await peerConnection?.setRemoteDescription(answer);
               final responseCandidates = await _restClientBase.get(
-                "$_url/get-ice-candidates/$roomId/callee",
+                "/get-ice-candidates/$roomId/callee",
               );
 
               if (responseCandidates == null) return;
@@ -202,7 +202,7 @@ class WebrtcLaravelService {
     try {
       // for getting room configuration
       var responseForRemoteConfig = await _restClientBase.post(
-        '$_url/join-room',
+        '/join-room',
         data: {
           'roomId': roomId,
         },
@@ -257,7 +257,7 @@ class WebrtcLaravelService {
         await peerConnection!.setLocalDescription(answer);
 
         var response = await _restClientBase.post(
-          '$_url/join-room',
+          '/join-room',
           data: {
             'roomId': roomId,
             'answer': answer.toMap(),
@@ -277,7 +277,7 @@ class WebrtcLaravelService {
 
       // get candidates data before listening them
       final responseCandidates = await _restClientBase.get(
-        "$_url/get-ice-candidates/$roomId/caller",
+        "/get-ice-candidates/$roomId/caller",
       );
 
       //
@@ -389,7 +389,7 @@ class WebrtcLaravelService {
     String role,
   ) async {
     final response = await _restClientBase.post(
-      '$_url/add-ice-candidate',
+      '/add-ice-candidate',
       data: {
         'roomId': roomId,
         'candidate': candidate.toMap(),
@@ -400,7 +400,7 @@ class WebrtcLaravelService {
 
   Future<void> getIceCandidates(String roomId, String role) async {
     var response = await _restClientBase.get(
-      '$_url/api/get-ice-candidates/$roomId/$role',
+      '/api/get-ice-candidates/$roomId/$role',
     );
 
     var candidates = response?.getNested(['candidates']);
