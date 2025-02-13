@@ -24,7 +24,13 @@ class WebrtcLaravelService {
 
   final RestClientBase _restClientBase;
   final PusherClientService _pusherClientService;
+
   // final String _url = "http://192.168.100.244:8000/api";
+
+  final String _createRoom = '/create-room';
+  final String _joinRoom = '/join-room';
+  final String _addIceCandidates = '/add-ice-candidate';
+  final String _apiGetIceCandidates = '/api/get-ice-candidates/';
 
   // configuration for iceServers
   // they can be used for free
@@ -89,7 +95,7 @@ class WebrtcLaravelService {
 
       // Send offer to backend
       var response = await _restClientBase.post(
-        '/create-room',
+        _createRoom,
         data: {
           'offer': offer.toMap(),
           "chat_id": chat?.id,
@@ -138,7 +144,6 @@ class WebrtcLaravelService {
               sdp,
               type,
             );
-            log("will here work hellu: $sdp");
             // if (peerConnection?.signalingState ==
             //     RTCSignalingState.RTCSignalingStateHaveLocalOffer) {
             if (await peerConnection?.getRemoteDescription() == null) {
@@ -202,7 +207,7 @@ class WebrtcLaravelService {
     try {
       // for getting room configuration
       var responseForRemoteConfig = await _restClientBase.post(
-        '/join-room',
+        _joinRoom,
         data: {
           'roomId': roomId,
         },
@@ -257,7 +262,7 @@ class WebrtcLaravelService {
         await peerConnection!.setLocalDescription(answer);
 
         var response = await _restClientBase.post(
-          '/join-room',
+          _joinRoom,
           data: {
             'roomId': roomId,
             'answer': answer.toMap(),
@@ -389,7 +394,7 @@ class WebrtcLaravelService {
     String role,
   ) async {
     final response = await _restClientBase.post(
-      '/add-ice-candidate',
+      _addIceCandidates,
       data: {
         'roomId': roomId,
         'candidate': candidate.toMap(),
@@ -400,7 +405,7 @@ class WebrtcLaravelService {
 
   Future<void> getIceCandidates(String roomId, String role) async {
     var response = await _restClientBase.get(
-      '/api/get-ice-candidates/$roomId/$role',
+      '$_apiGetIceCandidates$roomId/$role',
     );
 
     var candidates = response?.getNested(['candidates']);
