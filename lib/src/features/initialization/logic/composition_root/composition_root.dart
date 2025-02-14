@@ -82,8 +82,6 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
     final cameraHelperService = CameraHelperService();
     await cameraHelperService.initCameras();
 
-    final profileBloc = ProfileBlocFactory().create();
-
     final addContactBloc = AddContactBlocFactory(
       logger: _logger,
       restClientBase: _restClientBase,
@@ -99,7 +97,6 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
       restClientBase: _restClientBase,
       appThemeBloc: AppThemeBloc(),
       authBloc: authBloc,
-      profileBloc: profileBloc,
       addContactBloc: addContactBloc,
       appRouter: AppRouter(),
       pusherClientService: pusherClientService,

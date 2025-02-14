@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:yahay/src/features/profile/data/profile_repository.dart';
 
 import 'state_model/profile_state_model.dart';
 
@@ -22,8 +23,7 @@ class ProfileStates with _$ProfileStates {
   const factory ProfileStates.inProgress(final ProfileStateModel profileStateModel) =
       Profile$InProgressState;
 
-  const factory ProfileStates.error(final ProfileStateModel profileStateModel) =
-      Profile$ErrorState;
+  const factory ProfileStates.error(final ProfileStateModel profileStateModel) = Profile$ErrorState;
 
   const factory ProfileStates.successful(final ProfileStateModel profileStateModel) =
       Profile$SuccessfulState;
@@ -31,9 +31,14 @@ class ProfileStates with _$ProfileStates {
 
 class ProfileBloc extends Bloc<ProfileEvents, ProfileStates> {
   //
+  final IProfileRepository _iProfileRepository;
+
+  //
   ProfileBloc({
+    required final IProfileRepository iProfileRepository,
     required final ProfileStates initialState,
-  }) : super(initialState) {
+  })  : _iProfileRepository = iProfileRepository,
+        super(initialState) {
     on<ProfileEvents>(
       (event, emit) => event.map(
         profileLogoutEvent: (event) => _profileLogoutEvent(event, emit),

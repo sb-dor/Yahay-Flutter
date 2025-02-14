@@ -24,8 +24,8 @@ class _HomePageState extends State<LoadingPage> {
     _authBloc = depContainer.authBloc;
     _authBloc.add(
       AuthEvents.checkAuthEvent(
-        initChatsBloc: () {
-          depContainer.initChatBlocAfterAuthorization();
+        initDependenciesAfterAuthorization: () {
+          depContainer.initDependenciesAfterAuthorization();
         },
         onMessage: (String message) {
           ScaffoldMessenger.of(context).showSnackBar(

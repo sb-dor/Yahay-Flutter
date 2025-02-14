@@ -12,32 +12,32 @@ part 'auth_bloc.freezed.dart';
 @freezed
 class AuthEvents with _$AuthEvents {
   const factory AuthEvents.googleAuth({
-    required final void Function() initChatsBloc,
-    required final Future<void> Function() initDioOptions,
+    required final void Function() initDependenciesAfterAuthorization,
+    // required final Future<void> Function() initDioOptions,
   }) = _GoogleAuthEventOnAuthEvents;
 
   const factory AuthEvents.facebookAuth({
-    required final void Function() initChatsBloc,
-    required final Future<void> Function() initDioOptions,
+    required final void Function() initDependenciesAfterAuthorization,
+    // required final Future<void> Function() initDioOptions,
   }) = _FacebookAuthEventsAuthEvents;
 
   const factory AuthEvents.registerEvent({
     required final String email,
     required final String password,
     required final String userName,
-    required final void Function() initChatsBloc,
-    required final Future<void> Function() initDioOptions,
+    required final void Function() initDependenciesAfterAuthorization,
+    // required final Future<void> Function() initDioOptions,
   }) = _RegisterEventOnAuthEvents;
 
   const factory AuthEvents.loginEvent({
     required final String emailOrUserName,
     required final String password,
-    required final void Function() initChatsBloc,
-    required final Future<void> Function() initDioOptions,
+    required final void Function() initDependenciesAfterAuthorization,
+    // required final Future<void> Function() initDioOptions,
   }) = _LoginEventOnAuthEvents;
 
   const factory AuthEvents.checkAuthEvent({
-    required final void Function() initChatsBloc,
+    required final void Function() initDependenciesAfterAuthorization,
     required void Function(String message) onMessage,
   }) = _CheckAuthEventOnAuthEvents;
 
@@ -106,11 +106,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await event.initDioOptions();
+      // await event.initDioOptions();
 
       emit(AuthStates.authorized(currentStateModel));
 
-      event.initChatsBloc();
+      event.initDependenciesAfterAuthorization();
     } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
       Error.throwWithStackTrace(error, stackTrace);
@@ -134,11 +134,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await event.initDioOptions();
+      // await event.initDioOptions();
 
       emit(AuthStates.authorized(currentStateModel));
 
-      event.initChatsBloc();
+      event.initDependenciesAfterAuthorization();
     } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
       Error.throwWithStackTrace(error, stackTrace);
@@ -176,10 +176,10 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await event.initDioOptions();
+      // await event.initDioOptions();
       emit(AuthStates.authorized(currentStateModel));
 
-      event.initChatsBloc();
+      event.initDependenciesAfterAuthorization();
     } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
       Error.throwWithStackTrace(error, stackTrace);
@@ -215,11 +215,11 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         user: user,
       );
 
-      await event.initDioOptions();
+      // await event.initDioOptions();
 
       emit(AuthStates.authorized(currentStateModel));
 
-      event.initChatsBloc();
+      event.initDependenciesAfterAuthorization();
     } catch (error, stackTrace) {
       emit(AuthStates.error(currentStateModel));
       Error.throwWithStackTrace(error, stackTrace);
@@ -247,7 +247,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
 
       emit(AuthStates.authorized(currentStateModel));
 
-      event.initChatsBloc();
+      event.initDependenciesAfterAuthorization();
     } on RestClientException catch (error, stackTrace) {
       if (error is UnauthenticatedException) {
         event.onMessage(error.message);

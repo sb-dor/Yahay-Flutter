@@ -120,12 +120,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               email: _emailController.text,
                               password: _passwordController.text,
                               userName: _userNameController.text,
-                              initChatsBloc: () {
-                                dependencies.initChatBlocAfterAuthorization();
+                              initDependenciesAfterAuthorization: () {
+                                dependencies.initDependenciesAfterAuthorization();
                               },
-                              initDioOptions: () async {
+                              // initDioOptions: () async {
                                 // await dependencies.dioSettings.initOptions();
-                              },
+                              // },
                             ),
                           ),
                           child: Center(
@@ -190,12 +190,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               text: 'Google',
                               onTap: () => _authBloc.add(
                                 AuthEvents.googleAuth(
-                                  initChatsBloc: () {
-                                    dependencies.initChatBlocAfterAuthorization();
+                                  initDependenciesAfterAuthorization: () {
+                                    dependencies.initDependenciesAfterAuthorization();
                                   },
-                                  initDioOptions: () async {
+                                  // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
-                                  },
+                                  // },
                                 ),
                               ),
                             ),
@@ -210,12 +210,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               text: 'Facebook',
                               onTap: () => _authBloc.add(
                                 AuthEvents.facebookAuth(
-                                  initChatsBloc: () {
-                                    dependencies.initChatBlocAfterAuthorization();
+                                  initDependenciesAfterAuthorization: () {
+                                    dependencies.initDependenciesAfterAuthorization();
                                   },
-                                  initDioOptions: () async {
+                                  // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
-                                  },
+                                  // },
                                 ),
                               ),
                             ),

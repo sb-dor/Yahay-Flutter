@@ -11,7 +11,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late final ProfileBloc _profileBloc;
+  late final ProfileBloc? _profileBloc;
   late final AuthBloc _authBloc;
 
   @override
@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          onPressed: () => _profileBloc.add(
+          onPressed: () => _profileBloc?.add(
             ProfileEvents.profileLogoutEvent(
               () {
                 _authBloc.add(const AuthEvents.logOutEvent());
