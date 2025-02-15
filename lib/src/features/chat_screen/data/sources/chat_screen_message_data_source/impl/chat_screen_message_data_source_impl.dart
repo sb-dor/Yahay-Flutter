@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
+import 'package:yahay/src/core/utils/dio/src/http_routes/http_routes.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
@@ -17,7 +17,7 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
 
   final RestClientBase _restClientBase;
 
-  static const String _messageSendUrl = "${AppHttpRoutes.chatsPrefix}/message/handler";
+  static const String _messageSendUrl = "${HttpRoutes.chatsPrefix}/message/handler";
 
   @override
   Future<void> sendMessage({required ChatMessageModel chatMessage}) async {

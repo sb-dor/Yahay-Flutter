@@ -2,7 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
-import 'package:yahay/src/core/global_usages/widgets/search_widget/search_widget.dart';
+import 'package:yahay/src/core/ui_kit/search_widget/search_widget.dart';
 import 'package:yahay/src/features/chats/bloc/chats_bloc.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 import 'chat_widget/chat_loading_widget.dart';

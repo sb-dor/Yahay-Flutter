@@ -1,10 +1,10 @@
 
 import 'package:flutter/foundation.dart';
-import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
+import 'package:yahay/src/core/utils/dio/src/http_routes/http_routes.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
-import 'package:yahay/src/core/utils/extensions/extentions.dart';
+import 'package:yahay/src/core/utils/extensions/extensions.dart';
 import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_chat_data_source/chat_screen_chat_data_souce.dart';
 
 class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
@@ -15,9 +15,9 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
 
   final RestClientBase _restClientBase;
 
-  final String _getChatUrl = "${AppHttpRoutes.chatsPrefix}/get/chat/on/entrance";
+  final String _getChatUrl = "${HttpRoutes.chatsPrefix}/get/chat/on/entrance";
   final String _deleteTempCreatedChatsUrl =
-      "${AppHttpRoutes.chatsPrefix}/delete/temp/created/chats";
+      "${HttpRoutes.chatsPrefix}/delete/temp/created/chats";
 
   @override
   Future<ChatModel?> chat({ChatModel? chat, UserModel? withUser}) async {

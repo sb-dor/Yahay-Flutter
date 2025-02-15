@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/utils/extensions/extentions.dart';
+import 'package:yahay/src/core/utils/extensions/extensions.dart';
 
 class BlocObserverManager extends BlocObserver {
   const BlocObserverManager(this.logger);

@@ -7,7 +7,7 @@ import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
-import 'package:yahay/src/core/global_usages/widgets/shimmer_loader.dart';
+import 'package:yahay/src/core/ui_kit/shimmer_loader.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 import 'package:yahay/src/features/chat_screen/bloc/state_model/chat_screen_state_model.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/chat_screen_bloc_factory.dart';

@@ -1,7 +1,7 @@
-import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
+import 'package:yahay/src/core/utils/dio/src/http_routes/http_routes.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core/utils/extensions/extentions.dart';
+import 'package:yahay/src/core/utils/extensions/extensions.dart';
 import 'package:yahay/src/features/chats/data/sources/chats_data_source/chats_data_source.dart';
 
 class ChatsDataSourceImpl implements ChatsDataSource {
@@ -12,7 +12,7 @@ class ChatsDataSourceImpl implements ChatsDataSource {
 
   final RestClientBase _restClientBase;
 
-  final String _getUserChatsUrl = "${AppHttpRoutes.chatsPrefix}/get/chats";
+  final String _getUserChatsUrl = "${HttpRoutes.chatsPrefix}/get/chats";
 
   @override
   Future<List<ChatModel>> chats() async {

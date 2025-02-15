@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
-import 'package:yahay/src/core/global_usages/widgets/shimmer_loader.dart';
+import 'package:yahay/src/core/ui_kit/shimmer_loader.dart';
 import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dart';
 
 class LoadingMessagesWidget extends StatefulWidget {

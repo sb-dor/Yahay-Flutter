@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
-import 'package:yahay/src/core/global_usages/widgets/image_loader/image_loaded.dart';
+import 'package:yahay/src/core/ui_kit/image_loader/image_loaded.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 class AddContactUserWidget extends StatelessWidget {

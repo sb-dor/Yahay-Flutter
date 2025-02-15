@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
+import 'package:yahay/src/core/utils/dio/src/http_routes/http_routes.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/features/video_chat_feature/models/video_chat_model.dart';
 
@@ -29,10 +29,10 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
 
   final RestClientBase _restClientBase;
 
-  final _joinChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
-  final _startVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/start/videochat";
-  final _leaveVideoChatPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
-  final _steamTheVideoPath = "${AppHttpRoutes.chatsVideoStreamPrefix}/video/stream";
+  final _joinChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
+  final _startVideoChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/start/videochat";
+  final _leaveVideoChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
+  final _steamTheVideoPath = "${HttpRoutes.chatsVideoStreamPrefix}/video/stream";
 
   @override
   Future<bool> startVideoChat(VideoChatModel videoChatEntity) async {

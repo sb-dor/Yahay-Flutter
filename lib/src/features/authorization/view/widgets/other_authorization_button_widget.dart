@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yahay/src/core/global_usages/widgets/splash_button_clicker.dart';
+import 'package:yahay/src/core/ui_kit/splash_button_clicker.dart';
 
 class OtherAuthorizationButtonWidget extends StatelessWidget {
   final Widget icon;

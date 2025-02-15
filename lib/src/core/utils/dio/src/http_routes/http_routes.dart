@@ -1,4 +1,4 @@
-abstract class AppHttpRoutes {
+abstract class HttpRoutes {
   static const String authPrefix = '/auth';
 
   static const String contactsPrefix = "/contacts";

@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
-import 'package:yahay/src/core/global_usages/widgets/image_loader/image_loaded.dart';
-import 'package:yahay/src/core/global_usages/widgets/splash_button_clicker.dart';
+import 'package:yahay/src/core/ui_kit/image_loader/image_loaded.dart';
+import 'package:yahay/src/core/ui_kit/splash_button_clicker.dart';
 
 class ChatWidget extends StatelessWidget {
   final ChatModel? chat;

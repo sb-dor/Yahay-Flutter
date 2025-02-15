@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
+import 'package:yahay/src/core/utils/dio/src/http_routes/http_routes.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
-import 'package:yahay/src/core/utils/extensions/extentions.dart';
+import 'package:yahay/src/core/utils/extensions/extensions.dart';
 import 'package:yahay/src/core/utils/screen_messaging/screen_messaging.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
@@ -31,7 +31,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   @override
   Future<UserModel?> checkAuth() async {
     try {
-      final url = "${AppHttpRoutes.authPrefix}$_checkAuth";
+      final url = "${HttpRoutes.authPrefix}$_checkAuth";
 
       final response = await _restClientBase.get(url);
 
@@ -53,7 +53,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     required final String emailOrUserName,
     required final String password,
   }) async {
-    final url = "${AppHttpRoutes.authPrefix}$_login";
+    final url = "${HttpRoutes.authPrefix}$_login";
 
     final Map<String, dynamic> body = {
       "email_or_username": emailOrUserName,
@@ -86,7 +86,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     required final String password,
     required final String userName,
   }) async {
-    final url = "${AppHttpRoutes.authPrefix}$_register";
+    final url = "${HttpRoutes.authPrefix}$_register";
 
     final Map<String, dynamic> body = {
       "email": email,
@@ -117,7 +117,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   @override
   Future<bool> logout() async {
     try {
-      final url = "${AppHttpRoutes.authPrefix}$_logout";
+      final url = "${HttpRoutes.authPrefix}$_logout";
 
       final response = await _restClientBase.delete(url);
 

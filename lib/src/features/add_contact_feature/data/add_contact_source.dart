@@ -1,8 +1,8 @@
 import 'package:logger/logger.dart';
-import 'package:yahay/src/core/app_settings/dio/app_http_routes.dart';
+import 'package:yahay/src/core/utils/dio/src/http_routes/http_routes.dart';
 import 'package:yahay/src/core/utils/dio/dio_client.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
-import 'package:yahay/src/core/utils/extensions/extentions.dart';
+import 'package:yahay/src/core/utils/extensions/extensions.dart';
 
 abstract class AddContactSource {
   Future<List<UserModel>> searchContact(String value, int page);
@@ -22,9 +22,9 @@ class AddContactSourceImpl implements AddContactSource {
 
   final RestClientBase _restClientBase;
 
-  final String _searchContactUrl = "${AppHttpRoutes.contactsPrefix}/search";
+  final String _searchContactUrl = "${HttpRoutes.contactsPrefix}/search";
 
-  final String _addContactUrl = "${AppHttpRoutes.contactsPrefix}/add-contact";
+  final String _addContactUrl = "${HttpRoutes.contactsPrefix}/add-contact";
 
   @override
   Future<List<UserModel>> searchContact(String value, int page) async {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yahay/src/core/app_routing/app_router.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
-import 'package:yahay/src/core/global_usages/widgets/shimmer_loader.dart';
+import 'package:yahay/src/core/ui_kit/shimmer_loader.dart';
 import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 
 class ChatScreenAppBar extends StatefulWidget {

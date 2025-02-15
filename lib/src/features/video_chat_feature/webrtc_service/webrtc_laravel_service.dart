@@ -5,7 +5,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 import 'package:yahay/src/core/global_usages/constants/constants.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
-import 'package:yahay/src/core/utils/extensions/extentions.dart';
+import 'package:yahay/src/core/utils/extensions/extensions.dart';
 import 'package:yahay/src/core/utils/pusher_client_service/pusher_client_service.dart';
 import 'package:yahay/src/features/video_chat_feature/models/candidate_model/candidate_model.dart';
 
