@@ -37,7 +37,7 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
           await MultipartFile.fromFile(
             chatMessage.file?.path ?? '',
             filename: "file_name_${chatMessage.file?.path ?? ''}",
-          )
+          ),
         ];
       }
 

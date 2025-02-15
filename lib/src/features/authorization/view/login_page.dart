@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                                     : CupertinoIcons.eye_slash,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -142,9 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                             AuthEvents.loginEvent(
                               emailOrUserName: _emailOrUserNameController.text,
                               password: _passwordController.text,
-                              initDependenciesAfterAuthorization: () {
-                                dependencies.initDependenciesAfterAuthorization();
-                              },
+                              initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
                               // initDioOptions: () async {
                                 // await dependencies.restClientBase.initOptions();
                               // },
@@ -212,10 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                               text: 'Google',
                               onTap: () => _authBloc.add(
                                 AuthEvents.googleAuth(
-                                  initDependenciesAfterAuthorization: () {
-                                    dependencies
-                                        .initDependenciesAfterAuthorization();
-                                  },
+                                  initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
                                   // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                   // },
@@ -233,10 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                               text: 'Facebook',
                               onTap: () => _authBloc.add(
                                 AuthEvents.facebookAuth(
-                                  initDependenciesAfterAuthorization: () {
-                                    dependencies
-                                        .initDependenciesAfterAuthorization();
-                                  },
+                                  initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
                                   // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                   // },
@@ -263,16 +255,16 @@ class _LoginPageState extends State<LoginPage> {
                                     () => AutoRouter.of(context).replace(const RegisterRoute()),
                               text: Constants.signUp,
                               style: const TextStyle(color: Colors.blue),
-                            )
+                            ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
           );
-        });
+        },);
   }
 }

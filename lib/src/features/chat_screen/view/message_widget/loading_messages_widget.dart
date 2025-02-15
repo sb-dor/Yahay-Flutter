@@ -28,7 +28,7 @@ class _LoadingMessagesWidgetState extends State<LoadingMessagesWidget> {
       ),
       _LeftWidget(
         appThemeBloc: _appThemeBloc,
-      )
+      ),
     ];
 
     _widgets = List.generate(15, (index) => tempWidgets[rnd.nextInt(2)]);

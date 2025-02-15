@@ -100,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Icons.remove_red_eye_outlined,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -120,9 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               email: _emailController.text,
                               password: _passwordController.text,
                               userName: _userNameController.text,
-                              initDependenciesAfterAuthorization: () {
-                                dependencies.initDependenciesAfterAuthorization();
-                              },
+                              initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
                               // initDioOptions: () async {
                                 // await dependencies.dioSettings.initOptions();
                               // },
@@ -190,9 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               text: 'Google',
                               onTap: () => _authBloc.add(
                                 AuthEvents.googleAuth(
-                                  initDependenciesAfterAuthorization: () {
-                                    dependencies.initDependenciesAfterAuthorization();
-                                  },
+                                  initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
                                   // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                   // },
@@ -210,9 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               text: 'Facebook',
                               onTap: () => _authBloc.add(
                                 AuthEvents.facebookAuth(
-                                  initDependenciesAfterAuthorization: () {
-                                    dependencies.initDependenciesAfterAuthorization();
-                                  },
+                                  initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
                                   // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                   // },
@@ -238,16 +232,16 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ..onTap = () => AutoRouter.of(context).replace(const LoginRoute()),
                               text: Constants.signIn,
                               style: const TextStyle(color: Colors.blue),
-                            )
+                            ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
           );
-        });
+        },);
   }
 }

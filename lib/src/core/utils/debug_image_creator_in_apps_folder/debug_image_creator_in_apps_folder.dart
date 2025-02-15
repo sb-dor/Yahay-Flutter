@@ -21,7 +21,7 @@ class DebugImageCreatorInAppsFolder with FolderCreator {
   final String _key = "generated_images_in_folder";
 
   int get _randomInt {
-    Random rnd = Random();
+    final Random rnd = Random();
     return rnd.nextInt(1000);
   }
 
@@ -45,7 +45,7 @@ class DebugImageCreatorInAppsFolder with FolderCreator {
 
         if (response.statusCode == HttpStatus.ok) {
           final pathImageForCreation = "${dir?.path}/$each/${DateTime.now()}.jpg";
-          File file = File(pathImageForCreation);
+          final File file = File(pathImageForCreation);
           if ((response.data ?? <int>[]).isNotEmpty) {
             file.writeAsBytesSync(response.data!);
           }

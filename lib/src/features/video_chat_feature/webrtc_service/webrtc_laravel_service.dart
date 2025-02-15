@@ -29,7 +29,7 @@ class WebrtcLaravelService {
   final String _createRoom = '/create-room';
   final String _joinRoom = '/join-room';
   final String _addIceCandidates = '/add-ice-candidate';
-  final String _apiGetIceCandidates = '/api/get-ice-candidates/';
+  final String _apiGetIceCandidates = '/get-ice-candidates/';
 
   // configuration for iceServers
   // they can be used for free
@@ -48,9 +48,9 @@ class WebrtcLaravelService {
         'urls': [
           'stun:stun1.l.google.com:19302',
           'stun:stun2.l.google.com:19302',
-        ]
+        ],
       }
-    ]
+    ],
   };
 
   // it's very necessary for webrtc part
@@ -86,14 +86,14 @@ class WebrtcLaravelService {
       });
 
       // Create an offer
-      RTCSessionDescription offer = await peerConnection!.createOffer();
+      final RTCSessionDescription offer = await peerConnection!.createOffer();
 
       await peerConnection!.setLocalDescription(offer);
 
       // print('Created offer ${await peerConnection?.getLocalDescription()}');
 
       // Send offer to backend
-      var response = await _restClientBase.post(
+      final response = await _restClientBase.post(
         _createRoom,
         data: {
           'offer': offer.toMap(),
@@ -101,7 +101,7 @@ class WebrtcLaravelService {
         },
       );
 
-      var roomId = response?['roomId'];
+      final roomId = response?['roomId'];
 
       peerConnection?.onTrack = (RTCTrackEvent event) {
         event.streams[0].getTracks().forEach((track) {
@@ -133,13 +133,14 @@ class WebrtcLaravelService {
 
         channel.bind(Constants.webRtcChannelEventName).listen((e) async {
           // code here tomorrow
-          Map<String, dynamic> data = e.data is String ? jsonDecode(e.data.toString()) : e.data;
+          final Map<String, dynamic> data =
+              e.data is String ? jsonDecode(e.data.toString()) : e.data;
 
           if (data.containsKey("answer")) {
-            String sdp = data['answer']['sdp'] + "\n";
-            String type = data['answer']['type'];
+            final String sdp = data['answer']['sdp'] + "\n";
+            final String type = data['answer']['type'];
 
-            var answer = RTCSessionDescription(
+            final answer = RTCSessionDescription(
               sdp,
               type,
             );
@@ -153,17 +154,19 @@ class WebrtcLaravelService {
 
               if (responseCandidates == null) return;
               //
-              List<dynamic> listOfCandidates = responseCandidates.getNested(['candidates']);
+              final List<dynamic> listOfCandidates = responseCandidates.getNested(['candidates']);
 
-              List<CandidateModel> candidates =
+              final List<CandidateModel> candidates =
                   listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
 
               for (final each in candidates) {
-                await peerConnection?.addCandidate(RTCIceCandidate(
-                  each.candidate?.candidate,
-                  each.candidate?.sdpMid,
-                  each.candidate?.sdpMLineIndex,
-                ));
+                await peerConnection?.addCandidate(
+                  RTCIceCandidate(
+                    each.candidate?.candidate,
+                    each.candidate?.sdpMid,
+                    each.candidate?.sdpMLineIndex,
+                  ),
+                );
               }
               setSetStateCallback?.call();
               // await peerConnection?.setLocalDescription(offer);
@@ -205,7 +208,7 @@ class WebrtcLaravelService {
   Future<void> joinRoom(String roomId) async {
     try {
       // for getting room configuration
-      var responseForRemoteConfig = await _restClientBase.post(
+      final responseForRemoteConfig = await _restClientBase.post(
         _joinRoom,
         data: {
           'roomId': roomId,
@@ -235,10 +238,10 @@ class WebrtcLaravelService {
         });
       };
 
-      var offer = responseForRemoteConfig.getNested(['offer']);
+      final offer = responseForRemoteConfig.getNested(['offer']);
 
-      String sdp = offer['sdp'] + "\n";
-      String type = offer['type'];
+      final String sdp = offer['sdp'] + "\n";
+      final String type = offer['type'];
 
       if (sdp.isEmpty || type.isEmpty) {
         throw Exception('SDP or Type is empty');
@@ -246,7 +249,7 @@ class WebrtcLaravelService {
 
       // sdp = sdp.replaceAll("\r\na=extmap-allow-mixed", "");
 
-      RTCSessionDescription remoteDescription = RTCSessionDescription(sdp, type);
+      final RTCSessionDescription remoteDescription = RTCSessionDescription(sdp, type);
 
       try {
         await peerConnection?.setRemoteDescription(remoteDescription);
@@ -256,11 +259,11 @@ class WebrtcLaravelService {
       }
 
       try {
-        var answer = await peerConnection!.createAnswer();
+        final answer = await peerConnection!.createAnswer();
 
         await peerConnection!.setLocalDescription(answer);
 
-        var response = await _restClientBase.post(
+        final response = await _restClientBase.post(
           _joinRoom,
           data: {
             'roomId': roomId,
@@ -285,17 +288,19 @@ class WebrtcLaravelService {
       );
 
       //
-      List<dynamic> listOfCandidates = responseCandidates?.getNested(['candidates']);
+      final List<dynamic> listOfCandidates = responseCandidates?.getNested(['candidates']);
 
-      List<CandidateModel> candidates =
+      final List<CandidateModel> candidates =
           listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
 
       for (final each in candidates) {
-        await peerConnection?.addCandidate(RTCIceCandidate(
-          each.candidate?.candidate,
-          each.candidate?.sdpMid,
-          each.candidate?.sdpMLineIndex,
-        ));
+        await peerConnection?.addCandidate(
+          RTCIceCandidate(
+            each.candidate?.candidate,
+            each.candidate?.sdpMid,
+            each.candidate?.sdpMLineIndex,
+          ),
+        );
       }
 
       //
@@ -309,14 +314,16 @@ class WebrtcLaravelService {
 
       channel.bind(Constants.webRtcChannelEventName).listen((e) async {
         // code here tomorrow
-        Map<String, dynamic> data = e.data is String ? jsonDecode(e.toString()) : e.data;
+        final Map<String, dynamic> data = e.data is String ? jsonDecode(e.toString()) : e.data;
 
         if (data.containsKey("candidate") && data.containsKey("role") && data['role'] == 'caller') {
-          peerConnection?.addCandidate(RTCIceCandidate(
-            data['candidate']['candidate'],
-            data['candidate']['sdpMid'],
-            data['candidate']['sdpMLineIndex'],
-          ));
+          peerConnection?.addCandidate(
+            RTCIceCandidate(
+              data['candidate']['candidate'],
+              data['candidate']['sdpMid'],
+              data['candidate']['sdpMLineIndex'],
+            ),
+          );
         }
       });
 
@@ -334,7 +341,7 @@ class WebrtcLaravelService {
     // RTCVideoRenderer remoteVideo, // was removed temporary
   ) async {
     //
-    var stream = await navigator.mediaDevices.getUserMedia({
+    final stream = await navigator.mediaDevices.getUserMedia({
       'video': true,
       'audio': true, // set false in the future
     });
@@ -403,18 +410,18 @@ class WebrtcLaravelService {
   }
 
   Future<void> getIceCandidates(String roomId, String role) async {
-    var response = await _restClientBase.get(
+    final response = await _restClientBase.get(
       '$_apiGetIceCandidates$roomId/$role',
     );
 
-    var candidates = response?.getNested(['candidates']);
+    final candidates = response?.getNested(['candidates']) as List;
 
-    for (var candidate in candidates) {
+    for (final (candidate as Map<String, dynamic>) in candidates) {
       peerConnection!.addCandidate(
         RTCIceCandidate(
-          candidate['candidate'],
-          candidate['sdpMid'],
-          candidate['sdpMLineIndex'],
+          candidate['candidate'] as String?,
+          candidate['sdpMid'] as String?,
+          candidate['sdpMLineIndex'] as int?,
         ),
       );
     }

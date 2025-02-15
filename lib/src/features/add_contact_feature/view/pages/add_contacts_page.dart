@@ -70,7 +70,7 @@ class _AddContactsPageState extends State<AddContactsPage> {
                           enabledBorder: InputBorder.none,
                           isDense: true,
                           hintText: "Search",
-                          prefixIcon: Icon(Icons.search)),
+                          prefixIcon: Icon(Icons.search),),
                     ),
                   ),
                 ),

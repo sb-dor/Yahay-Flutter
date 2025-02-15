@@ -37,13 +37,13 @@ mixin class AppStorageFileMixin {
 
   //
   static Future<void> _isolateHelper(List<dynamic> args) async {
-    RootIsolateToken mainRootIsolateToken = args[0] as RootIsolateToken;
+    final RootIsolateToken mainRootIsolateToken = args[0] as RootIsolateToken;
 
     BackgroundIsolateBinaryMessenger.ensureInitialized(mainRootIsolateToken);
 
-    SendPort sendPort = args[1] as SendPort;
+    final SendPort sendPort = args[1] as SendPort;
 
-    String path = args[2] as String;
+    final String path = args[2] as String;
 
     final directory = Directory(path);
 

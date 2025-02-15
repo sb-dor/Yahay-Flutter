@@ -29,18 +29,18 @@ class ChatsStreamTransformers extends StreamTransformerBase<ChannelReadEvent, Ch
           "$data",
         );
 
-        Map<String, dynamic> json = data is String
+        final Map<String, dynamic> json = data is String
             ? jsonDecode(data)
             : data is Map
                 ? data
                 : {};
 
         if (json['chat'] != null) {
-          ChatModel chat = ChatModel.fromJson(json['chat']);
+          final ChatModel chat = ChatModel.fromJson(json['chat']);
           controller.add(chat);
         }
       },
-      onDone: () => controller.close(),
+      onDone: controller.close,
       onError: (error) => controller.addError(error),
     );
 

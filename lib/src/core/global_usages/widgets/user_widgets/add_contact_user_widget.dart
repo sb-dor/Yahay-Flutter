@@ -54,7 +54,7 @@ class AddContactUserWidget extends StatelessWidget {
                     Text(
                       "Last seen 3000 y.a",
                       style: GoogleFonts.aBeeZee(fontSize: 12, color: Colors.grey),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -74,7 +74,7 @@ class AddContactUserWidget extends StatelessWidget {
                   child: const CircularProgressIndicator(strokeWidth: 2),
                 )
               else
-                IconButton(onPressed: addUser, icon: const Icon(Icons.person_add_alt))
+                IconButton(onPressed: addUser, icon: const Icon(Icons.person_add_alt)),
             ],
           ),
         ),

@@ -31,7 +31,7 @@ class AppThemeBloc {
     _currentState = AppColorsScheme.light;
 
     final themeData = eventBehavior.map<ThemeData>((appThemeDataEvent) {
-      ThemeData theme = _appThemeChangerEvent(appThemeDataEvent as AppThemeChangerEvent);
+      final ThemeData theme = _appThemeChangerEvent(appThemeDataEvent as AppThemeChangerEvent);
       return theme;
     }).startWith(_currentState);
 

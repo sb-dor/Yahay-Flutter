@@ -16,7 +16,7 @@ abstract class AppColorsScheme {
       tertiaryContainer: Color(0xff95f0ff),
       appBarColor: Color(0xffffdbcf),
       error: Color(0xffb00020),
-      swapOnMaterial3: true
+      swapOnMaterial3: true,
     ),
     usedColors: 1,
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,

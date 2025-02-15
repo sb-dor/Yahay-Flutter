@@ -43,7 +43,7 @@ class AddContactSourceImpl implements AddContactSource {
 
       if (!response.containsKey("success")) return <UserModel>[];
 
-      List<dynamic> usersList = response.getNested(['users', 'data']);
+      final List<dynamic> usersList = response.getNested(['users', 'data']);
 
       final userList = usersList.map((e) => UserModel.fromJson(e)).toList();
 

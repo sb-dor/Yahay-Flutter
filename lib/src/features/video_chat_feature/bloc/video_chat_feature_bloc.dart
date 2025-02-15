@@ -31,7 +31,7 @@ class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
   }) = _FinishVideoChatEvent;
 
   const factory VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(
-      final MediaStream mediaStream) = _OnAddRemoteRendererStreamEvent;
+      final MediaStream mediaStream,) = _OnAddRemoteRendererStreamEvent;
 
   const factory VideoChatFeatureEvents.switchCameraStreamEvent() = _SwitchCameraStreamEvent;
 
@@ -59,7 +59,7 @@ class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
 @freezed
 class VideoChatFeatureStates with _$VideoChatFeatureStates {
   const factory VideoChatFeatureStates.initial(
-      final VideoChatStateModel videoChatStateModel) = _VideoChat$InitialState;
+      final VideoChatStateModel videoChatStateModel,) = _VideoChat$InitialState;
 }
 
 class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates> {
@@ -165,7 +165,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     _logger.log(Level.debug, "entrance to the chat: $resultOfJoining");
 
-    var currentStateModel = state.videoChatStateModel.copyWith(
+    final currentStateModel = state.videoChatStateModel.copyWith(
       chatStarted: resultOfJoining,
     );
 
@@ -222,7 +222,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
       currentChatEntities.add(videoChatEntity);
 
-      var currentStateModel = state.videoChatStateModel.copyWith(
+      final currentStateModel = state.videoChatStateModel.copyWith(
         videoChatEntities: currentChatEntities,
       );
 
@@ -237,7 +237,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     _SwitchCameraStreamEvent event,
     Emitter<VideoChatFeatureStates> emit,
   ) async {
-    var currentStateModel = state.videoChatStateModel.copyWith(
+    final currentStateModel = state.videoChatStateModel.copyWith(
       cameraSwitched: !state.videoChatStateModel.cameraSwitched,
     );
 
@@ -274,7 +274,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     _TurnCameraOffAndEvent event,
     Emitter<VideoChatFeatureStates> emit,
   ) async {
-    var currentStateModel = state.videoChatStateModel.copyWith(
+    final currentStateModel = state.videoChatStateModel.copyWith(
       hasVideo: !state.videoChatStateModel.hasVideo,
     );
 
@@ -293,7 +293,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     if (!resultOfStart) return false;
 
-    var currentStateModel = state.videoChatStateModel.copyWith(
+    final currentStateModel = state.videoChatStateModel.copyWith(
       chatStarted: resultOfStart,
     );
 

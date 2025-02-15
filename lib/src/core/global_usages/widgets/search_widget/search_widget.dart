@@ -101,7 +101,7 @@ class _SearchWidgetState extends State<SearchWidget> with SingleTickerProviderSt
                       setState(() {});
                       widget.onDispose();
                     },
-                    icon: const Icon(Icons.close)),
+                    icon: const Icon(Icons.close),),
             ],
           ),
         );

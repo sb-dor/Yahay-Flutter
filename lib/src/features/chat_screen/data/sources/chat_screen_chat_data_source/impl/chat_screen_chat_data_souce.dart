@@ -42,7 +42,7 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
       return gettingChat.copyWith(
           messages: gettingChat.messages?.map((e) {
         return e.copyWith(messageSent: true);
-      }).toList());
+      }).toList(),);
     } on RestClientException {
       rethrow;
     }

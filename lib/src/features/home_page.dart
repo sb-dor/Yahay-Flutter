@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                 .map((e) => BottomNavigationBarItem(
                       icon: e.icon,
                       label: e.label,
-                    ))
+                    ),)
                 .toList(),
           ),
           body: _screens[_index].screen,

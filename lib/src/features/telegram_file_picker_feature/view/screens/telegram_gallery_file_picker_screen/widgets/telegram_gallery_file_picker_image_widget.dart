@@ -54,7 +54,7 @@ class _TelegramGalleryFilePickerImageWidgetState
                 onPressed: () => widget.telegramFilePickerBloc
                     .add(TelegramFilePickerEvents.selectGalleryFileEvent(
                   widget.item,
-                )),
+                ),),
                 icon: currentStateModel.isFileInsidePickedFiles(widget.item)
                     ? const Icon(Icons.check_circle)
                     : const Icon(Icons.circle_outlined),

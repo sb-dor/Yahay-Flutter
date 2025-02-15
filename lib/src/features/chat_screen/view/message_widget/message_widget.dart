@@ -110,7 +110,7 @@ class _RightSide extends StatelessWidget {
               _MessageTime(message: message),
             ],
           ),
-        )
+        ),
       ],
     );
   }
@@ -160,7 +160,7 @@ class _MessageTime extends StatelessWidget {
                         size: 13,
                         color: Colors.white,
                       ),
-                    )
+                    ),
                 ],
               ),
             )
@@ -169,7 +169,7 @@ class _MessageTime extends StatelessWidget {
               Icons.access_time_outlined,
               size: 13,
               color: Colors.white,
-            )
+            ),
       ],
     );
   }

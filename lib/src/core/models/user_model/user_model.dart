@@ -19,7 +19,7 @@ class UserModel with _$UserModel {
     @JsonKey(name: "image_url") String? imageUrl,
     @JsonKey(name: "created_at") String? createdAt,
     @JsonKey(includeFromJson: false, includeToJson: false) @Default(
-        false) bool? loadingForAddingToContacts,
+        false,) bool? loadingForAddingToContacts,
     @JsonKey(name: "user_contact") UserModel? contact,
   }) = _UserModel;
 

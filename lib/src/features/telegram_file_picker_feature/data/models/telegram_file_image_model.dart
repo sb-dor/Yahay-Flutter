@@ -9,7 +9,7 @@ class TelegramFileImageModel extends TelegramFileImageEntity {
     super.videoPreview,
     super.fileName,
     super.selected,
-    super.originalImagePath
+    super.originalImagePath,
   });
 
   Future<void> controllerInit() async {

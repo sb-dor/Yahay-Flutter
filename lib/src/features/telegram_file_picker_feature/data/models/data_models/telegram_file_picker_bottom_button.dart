@@ -49,9 +49,9 @@ class TelegramFilePickerBottomButton {
               style: GoogleFonts.aBeeZee(
                 fontSize: 16,
               ),
-            )
+            ),
           ],
-        )),
+        ),),
         TelegramFilePickerBottomButton(
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +82,7 @@ class TelegramFilePickerBottomButton {
                 style: GoogleFonts.aBeeZee(
                   fontSize: 16,
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -115,7 +115,7 @@ class TelegramFilePickerBottomButton {
                 style: GoogleFonts.aBeeZee(
                   fontSize: 16,
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -192,7 +192,7 @@ class _VideoItem extends StatelessWidget {
                 child: Icon(Icons.play_arrow),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

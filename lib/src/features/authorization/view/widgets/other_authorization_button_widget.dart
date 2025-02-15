@@ -29,7 +29,7 @@ class OtherAuthorizationButtonWidget extends StatelessWidget {
             Text(
               text,
               style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400),
-            )
+            ),
           ],
         ),
       ),

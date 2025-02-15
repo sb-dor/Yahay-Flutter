@@ -30,7 +30,7 @@ abstract class ChatScreenEvents with _$ChatScreenEvents {
   const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _ChatsScreen$RemoveAllTempCreatedEvent;
 
   const factory ChatScreenEvents.handleChatMessageEvent(
-      ChatMessageStreamTransformerRecord chatMessageTransformer) = _Chat$HandleMessageEvent;
+      ChatMessageStreamTransformerRecord chatMessageTransformer,) = _Chat$HandleMessageEvent;
 
   const factory ChatScreenEvents.sendMessageEvent({
     required final String message,
@@ -243,7 +243,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     _Chat$ChangeEmojiPickerEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
-    var currentStateModel = _changeEmojiPickerHelper(
+    final currentStateModel = _changeEmojiPickerHelper(
       currentStateModel: state.chatScreenStateModel,
       value: event.value,
     );
@@ -261,7 +261,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       currentChat: chat,
     );
     if (setChatMessages) {
-      List<ChatMessageModel> chatMessages = List.from(currentStateModel.messages);
+      final List<ChatMessageModel> chatMessages = List.from(currentStateModel.messages);
       chatMessages.addAll((chat.messages ?? []).reversed.toList());
       currentStateModel = currentStateModel.copyWith(
         messages: chatMessages,

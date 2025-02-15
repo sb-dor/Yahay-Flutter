@@ -32,7 +32,7 @@ final class ChatMessageStreamTransformer
 
     subscription = stream.listen(
       (event) {
-        Map<String, dynamic> messageJson = jsonDecode(event.data ?? '');
+        final Map<String, dynamic> messageJson = jsonDecode(event.data ?? '');
 
         ChatMessageModel? message;
         ChatModel? chat;
@@ -57,7 +57,7 @@ final class ChatMessageStreamTransformer
         controller.add((chatModel: chat, chageMessageModel: message));
       },
       onError: (error) => controller.addError(error),
-      onDone: () => controller.close(),
+      onDone: controller.close,
     );
 
     return controller.stream;

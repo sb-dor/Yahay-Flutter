@@ -88,7 +88,7 @@ final class RestClientDio extends RestClientBase {
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
-      'Authorization': 'Bearer ${_sharedPreferHelper.getStringByKey(key: 'token')}'
+      'Authorization': 'Bearer ${_sharedPreferHelper.getStringByKey(key: 'token')}',
     };
   }
 }

@@ -10,7 +10,6 @@ import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart'
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/add_contact_bloc_factory.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/authorization_bloc_factory.dart';
-import 'package:yahay/src/features/initialization/logic/composition_root/factories/profile_bloc_factory.dart';
 import 'package:yahay/src/features/initialization/models/dependency_container.dart';
 
 final class CompositionRoot extends AsyncFactory<CompositionResult> {

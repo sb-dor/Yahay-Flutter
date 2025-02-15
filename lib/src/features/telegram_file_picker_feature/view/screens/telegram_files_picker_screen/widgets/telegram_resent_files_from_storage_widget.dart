@@ -56,7 +56,7 @@ class _TelegramResentFilesFromStorageWidgetState
           // here should be the list of only files not images or videos
           TelegramStorageFileWidget(
             list: _telegramFilePickerStateModel.recentFilesPagination,
-          )
+          ),
         ],
       ),
     );

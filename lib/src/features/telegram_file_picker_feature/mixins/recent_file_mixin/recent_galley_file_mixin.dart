@@ -35,7 +35,7 @@ mixin class RecentGalleyFileMixin {
         return;
       }
 
-      List<TelegramFileImageAssetEntity> toEncodeList = await _RecentFilesHelper(
+      final List<TelegramFileImageAssetEntity> toEncodeList = await _RecentFilesHelper(
         options: options,
       ).getAssets();
 
@@ -43,7 +43,7 @@ mixin class RecentGalleyFileMixin {
 
       final rootIsolateToken = RootIsolateToken.instance!;
 
-      Map<String, dynamic> toIsolateImages = {
+      final Map<String, dynamic> toIsolateImages = {
         "list": toEncodeList.map((e) {
           return e.toJson();
         }).toList(),
@@ -72,15 +72,15 @@ mixin class RecentGalleyFileMixin {
   }
 
   static Future<void> _isolateFileSender(List<dynamic> args) async {
-    RootIsolateToken rootIsolateToken = args[0];
+    final RootIsolateToken rootIsolateToken = args[0];
 
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
 
     final SendPort sendPort = args[1];
 
-    Map<String, dynamic> telegramImageAssetEntity = jsonDecode(args[2]);
+    final Map<String, dynamic> telegramImageAssetEntity = jsonDecode(args[2]);
 
-    List<dynamic> dList = telegramImageAssetEntity['list'];
+    final List<dynamic> dList = telegramImageAssetEntity['list'];
 
     final reusables = ReusableGlobalFunctions.instance;
 
@@ -91,7 +91,7 @@ mixin class RecentGalleyFileMixin {
 
     for (final asset in images) {
       // Get the file path of the asset
-      File file = File(asset.imagePath);
+      final File file = File(asset.imagePath);
       if (file.existsSync()) {
         final kb = file.lengthSync() / 1024;
         final mb = kb / 1024;
@@ -183,12 +183,12 @@ class _GetRangedAssetFiles implements _RecentFilesHelper {
 
   @override
   Future<List<TelegramFileImageAssetEntity>> getAssets() async {
-    var images = await PhotoManager.getAssetListRange(
+    final images = await PhotoManager.getAssetListRange(
       start: start ?? 0,
       end: end ?? 100,
     );
 
-    List<TelegramFileImageAssetEntity> list = [];
+    final List<TelegramFileImageAssetEntity> list = [];
 
     for (final image in images) {
       final file = await image.file;
@@ -202,8 +202,8 @@ class _GetRangedAssetFiles implements _RecentFilesHelper {
 class _GetAllAssetFiles implements _RecentFilesHelper {
   @override
   Future<List<TelegramFileImageAssetEntity>> getAssets() async {
-    var images = await PhotoManager.getAssetPathList();
-    List<TelegramFileImageAssetEntity> list = [];
+    final images = await PhotoManager.getAssetPathList();
+    final List<TelegramFileImageAssetEntity> list = [];
     for (final assetPath in images) {
       // Fetch all assets in the album
       final assets = await assetPath.getAssetListPaged(

@@ -42,7 +42,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: GestureDetector(
-                    onTap: () => _focusNode.requestFocus(),
+                    onTap: _focusNode.requestFocus,
                     child: Container(
                       constraints: const BoxConstraints(
                         maxHeight: 100,
@@ -123,14 +123,12 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                             );
                           },
                         ).whenComplete(
-                          () {
-                            telegramFilePickerBloc.close();
-                          },
+                          telegramFilePickerBloc.close,
                         ).ignore();
                       },
                       icon: const FaIcon(FontAwesomeIcons.paste),
                     ),
-                  )
+                  ),
               ],
             ),
           ),
@@ -147,7 +145,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
               );
             },
             icon: const Icon(Icons.send),
-          )
+          ),
         ],
       ),
     );

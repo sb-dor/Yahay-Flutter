@@ -38,7 +38,7 @@ class ImageLoaderWidget extends StatelessWidget {
           httpHeaders: const {
             "Accept": "application/json",
             "Connection": "Keep-Alive",
-            "Keep-Alive": "timeout=10, max=1000"
+            "Keep-Alive": "timeout=10, max=1000",
           },
           fit: boxFit ?? BoxFit.scaleDown,
           placeholder: (context, url) {
@@ -54,7 +54,7 @@ class ImageLoaderWidget extends StatelessWidget {
                     imageFit: boxFit ?? BoxFit.scaleDown,
                     duration: const Duration(seconds: 2),
                     curve: Curves.linear,
-                  ));
+                  ),);
             } else {
               return Container(
                 margin: marginShimmerContainer,
@@ -72,7 +72,7 @@ class ImageLoaderWidget extends StatelessWidget {
               errorImageUrl ?? Constants.userErrorImage,
               height: height,
               width: width,
-              fit: boxFit ?? BoxFit.scaleDown));
-    });
+              fit: boxFit ?? BoxFit.scaleDown,),);
+    },);
   }
 }

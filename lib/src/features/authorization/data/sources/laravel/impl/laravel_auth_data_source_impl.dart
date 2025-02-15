@@ -55,7 +55,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   }) async {
     final url = "${AppHttpRoutes.authPrefix}$_login";
 
-    Map<String, dynamic> body = {
+    final Map<String, dynamic> body = {
       "email_or_username": emailOrUserName,
       "password": password,
     };
@@ -88,7 +88,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   }) async {
     final url = "${AppHttpRoutes.authPrefix}$_register";
 
-    Map<String, dynamic> body = {
+    final Map<String, dynamic> body = {
       "email": email,
       "password": password,
       "user_name": userName,

@@ -17,6 +17,15 @@ class LoadingPage extends StatefulWidget {
 class _HomePageState extends State<LoadingPage> {
   late final AuthBloc _authBloc;
 
+  void _onMessage(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -24,16 +33,8 @@ class _HomePageState extends State<LoadingPage> {
     _authBloc = depContainer.authBloc;
     _authBloc.add(
       AuthEvents.checkAuthEvent(
-        initDependenciesAfterAuthorization: () {
-          depContainer.initDependenciesAfterAuthorization();
-        },
-        onMessage: (String message) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(message),
-            ),
-          );
-        },
+        initDependenciesAfterAuthorization: depContainer.initDependenciesAfterAuthorization,
+        onMessage: _onMessage,
       ),
     );
   }

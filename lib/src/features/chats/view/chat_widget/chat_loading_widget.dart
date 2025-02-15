@@ -59,10 +59,10 @@ class _ChatLoadingWidgetState extends State<ChatLoadingWidget> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                      )
+                      ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           );

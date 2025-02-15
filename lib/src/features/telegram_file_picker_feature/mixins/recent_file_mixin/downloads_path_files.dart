@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -25,13 +26,13 @@ mixin class DownloadsPathFiles {
       //
       // if (!externalStoragePermission && !storagePermission) return;
 
-      Directory? downloadsDirectory = await getDownloadPath();
+      final Directory? downloadsDirectory = await getDownloadPath();
 
       // debugPrint("downloades dir: $downloadsDirectory");
 
       if (downloadsDirectory == null) return;
 
-      ReceivePort sendingPort = ReceivePort();
+      final ReceivePort sendingPort = ReceivePort();
 
       final rootIsolateToken = RootIsolateToken.instance!;
 
@@ -108,16 +109,16 @@ mixin class DownloadsPathFiles {
       if (!downloadsDirectory.existsSync()) {
         try {
           downloadsDirectory.createSync(recursive: true);
-          print("Downloads directory created at: ${downloadsDirectory.path}");
+          log("Downloads directory created at: ${downloadsDirectory.path}");
         } catch (e) {
-          print("Error creating Downloads directory: $e");
+          log("Error creating Downloads directory: $e");
           return null;
         }
       }
     } else if (Platform.isIOS) {
       // On iOS, use Application Documents Directory
       downloadsDirectory = await getApplicationDocumentsDirectory();
-      print("iOS does not have a dedicated Downloads folder like Android.");
+      log("iOS does not have a dedicated Downloads folder like Android.");
     }
 
     return downloadsDirectory;

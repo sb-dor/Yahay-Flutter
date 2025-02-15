@@ -145,7 +145,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                                     currentUser: currentUser,
                                   );
                                 },
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -155,7 +155,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                         if (currentStateModel.showEmojiPicker)
                           EmojiPickerHelper(
                             messageController: _messageController,
-                          )
+                          ),
                       ],
                     ),
                   ),

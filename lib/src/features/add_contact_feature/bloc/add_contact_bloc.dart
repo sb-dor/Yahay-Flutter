@@ -25,13 +25,13 @@ sealed class AddContactsStates with _$AddContactsStates {
       InitialAddConstactsState;
 
   const factory AddContactsStates.loadingAddContactsState(
-      final AddContactStateModel addContactStateModel) = AddContacts$InProgressState;
+      final AddContactStateModel addContactStateModel,) = AddContacts$InProgressState;
 
   const factory AddContactsStates.errorAddContactsState(
-      final AddContactStateModel addContactStateModel) = AddContacts$ErrorState;
+      final AddContactStateModel addContactStateModel,) = AddContacts$ErrorState;
 
   const factory AddContactsStates.loadedAddContactsState(
-      final AddContactStateModel addContactStateModel) = AddContacts$SuccessfulState;
+      final AddContactStateModel addContactStateModel,) = AddContacts$SuccessfulState;
 }
 
 class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
@@ -47,7 +47,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
         searchContact: (event) => _searchContactEvent(event, emit),
         addContactEvent: (event) => _addContactEventHandler(event, emit),
         clearDataEvent: (event) {
-          var currentState = state.addContactStateModel.clearData();
+          final currentState = state.addContactStateModel.clearData();
 
           emit(AddContactsStates.loadedAddContactsState(currentState));
           return null;
@@ -102,7 +102,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
       loadingForAddingToContacts: true,
     );
 
-    List<UserModel> tempUsersList = List<UserModel>.from(currentStateModel.users);
+    final List<UserModel> tempUsersList = List<UserModel>.from(currentStateModel.users);
 
     final foundIndex = tempUsersList.indexWhere((el) => el.id == event.user?.id);
 

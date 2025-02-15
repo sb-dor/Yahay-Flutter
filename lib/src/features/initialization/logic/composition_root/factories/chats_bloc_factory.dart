@@ -15,7 +15,7 @@ final class ChatsBlocFactory extends Factory<ChatsBloc> {
     required final UserModel? currentUser,
     required final PusherChannelsOptions pusherChannelsOption,
     required final Logger logger,
-    required final RestClientBase restClientBase
+    required final RestClientBase restClientBase,
   })  : _currentUser = currentUser,
         _pusherChannelsOptions = pusherChannelsOption,
         _logger = logger,

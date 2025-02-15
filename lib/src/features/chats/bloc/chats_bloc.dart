@@ -84,7 +84,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       emit(ChatsStates.inProgress(state.chatsStateModel));
 
-      var currentStateModel = state.chatsStateModel.copyWith(
+      final currentStateModel = state.chatsStateModel.copyWith(
         chats: await _chatsRepo.chats(),
       );
 
@@ -147,7 +147,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
       // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
       if (event.chatModel != null) {
-        var currentStateModel = state.chatsStateModel.copyWith(
+        final currentStateModel = state.chatsStateModel.copyWith(
           chats: addChat(
             chat: event.chatModel,
             currentChats: state.chatsStateModel.chats,
@@ -165,7 +165,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     _Chats$ChangeToLoadingStateEvent event,
     Emitter<ChatsStates> emit,
   ) async {
-    var currentState = state.chatsStateModel.copyWith(chats: <ChatModel>[]);
+    final currentState = state.chatsStateModel.copyWith(chats: <ChatModel>[]);
     _emitter(currentStateModel: currentState, emit: emit);
   }
 

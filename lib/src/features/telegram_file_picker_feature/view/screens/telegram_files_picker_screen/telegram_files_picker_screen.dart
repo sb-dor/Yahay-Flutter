@@ -195,7 +195,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           );
                           Future.delayed(const Duration(milliseconds: 300), () {
                             _telegramFilePickerBloc.add(
-                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
+                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),);
                           });
                         },
                       ),
@@ -250,7 +250,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
 
                           Future.delayed(const Duration(milliseconds: 300), () {
                             _telegramFilePickerBloc.add(
-                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
+                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),);
                           });
                         },
                       ),
