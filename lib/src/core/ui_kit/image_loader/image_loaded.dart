@@ -31,8 +31,9 @@ class ImageLoaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      return CachedNetworkImage(
+    return Builder(
+      builder: (context) {
+        return CachedNetworkImage(
           imageUrl: url,
           width: width,
           httpHeaders: const {
@@ -44,17 +45,18 @@ class ImageLoaderWidget extends StatelessWidget {
           placeholder: (context, url) {
             if (imageBlurHash != null) {
               return Container(
-                  margin: marginShimmerContainer,
-                  padding: paddingShimmerContainer,
-                  width: width,
-                  height: height,
-                  decoration: BoxDecoration(borderRadius: borderRadius),
-                  child: BlurHash(
-                    hash: imageBlurHash ?? 'L00w16X:L#qZf,fke.e.HXm*y?UH',
-                    imageFit: boxFit ?? BoxFit.scaleDown,
-                    duration: const Duration(seconds: 2),
-                    curve: Curves.linear,
-                  ),);
+                margin: marginShimmerContainer,
+                padding: paddingShimmerContainer,
+                width: width,
+                height: height,
+                decoration: BoxDecoration(borderRadius: borderRadius),
+                child: BlurHash(
+                  hash: imageBlurHash ?? 'L00w16X:L#qZf,fke.e.HXm*y?UH',
+                  imageFit: boxFit ?? BoxFit.scaleDown,
+                  duration: const Duration(seconds: 2),
+                  curve: Curves.linear,
+                ),
+              );
             } else {
               return Container(
                 margin: marginShimmerContainer,
@@ -68,11 +70,16 @@ class ImageLoaderWidget extends StatelessWidget {
               );
             }
           },
-          errorWidget: (context, url, error) => errorWidget ?? Image.asset(
-              errorImageUrl ?? Constants.userErrorImage,
-              height: height,
-              width: width,
-              fit: boxFit ?? BoxFit.scaleDown,),);
-    },);
+          errorWidget: (context, url, error) =>
+              errorWidget ??
+              Image.asset(
+                errorImageUrl ?? Constants.userErrorImage,
+                height: height,
+                width: width,
+                fit: boxFit ?? BoxFit.scaleDown,
+              ),
+        );
+      },
+    );
   }
 }
