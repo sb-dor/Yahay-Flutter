@@ -96,7 +96,10 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
                 Text(
                   state.videoChatStateModel.chat?.videoChatRoom != null ? "Accept" : "Call",
                   style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500, letterSpacing: 1.5,),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1.5,
+                  ),
                 ),
               ],
             );

@@ -14,7 +14,7 @@ class TelegramFolderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: ColoredBox(
         color: Colors.transparent,
         child: IntrinsicHeight(
           child: Row(

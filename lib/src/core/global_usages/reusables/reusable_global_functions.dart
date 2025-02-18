@@ -139,7 +139,6 @@ class ReusableGlobalFunctions {
     return res;
   }
 
-
   bool get isMacOsOriOS {
     return defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.macOS;

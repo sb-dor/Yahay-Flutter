@@ -15,43 +15,45 @@ class TelegramFilePickerBottomButton {
     required void Function() draggableSheetAnimate,
   }) =>
       [
-        TelegramFilePickerBottomButton(Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                telegramBloc.add(
-                  const TelegramFilePickerEvents.changeStateToAllPicturesEvent(),
-                );
+        TelegramFilePickerBottomButton(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  telegramBloc.add(
+                    const TelegramFilePickerEvents.changeStateToAllPicturesEvent(),
+                  );
 
-                // telegramBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
+                  // telegramBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
 
-                draggableSheetAnimate();
-              },
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.blue,
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.image,
-                    color: Colors.white,
+                  draggableSheetAnimate();
+                },
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.blue,
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.image,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "Gallery",
-              style: GoogleFonts.aBeeZee(
-                fontSize: 16,
+              const SizedBox(height: 10),
+              Text(
+                "Gallery",
+                style: GoogleFonts.aBeeZee(
+                  fontSize: 16,
+                ),
               ),
-            ),
-          ],
-        ),),
+            ],
+          ),
+        ),
         TelegramFilePickerBottomButton(
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

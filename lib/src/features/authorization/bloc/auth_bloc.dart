@@ -10,7 +10,7 @@ part 'auth_bloc.freezed.dart';
 
 @immutable
 @freezed
-class AuthEvents with _$AuthEvents {
+sealed class AuthEvents with _$AuthEvents {
   const factory AuthEvents.googleAuth({
     required final void Function() initDependenciesAfterAuthorization,
     // required final Future<void> Function() initDioOptions,

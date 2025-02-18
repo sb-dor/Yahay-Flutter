@@ -20,17 +20,19 @@ part 'chat_screen_bloc.freezed.dart';
 
 @immutable
 @freezed
-abstract class ChatScreenEvents with _$ChatScreenEvents {
+sealed class ChatScreenEvents with _$ChatScreenEvents {
   // init chat on entering to the screen (if chat was already created)
   const factory ChatScreenEvents.initChatScreenEvent({
     final ChatModel? chat,
     final UserModel? user, // temp for creating temp chat if chat does not exist
   }) = _ChatScreen$InitEvent;
 
-  const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _ChatsScreen$RemoveAllTempCreatedEvent;
+  const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() =
+      _ChatsScreen$RemoveAllTempCreatedEvent;
 
   const factory ChatScreenEvents.handleChatMessageEvent(
-      ChatMessageStreamTransformerRecord chatMessageTransformer,) = _Chat$HandleMessageEvent;
+    ChatMessageStreamTransformerRecord chatMessageTransformer,
+  ) = _Chat$HandleMessageEvent;
 
   const factory ChatScreenEvents.sendMessageEvent({
     required final String message,

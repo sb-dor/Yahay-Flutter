@@ -112,9 +112,11 @@ class _ChatAppBarTitle extends StatelessWidget {
     if ((chat?.participants?.length ?? 0) > 1) {
       return Text(chat?.name ?? '');
     } else {
-      return Text(chat?.participants?.firstOrNull?.user?.name ??
-          chat?.participants?.firstOrNull?.user?.email ??
-          '-',);
+      return Text(
+        chat?.participants?.firstOrNull?.user?.name ??
+            chat?.participants?.firstOrNull?.user?.email ??
+            '-',
+      );
     }
   }
 }

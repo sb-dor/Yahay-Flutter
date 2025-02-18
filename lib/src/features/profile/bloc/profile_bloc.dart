@@ -9,7 +9,7 @@ part 'profile_bloc.freezed.dart';
 
 @immutable
 @freezed
-class ProfileEvents with _$ProfileEvents {
+sealed class ProfileEvents with _$ProfileEvents {
   const factory ProfileEvents.profileLogoutEvent(final void Function() logoutEvent) =
       _Profile$LogoutEvent;
 }

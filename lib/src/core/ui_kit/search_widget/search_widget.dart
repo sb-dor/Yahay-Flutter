@@ -96,12 +96,13 @@ class _SearchWidgetState extends State<SearchWidget> with SingleTickerProviderSt
               ),
               if (_searchController.text.isNotEmpty)
                 IconButton(
-                    onPressed: () {
-                      _searchController.clear();
-                      setState(() {});
-                      widget.onDispose();
-                    },
-                    icon: const Icon(Icons.close),),
+                  onPressed: () {
+                    _searchController.clear();
+                    setState(() {});
+                    widget.onDispose();
+                  },
+                  icon: const Icon(Icons.close),
+                ),
             ],
           ),
         );

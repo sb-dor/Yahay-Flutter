@@ -43,17 +43,10 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => _profileBloc?.add(
-            ProfileEvents.profileLogoutEvent(
-              () {
-                _authBloc.add(const AuthEvents.logOutEvent());
-              },
-            ),
-          ),
-          child: const Icon(Icons.logout),
-        ),
+      body: const CustomScrollView(
+        slivers: [
+
+        ],
       ),
     );
   }

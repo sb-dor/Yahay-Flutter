@@ -11,8 +11,6 @@ class DoubleCameraViewScreen extends StatefulWidget {
 }
 
 class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoChatBloc, VideoChatFeatureStates>(

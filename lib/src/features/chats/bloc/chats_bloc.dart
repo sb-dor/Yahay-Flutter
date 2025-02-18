@@ -16,7 +16,7 @@ part 'chats_bloc.freezed.dart';
 
 @immutable
 @freezed
-class ChatsEvents with _$ChatsEvents {
+sealed class ChatsEvents with _$ChatsEvents {
   const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) = _Chats$GetUserEvent;
 
   const factory ChatsEvents.chatListenerInitialEvent() = _Chats$ListenerInitialEvent;
@@ -34,8 +34,7 @@ sealed class ChatsStates with _$ChatsStates {
   const factory ChatsStates.inProgress(final ChatsStateModel chatsStateModel) =
       Chats$InProgressState;
 
-  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) =
-      Chats$ErrorState;
+  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) = Chats$ErrorState;
 
   const factory ChatsStates.successful(final ChatsStateModel chatsStateModel) =
       Chats$SuccessfulState;
@@ -148,7 +147,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       if (event.chatModel != null) {
         final currentStateModel = state.chatsStateModel.copyWith(
-          chats: addChat(
+          chats: _addChat(
             chat: event.chatModel,
             currentChats: state.chatsStateModel.chats,
           ),
@@ -189,7 +188,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     }
   }
 
-  List<ChatModel> addChat({
+  List<ChatModel> _addChat({
     required ChatModel? chat,
     required List<ChatModel> currentChats,
     UserModel? user,

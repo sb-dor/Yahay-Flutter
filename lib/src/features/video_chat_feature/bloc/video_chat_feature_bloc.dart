@@ -18,7 +18,7 @@ part 'video_chat_feature_bloc.freezed.dart';
 
 @immutable
 @freezed
-class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
+sealed class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
   const factory VideoChatFeatureEvents.videoChatInitFeatureEvent(final ChatModel? chat) =
       _VideoChatInitFeatureEvent;
 

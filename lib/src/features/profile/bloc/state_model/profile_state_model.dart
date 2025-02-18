@@ -19,7 +19,7 @@ class ProfileStateModel {
 
   @override
   String toString() {
-    return 'ProfileStateModel{' + ' userModel: $userModel,' + '}';
+    return 'ProfileStateModel{' ' userModel: $userModel,' '}';
   }
 
   ProfileStateModel copyWith({

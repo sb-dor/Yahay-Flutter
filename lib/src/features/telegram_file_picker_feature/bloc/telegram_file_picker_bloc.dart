@@ -24,7 +24,7 @@ part 'telegram_file_picker_bloc.freezed.dart';
 
 @immutable
 @freezed
-class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
+sealed class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
   const factory TelegramFilePickerEvents.justEmitStateEvent(
     final TelegramFilePickerStateModel currentStateModel,
   ) = _JustEmitStateEvent;
@@ -49,16 +49,19 @@ class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
   const factory TelegramFilePickerEvents.closePopupEvent() = _ClosePopupEvent;
 
   const factory TelegramFilePickerEvents.fileStreamHandlerEvent(
-      final TelegramPathFolderFile? file,) = _FileStreamHandlerEvent;
+    final TelegramPathFolderFile? file,
+  ) = _FileStreamHandlerEvent;
 
   const factory TelegramFilePickerEvents.recentFileStreamHandlerEvent(
-      final TelegramPathFolderFile? file,) = _RecentFileStreamHandlerEvent;
+    final TelegramPathFolderFile? file,
+  ) = _RecentFileStreamHandlerEvent;
 
   const factory TelegramFilePickerEvents.imagesAndVideoPaginationEvent() =
       _ImagesAndVideoPaginationEvent;
 
   const factory TelegramFilePickerEvents.selectGalleryFileEvent(
-      final TelegramFileImageEntity? telegramFileImageEntity,) = _SelectGalleryFileEvent;
+    final TelegramFileImageEntity? telegramFileImageEntity,
+  ) = _SelectGalleryFileEvent;
 
   const factory TelegramFilePickerEvents.clearSelectedGalleryFileEvent() =
       _ClearSelectedGalleryFileEvent;
@@ -69,16 +72,20 @@ class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
       _BrowseInternalStorageAndSelectFilesEvent;
 
   const factory TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
-      final TelegramFileFolderEnum screen,) = _SelectScreenForFilesPickerScreenEvent;
+    final TelegramFileFolderEnum screen,
+  ) = _SelectScreenForFilesPickerScreenEvent;
 
   const factory TelegramFilePickerEvents.setSpecificFolderPathInOrderToGetDataFromThereEvent(
-      final String? path,) = _SetSpecificFolderPathInOrderToGetDataFromThereEvent;
+    final String? path,
+  ) = _SetSpecificFolderPathInOrderToGetDataFromThereEvent;
 
-  const factory TelegramFilePickerEvents.getSpecificFolderDataEvent(
-      {required final bool getGalleryData,}) = _GetSpecificFolderDataEvent;
+  const factory TelegramFilePickerEvents.getSpecificFolderDataEvent({
+    required final bool getGalleryData,
+  }) = _GetSpecificFolderDataEvent;
 
   const factory TelegramFilePickerEvents.specificFolderDataStreamHandlerEvent(
-      final TelegramPathFolderFile? file,) = _SpecificFolderDataStreamHandlerEvent;
+    final TelegramPathFolderFile? file,
+  ) = _SpecificFolderDataStreamHandlerEvent;
 
   const factory TelegramFilePickerEvents.paginateSpecificFolderDataEvent() =
       _PaginateSpecificFolderDataEvent;
@@ -244,9 +251,11 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
     _ChangeStateToAllFilesState event,
     Emitter<TelegramFilePickerStates> emit,
   ) async {
-    emit(TelegramFilePickerStates.filesPickerState(
-      state.telegramFilePickerStateModel,
-    ),);
+    emit(
+      TelegramFilePickerStates.filesPickerState(
+        state.telegramFilePickerStateModel,
+      ),
+    );
   }
 
   void _initAllAudioEvent(
@@ -400,10 +409,12 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
 
     // _currentStateModel.addToPagination();
 
-    final currentStateModel = state.telegramFilePickerStateModel.copyWith(galleryPathPagination: [
-      ...state.telegramFilePickerStateModel.galleryPathPagination,
-      ...tempList,
-    ],);
+    final currentStateModel = state.telegramFilePickerStateModel.copyWith(
+      galleryPathPagination: [
+        ...state.telegramFilePickerStateModel.galleryPathPagination,
+        ...tempList,
+      ],
+    );
 
     _emitter(currentStateModel: currentStateModel, emit: emit);
   }
@@ -440,10 +451,12 @@ class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFile
       currentList: state.telegramFilePickerStateModel.recentFilesPagination,
     );
 
-    final currentStateModel = state.telegramFilePickerStateModel.copyWith(recentFilesPagination: [
-      ...state.telegramFilePickerStateModel.recentFilesPagination,
-      ...tempList,
-    ],);
+    final currentStateModel = state.telegramFilePickerStateModel.copyWith(
+      recentFilesPagination: [
+        ...state.telegramFilePickerStateModel.recentFilesPagination,
+        ...tempList,
+      ],
+    );
 
     _emitter(currentStateModel: currentStateModel, emit: emit);
   }

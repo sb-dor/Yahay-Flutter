@@ -8,7 +8,7 @@ abstract class AppThemeEvents {
 }
 
 @immutable
-class AppThemeChangerEvent extends AppThemeEvents {
+sealed class AppThemeChangerEvent extends AppThemeEvents {
   const AppThemeChangerEvent();
 }
 
@@ -47,6 +47,6 @@ class AppThemeBloc {
         return AppColorsScheme.light;
       case Brightness.light:
         return AppColorsScheme.dark;
-      }
+    }
   }
 }

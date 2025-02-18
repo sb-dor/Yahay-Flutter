@@ -42,6 +42,8 @@ linter:
     - avoid_dynamic_calls
     # reminds to close stream_subscriptions
     - cancel_subscriptions
+    - use_colored_box
+    - use_decorated_box
 #    - prefer_const_constructors
 #    - prefer_const_literals_to_create_immutables
 #     avoid_print: false  # Uncomment to disable the `avoid_print` rule

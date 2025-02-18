@@ -27,7 +27,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                 children: [
                   Text("NAME"),
                   Text("PHONE NUMBER"),
-                  Text("USERNAME OR EMAIL")
+                  Text("USERNAME OR EMAIL"),
                 ],
               ),
             ),

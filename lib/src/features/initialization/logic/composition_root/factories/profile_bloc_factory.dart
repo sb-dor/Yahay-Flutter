@@ -27,7 +27,7 @@ final class ProfileBlocFactory extends Factory<ProfileBloc> {
     final IProfileRepository profileRepository = ProfileRepositoryImpl(profileDatasource);
 
     //
-    final initialState = ProfileStates.initial(ProfileStateModel());
+    const initialState = ProfileStates.initial(ProfileStateModel());
 
     return ProfileBloc(
       initialState: initialState,

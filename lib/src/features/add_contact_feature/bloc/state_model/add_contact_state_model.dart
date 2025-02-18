@@ -73,6 +73,4 @@ final class AddContactStateModel {
   AddContactStateModel clearData() {
     return copyWith(users: [], page: 1, hasMore: false);
   }
-
-
 }

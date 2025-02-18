@@ -24,7 +24,6 @@ extension StringEx on String {
   String limit(int length) => length < this.length ? substring(0, length) : this;
 }
 
-
 extension NestedMapExt on Map<String, Object?> {
   T? getNested<T>(List<String> keys) {
     Object? current = this;

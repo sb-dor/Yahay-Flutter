@@ -49,3 +49,4 @@ firebase.json
 
 **/*.freezed.dart
 **/*.g.dart
+**/*.gr.dart

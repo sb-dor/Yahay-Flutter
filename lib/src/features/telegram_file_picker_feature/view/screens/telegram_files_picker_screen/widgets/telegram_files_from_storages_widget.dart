@@ -52,7 +52,7 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
               return IntrinsicHeight(
                 child: GestureDetector(
                   onTap: item.onTap,
-                  child: Container(
+                  child: ColoredBox(
                     color: Colors.transparent,
                     child: Row(
                       children: [

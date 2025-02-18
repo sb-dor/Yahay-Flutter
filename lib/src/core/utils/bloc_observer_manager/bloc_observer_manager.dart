@@ -56,7 +56,8 @@ class BlocObserverManager extends BlocObserver {
     );
 
     // Avoid calling super.onError to prevent propagation
-    super.onError(bloc, error, stackTrace);
+    // if you use Zones for catching errors it's good, because it will propagate error and zone will catch it
+    // super.onError(bloc, error, stackTrace);
   }
 
   @override

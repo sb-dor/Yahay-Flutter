@@ -102,7 +102,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                                     ? 1
                                     : 0,
                                 duration: const Duration(milliseconds: 150),
-                                child: Container(
+                                child: DecoratedBox(
                                   decoration: BoxDecoration(
                                     color: Colors.green,
                                     borderRadius: BorderRadius.circular(30),
@@ -183,7 +183,7 @@ class _VideoItem extends StatelessWidget {
             ),
           ),
           Positioned.fill(
-            child: Container(
+            child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Colors.black87.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(10),

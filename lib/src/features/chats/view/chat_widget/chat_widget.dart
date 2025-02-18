@@ -87,7 +87,7 @@ class _ChatMainImage extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
           child: CircleAvatar(
             radius: 30,
-            child: Container(
+            child: ColoredBox(
               color: Colors.green,
               child: Text(chat?.getWrappedName() ?? '-'),
             ),

@@ -122,9 +122,11 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                               telegramFilePickerBloc: telegramFilePickerBloc,
                             );
                           },
-                        ).whenComplete(
-                          telegramFilePickerBloc.close,
-                        ).ignore();
+                        )
+                            .whenComplete(
+                              telegramFilePickerBloc.close,
+                            )
+                            .ignore();
                       },
                       icon: const FaIcon(FontAwesomeIcons.paste),
                     ),

@@ -20,7 +20,7 @@ class AddContactUserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => [],
-      child: Container(
+      child: ColoredBox(
         color: Colors.transparent,
         child: IntrinsicHeight(
           child: Row(

@@ -9,7 +9,7 @@ part 'add_contact_bloc.freezed.dart';
 
 @immutable
 @freezed
-class AddContactsEvents with _$AddContactsEvents {
+sealed class AddContactsEvents with _$AddContactsEvents {
   const factory AddContactsEvents.searchContact(final String value) = _SearchContactEvent;
 
   const factory AddContactsEvents.addContactEvent(final UserModel? user) =
@@ -25,13 +25,16 @@ sealed class AddContactsStates with _$AddContactsStates {
       InitialAddConstactsState;
 
   const factory AddContactsStates.loadingAddContactsState(
-      final AddContactStateModel addContactStateModel,) = AddContacts$InProgressState;
+    final AddContactStateModel addContactStateModel,
+  ) = AddContacts$InProgressState;
 
   const factory AddContactsStates.errorAddContactsState(
-      final AddContactStateModel addContactStateModel,) = AddContacts$ErrorState;
+    final AddContactStateModel addContactStateModel,
+  ) = AddContacts$ErrorState;
 
   const factory AddContactsStates.loadedAddContactsState(
-      final AddContactStateModel addContactStateModel,) = AddContacts$SuccessfulState;
+    final AddContactStateModel addContactStateModel,
+  ) = AddContacts$SuccessfulState;
 }
 
 class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {

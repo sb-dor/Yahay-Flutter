@@ -26,7 +26,7 @@ class _TelegramBottomSenderButtonState extends State<TelegramBottomSenderButton>
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Container(
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor, //Theme.of(context).cardColor
                   ),

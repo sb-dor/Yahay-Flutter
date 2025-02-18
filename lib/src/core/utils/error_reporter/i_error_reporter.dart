@@ -8,5 +8,3 @@ final class NoOpErrorReporter implements IErrorReporter {
     // No implementation inside
   }
 }
-
-

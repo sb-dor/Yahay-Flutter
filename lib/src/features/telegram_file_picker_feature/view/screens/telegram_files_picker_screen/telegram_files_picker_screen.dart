@@ -145,8 +145,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           ? 1
                           : 0,
                       duration: const Duration(seconds: 1),
-                      child: const TelegramBrowseAppFolderScreen(
-                      ),
+                      child: const TelegramBrowseAppFolderScreen(),
                     ),
                   ),
                 ),
@@ -195,7 +194,8 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           );
                           Future.delayed(const Duration(milliseconds: 300), () {
                             _telegramFilePickerBloc.add(
-                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),);
+                              const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),
+                            );
                           });
                         },
                       ),
@@ -250,7 +250,8 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
 
                           Future.delayed(const Duration(milliseconds: 300), () {
                             _telegramFilePickerBloc.add(
-                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),);
+                              const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),
+                            );
                           });
                         },
                       ),
