@@ -18,9 +18,7 @@ class TelegramFilePickerBottomButton {
         children: [
           GestureDetector(
             onTap: () {
-              telegramBloc.add(
-                const TelegramFilePickerEvents.changeStateToAllPicturesEvent(),
-              );
+              telegramBloc.add(const TelegramFilePickerEvents.changeStateToAllPicturesEvent());
 
               // telegramBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
 
@@ -33,9 +31,7 @@ class TelegramFilePickerBottomButton {
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.blue,
               ),
-              child: const Center(
-                child: Icon(Icons.image, color: Colors.white),
-              ),
+              child: const Center(child: Icon(Icons.image, color: Colors.white)),
             ),
           ),
           const SizedBox(height: 10),
@@ -49,9 +45,7 @@ class TelegramFilePickerBottomButton {
         children: [
           GestureDetector(
             onTap: () {
-              telegramBloc.add(
-                const TelegramFilePickerEvents.changeStateToAllFilesState(),
-              );
+              telegramBloc.add(const TelegramFilePickerEvents.changeStateToAllFilesState());
               draggableSheetAnimate();
             },
             child: Container(
@@ -61,9 +55,7 @@ class TelegramFilePickerBottomButton {
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.blue,
               ),
-              child: const Center(
-                child: Icon(Icons.file_open_outlined, color: Colors.white),
-              ),
+              child: const Center(child: Icon(Icons.file_open_outlined, color: Colors.white)),
             ),
           ),
           const SizedBox(height: 10),
@@ -86,9 +78,7 @@ class TelegramFilePickerBottomButton {
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.blue,
               ),
-              child: const Center(
-                child: Icon(Icons.file_open_outlined, color: Colors.white),
-              ),
+              child: const Center(child: Icon(Icons.file_open_outlined, color: Colors.white)),
             ),
           ),
           const SizedBox(height: 10),

@@ -43,9 +43,7 @@ mixin class FolderCreator {
           : await getExternalStorageDirectory();
 
   Future<void> createFolders(SharedPreferHelper sharedPreferHelper) async {
-    final isFoldersAlreadyCreated = sharedPreferHelper.getBoolByKey(
-      key: "is_folders_created",
-    );
+    final isFoldersAlreadyCreated = sharedPreferHelper.getBoolByKey(key: "is_folders_created");
 
     final dir = await getApplicationDir();
 
@@ -56,9 +54,6 @@ mixin class FolderCreator {
       folderCreator(path: path);
     }
 
-    await sharedPreferHelper.setBoolByKey(
-      key: "is_folders_created",
-      value: true,
-    );
+    await sharedPreferHelper.setBoolByKey(key: "is_folders_created", value: true);
   }
 }

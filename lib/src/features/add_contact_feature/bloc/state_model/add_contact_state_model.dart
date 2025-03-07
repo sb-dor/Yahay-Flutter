@@ -25,11 +25,7 @@ final class AddContactStateModel {
           timerForSearch == other.timerForSearch);
 
   @override
-  int get hashCode =>
-      users.hashCode ^
-      page.hashCode ^
-      hasMore.hashCode ^
-      timerForSearch.hashCode;
+  int get hashCode => users.hashCode ^ page.hashCode ^ hasMore.hashCode ^ timerForSearch.hashCode;
 
   @override
   String toString() {

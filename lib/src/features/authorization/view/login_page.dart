@@ -26,11 +26,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _loginForm = GlobalKey<FormState>();
-  final TextEditingController _emailOrUserNameController =
-      TextEditingController(text: '');
-  final TextEditingController _passwordController = TextEditingController(
-    text: '',
-  );
+  final TextEditingController _emailOrUserNameController = TextEditingController(text: '');
+  final TextEditingController _passwordController = TextEditingController(text: '');
   late final AuthBloc _authBloc;
 
   // final AnimatedLoginCharacter _animatedLoginCharacter = AnimatedLoginCharacter();
@@ -96,10 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     //   ),
                     Text(
                       "Sign In",
-                      style: GoogleFonts.aBeeZee(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                      ),
+                      style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400, fontSize: 20),
                     ),
                     const SizedBox(height: 20),
                     AuthorizationInputWidget(
@@ -121,9 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                           top: 25,
                           child: IconButton(
                             onPressed:
-                                () => _authBloc.add(
-                                  const AuthEvents.changePasswordVisibility(),
-                                ),
+                                () => _authBloc.add(const AuthEvents.changePasswordVisibility()),
                             icon: Icon(
                               (authStateModel.showPassword)
                                   ? CupertinoIcons.eye
@@ -139,23 +131,17 @@ class _LoginPageState extends State<LoginPage> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           shape: WidgetStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                           ),
-                          backgroundColor: const WidgetStatePropertyAll(
-                            Colors.blueAccent,
-                          ),
+                          backgroundColor: const WidgetStatePropertyAll(Colors.blueAccent),
                         ),
                         onPressed:
                             () => _authBloc.add(
                               AuthEvents.loginEvent(
-                                emailOrUserName:
-                                    _emailOrUserNameController.text,
+                                emailOrUserName: _emailOrUserNameController.text,
                                 password: _passwordController.text,
                                 initDependenciesAfterAuthorization:
-                                    dependencies
-                                        .initDependenciesAfterAuthorization,
+                                    dependencies.initDependenciesAfterAuthorization,
                                 // initDioOptions: () async {
                                 // await dependencies.restClientBase.initOptions();
                                 // },
@@ -188,11 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Expanded(
-                          child: Divider(
-                            height: 0,
-                            thickness: 0.5,
-                            color: Colors.grey,
-                          ),
+                          child: Divider(height: 0, thickness: 0.5, color: Colors.grey),
                         ),
                         const SizedBox(width: 15),
                         Text(
@@ -205,11 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(width: 15),
                         const Expanded(
-                          child: Divider(
-                            height: 0,
-                            thickness: 0.5,
-                            color: Colors.grey,
-                          ),
+                          child: Divider(height: 0, thickness: 0.5, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -224,8 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                                 () => _authBloc.add(
                                   AuthEvents.googleAuth(
                                     initDependenciesAfterAuthorization:
-                                        dependencies
-                                            .initDependenciesAfterAuthorization,
+                                        dependencies.initDependenciesAfterAuthorization,
                                     // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                     // },
@@ -236,17 +213,13 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(width: 20),
                         Expanded(
                           child: OtherAuthorizationButtonWidget(
-                            icon: const FaIcon(
-                              FontAwesomeIcons.facebook,
-                              color: Colors.blue,
-                            ),
+                            icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
                             text: 'Facebook',
                             onTap:
                                 () => _authBloc.add(
                                   AuthEvents.facebookAuth(
                                     initDependenciesAfterAuthorization:
-                                        dependencies
-                                            .initDependenciesAfterAuthorization,
+                                        dependencies.initDependenciesAfterAuthorization,
                                     // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                     // },
@@ -271,9 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                             recognizer:
                                 TapGestureRecognizer()
                                   ..onTap =
-                                      () => AutoRouter.of(
-                                        context,
-                                      ).replace(const RegisterRoute()),
+                                      () => AutoRouter.of(context).replace(const RegisterRoute()),
                             text: Constants.signUp,
                             style: const TextStyle(color: Colors.blue),
                           ),

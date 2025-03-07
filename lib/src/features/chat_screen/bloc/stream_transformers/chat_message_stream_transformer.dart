@@ -12,21 +12,14 @@ typedef ChatMessageStreamTransformerRecord =
 // I know that I could create a class that holds chatModel and message
 // but in order to improve records i had to write
 final class ChatMessageStreamTransformer
-    extends
-        StreamTransformerBase<
-          ChannelReadEvent,
-          ChatMessageStreamTransformerRecord
-        > {
+    extends StreamTransformerBase<ChannelReadEvent, ChatMessageStreamTransformerRecord> {
   //
-  ChatMessageStreamTransformer({required final Logger logger})
-    : _logger = logger;
+  ChatMessageStreamTransformer({required final Logger logger}) : _logger = logger;
 
   final Logger _logger;
 
   @override
-  Stream<ChatMessageStreamTransformerRecord> bind(
-    Stream<ChannelReadEvent> stream,
-  ) {
+  Stream<ChatMessageStreamTransformerRecord> bind(Stream<ChannelReadEvent> stream) {
     StreamSubscription? subscription;
 
     final controller = StreamController<ChatMessageStreamTransformerRecord>(
@@ -42,11 +35,8 @@ final class ChatMessageStreamTransformer
         ChatMessageModel? message;
         ChatModel? chat;
 
-        if (messageJson.containsKey('message') &&
-            messageJson['message'] != null) {
-          message = ChatMessageModel.fromJson(
-            messageJson['message'],
-          ).copyWith(messageSent: true);
+        if (messageJson.containsKey('message') && messageJson['message'] != null) {
+          message = ChatMessageModel.fromJson(messageJson['message']).copyWith(messageSent: true);
         }
 
         // find problem here

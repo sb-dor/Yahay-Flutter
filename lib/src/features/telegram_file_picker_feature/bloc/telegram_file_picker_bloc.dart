@@ -29,9 +29,8 @@ sealed class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
     final TelegramFilePickerStateModel currentStateModel,
   ) = _JustEmitStateEvent;
 
-  const factory TelegramFilePickerEvents.initAllPicturesEvent(
-    final bool clearAll,
-  ) = _InitAllPicturesEvent;
+  const factory TelegramFilePickerEvents.initAllPicturesEvent(final bool clearAll) =
+      _InitAllPicturesEvent;
 
   const factory TelegramFilePickerEvents.changeStateToAllPicturesEvent() =
       _ChangeStateToAllPicturesEvent;
@@ -40,15 +39,12 @@ sealed class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
     required final bool initFilePickerState,
   }) = _InitAllFilesEvent;
 
-  const factory TelegramFilePickerEvents.changeStateToAllFilesState() =
-      _ChangeStateToAllFilesState;
+  const factory TelegramFilePickerEvents.changeStateToAllFilesState() = _ChangeStateToAllFilesState;
 
-  const factory TelegramFilePickerEvents.initAllAudioEvent() =
-      _InitAllAudioEvent;
+  const factory TelegramFilePickerEvents.initAllAudioEvent() = _InitAllAudioEvent;
 
-  const factory TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-    final bool value,
-  ) = _OpenHideBottomTelegramButtonEvent;
+  const factory TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(final bool value) =
+      _OpenHideBottomTelegramButtonEvent;
 
   const factory TelegramFilePickerEvents.closePopupEvent() = _ClosePopupEvent;
 
@@ -70,8 +66,7 @@ sealed class TelegramFilePickerEvents with _$TelegramFilePickerEvents {
   const factory TelegramFilePickerEvents.clearSelectedGalleryFileEvent() =
       _ClearSelectedGalleryFileEvent;
 
-  const factory TelegramFilePickerEvents.recentFilesPaginationEvent() =
-      _RecentFilesPaginationEvent;
+  const factory TelegramFilePickerEvents.recentFilesPaginationEvent() = _RecentFilesPaginationEvent;
 
   const factory TelegramFilePickerEvents.browseInternalStorageAndSelectFilesEvent() =
       _BrowseInternalStorageAndSelectFilesEvent;
@@ -117,8 +112,7 @@ sealed class TelegramFilePickerStates with _$TelegramFilePickerStates {
   ) = Picker$AudioFilesState;
 }
 
-class TelegramFilePickerBloc
-    extends Bloc<TelegramFilePickerEvents, TelegramFilePickerStates> {
+class TelegramFilePickerBloc extends Bloc<TelegramFilePickerEvents, TelegramFilePickerStates> {
   //
 
   StreamSubscription<TelegramPathFolderFile?>? _fileStreamData;
@@ -143,45 +137,31 @@ class TelegramFilePickerBloc
     on<TelegramFilePickerEvents>(
       (event, emit) => event.map(
         justEmitStateEvent:
-            (event) => _emitter(
-              currentStateModel: event.currentStateModel,
-              emit: emit,
-            ),
+            (event) => _emitter(currentStateModel: event.currentStateModel, emit: emit),
         initAllPicturesEvent: (event) => _initAllPictureEvents(event, emit),
-        changeStateToAllPicturesEvent:
-            (event) => _changeStateToAllPicturesEvent(event, emit),
+        changeStateToAllPicturesEvent: (event) => _changeStateToAllPicturesEvent(event, emit),
         initAllFilesEvent: (event) => _initAllFilesEvent(event, emit),
-        changeStateToAllFilesState:
-            (event) => _changeStateToAllFilesState(event, emit),
+        changeStateToAllFilesState: (event) => _changeStateToAllFilesState(event, emit),
         initAllAudioEvent: (event) => _initAllAudioEvent(event, emit),
         openHideBottomTelegramButtonEvent:
             (event) => _openHideBottomTelegramButtonEvent(event, emit),
         closePopupEvent: (event) => _closePopupEvent(event, emit),
         fileStreamHandlerEvent: (event) => _fileStreamHandlerEvent(event, emit),
-        recentFileStreamHandlerEvent:
-            (event) => _recentFileStreamHandlerEvent(event, emit),
-        imagesAndVideoPaginationEvent:
-            (event) => _imagesAndVideoPaginationEvent(event, emit),
+        recentFileStreamHandlerEvent: (event) => _recentFileStreamHandlerEvent(event, emit),
+        imagesAndVideoPaginationEvent: (event) => _imagesAndVideoPaginationEvent(event, emit),
         selectGalleryFileEvent: (event) => _selectGalleryFileEvent(event, emit),
-        clearSelectedGalleryFileEvent:
-            (event) => _clearSelectedGalleryFileEvent(event, emit),
-        recentFilesPaginationEvent:
-            (event) => _recentFilesPaginationEvent(event, emit),
+        clearSelectedGalleryFileEvent: (event) => _clearSelectedGalleryFileEvent(event, emit),
+        recentFilesPaginationEvent: (event) => _recentFilesPaginationEvent(event, emit),
         browseInternalStorageAndSelectFilesEvent:
             (event) => _browseInternalStorageAndSelectFilesEvent(event, emit),
         selectScreenForFilesPickerScreenEvent:
             (event) => _selectScreenForFilesPickerScreenEvent(event, emit),
         setSpecificFolderPathInOrderToGetDataFromThereEvent:
-            (event) => _setSpecificFolderPathInOrderToGetDataFromThereEvent(
-              event,
-              emit,
-            ),
-        getSpecificFolderDataEvent:
-            (event) => _getSpecificFolderDataEvent(event, emit),
+            (event) => _setSpecificFolderPathInOrderToGetDataFromThereEvent(event, emit),
+        getSpecificFolderDataEvent: (event) => _getSpecificFolderDataEvent(event, emit),
         specificFolderDataStreamHandlerEvent:
             (event) => _specificFolderDataStreamHandlerEvent(event, emit),
-        paginateSpecificFolderDataEvent:
-            (event) => _paginateSpecificFolderDataEvent(event, emit),
+        paginateSpecificFolderDataEvent: (event) => _paginateSpecificFolderDataEvent(event, emit),
       ),
     );
   }
@@ -215,21 +195,15 @@ class TelegramFilePickerBloc
         );
       }
 
-      _fileStreamData = _telegramFilePickerRepo
-        .getRecentImagesAndVideos()
-        .listen((value) {
-          debugPrint("any other image coming here brother: $value");
-          add(TelegramFilePickerEvents.fileStreamHandlerEvent(value));
-        })..onDone(() {
+      _fileStreamData = _telegramFilePickerRepo.getRecentImagesAndVideos().listen((value) {
+        debugPrint("any other image coming here brother: $value");
+        add(TelegramFilePickerEvents.fileStreamHandlerEvent(value));
+      })..onDone(() {
         //
         debugPrint("im done!");
       });
 
-      add(
-        const TelegramFilePickerEvents.initAllFilesEvent(
-          initFilePickerState: false,
-        ),
-      );
+      add(const TelegramFilePickerEvents.initAllFilesEvent(initFilePickerState: false));
 
       emit(TelegramFilePickerStates.galleryFilePickerState(currentStateModel));
     } catch (error, stackTrace) {
@@ -242,17 +216,10 @@ class TelegramFilePickerBloc
     _ChangeStateToAllPicturesEvent event,
     Emitter<TelegramFilePickerStates> emit,
   ) async {
-    emit(
-      TelegramFilePickerStates.galleryFilePickerState(
-        state.telegramFilePickerStateModel,
-      ),
-    );
+    emit(TelegramFilePickerStates.galleryFilePickerState(state.telegramFilePickerStateModel));
   }
 
-  void _initAllFilesEvent(
-    _InitAllFilesEvent event,
-    Emitter<TelegramFilePickerStates> emit,
-  ) async {
+  void _initAllFilesEvent(_InitAllFilesEvent event, Emitter<TelegramFilePickerStates> emit) async {
     final currentStateModel = state.telegramFilePickerStateModel.copyWith(
       recentFiles: <TelegramFileImageEntity>[],
       recentFilesPagination: <TelegramFileImageEntity>[],
@@ -275,17 +242,10 @@ class TelegramFilePickerBloc
     _ChangeStateToAllFilesState event,
     Emitter<TelegramFilePickerStates> emit,
   ) async {
-    emit(
-      TelegramFilePickerStates.filesPickerState(
-        state.telegramFilePickerStateModel,
-      ),
-    );
+    emit(TelegramFilePickerStates.filesPickerState(state.telegramFilePickerStateModel));
   }
 
-  void _initAllAudioEvent(
-    _InitAllAudioEvent event,
-    Emitter<TelegramFilePickerStates> emit,
-  ) async {}
+  void _initAllAudioEvent(_InitAllAudioEvent event, Emitter<TelegramFilePickerStates> emit) async {}
 
   void _openHideBottomTelegramButtonEvent(
     _OpenHideBottomTelegramButtonEvent event,
@@ -302,42 +262,20 @@ class TelegramFilePickerBloc
     });
   }
 
-  void _closePopupEvent(
-    _ClosePopupEvent event,
-    Emitter<TelegramFilePickerStates> emit,
-  ) async {
+  void _closePopupEvent(_ClosePopupEvent event, Emitter<TelegramFilePickerStates> emit) async {
     // await DefaultCacheManager().emptyCache();
-    if (state
-            .telegramFilePickerStateModel
-            .galleryPathFiles
-            .firstOrNull
-            ?.cameraController !=
-        null) {
-      state
-          .telegramFilePickerStateModel
-          .galleryPathFiles
-          .firstOrNull
-          ?.cameraController
-          ?.dispose();
+    if (state.telegramFilePickerStateModel.galleryPathFiles.firstOrNull?.cameraController != null) {
+      state.telegramFilePickerStateModel.galleryPathFiles.firstOrNull?.cameraController?.dispose();
     }
     for (final each in state.telegramFilePickerStateModel.galleryPathFiles) {
       each.videoPlayerController?.dispose();
     }
-    if (state
-            .telegramFilePickerStateModel
-            .galleryPathPagination
-            .firstOrNull
-            ?.cameraController !=
+    if (state.telegramFilePickerStateModel.galleryPathPagination.firstOrNull?.cameraController !=
         null) {
-      state
-          .telegramFilePickerStateModel
-          .galleryPathPagination
-          .firstOrNull
-          ?.cameraController
+      state.telegramFilePickerStateModel.galleryPathPagination.firstOrNull?.cameraController
           ?.dispose();
     }
-    for (final each
-        in state.telegramFilePickerStateModel.galleryPathPagination) {
+    for (final each in state.telegramFilePickerStateModel.galleryPathPagination) {
       each.videoPlayerController?.dispose();
     }
     // state.telegramFilePickerStateModel.clearAllGalleryPath();
@@ -365,9 +303,7 @@ class TelegramFilePickerBloc
                 : null,
         videoPreview:
             ReusableGlobalFunctions.instance.isVideoFile(event.file!.file.path)
-                ? await VideoThumbnail.thumbnailData(
-                  video: event.file!.file.path,
-                )
+                ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
                 : null,
       );
 
@@ -382,9 +318,7 @@ class TelegramFilePickerBloc
       //   }
       // }
 
-      final galleryPathFiles = List.of(
-        state.telegramFilePickerStateModel.galleryPathFiles,
-      );
+      final galleryPathFiles = List.of(state.telegramFilePickerStateModel.galleryPathFiles);
 
       galleryPathFiles.add(model);
 
@@ -418,9 +352,7 @@ class TelegramFilePickerBloc
         fileName: basename(event.file!.file.path),
         videoPreview:
             ReusableGlobalFunctions.instance.isVideoFile(event.file!.file.path)
-                ? await VideoThumbnail.thumbnailData(
-                  video: event.file!.file.path,
-                )
+                ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
                 : null,
       );
 
@@ -516,13 +448,9 @@ class TelegramFilePickerBloc
     if (files.isEmpty) return;
     var currentStateModel = state.telegramFilePickerStateModel;
     // convert this files into
-    final convertedData =
-        files.map((e) => TelegramFileImageModel(file: File(e.path))).toList();
+    final convertedData = files.map((e) => TelegramFileImageModel(file: File(e.path))).toList();
     for (final each in convertedData) {
-      currentStateModel = _removeOrAddEntity(
-        currentStateModel: currentStateModel,
-        value: each,
-      );
+      currentStateModel = _removeOrAddEntity(currentStateModel: currentStateModel, value: each);
     }
 
     _emitter(currentStateModel: currentStateModel, emit: emit);
@@ -548,11 +476,7 @@ class TelegramFilePickerBloc
       getPathForGettingImagesFrom: event.path,
     );
 
-    add(
-      const TelegramFilePickerEvents.getSpecificFolderDataEvent(
-        getGalleryData: false,
-      ),
-    );
+    add(const TelegramFilePickerEvents.getSpecificFolderDataEvent(getGalleryData: false));
 
     _emitter(currentStateModel: currentStateModel, emit: emit);
   }
@@ -561,8 +485,7 @@ class TelegramFilePickerBloc
     _GetSpecificFolderDataEvent event,
     Emitter<TelegramFilePickerStates> emit,
   ) async {
-    if (state.telegramFilePickerStateModel.getPathForGettingImagesFrom ==
-            null &&
+    if (state.telegramFilePickerStateModel.getPathForGettingImagesFrom == null &&
         !event.getGalleryData) {
       return;
     }
@@ -574,25 +497,15 @@ class TelegramFilePickerBloc
     _emitter(currentStateModel: currentStateModel, emit: emit);
 
     if (event.getGalleryData) {
-      _specificFolderData = _telegramFilePickerRepo
-          .getRecentImagesAndVideos()
-          .listen((data) {
-            debugPrint("path of data: ${data?.file.path}");
-            add(
-              TelegramFilePickerEvents.specificFolderDataStreamHandlerEvent(
-                data,
-              ),
-            );
-          });
+      _specificFolderData = _telegramFilePickerRepo.getRecentImagesAndVideos().listen((data) {
+        debugPrint("path of data: ${data?.file.path}");
+        add(TelegramFilePickerEvents.specificFolderDataStreamHandlerEvent(data));
+      });
     } else {
       _specificFolderData = _telegramFilePickerRepo
           .getSpecificFolderData(currentStateModel.getPathForGettingImagesFrom!)
           .listen((data) {
-            add(
-              TelegramFilePickerEvents.specificFolderDataStreamHandlerEvent(
-                data,
-              ),
-            );
+            add(TelegramFilePickerEvents.specificFolderDataStreamHandlerEvent(data));
           });
     }
   }
@@ -609,9 +522,7 @@ class TelegramFilePickerBloc
     final value = TelegramFileImageEntity(
       file: event.file!.file,
       videoPlayerController:
-          event.file!.isVideo
-              ? VideoPlayerController.file(event.file!.file)
-              : null,
+          event.file!.isVideo ? VideoPlayerController.file(event.file!.file) : null,
       videoPreview:
           event.file!.isVideo
               ? await VideoThumbnail.thumbnailData(video: event.file!.file.path)
@@ -619,13 +530,9 @@ class TelegramFilePickerBloc
       fileName: event.file!.fileName,
     );
 
-    if (currentStateModel.specificFolderFilesPagination.length <
-        Constants.perPage) {
+    if (currentStateModel.specificFolderFilesPagination.length < Constants.perPage) {
       currentStateModel = currentStateModel.copyWith(
-        specificFolderFilesPagination: [
-          ...currentStateModel.specificFolderFilesPagination,
-          value,
-        ],
+        specificFolderFilesPagination: [...currentStateModel.specificFolderFilesPagination, value],
       );
     }
 
@@ -638,8 +545,7 @@ class TelegramFilePickerBloc
   ) async {
     final data = ListPaginationChecker.instance.paginateList(
       wholeList: state.telegramFilePickerStateModel.specificFolderFilesAll,
-      currentList:
-          state.telegramFilePickerStateModel.specificFolderFilesPagination,
+      currentList: state.telegramFilePickerStateModel.specificFolderFilesPagination,
     );
 
     final currentStateModel = state.telegramFilePickerStateModel.copyWith(
@@ -661,9 +567,7 @@ class TelegramFilePickerBloc
         emit(TelegramFilePickerStates.initial(currentStateModel));
         break;
       case Picker$GalleryFileState():
-        emit(
-          TelegramFilePickerStates.galleryFilePickerState(currentStateModel),
-        );
+        emit(TelegramFilePickerStates.galleryFilePickerState(currentStateModel));
         break;
       case Picker$FilesState():
         emit(TelegramFilePickerStates.filesPickerState(currentStateModel));
@@ -674,16 +578,11 @@ class TelegramFilePickerBloc
     }
   }
 
-  TelegramFilePickerStateModel addOnStreamOfValuesInPaginationList(
-    TelegramFileImageEntity value,
-  ) {
-    if (state.telegramFilePickerStateModel.galleryPathPagination.length >=
-        Constants.perPage) {
+  TelegramFilePickerStateModel addOnStreamOfValuesInPaginationList(TelegramFileImageEntity value) {
+    if (state.telegramFilePickerStateModel.galleryPathPagination.length >= Constants.perPage) {
       return state.telegramFilePickerStateModel;
     }
-    final currentGalleryPath = List.of(
-      state.telegramFilePickerStateModel.galleryPathPagination,
-    );
+    final currentGalleryPath = List.of(state.telegramFilePickerStateModel.galleryPathPagination);
     currentGalleryPath.add(value);
     final currentStateModel = state.telegramFilePickerStateModel.copyWith(
       galleryPathPagination: currentGalleryPath,
@@ -700,10 +599,7 @@ class TelegramFilePickerBloc
     );
     if (currentStateModel.recentFilesPagination.length < Constants.perPage) {
       currentStateModel = currentStateModel.copyWith(
-        recentFilesPagination: [
-          ...currentStateModel.recentFilesPagination,
-          value,
-        ],
+        recentFilesPagination: [...currentStateModel.recentFilesPagination, value],
       );
     }
     return currentStateModel;
@@ -715,9 +611,7 @@ class TelegramFilePickerBloc
   }) {
     if (value == null) return currentStateModel;
     final pickedFiles = List.of(currentStateModel.pickedFiles);
-    final findEntity = pickedFiles.firstWhereOrNull(
-      (el) => el.uuid == value.uuid,
-    );
+    final findEntity = pickedFiles.firstWhereOrNull((el) => el.uuid == value.uuid);
     if (findEntity != null) {
       pickedFiles.removeWhere((el) => el.uuid == value.uuid);
     } else {

@@ -13,8 +13,7 @@ class TelegramStorageFileWidget extends StatefulWidget {
   const TelegramStorageFileWidget({super.key, required this.list});
 
   @override
-  State<TelegramStorageFileWidget> createState() =>
-      _TelegramStorageFileWidgetState();
+  State<TelegramStorageFileWidget> createState() => _TelegramStorageFileWidgetState();
 }
 
 class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
@@ -46,22 +45,15 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                   Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      if (item.videoPlayerController != null &&
-                          item.videoPreview != null)
+                      if (item.videoPlayerController != null && item.videoPreview != null)
                         _VideoItem(item: item)
-                      else if (ReusableGlobalFunctions.instance.isImageFile(
-                        item.file?.path ?? '',
-                      ))
+                      else if (ReusableGlobalFunctions.instance.isImageFile(item.file?.path ?? ''))
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: SizedBox(
                             width: 50,
                             height: 50,
-                            child: Image.file(
-                              item.file!,
-                              fit: BoxFit.cover,
-                              gaplessPlayback: true,
-                            ),
+                            child: Image.file(item.file!, fit: BoxFit.cover, gaplessPlayback: true),
                           ),
                         )
                       else if (item.file != null)
@@ -72,9 +64,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                             color: Colors.amber,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Center(
-                            child: Text(path.extension(item.file?.path ?? '')),
-                          ),
+                          child: Center(child: Text(path.extension(item.file?.path ?? ''))),
                         )
                       else
                         Container(
@@ -85,27 +75,21 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                      BlocBuilder<
-                        TelegramFilePickerBloc,
-                        TelegramFilePickerStates
-                      >(
+                      BlocBuilder<TelegramFilePickerBloc, TelegramFilePickerStates>(
                         builder: (context, state) {
-                          final telegramFilePickerStateModel =
-                              state.telegramFilePickerStateModel;
+                          final telegramFilePickerStateModel = state.telegramFilePickerStateModel;
                           return Positioned(
                             bottom: -10,
                             right: 0,
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 150),
                               opacity:
-                                  telegramFilePickerStateModel
-                                          .isFileInsidePickedFiles(item)
+                                  telegramFilePickerStateModel.isFileInsidePickedFiles(item)
                                       ? 1
                                       : 0,
                               child: AnimatedScale(
                                 scale:
-                                    telegramFilePickerStateModel
-                                            .isFileInsidePickedFiles(item)
+                                    telegramFilePickerStateModel.isFileInsidePickedFiles(item)
                                         ? 1
                                         : 0,
                                 duration: const Duration(milliseconds: 150),
@@ -115,11 +99,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: const Center(
-                                    child: Icon(
-                                      Icons.check,
-                                      size: 18,
-                                      color: Colors.white,
-                                    ),
+                                    child: Icon(Icons.check, size: 18, color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -142,14 +122,10 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                       children: [
                         Text(
                           item.fileName ?? '-',
-                          style: GoogleFonts.aBeeZee(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: GoogleFonts.aBeeZee(fontSize: 14, fontWeight: FontWeight.w400),
                         ),
                         Text(
-                          TelegramFileImageModel.fromEntity(item)?.fileSize() ??
-                              '',
+                          TelegramFileImageModel.fromEntity(item)?.fileSize() ?? '',
                           style: GoogleFonts.aBeeZee(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
@@ -182,9 +158,7 @@ class _VideoItem extends StatelessWidget {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       child: Stack(
         children: [
-          Positioned.fill(
-            child: Image.memory(fit: BoxFit.cover, item.videoPreview!),
-          ),
+          Positioned.fill(child: Image.memory(fit: BoxFit.cover, item.videoPreview!)),
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(

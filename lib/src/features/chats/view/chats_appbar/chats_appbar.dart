@@ -14,16 +14,12 @@ class ChatsAppbar extends StatelessWidget {
       centerTitle: true,
       scrolledUnderElevation: 0.0,
       leading: IconButton(
-        onPressed:
-            () => OpenSearchContactsPopup.openSearchContactsPopup(context),
+        onPressed: () => OpenSearchContactsPopup.openSearchContactsPopup(context),
         icon: const Icon(Icons.person_add_alt),
       ),
       actions: [
         IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.search)),
-        IconButton(
-          onPressed: () {},
-          icon: const FaIcon(FontAwesomeIcons.gear, size: 20),
-        ),
+        IconButton(onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.gear, size: 20)),
       ],
     );
   }

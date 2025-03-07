@@ -24,11 +24,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
             const SizedBox(width: 10),
             const Expanded(
               child: Column(
-                children: [
-                  Text("NAME"),
-                  Text("PHONE NUMBER"),
-                  Text("USERNAME OR EMAIL"),
-                ],
+                children: [Text("NAME"), Text("PHONE NUMBER"), Text("USERNAME OR EMAIL")],
               ),
             ),
           ],

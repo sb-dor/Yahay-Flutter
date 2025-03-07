@@ -20,10 +20,8 @@ class AppThemeBloc {
 
   BehaviorSubject<ThemeData> get theme => _theme;
 
-  const AppThemeBloc._({
-    required this.events,
-    required BehaviorSubject<ThemeData> theme,
-  }) : _theme = theme;
+  const AppThemeBloc._({required this.events, required BehaviorSubject<ThemeData> theme})
+    : _theme = theme;
 
   factory AppThemeBloc() {
     final eventBehavior = BehaviorSubject<AppThemeEvents>();
@@ -32,9 +30,7 @@ class AppThemeBloc {
 
     final themeData = eventBehavior
         .map<ThemeData>((appThemeDataEvent) {
-          final ThemeData theme = _appThemeChangerEvent(
-            appThemeDataEvent as AppThemeChangerEvent,
-          );
+          final ThemeData theme = _appThemeChangerEvent(appThemeDataEvent as AppThemeChangerEvent);
           return theme;
         })
         .startWith(_currentState);

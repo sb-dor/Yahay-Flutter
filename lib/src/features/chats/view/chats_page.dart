@@ -34,10 +34,7 @@ class _ChatsPageState extends State<ChatsPage> {
         child: const ChatsAppbar(),
       ),
       body: RefreshIndicator(
-        onRefresh:
-            () async => _chatsBloc?.add(
-              const ChatsEvents.getUserChatsEvent(refresh: true),
-            ),
+        onRefresh: () async => _chatsBloc?.add(const ChatsEvents.getUserChatsEvent(refresh: true)),
         child: ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(8),
@@ -56,8 +53,7 @@ class _ChatsPageState extends State<ChatsPage> {
                   case Chats$SuccessfulState():
                     final currentStateModel = state.chatsStateModel;
                     return ListView.separated(
-                      separatorBuilder:
-                          (context, index) => const SizedBox(height: 15),
+                      separatorBuilder: (context, index) => const SizedBox(height: 15),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: currentStateModel.chats.length,

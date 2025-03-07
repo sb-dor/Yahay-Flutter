@@ -21,8 +21,7 @@ extension ListExtensions<T> on List<T> {
 }
 
 extension StringEx on String {
-  String limit(int length) =>
-      length < this.length ? substring(0, length) : this;
+  String limit(int length) => length < this.length ? substring(0, length) : this;
 }
 
 extension NestedMapExt on Map<String, Object?> {

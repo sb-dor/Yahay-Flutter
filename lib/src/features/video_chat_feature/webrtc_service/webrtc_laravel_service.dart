@@ -45,10 +45,7 @@ class WebrtcLaravelService {
   Map<String, dynamic> configuration = {
     'iceServers': [
       {
-        'urls': [
-          'stun:stun1.l.google.com:19302',
-          'stun:stun2.l.google.com:19302',
-        ],
+        'urls': ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
       },
     ],
   };
@@ -70,11 +67,9 @@ class WebrtcLaravelService {
 
   SetStateCallbackSignal? setSetStateCallback;
 
-  StreamSubscription<void>?
-  calleeStreamSubs; // same channel stream but accepts different data
+  StreamSubscription<void>? calleeStreamSubs; // same channel stream but accepts different data
 
-  StreamSubscription<void>?
-  callerStreamSubs; // same channel stream but accepts different data
+  StreamSubscription<void>? callerStreamSubs; // same channel stream but accepts different data
 
   Future<String> createRoom(ChatModel? chat) async {
     try {
@@ -122,9 +117,7 @@ class WebrtcLaravelService {
       try {
         final pusherService = await _pusherClientService.subscriptionCreator();
 
-        final channel = pusherService.publicChannel(
-          Constants.webRtcChannelName,
-        );
+        final channel = pusherService.publicChannel(Constants.webRtcChannelName);
 
         calleeStreamSubs = pusherService.onConnectionEstablished.listen((e) {
           channel.subscribeIfNotUnsubscribed();
@@ -152,13 +145,10 @@ class WebrtcLaravelService {
 
               if (responseCandidates == null) return;
               //
-              final List<dynamic> listOfCandidates = responseCandidates
-                  .getNested(['candidates']);
+              final List<dynamic> listOfCandidates = responseCandidates.getNested(['candidates']);
 
               final List<CandidateModel> candidates =
-                  listOfCandidates
-                      .map((e) => CandidateModel.fromJson(e))
-                      .toList();
+                  listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
 
               for (final each in candidates) {
                 await peerConnection?.addCandidate(
@@ -248,10 +238,7 @@ class WebrtcLaravelService {
 
       // sdp = sdp.replaceAll("\r\na=extmap-allow-mixed", "");
 
-      final RTCSessionDescription remoteDescription = RTCSessionDescription(
-        sdp,
-        type,
-      );
+      final RTCSessionDescription remoteDescription = RTCSessionDescription(sdp, type);
 
       try {
         await peerConnection?.setRemoteDescription(remoteDescription);
@@ -282,14 +269,10 @@ class WebrtcLaravelService {
       ///
 
       // get candidates data before listening them
-      final responseCandidates = await _restClientBase.get(
-        "/get-ice-candidates/$roomId/caller",
-      );
+      final responseCandidates = await _restClientBase.get("/get-ice-candidates/$roomId/caller");
 
       //
-      final List<dynamic> listOfCandidates = responseCandidates?.getNested([
-        'candidates',
-      ]);
+      final List<dynamic> listOfCandidates = responseCandidates?.getNested(['candidates']);
 
       final List<CandidateModel> candidates =
           listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
@@ -315,12 +298,9 @@ class WebrtcLaravelService {
 
       channel.bind(Constants.webRtcChannelEventName).listen((e) async {
         // code here tomorrow
-        final Map<String, dynamic> data =
-            e.data is String ? jsonDecode(e.toString()) : e.data;
+        final Map<String, dynamic> data = e.data is String ? jsonDecode(e.toString()) : e.data;
 
-        if (data.containsKey("candidate") &&
-            data.containsKey("role") &&
-            data['role'] == 'caller') {
+        if (data.containsKey("candidate") && data.containsKey("role") && data['role'] == 'caller') {
           peerConnection?.addCandidate(
             RTCIceCandidate(
               data['candidate']['candidate'],
@@ -359,9 +339,7 @@ class WebrtcLaravelService {
 
   // close all
   Future<void> hangUp(RTCVideoRenderer? localVideo) async {
-    localVideo?.srcObject?.getTracks().forEach(
-      ((track) async => await track.stop()),
-    );
+    localVideo?.srcObject?.getTracks().forEach(((track) async => await track.stop()));
 
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) async => await track.stop());
@@ -398,11 +376,7 @@ class WebrtcLaravelService {
     localVideo = null;
   }
 
-  void addIceCandidate(
-    RTCIceCandidate candidate,
-    String roomId,
-    String role,
-  ) async {
+  void addIceCandidate(RTCIceCandidate candidate, String roomId, String role) async {
     final response = await _restClientBase.post(
       _addIceCandidates,
       data: {'roomId': roomId, 'candidate': candidate.toMap(), 'role': role},
@@ -410,9 +384,7 @@ class WebrtcLaravelService {
   }
 
   Future<void> getIceCandidates(String roomId, String role) async {
-    final response = await _restClientBase.get(
-      '$_apiGetIceCandidates$roomId/$role',
-    );
+    final response = await _restClientBase.get('$_apiGetIceCandidates$roomId/$role');
 
     final candidates = response?.getNested(['candidates']) as List;
 

@@ -9,10 +9,7 @@ import 'screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker
 class TelegramDraggableScrollableBottomSheet extends StatelessWidget {
   final TelegramFilePickerBloc telegramFilePickerBloc;
 
-  const TelegramDraggableScrollableBottomSheet({
-    super.key,
-    required this.telegramFilePickerBloc,
-  });
+  const TelegramDraggableScrollableBottomSheet({super.key, required this.telegramFilePickerBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +37,7 @@ class _TelegramDraggableScrollableBottomSheetUIState
   void initState() {
     super.initState();
     final telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
-    telegramFilePickerBloc.add(
-      const TelegramFilePickerEvents.initAllPicturesEvent(true),
-    );
+    telegramFilePickerBloc.add(const TelegramFilePickerEvents.initAllPicturesEvent(true));
     Future.delayed(const Duration(milliseconds: 350), () {
       telegramFilePickerBloc.add(
         const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(true),
@@ -74,10 +69,9 @@ class _TelegramDraggableScrollableBottomSheetUIState
                 children: [
                   switch (state) {
                     Picker$InitialState() => const SizedBox(),
-                    Picker$GalleryFileState() =>
-                      TelegramGalleryFilePickerScreen(
-                        parentScrollController: scrollController,
-                      ),
+                    Picker$GalleryFileState() => TelegramGalleryFilePickerScreen(
+                      parentScrollController: scrollController,
+                    ),
                     Picker$FilesState() => TelegramFilesPickerScreen(
                       parentScrollController: scrollController,
                     ),
@@ -102,8 +96,7 @@ class _TelegramDraggableScrollableBottomSheetUIState
                     right: 0,
                     left: 0,
                     child: TelegramBottomPickerButton(
-                      draggableScrollableController:
-                          _draggableScrollableController,
+                      draggableScrollableController: _draggableScrollableController,
                     ),
                   ),
                 ],

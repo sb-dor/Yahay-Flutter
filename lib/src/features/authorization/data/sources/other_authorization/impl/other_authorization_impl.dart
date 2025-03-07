@@ -33,8 +33,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
   Future<UserModel?> faceBookAuth() async {
     final LoginResult loginResult = await _facebookAuth.login();
 
-    if (loginResult.status == LoginStatus.failed ||
-        loginResult.status == LoginStatus.cancelled) {
+    if (loginResult.status == LoginStatus.failed || loginResult.status == LoginStatus.cancelled) {
       return null;
     }
 
@@ -55,10 +54,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
       return null;
     }
 
-    await _sharedPreferHelper.setStringByKey(
-      key: "token",
-      value: response.getNested(['token']),
-    );
+    await _sharedPreferHelper.setStringByKey(key: "token", value: response.getNested(['token']));
 
     return UserModel.fromJson(response.getNested(['user']));
   }
@@ -86,10 +82,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
       return null;
     }
 
-    await _sharedPreferHelper.setStringByKey(
-      key: "token",
-      value: response.getNested(['token']),
-    );
+    await _sharedPreferHelper.setStringByKey(key: "token", value: response.getNested(['token']));
 
     return UserModel.fromJson(response.getNested(['user']));
   }

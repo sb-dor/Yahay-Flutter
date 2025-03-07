@@ -54,9 +54,7 @@ class _TelegramGalleryFilePickerImageWidgetState
               child: IconButton(
                 onPressed:
                     () => widget.telegramFilePickerBloc.add(
-                      TelegramFilePickerEvents.selectGalleryFileEvent(
-                        widget.item,
-                      ),
+                      TelegramFilePickerEvents.selectGalleryFileEvent(widget.item),
                     ),
                 icon:
                     currentStateModel.isFileInsidePickedFiles(widget.item)

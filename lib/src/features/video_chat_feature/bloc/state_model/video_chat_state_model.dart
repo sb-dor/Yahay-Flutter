@@ -96,8 +96,7 @@ class VideoChatStateModel {
       cameraSwitched: cameraSwitched ?? this.cameraSwitched,
       chat: (chat ?? this.chat)?.copyWith(),
       currentUser: (currentUser ?? this.currentUser)?.copyWith(),
-      currentVideoChatEntity:
-          currentVideoChatEntity ?? this.currentVideoChatEntity,
+      currentVideoChatEntity: currentVideoChatEntity ?? this.currentVideoChatEntity,
       videoChatEntities: videoChatEntities ?? this.videoChatEntities,
     );
   }

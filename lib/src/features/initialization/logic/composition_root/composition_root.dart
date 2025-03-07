@@ -56,8 +56,7 @@ class CompositionResult {
   CompositionResult(this.dependencies);
 }
 
-final class DependencyContainerFactory
-    extends AsyncFactory<DependencyContainer> {
+final class DependencyContainerFactory extends AsyncFactory<DependencyContainer> {
   DependencyContainerFactory({
     required Logger logger,
     required SharedPreferHelper sharedPreferHelper,
@@ -85,10 +84,7 @@ final class DependencyContainerFactory
     await cameraHelperService.initCameras();
 
     final addContactBloc =
-        AddContactBlocFactory(
-          logger: _logger,
-          restClientBase: _restClientBase,
-        ).create();
+        AddContactBlocFactory(logger: _logger, restClientBase: _restClientBase).create();
 
     final pusherClientService = PusherClientService();
 

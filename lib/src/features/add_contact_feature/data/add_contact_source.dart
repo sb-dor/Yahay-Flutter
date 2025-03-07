@@ -12,11 +12,9 @@ abstract class AddContactSource {
 
 class AddContactSourceImpl implements AddContactSource {
   //
-  AddContactSourceImpl({
-    required final Logger logger,
-    required final RestClientBase restClientBase,
-  }) : _logger = logger,
-       _restClientBase = restClientBase;
+  AddContactSourceImpl({required final Logger logger, required final RestClientBase restClientBase})
+    : _logger = logger,
+      _restClientBase = restClientBase;
 
   final Logger _logger;
 

@@ -37,11 +37,7 @@ mixin class DownloadsPathFiles {
 
       final rootIsolateToken = RootIsolateToken.instance!;
 
-      final sendingList = [
-        sendingPort.sendPort,
-        downloadsDirectory.path,
-        rootIsolateToken,
-      ];
+      final sendingList = [sendingPort.sendPort, downloadsDirectory.path, rootIsolateToken];
 
       debugPrint("sending list length is: $sendingList");
 
@@ -74,10 +70,7 @@ mixin class DownloadsPathFiles {
     final reusables = ReusableGlobalFunctions.instance;
 
     final directoryPath = await getTemporaryDirectory();
-    await for (final entity in directory.list(
-      recursive: false,
-      followLinks: false,
-    )) {
+    await for (final entity in directory.list(recursive: false, followLinks: false)) {
       if (FileSystemEntity.isDirectorySync(entity.path)) {
         await _fileFinder([receivingPort, entity.path, rootIsolateToken]);
       }

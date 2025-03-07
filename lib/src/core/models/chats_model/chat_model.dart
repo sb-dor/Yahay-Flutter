@@ -45,8 +45,7 @@ class ChatModel with _$ChatModel {
     bool? videoChatStreaming,
   }) = _ChatModel;
 
-  factory ChatModel.fromJson(Map<String, Object?> json) =>
-      _$ChatModelFromJson(json);
+  factory ChatModel.fromJson(Map<String, Object?> json) => _$ChatModelFromJson(json);
 
   String getWrappedName() {
     if (name == null) return '';

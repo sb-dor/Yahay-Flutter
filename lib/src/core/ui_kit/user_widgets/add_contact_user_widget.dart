@@ -10,11 +10,7 @@ class AddContactUserWidget extends StatelessWidget {
   final UserModel user;
   final VoidCallback addUser;
 
-  const AddContactUserWidget({
-    super.key,
-    required this.user,
-    required this.addUser,
-  });
+  const AddContactUserWidget({super.key, required this.user, required this.addUser});
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +43,10 @@ class AddContactUserWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      user.name ?? user.email ?? '-',
-                      style: GoogleFonts.aBeeZee(fontSize: 15),
-                    ),
+                    Text(user.name ?? user.email ?? '-', style: GoogleFonts.aBeeZee(fontSize: 15)),
                     Text(
                       "Last seen 3000 y.a",
-                      style: GoogleFonts.aBeeZee(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: GoogleFonts.aBeeZee(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -65,9 +55,7 @@ class AddContactUserWidget extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    AutoRouter.of(
-                      context,
-                    ).push(ChatRoute(chat: null, user: user));
+                    AutoRouter.of(context).push(ChatRoute(chat: null, user: user));
                   },
                   icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
                 )
@@ -79,10 +67,7 @@ class AddContactUserWidget extends StatelessWidget {
                   child: const CircularProgressIndicator(strokeWidth: 2),
                 )
               else
-                IconButton(
-                  onPressed: addUser,
-                  icon: const Icon(Icons.person_add_alt),
-                ),
+                IconButton(onPressed: addUser, icon: const Icon(Icons.person_add_alt)),
             ],
           ),
         ),

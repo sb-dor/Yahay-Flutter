@@ -43,30 +43,17 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                     child: Container(
                       constraints: const BoxConstraints(maxHeight: 100),
                       color: Theme.of(context).inputDecorationTheme.fillColor,
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        bottom: 10,
-                        left: 10,
-                        right: 35,
-                      ),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 35),
                       width: MediaQuery.of(context).size.width,
                       child: TextField(
                         controller: widget.messageController,
                         textInputAction: TextInputAction.newline,
                         onTap: () {
-                          _chatsBloc.add(
-                            const ChatScreenEvents.changeEmojiPicker(
-                              value: false,
-                            ),
-                          );
+                          _chatsBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
                         },
                         focusNode: _focusNode,
                         onTapOutside: (v) {
-                          _chatsBloc.add(
-                            const ChatScreenEvents.changeEmojiPicker(
-                              value: false,
-                            ),
-                          );
+                          _chatsBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
                           FocusManager.instance.primaryFocus?.unfocus();
                         },
                         onChanged: (v) {
@@ -98,9 +85,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                   child: IconButton(
                     onPressed: () {
                       FocusManager.instance.primaryFocus?.unfocus();
-                      _chatsBloc.add(
-                        const ChatScreenEvents.changeEmojiPicker(),
-                      );
+                      _chatsBloc.add(const ChatScreenEvents.changeEmojiPicker());
                     },
                     icon: Icon(
                       Icons.emoji_emotions_outlined,
@@ -118,14 +103,10 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                     right: 0,
                     child: IconButton(
                       onPressed: () {
-                        final dependencies = DependenciesScope.of(
-                          context,
-                          listen: false,
-                        );
+                        final dependencies = DependenciesScope.of(context, listen: false);
                         final telegramFilePickerBloc =
                             TelegramFilePickerBlocFactory(
-                              cameraHelperService:
-                                  dependencies.cameraHelperService,
+                              cameraHelperService: dependencies.cameraHelperService,
                             ).create();
                         showModalBottomSheet(
                           isScrollControlled: true,

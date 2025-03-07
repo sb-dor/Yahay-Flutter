@@ -9,11 +9,7 @@ class MessageWidget extends StatefulWidget {
   final UserModel? currentUser;
   final ChatMessageModel? message;
 
-  const MessageWidget({
-    super.key,
-    required this.message,
-    required this.currentUser,
-  });
+  const MessageWidget({super.key, required this.message, required this.currentUser});
 
   @override
   State<MessageWidget> createState() => _MessageWidgetState();
@@ -42,10 +38,7 @@ class _LeftSide extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          margin: EdgeInsets.only(
-            right: MediaQuery.of(context).size.width / 4,
-            left: 10,
-          ),
+          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width / 4, left: 10),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: const BoxDecoration(
             color: Colors.blue,
@@ -87,10 +80,7 @@ class _RightSide extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          margin: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width / 4,
-            right: 10,
-          ),
+          margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 4, right: 10),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           decoration: const BoxDecoration(
             color: Colors.blue,
@@ -128,9 +118,7 @@ class _MessageTime extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          DateFormat.yMMMd().format(
-            DateTime.parse(message?.createdAt ?? Constants.tempDateTime),
-          ),
+          DateFormat.yMMMd().format(DateTime.parse(message?.createdAt ?? Constants.tempDateTime)),
           style: GoogleFonts.aBeeZee(
             fontSize: 9,
             height: 0,
@@ -156,11 +144,7 @@ class _MessageTime extends StatelessWidget {
               ),
             )
           else
-            const Icon(
-              Icons.access_time_outlined,
-              size: 13,
-              color: Colors.white,
-            ),
+            const Icon(Icons.access_time_outlined, size: 13, color: Colors.white),
       ],
     );
   }

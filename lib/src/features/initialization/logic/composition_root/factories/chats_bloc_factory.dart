@@ -28,9 +28,7 @@ final class ChatsBlocFactory extends Factory<ChatsBloc> {
 
   @override
   ChatsBloc create() {
-    final ChatsDataSource chatsDataSource = ChatsDataSourceImpl(
-      restClientBase: _restClientBase,
-    );
+    final ChatsDataSource chatsDataSource = ChatsDataSourceImpl(restClientBase: _restClientBase);
 
     final ChatsRepo chatsRepo = ChatsRepoImpl(chatsDataSource);
 

@@ -9,12 +9,10 @@ class TelegramBrowseAppFolderScreen extends StatefulWidget {
   const TelegramBrowseAppFolderScreen({super.key});
 
   @override
-  State<TelegramBrowseAppFolderScreen> createState() =>
-      _TelegramBrowseAppFolderScreenState();
+  State<TelegramBrowseAppFolderScreen> createState() => _TelegramBrowseAppFolderScreenState();
 }
 
-class _TelegramBrowseAppFolderScreenState
-    extends State<TelegramBrowseAppFolderScreen>
+class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderScreen>
     with FolderCreator {
   @override
   Widget build(BuildContext context) {
@@ -55,15 +53,12 @@ class _TelegramBrowseAppFolderScreenState
                   ),
                 );
 
-                final dir =
-                    "${(await getApplicationDir())?.path}/${foldersName[index]}";
+                final dir = "${(await getApplicationDir())?.path}/${foldersName[index]}";
 
                 debugPrint("clicking path: $dir");
                 // init here for folder data
                 context.read<TelegramFilePickerBloc>().add(
-                  TelegramFilePickerEvents.setSpecificFolderPathInOrderToGetDataFromThereEvent(
-                    dir,
-                  ),
+                  TelegramFilePickerEvents.setSpecificFolderPathInOrderToGetDataFromThereEvent(dir),
                 );
               },
               title: foldersName[index],

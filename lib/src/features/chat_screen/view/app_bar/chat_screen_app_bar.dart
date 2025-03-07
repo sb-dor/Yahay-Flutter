@@ -11,11 +11,7 @@ class ChatScreenAppBar extends StatefulWidget {
   final ThemeData themeData;
   final ChatModel? chat;
 
-  const ChatScreenAppBar({
-    super.key,
-    required this.themeData,
-    required this.chat,
-  });
+  const ChatScreenAppBar({super.key, required this.themeData, required this.chat});
 
   @override
   State<ChatScreenAppBar> createState() => _ChatScreenAppBarState();
@@ -80,19 +76,14 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
                   : [
                     IconButton(
                       onPressed: () {
-                        AutoRouter.of(context).push(
-                          VideoChatFeatureRoute(
-                            chat: currentStateModel.currentChat,
-                          ),
-                        );
+                        AutoRouter.of(
+                          context,
+                        ).push(VideoChatFeatureRoute(chat: currentStateModel.currentChat));
                       },
                       icon: Icon(
                         CupertinoIcons.videocam,
                         color:
-                            (currentStateModel
-                                        .currentChat
-                                        ?.videoChatStreaming ??
-                                    false)
+                            (currentStateModel.currentChat?.videoChatStreaming ?? false)
                                 ? Colors.green
                                 : null,
                       ),

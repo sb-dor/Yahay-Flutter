@@ -27,8 +27,7 @@ class _TelegramGalleryFilePickerVideoPlayerWidgetState
   @override
   void initState() {
     super.initState();
-    _currentStateModel =
-        widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
+    _currentStateModel = widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
   }
 
   @override
@@ -43,18 +42,14 @@ class _TelegramGalleryFilePickerVideoPlayerWidgetState
         borderRadius: BorderRadius.circular(10),
         child: Stack(
           children: [
-            Positioned.fill(
-              child: Image.memory(widget.item.videoPreview!, fit: BoxFit.cover),
-            ),
+            Positioned.fill(child: Image.memory(widget.item.videoPreview!, fit: BoxFit.cover)),
             Positioned(
               right: 0,
               top: 0,
               child: IconButton(
                 onPressed:
                     () => widget.telegramFilePickerBloc.add(
-                      TelegramFilePickerEvents.selectGalleryFileEvent(
-                        widget.item,
-                      ),
+                      TelegramFilePickerEvents.selectGalleryFileEvent(widget.item),
                     ),
                 icon:
                     _currentStateModel.isFileInsidePickedFiles(widget.item)

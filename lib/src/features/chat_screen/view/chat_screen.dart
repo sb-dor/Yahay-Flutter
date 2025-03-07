@@ -33,8 +33,7 @@ class ChatScreen extends StatelessWidget {
           (context) =>
               ChatScreenBlocFactory(
                 user: dependencyContainer.authBloc.state.authStateModel.user,
-                channelsOptions:
-                    dependencyContainer.pusherClientService.options,
+                channelsOptions: dependencyContainer.pusherClientService.options,
                 restClientBase: dependencyContainer.restClientBase,
                 logger: dependencyContainer.logger,
               ).create(),
@@ -69,12 +68,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
     _appThemeBloc = dependencyContainer.appThemeBloc;
     //
     //
-    _chatScreenBloc.add(
-      ChatScreenEvents.initChatScreenEvent(
-        chat: widget.chat,
-        user: widget.user,
-      ),
-    );
+    _chatScreenBloc.add(ChatScreenEvents.initChatScreenEvent(chat: widget.chat, user: widget.user));
   }
 
   @override
@@ -85,9 +79,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
 
   void _emojiClearHelper(ChatScreenStateModel currentStateModel) {
     if (currentStateModel.showEmojiPicker) {
-      _chatScreenBloc.add(
-        const ChatScreenEvents.changeEmojiPicker(value: false),
-      );
+      _chatScreenBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
     }
   }
 
@@ -107,18 +99,14 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
             final currentStateModel = state.chatScreenStateModel;
             return PopScope(
               canPop: !currentStateModel.showEmojiPicker,
-              onPopInvokedWithResult:
-                  (v, _) => _emojiClearHelper(currentStateModel),
+              onPopInvokedWithResult: (v, _) => _emojiClearHelper(currentStateModel),
               child: GestureDetector(
                 onTap: () {
                   _emojiClearHelper(currentStateModel);
                 },
                 child: Scaffold(
                   appBar: PreferredSize(
-                    preferredSize: Size(
-                      MediaQuery.of(context).size.width,
-                      kToolbarHeight,
-                    ),
+                    preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
                     child: ChatScreenAppBar(
                       themeData: _appThemeBloc.theme.value,
                       chat: widget.chat,
@@ -134,19 +122,13 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                             reverse: true,
                             children: [
                               ListView.separated(
-                                separatorBuilder:
-                                    (context, index) =>
-                                        const SizedBox(height: 10),
+                                separatorBuilder: (context, index) => const SizedBox(height: 10),
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: currentStateModel.messages.length,
                                 itemBuilder: (context, index) {
-                                  final message =
-                                      currentStateModel.messages[index];
-                                  return MessageWidget(
-                                    message: message,
-                                    currentUser: currentUser,
-                                  );
+                                  final message = currentStateModel.messages[index];
+                                  return MessageWidget(message: message, currentUser: currentUser);
                                 },
                               ),
                             ],
@@ -154,9 +136,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                         ),
                         BottomChatWidget(messageController: _messageController),
                         if (currentStateModel.showEmojiPicker)
-                          EmojiPickerHelper(
-                            messageController: _messageController,
-                          ),
+                          EmojiPickerHelper(messageController: _messageController),
                       ],
                     ),
                   ),

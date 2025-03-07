@@ -50,10 +50,7 @@ final class RestClientDio extends RestClientBase {
 
       // link
       // https://github.com/hawkkiller/sizzle_starter/blob/main/packages/rest_client/lib/src/rest_client_base.dart
-      return decodeResponse(
-        BytesResponseBody(body: request.data),
-        statusCode: request.statusCode,
-      );
+      return decodeResponse(BytesResponseBody(body: request.data), statusCode: request.statusCode);
     } on RestClientException {
       //
       // rethrow also throws error and stacktrace
@@ -61,15 +58,10 @@ final class RestClientDio extends RestClientBase {
     } on DioException catch (error, stackTrace) {
       _logger.log(Level.error, error);
       if (error.response?.statusCode == HttpStatus.unauthorized) {
-        throw UnauthenticatedException(
-          exception: error,
-          statusCode: HttpStatus.unauthorized,
-        );
+        throw UnauthenticatedException(exception: error, statusCode: HttpStatus.unauthorized);
       }
 
-      final serverError = await decodeResponse(
-        BytesResponseBody(body: error.response?.data),
-      );
+      final serverError = await decodeResponse(BytesResponseBody(body: error.response?.data));
 
       Error.throwWithStackTrace(
         DioExceptionHandler(dioException: error, serverError: "$serverError"),
@@ -83,8 +75,7 @@ final class RestClientDio extends RestClientBase {
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
-      'Authorization':
-          'Bearer ${_sharedPreferHelper.getStringByKey(key: 'token')}',
+      'Authorization': 'Bearer ${_sharedPreferHelper.getStringByKey(key: 'token')}',
     };
   }
 }

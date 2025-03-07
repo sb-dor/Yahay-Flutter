@@ -10,12 +10,10 @@ class TelegramFilesFromStoragesWidget extends StatefulWidget {
   const TelegramFilesFromStoragesWidget({super.key});
 
   @override
-  State<TelegramFilesFromStoragesWidget> createState() =>
-      _TelegramFilesFromStoragesWidgetState();
+  State<TelegramFilesFromStoragesWidget> createState() => _TelegramFilesFromStoragesWidgetState();
 }
 
-class _TelegramFilesFromStoragesWidgetState
-    extends State<TelegramFilesFromStoragesWidget> {
+class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStoragesWidget> {
   late AppThemeBloc _appThemeBloc;
   late List<TelegramStorageFilePickerDataModel> telegramStorageFileDataModels;
 
@@ -78,10 +76,7 @@ class _TelegramFilesFromStoragesWidgetState
                               ),
                               Text(
                                 item.content,
-                                style: GoogleFonts.aBeeZee(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
+                                style: GoogleFonts.aBeeZee(fontSize: 16, color: Colors.grey),
                               ),
                             ],
                           ),

@@ -32,17 +32,17 @@ final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
 
   @override
   ChatScreenBloc create() {
-    final ChatScreenMessageDataSource messageDataSource =
-        ChatScreenMessageDataSourceImpl(restClientBase: _restClientBase);
+    final ChatScreenMessageDataSource messageDataSource = ChatScreenMessageDataSourceImpl(
+      restClientBase: _restClientBase,
+    );
 
-    final ChatScreenChatDataSource chatScreenChatDataSource =
-        ChatScreenChatDataSourceImpl(restClientBase: _restClientBase);
+    final ChatScreenChatDataSource chatScreenChatDataSource = ChatScreenChatDataSourceImpl(
+      restClientBase: _restClientBase,
+    );
 
     final ChatScreenRepo chatScreenRepo = ChatScreenRepoImpl(messageDataSource);
 
-    final ChatScreenChatRepo chatScreenChatRepo = ChatScreenChatRepoImpl(
-      chatScreenChatDataSource,
-    );
+    final ChatScreenChatRepo chatScreenChatRepo = ChatScreenChatRepoImpl(chatScreenChatDataSource);
 
     const initialState = ChatScreenStates.initial(ChatScreenStateModel());
 

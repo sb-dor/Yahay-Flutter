@@ -28,16 +28,15 @@ final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
   VideoChatBloc create() {
     //
 
-    final VideoChatFeatureDataSource videoChatFeatureDataSource =
-        VideoChatFeatureDataSourceImpl(restClientBase: _restClientBase);
+    final VideoChatFeatureDataSource videoChatFeatureDataSource = VideoChatFeatureDataSourceImpl(
+      restClientBase: _restClientBase,
+    );
 
     final VideoChatFeatureRepo videoChatFeatureRepo = VideoChatFeatureRepoImpl(
       videoChatFeatureDataSource,
     );
 
-    final initialState = VideoChatFeatureStates.initial(
-      VideoChatStateModel.idle(),
-    );
+    final initialState = VideoChatFeatureStates.initial(VideoChatStateModel.idle());
 
     return VideoChatBloc(
       iVideoChatFeatureRepo: videoChatFeatureRepo,

@@ -5,9 +5,7 @@ import 'package:yahay/src/features/telegram_file_picker_feature/mixins/recent_fi
 // classes only can "implement"
 abstract interface class TelegramFilePickerRepo {
   // for getting recent files -> images and videos
-  Stream<TelegramPathFolderFile?> getRecentImagesAndVideos({
-    RecentFilesOptions? options,
-  });
+  Stream<TelegramPathFolderFile?> getRecentImagesAndVideos({RecentFilesOptions? options});
 
   // for getting all download's path files here
   Stream<TelegramPathFolderFile?> getRecentFiles();

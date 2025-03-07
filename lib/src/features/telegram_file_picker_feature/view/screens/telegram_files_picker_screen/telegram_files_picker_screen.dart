@@ -13,18 +13,13 @@ import 'widgets/telegram_resent_files_from_storage_widget.dart';
 class TelegramFilesPickerScreen extends StatefulWidget {
   final ScrollController parentScrollController;
 
-  const TelegramFilesPickerScreen({
-    super.key,
-    required this.parentScrollController,
-  });
+  const TelegramFilesPickerScreen({super.key, required this.parentScrollController});
 
   @override
-  State<TelegramFilesPickerScreen> createState() =>
-      _TelegramFilesPickerScreenState();
+  State<TelegramFilesPickerScreen> createState() => _TelegramFilesPickerScreenState();
 }
 
-class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
-    with FolderCreator {
+class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> with FolderCreator {
   late final TelegramFilePickerBloc _telegramFilePickerBloc;
   late final TelegramFilePickerStateModel _telegramFilePickerStateModel;
 
@@ -32,8 +27,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
   void initState() {
     super.initState();
     _telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
-    _telegramFilePickerStateModel =
-        _telegramFilePickerBloc.state.telegramFilePickerStateModel;
+    _telegramFilePickerStateModel = _telegramFilePickerBloc.state.telegramFilePickerStateModel;
     // final currentStateModel = _telegramFilePickerBloc.state.telegramFilePickerStateModel;
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==
@@ -48,9 +42,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
           );
         } else {
           // pagination here
-          _telegramFilePickerBloc.add(
-            const TelegramFilePickerEvents.recentFilesPaginationEvent(),
-          );
+          _telegramFilePickerBloc.add(const TelegramFilePickerEvents.recentFilesPaginationEvent());
 
           // if (currentStateModel.recentFilesPagination.length ==
           //     currentStateModel.recentFiles.length) {
@@ -72,15 +64,11 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
         debugPrint("listening data: ${notification.direction}");
         if (notification.direction == ScrollDirection.forward) {
           _telegramFilePickerBloc.add(
-            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-              true,
-            ),
+            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(true),
           );
         } else if (notification.direction == ScrollDirection.reverse) {
           _telegramFilePickerBloc.add(
-            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-              false,
-            ),
+            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(false),
           );
         }
         return true;
@@ -92,9 +80,7 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
             children: [
               Visibility(
                 visible:
-                    state
-                        .telegramFilePickerStateModel
-                        .filePickerScreenSelectedScreen ==
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.recentDownloadsScreen,
                 maintainAnimation: true,
                 maintainState: true,
@@ -102,17 +88,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
                   curve: Curves.fastOutSlowIn,
                   duration: const Duration(milliseconds: 300),
                   offset:
-                      state
-                                  .telegramFilePickerStateModel
-                                  .filePickerScreenSelectedScreen ==
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                               TelegramFileFolderEnum.recentDownloadsScreen
                           ? Offset.zero
                           : const Offset(1, 0),
                   child: AnimatedOpacity(
                     opacity:
-                        state
-                                    .telegramFilePickerStateModel
-                                    .filePickerScreenSelectedScreen ==
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                                 TelegramFileFolderEnum.recentDownloadsScreen
                             ? 1
                             : 0,
@@ -134,15 +116,11 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
                 maintainAnimation: true,
                 maintainState: true,
                 visible:
-                    state
-                        .telegramFilePickerStateModel
-                        .filePickerScreenSelectedScreen ==
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.browseTheAppsFolder,
                 child: PopScope(
                   canPop:
-                      state
-                                  .telegramFilePickerStateModel
-                                  .filePickerScreenSelectedScreen ==
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                               TelegramFileFolderEnum.browseTheAppsFolder
                           ? false
                           : true,
@@ -157,17 +135,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 300),
                     offset:
-                        state
-                                    .telegramFilePickerStateModel
-                                    .filePickerScreenSelectedScreen ==
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                                 TelegramFileFolderEnum.browseTheAppsFolder
                             ? Offset.zero
                             : const Offset(1, 0),
                     child: AnimatedOpacity(
                       opacity:
-                          state
-                                      .telegramFilePickerStateModel
-                                      .filePickerScreenSelectedScreen ==
+                          state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                                   TelegramFileFolderEnum.browseTheAppsFolder
                               ? 1
                               : 0,
@@ -180,17 +154,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
 
               Visibility(
                 visible:
-                    state
-                        .telegramFilePickerStateModel
-                        .filePickerScreenSelectedScreen ==
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.browseTheFolder,
                 maintainAnimation: true,
                 maintainState: true,
                 child: PopScope(
                   canPop:
-                      state
-                                  .telegramFilePickerStateModel
-                                  .filePickerScreenSelectedScreen ==
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                               TelegramFileFolderEnum.browseTheFolder
                           ? false
                           : true,
@@ -210,17 +180,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 300),
                     offset:
-                        state
-                                    .telegramFilePickerStateModel
-                                    .filePickerScreenSelectedScreen ==
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                                 TelegramFileFolderEnum.browseTheFolder
                             ? Offset.zero
                             : const Offset(1, 0),
                     child: AnimatedOpacity(
                       opacity:
-                          state
-                                      .telegramFilePickerStateModel
-                                      .filePickerScreenSelectedScreen ==
+                          state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                                   TelegramFileFolderEnum.browseTheFolder
                               ? 1
                               : 0,
@@ -247,17 +213,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
               // gallery folder data
               Visibility(
                 visible:
-                    state
-                        .telegramFilePickerStateModel
-                        .filePickerScreenSelectedScreen ==
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.browseTheGalleryFolder,
                 maintainAnimation: true,
                 maintainState: true,
                 child: PopScope(
                   canPop:
-                      state
-                                  .telegramFilePickerStateModel
-                                  .filePickerScreenSelectedScreen ==
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                               TelegramFileFolderEnum.browseTheGalleryFolder
                           ? false
                           : true,
@@ -278,17 +240,13 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen>
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 300),
                     offset:
-                        state
-                                    .telegramFilePickerStateModel
-                                    .filePickerScreenSelectedScreen ==
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                                 TelegramFileFolderEnum.browseTheGalleryFolder
                             ? Offset.zero
                             : const Offset(1, 0),
                     child: AnimatedOpacity(
                       opacity:
-                          state
-                                      .telegramFilePickerStateModel
-                                      .filePickerScreenSelectedScreen ==
+                          state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                                   TelegramFileFolderEnum.browseTheGalleryFolder
                               ? 1
                               : 0,

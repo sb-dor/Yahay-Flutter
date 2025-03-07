@@ -40,8 +40,7 @@ class _VideoChatFeaturePageUI extends StatefulWidget {
   const _VideoChatFeaturePageUI({required this.chat});
 
   @override
-  State<_VideoChatFeaturePageUI> createState() =>
-      _VideoChatFeaturePageUIState();
+  State<_VideoChatFeaturePageUI> createState() => _VideoChatFeaturePageUIState();
 }
 
 class _VideoChatFeaturePageUIState extends State<_VideoChatFeaturePageUI> {

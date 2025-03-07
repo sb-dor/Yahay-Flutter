@@ -22,15 +22,9 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _registerForm = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController(
-    text: '',
-  );
-  final TextEditingController _passwordController = TextEditingController(
-    text: '',
-  );
-  final TextEditingController _userNameController = TextEditingController(
-    text: '',
-  );
+  final TextEditingController _emailController = TextEditingController(text: '');
+  final TextEditingController _passwordController = TextEditingController(text: '');
+  final TextEditingController _userNameController = TextEditingController(text: '');
   late final AuthBloc _authBloc;
 
   @override
@@ -72,10 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     Text(
                       "Sign Up",
-                      style: GoogleFonts.aBeeZee(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                      ),
+                      style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400, fontSize: 20),
                     ),
                     const SizedBox(height: 20),
                     AuthorizationInputWidget(
@@ -113,13 +104,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           shape: WidgetStatePropertyAll(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                           ),
-                          backgroundColor: const WidgetStatePropertyAll(
-                            Colors.blueAccent,
-                          ),
+                          backgroundColor: const WidgetStatePropertyAll(Colors.blueAccent),
                         ),
                         onPressed:
                             () => _authBloc.add(
@@ -128,8 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 password: _passwordController.text,
                                 userName: _userNameController.text,
                                 initDependenciesAfterAuthorization:
-                                    dependencies
-                                        .initDependenciesAfterAuthorization,
+                                    dependencies.initDependenciesAfterAuthorization,
                                 // initDioOptions: () async {
                                 // await dependencies.dioSettings.initOptions();
                                 // },
@@ -162,11 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Expanded(
-                          child: Divider(
-                            height: 0,
-                            thickness: 0.5,
-                            color: Colors.grey,
-                          ),
+                          child: Divider(height: 0, thickness: 0.5, color: Colors.grey),
                         ),
                         const SizedBox(width: 15),
                         Text(
@@ -179,11 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         const SizedBox(width: 15),
                         const Expanded(
-                          child: Divider(
-                            height: 0,
-                            thickness: 0.5,
-                            color: Colors.grey,
-                          ),
+                          child: Divider(height: 0, thickness: 0.5, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -198,8 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 () => _authBloc.add(
                                   AuthEvents.googleAuth(
                                     initDependenciesAfterAuthorization:
-                                        dependencies
-                                            .initDependenciesAfterAuthorization,
+                                        dependencies.initDependenciesAfterAuthorization,
                                     // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                     // },
@@ -210,17 +187,13 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(width: 20),
                         Expanded(
                           child: OtherAuthorizationButtonWidget(
-                            icon: const FaIcon(
-                              FontAwesomeIcons.facebook,
-                              color: Colors.blue,
-                            ),
+                            icon: const FaIcon(FontAwesomeIcons.facebook, color: Colors.blue),
                             text: 'Facebook',
                             onTap:
                                 () => _authBloc.add(
                                   AuthEvents.facebookAuth(
                                     initDependenciesAfterAuthorization:
-                                        dependencies
-                                            .initDependenciesAfterAuthorization,
+                                        dependencies.initDependenciesAfterAuthorization,
                                     // initDioOptions: () async {
                                     // await dependencies.dioSettings.initOptions();
                                     // },
@@ -245,9 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             recognizer:
                                 TapGestureRecognizer()
                                   ..onTap =
-                                      () => AutoRouter.of(
-                                        context,
-                                      ).replace(const LoginRoute()),
+                                      () => AutoRouter.of(context).replace(const LoginRoute()),
                             text: Constants.signIn,
                             style: const TextStyle(color: Colors.blue),
                           ),

@@ -10,8 +10,7 @@ import 'package:collection/collection.dart';
 class CameraHelperService {
   late List<CameraDescription> _cameras;
 
-  UnmodifiableListView<CameraDescription> get cameras =>
-      UnmodifiableListView(_cameras);
+  UnmodifiableListView<CameraDescription> get cameras => UnmodifiableListView(_cameras);
 
   // init this one in main func
   Future<void> initCameras() async {

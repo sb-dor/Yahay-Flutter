@@ -9,43 +9,33 @@ import 'widgets/telegram_gallery_file_picker_video_player_widget.dart';
 class TelegramGalleryFilePickerScreen extends StatefulWidget {
   final ScrollController parentScrollController;
 
-  const TelegramGalleryFilePickerScreen({
-    super.key,
-    required this.parentScrollController,
-  });
+  const TelegramGalleryFilePickerScreen({super.key, required this.parentScrollController});
 
   @override
-  State<TelegramGalleryFilePickerScreen> createState() =>
-      _TelegramGalleryFilePickerScreenState();
+  State<TelegramGalleryFilePickerScreen> createState() => _TelegramGalleryFilePickerScreenState();
 }
 
-class _TelegramGalleryFilePickerScreenState
-    extends State<TelegramGalleryFilePickerScreen> {
+class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePickerScreen> {
   late final TelegramFilePickerBloc _telegramFilePickerBloc;
 
   @override
   void initState() {
     super.initState();
     _telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
-    final currentStateModel =
-        _telegramFilePickerBloc.state.telegramFilePickerStateModel;
+    final currentStateModel = _telegramFilePickerBloc.state.telegramFilePickerStateModel;
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==
               widget.parentScrollController.position.maxScrollExtent &&
           _telegramFilePickerBloc.state is Picker$GalleryFileState) {
         // pagination here
-        _telegramFilePickerBloc.add(
-          const TelegramFilePickerEvents.imagesAndVideoPaginationEvent(),
-        );
+        _telegramFilePickerBloc.add(const TelegramFilePickerEvents.imagesAndVideoPaginationEvent());
 
         // why i wrote ".length -1" -> because of galleryPathPagination's first item is entity with
         // cameraController
         if (currentStateModel.galleryPathPagination.length - 1 ==
             currentStateModel.galleryPathFiles.length) {
           _telegramFilePickerBloc.add(
-            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-              false,
-            ),
+            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(false),
           );
         }
       }
@@ -69,23 +59,17 @@ class _TelegramGalleryFilePickerScreenState
             debugPrint("listening data: ${notification.direction}");
             if (notification.direction == ScrollDirection.forward) {
               _telegramFilePickerBloc.add(
-                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-                  true,
-                ),
+                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(true),
               );
             } else if (notification.direction == ScrollDirection.reverse) {
               _telegramFilePickerBloc.add(
-                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-                  false,
-                ),
+                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(false),
               );
             }
             return true;
           },
           child: GridView.builder(
-            physics: const AlwaysScrollableScrollPhysics(
-              parent: ClampingScrollPhysics(),
-            ),
+            physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
             padding: const EdgeInsets.all(10),
             controller: widget.parentScrollController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -103,8 +87,7 @@ class _TelegramGalleryFilePickerScreenState
                 return TelegramGalleryFilePickerCameraWidget(
                   cameraController: item.cameraController!,
                 );
-              } else if (item.videoPlayerController != null &&
-                  item.videoPreview != null) {
+              } else if (item.videoPlayerController != null && item.videoPreview != null) {
                 return TelegramGalleryFilePickerVideoPlayerWidget(
                   item: item,
                   telegramFilePickerBloc: _telegramFilePickerBloc,

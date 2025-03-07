@@ -24,8 +24,7 @@ class UserModel with _$UserModel {
     @JsonKey(name: "user_contact") UserModel? contact,
   }) = _UserModel;
 
-  factory UserModel.fromJson(Map<String, Object?> json) =>
-      _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, Object?> json) => _$UserModelFromJson(json);
 
   String getFirstAndLastLetterOfName() {
     if ((name ?? '').isEmpty) return "";

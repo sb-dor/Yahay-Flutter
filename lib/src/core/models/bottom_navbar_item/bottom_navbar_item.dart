@@ -6,9 +6,5 @@ class BottomNavbarItem {
   final Widget icon;
   final String label;
 
-  const BottomNavbarItem({
-    required this.screen,
-    required this.icon,
-    required this.label,
-  });
+  const BottomNavbarItem({required this.screen, required this.icon, required this.label});
 }

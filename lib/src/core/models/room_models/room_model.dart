@@ -17,6 +17,5 @@ class RoomModel with _$RoomModel {
     final DateTime? updatedAt,
   }) = _RoomModel;
 
-  factory RoomModel.fromJson(Map<String, Object?> json) =>
-      _$RoomModelFromJson(json);
+  factory RoomModel.fromJson(Map<String, Object?> json) => _$RoomModelFromJson(json);
 }

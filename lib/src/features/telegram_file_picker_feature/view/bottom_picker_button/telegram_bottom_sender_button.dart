@@ -4,12 +4,10 @@ class TelegramBottomSenderButton extends StatefulWidget {
   const TelegramBottomSenderButton({super.key});
 
   @override
-  State<TelegramBottomSenderButton> createState() =>
-      _TelegramBottomSenderButtonState();
+  State<TelegramBottomSenderButton> createState() => _TelegramBottomSenderButtonState();
 }
 
-class _TelegramBottomSenderButtonState
-    extends State<TelegramBottomSenderButton> {
+class _TelegramBottomSenderButtonState extends State<TelegramBottomSenderButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,18 +18,12 @@ class _TelegramBottomSenderButtonState
         children: [
           Row(
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.emoji_emotions_outlined),
-              ),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.emoji_emotions_outlined)),
               const SizedBox(width: 10),
               Expanded(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(
-                          context,
-                        ).cardColor, //Theme.of(context).cardColor
+                    color: Theme.of(context).cardColor, //Theme.of(context).cardColor
                   ),
                   child: TextField(
                     decoration: InputDecoration(

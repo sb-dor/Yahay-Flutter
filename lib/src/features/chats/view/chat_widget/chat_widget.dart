@@ -33,10 +33,7 @@ class ChatWidget extends StatelessWidget {
                   _ChatName(chat: chat),
                   Text(
                     chat?.lastMessage?.message ?? '-',
-                    style: GoogleFonts.aBeeZee(
-                      fontSize: 13,
-                      color: Colors.grey,
-                    ),
+                    style: GoogleFonts.aBeeZee(fontSize: 13, color: Colors.grey),
                   ),
                 ],
               ),
@@ -44,9 +41,7 @@ class ChatWidget extends StatelessWidget {
             if (chat?.videoChatStreaming ?? false)
               IconButton(
                 onPressed: () {
-                  AutoRouter.of(
-                    context,
-                  ).push(VideoChatFeatureRoute(chat: chat));
+                  AutoRouter.of(context).push(VideoChatFeatureRoute(chat: chat));
                 },
                 icon: const Icon(CupertinoIcons.videocam, color: Colors.green),
               ),
@@ -72,10 +67,7 @@ class _ChatMainImage extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
           child: CircleAvatar(
             radius: 30,
-            child: ColoredBox(
-              color: Colors.green,
-              child: Text(chat?.getWrappedName() ?? '-'),
-            ),
+            child: ColoredBox(color: Colors.green, child: Text(chat?.getWrappedName() ?? '-')),
           ),
         );
       }
@@ -98,10 +90,7 @@ class _ChatImageBuilder extends StatelessWidget {
       borderRadius: BorderRadius.circular(50),
       child: CircleAvatar(
         radius: 30,
-        child: ImageLoaderWidget(
-          url: path ?? '',
-          errorImageUrl: Constants.defaultUserImage,
-        ),
+        child: ImageLoaderWidget(url: path ?? '', errorImageUrl: Constants.defaultUserImage),
       ),
     );
   }

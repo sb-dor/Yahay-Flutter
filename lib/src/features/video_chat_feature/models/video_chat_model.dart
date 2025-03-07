@@ -9,11 +9,8 @@ class VideoChatModel {
   final ChatModel? chat;
   final UserModel? user;
 
-  VideoChatModel({
-    required this.videoRenderer,
-    required this.chat,
-    required this.user,
-  }) : videoChatId = const Uuid().v4();
+  VideoChatModel({required this.videoRenderer, required this.chat, required this.user})
+    : videoChatId = const Uuid().v4();
 
   Map<String, dynamic> toJson() {
     return {

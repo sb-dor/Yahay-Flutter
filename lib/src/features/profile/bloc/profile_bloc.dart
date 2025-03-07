@@ -10,28 +10,23 @@ part 'profile_bloc.freezed.dart';
 @immutable
 @freezed
 sealed class ProfileEvents with _$ProfileEvents {
-  const factory ProfileEvents.profileLogoutEvent(
-    final void Function() logoutEvent,
-  ) = _Profile$LogoutEvent;
+  const factory ProfileEvents.profileLogoutEvent(final void Function() logoutEvent) =
+      _Profile$LogoutEvent;
 }
 
 @immutable
 @freezed
 class ProfileStates with _$ProfileStates {
-  const factory ProfileStates.initial(
-    final ProfileStateModel profileStateModel,
-  ) = InitialProfileState;
+  const factory ProfileStates.initial(final ProfileStateModel profileStateModel) =
+      InitialProfileState;
 
-  const factory ProfileStates.inProgress(
-    final ProfileStateModel profileStateModel,
-  ) = Profile$InProgressState;
+  const factory ProfileStates.inProgress(final ProfileStateModel profileStateModel) =
+      Profile$InProgressState;
 
-  const factory ProfileStates.error(final ProfileStateModel profileStateModel) =
-      Profile$ErrorState;
+  const factory ProfileStates.error(final ProfileStateModel profileStateModel) = Profile$ErrorState;
 
-  const factory ProfileStates.successful(
-    final ProfileStateModel profileStateModel,
-  ) = Profile$SuccessfulState;
+  const factory ProfileStates.successful(final ProfileStateModel profileStateModel) =
+      Profile$SuccessfulState;
 }
 
 class ProfileBloc extends Bloc<ProfileEvents, ProfileStates> {
@@ -45,14 +40,9 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileStates> {
   }) : _iProfileRepository = iProfileRepository,
        super(initialState) {
     on<ProfileEvents>(
-      (event, emit) => event.map(
-        profileLogoutEvent: (event) => _profileLogoutEvent(event, emit),
-      ),
+      (event, emit) => event.map(profileLogoutEvent: (event) => _profileLogoutEvent(event, emit)),
     );
   }
 
-  void _profileLogoutEvent(
-    _Profile$LogoutEvent event,
-    Emitter<ProfileStates> emit,
-  ) async {}
+  void _profileLogoutEvent(_Profile$LogoutEvent event, Emitter<ProfileStates> emit) async {}
 }

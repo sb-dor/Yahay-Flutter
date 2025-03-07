@@ -10,12 +10,10 @@ class TelegramBrowseFolderDataScreen extends StatefulWidget {
   const TelegramBrowseFolderDataScreen({super.key, required this.onBackFolder});
 
   @override
-  State<TelegramBrowseFolderDataScreen> createState() =>
-      _TelegramBrowseFolderDataScreenState();
+  State<TelegramBrowseFolderDataScreen> createState() => _TelegramBrowseFolderDataScreenState();
 }
 
-class _TelegramBrowseFolderDataScreenState
-    extends State<TelegramBrowseFolderDataScreen> {
+class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDataScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -29,10 +27,7 @@ class _TelegramBrowseFolderDataScreenState
         BlocBuilder<TelegramFilePickerBloc, TelegramFilePickerStates>(
           builder: (context, state) {
             return TelegramStorageFileWidget(
-              list:
-                  state
-                      .telegramFilePickerStateModel
-                      .specificFolderFilesPagination,
+              list: state.telegramFilePickerStateModel.specificFolderFilesPagination,
             );
           },
         ),

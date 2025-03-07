@@ -5,10 +5,7 @@ import 'package:flutter/material.dart';
 class TelegramGalleryFilePickerCameraWidget extends StatelessWidget {
   final CameraController cameraController;
 
-  const TelegramGalleryFilePickerCameraWidget({
-    super.key,
-    required this.cameraController,
-  });
+  const TelegramGalleryFilePickerCameraWidget({super.key, required this.cameraController});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +24,7 @@ class TelegramGalleryFilePickerCameraWidget extends StatelessWidget {
           ),
         ),
         const Positioned.fill(
-          child: Center(
-            child: Icon(
-              CupertinoIcons.camera_fill,
-              color: Colors.white,
-              size: 40,
-            ),
-          ),
+          child: Center(child: Icon(CupertinoIcons.camera_fill, color: Colors.white, size: 40)),
         ),
       ],
     );

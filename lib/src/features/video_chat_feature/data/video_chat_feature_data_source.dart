@@ -26,14 +26,10 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
 
   final RestClientBase _restClientBase;
 
-  final _joinChatPath =
-      "${HttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
-  final _startVideoChatPath =
-      "${HttpRoutes.chatsVideoStreamPrefix}/start/videochat";
-  final _leaveVideoChatPath =
-      "${HttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
-  final _steamTheVideoPath =
-      "${HttpRoutes.chatsVideoStreamPrefix}/video/stream";
+  final _joinChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
+  final _startVideoChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/start/videochat";
+  final _leaveVideoChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
+  final _steamTheVideoPath = "${HttpRoutes.chatsVideoStreamPrefix}/video/stream";
 
   @override
   Future<bool> startVideoChat(VideoChatModel videoChatEntity) async {
@@ -59,10 +55,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   @override
   Future<bool> videoChatEntrance(VideoChatModel videoChatEntity) async {
     try {
-      final response = await _restClientBase.put(
-        _joinChatPath,
-        data: videoChatEntity.toJson(),
-      );
+      final response = await _restClientBase.put(_joinChatPath, data: videoChatEntity.toJson());
 
       if (response == null) return false;
 
@@ -102,10 +95,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
       final jsonBody = videoChatEntity.toJson();
       log("sending uint8list data: $jsonBody");
 
-      final response = await _restClientBase.put(
-        _steamTheVideoPath,
-        data: jsonBody,
-      );
+      final response = await _restClientBase.put(_steamTheVideoPath, data: jsonBody);
 
       debugPrint("coming response from stream video: $response");
     } on RestClientException {

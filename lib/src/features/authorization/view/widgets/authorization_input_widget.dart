@@ -17,8 +17,7 @@ class AuthorizationInputWidget extends StatefulWidget {
   });
 
   @override
-  State<AuthorizationInputWidget> createState() =>
-      _AuthorizationInputWidgetState();
+  State<AuthorizationInputWidget> createState() => _AuthorizationInputWidgetState();
 }
 
 class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
@@ -29,10 +28,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400),
-        ),
+        Text(widget.title, style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400)),
         const SizedBox(height: 5),
         ClipRRect(
           borderRadius: BorderRadius.circular(10),

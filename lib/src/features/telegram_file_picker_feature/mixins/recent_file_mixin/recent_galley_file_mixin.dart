@@ -17,9 +17,7 @@ mixin class RecentGalleyFileMixin {
 
   // final _reusableFunctions = snoopy<ReusableGlobalFunctions>();
 
-  Stream<TelegramPathFolderFileModel?> getAllImagesAndVideos({
-    RecentFilesOptions? options,
-  }) async* {
+  Stream<TelegramPathFolderFileModel?> getAllImagesAndVideos({RecentFilesOptions? options}) async* {
     try {
       final PermissionsService permissionsService = PermissionsService();
 
@@ -178,10 +176,7 @@ class _GetRangedAssetFiles implements _RecentFilesHelper {
 
   @override
   Future<List<TelegramFileImageAssetEntity>> getAssets() async {
-    final images = await PhotoManager.getAssetListRange(
-      start: start ?? 0,
-      end: end ?? 100,
-    );
+    final images = await PhotoManager.getAssetListRange(start: start ?? 0, end: end ?? 100);
 
     final List<TelegramFileImageAssetEntity> list = [];
 

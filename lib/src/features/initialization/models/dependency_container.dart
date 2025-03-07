@@ -57,11 +57,7 @@ class DependencyContainer {
           restClientBase: restClientBase,
         ).create();
 
-    profileBloc =
-        ProfileBlocFactory(
-          logger: logger,
-          restClientBase: restClientBase,
-        ).create();
+    profileBloc = ProfileBlocFactory(logger: logger, restClientBase: restClientBase).create();
   }
 }
 

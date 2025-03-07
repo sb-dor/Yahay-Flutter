@@ -81,12 +81,7 @@ class _HomePageState extends State<HomePage> {
             unselectedLabelStyle: GoogleFonts.aBeeZee(),
             selectedLabelStyle: GoogleFonts.aBeeZee(),
             items:
-                _screens
-                    .map(
-                      (e) =>
-                          BottomNavigationBarItem(icon: e.icon, label: e.label),
-                    )
-                    .toList(),
+                _screens.map((e) => BottomNavigationBarItem(icon: e.icon, label: e.label)).toList(),
           ),
           body: _screens[_index].screen,
         );

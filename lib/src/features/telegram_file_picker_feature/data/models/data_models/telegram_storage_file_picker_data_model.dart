@@ -58,9 +58,7 @@ class TelegramStorageFilePickerDataModel {
 
         Future.delayed(const Duration(milliseconds: 300), () {
           telegramFilerPickerBloc.add(
-            const TelegramFilePickerEvents.getSpecificFolderDataEvent(
-              getGalleryData: true,
-            ),
+            const TelegramFilePickerEvents.getSpecificFolderDataEvent(getGalleryData: true),
           );
         });
       },

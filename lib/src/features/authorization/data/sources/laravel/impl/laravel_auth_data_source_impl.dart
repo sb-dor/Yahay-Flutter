@@ -55,19 +55,13 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   }) async {
     final url = "${HttpRoutes.authPrefix}$_login";
 
-    final Map<String, dynamic> body = {
-      "email_or_username": emailOrUserName,
-      "password": password,
-    };
+    final Map<String, dynamic> body = {"email_or_username": emailOrUserName, "password": password};
 
     final response = await _restClientBase.post(url, data: body);
 
     if (response == null) return null;
 
-    _logger.log(
-      Level.debug,
-      "login response: $response | ${response.runtimeType}",
-    );
+    _logger.log(Level.debug, "login response: $response | ${response.runtimeType}");
 
     if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
       return null;
@@ -78,10 +72,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       return null;
     }
 
-    await _sharedPreferences.setStringByKey(
-      key: "token",
-      value: response.getNested(['token']),
-    );
+    await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
 
     return UserModel.fromJson(response.getNested(['user']));
   }
@@ -94,11 +85,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   }) async {
     final url = "${HttpRoutes.authPrefix}$_register";
 
-    final Map<String, dynamic> body = {
-      "email": email,
-      "password": password,
-      "user_name": userName,
-    };
+    final Map<String, dynamic> body = {"email": email, "password": password, "user_name": userName};
 
     final response = await _restClientBase.post(url, data: body);
 
@@ -115,10 +102,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       return null;
     }
 
-    await _sharedPreferences.setStringByKey(
-      key: "token",
-      value: response.getNested(['token']),
-    );
+    await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
 
     return UserModel.fromJson(response.getNested(['user']));
   }

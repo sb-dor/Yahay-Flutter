@@ -37,28 +37,25 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
 
   @override
   AuthBloc create() {
-    final LaravelAuthDataSource laravelAuthDataSource =
-        LaravelAuthDataSourceImpl(
-          sharedPreferences: _sharedPreferHelper,
-          restClientBase: _restClientBase,
-          screenMessaging: ScreenMessaging.instance,
-          logger: _logger,
-        );
-
-    final OtherAuthorizationDatasource otherAuthorizationDatasource =
-        OtherAuthorizationImpl(
-          googleSignIn: _googleSignIn,
-          facebookAuth: _facebookAuth,
-          sharedPreferHelper: _sharedPreferHelper,
-          restClientBase: _restClientBase,
-        );
-
-    final AuthorizationRepo authorizationRepo = AuthorizationRepoImpl(
-      laravelAuthDataSource,
+    final LaravelAuthDataSource laravelAuthDataSource = LaravelAuthDataSourceImpl(
+      sharedPreferences: _sharedPreferHelper,
+      restClientBase: _restClientBase,
+      screenMessaging: ScreenMessaging.instance,
+      logger: _logger,
     );
 
-    final OtherAuthorizationRepo otherAuthorizationRepo =
-        OtherAuthorizationRepoImpl(otherAuthorizationDatasource);
+    final OtherAuthorizationDatasource otherAuthorizationDatasource = OtherAuthorizationImpl(
+      googleSignIn: _googleSignIn,
+      facebookAuth: _facebookAuth,
+      sharedPreferHelper: _sharedPreferHelper,
+      restClientBase: _restClientBase,
+    );
+
+    final AuthorizationRepo authorizationRepo = AuthorizationRepoImpl(laravelAuthDataSource);
+
+    final OtherAuthorizationRepo otherAuthorizationRepo = OtherAuthorizationRepoImpl(
+      otherAuthorizationDatasource,
+    );
 
     final initialState = AuthStates.initial(AuthStateModel.idle());
 

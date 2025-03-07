@@ -17,30 +17,24 @@ part 'chats_bloc.freezed.dart';
 @immutable
 @freezed
 sealed class ChatsEvents with _$ChatsEvents {
-  const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) =
-      _Chats$GetUserEvent;
+  const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) = _Chats$GetUserEvent;
 
-  const factory ChatsEvents.chatListenerInitialEvent() =
-      _Chats$ListenerInitialEvent;
+  const factory ChatsEvents.chatListenerInitialEvent() = _Chats$ListenerInitialEvent;
 
-  const factory ChatsEvents.chatListenerEvent(final ChatModel? chatModel) =
-      _Chat$ListenerEvent;
+  const factory ChatsEvents.chatListenerEvent(final ChatModel? chatModel) = _Chat$ListenerEvent;
 
-  const factory ChatsEvents.changeToLoadingState() =
-      _Chats$ChangeToLoadingStateEvent;
+  const factory ChatsEvents.changeToLoadingState() = _Chats$ChangeToLoadingStateEvent;
 }
 
 @immutable
 @freezed
 sealed class ChatsStates with _$ChatsStates {
-  const factory ChatsStates.initial(final ChatsStateModel chatsStateModel) =
-      Chats$InitialState;
+  const factory ChatsStates.initial(final ChatsStateModel chatsStateModel) = Chats$InitialState;
 
   const factory ChatsStates.inProgress(final ChatsStateModel chatsStateModel) =
       Chats$InProgressState;
 
-  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) =
-      Chats$ErrorState;
+  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) = Chats$ErrorState;
 
   const factory ChatsStates.successful(final ChatsStateModel chatsStateModel) =
       Chats$SuccessfulState;
@@ -73,31 +67,22 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     on<ChatsEvents>(
       (event, emit) => event.map(
         getUserChatsEvent: (event) => _getUserChatsEvent(event, emit),
-        chatListenerInitialEvent:
-            (event) => _chatListenerInitialEvent(event, emit),
+        chatListenerInitialEvent: (event) => _chatListenerInitialEvent(event, emit),
         chatListenerEvent: (event) => _chatListenerEvent(event, emit),
         changeToLoadingState: (event) => _changeToLoadingState(event, emit),
       ),
     );
   }
 
-  void _getUserChatsEvent(
-    _Chats$GetUserEvent event,
-    Emitter<ChatsStates> emit,
-  ) async {
+  void _getUserChatsEvent(_Chats$GetUserEvent event, Emitter<ChatsStates> emit) async {
     try {
       if (state is Chats$SuccessfulState && !event.refresh) return;
 
       emit(ChatsStates.inProgress(state.chatsStateModel));
 
-      final currentStateModel = state.chatsStateModel.copyWith(
-        chats: await _chatsRepo.chats(),
-      );
+      final currentStateModel = state.chatsStateModel.copyWith(chats: await _chatsRepo.chats());
 
-      _logger.log(
-        Level.debug,
-        "chat length is: ${currentStateModel.chats.length}",
-      );
+      _logger.log(Level.debug, "chat length is: ${currentStateModel.chats.length}");
 
       emit(ChatsStates.successful(currentStateModel));
     } catch (e) {
@@ -113,8 +98,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     try {
       if (_channelSubscription != null) return;
 
-      final channelName =
-          "${Constants.channelNotifyOfUserName}${_currentUser?.id}";
+      final channelName = "${Constants.channelNotifyOfUserName}${_currentUser?.id}";
 
       _logger.log(Level.debug, "current whole channel listeners: $channelName");
 
@@ -125,11 +109,9 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       final chatChannel = _pusherClientService?.publicChannel(channelName);
 
-      _channelSubscriptionInformation = _pusherClientService
-          ?.onConnectionEstablished
-          .listen((e) {
-            chatChannel?.subscribeIfNotUnsubscribed();
-          });
+      _channelSubscriptionInformation = _pusherClientService?.onConnectionEstablished.listen((e) {
+        chatChannel?.subscribeIfNotUnsubscribed();
+      });
 
       await _pusherClientService?.connect();
 
@@ -144,10 +126,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     }
   }
 
-  void _chatListenerEvent(
-    _Chat$ListenerEvent event,
-    Emitter<ChatsStates> emit,
-  ) async {
+  void _chatListenerEvent(_Chat$ListenerEvent event, Emitter<ChatsStates> emit) async {
     try {
       _logger.log(Level.debug, "${event.chatModel}");
 
@@ -155,10 +134,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       if (event.chatModel != null) {
         final currentStateModel = state.chatsStateModel.copyWith(
-          chats: _addChat(
-            chat: event.chatModel,
-            currentChats: state.chatsStateModel.chats,
-          ),
+          chats: _addChat(chat: event.chatModel, currentChats: state.chatsStateModel.chats),
         );
 
         _emitter(currentStateModel: currentStateModel, emit: emit);
@@ -176,10 +152,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     _emitter(currentStateModel: currentState, emit: emit);
   }
 
-  void _emitter({
-    required ChatsStateModel currentStateModel,
-    required Emitter<ChatsStates> emit,
-  }) {
+  void _emitter({required ChatsStateModel currentStateModel, required Emitter<ChatsStates> emit}) {
     switch (state) {
       case Chats$InitialState():
         emit(ChatsStates.initial(currentStateModel));
@@ -208,15 +181,11 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     final convertedToModelChat = _removeCurrentUserFromParticipants(chat, user);
 
     final chatIndex = resultChats.indexWhere(
-      (e) =>
-          e.id == convertedToModelChat.id &&
-          e.uuid == convertedToModelChat.uuid,
+      (e) => e.id == convertedToModelChat.id && e.uuid == convertedToModelChat.uuid,
     );
 
     if (chatIndex != -1) {
-      resultChats[chatIndex] = convertedToModelChat.copyWith(
-        lastMessage: chat.lastMessage,
-      );
+      resultChats[chatIndex] = convertedToModelChat.copyWith(lastMessage: chat.lastMessage);
     } else {
       resultChats.add(convertedToModelChat);
     }
@@ -224,10 +193,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     return resultChats;
   }
 
-  ChatModel _removeCurrentUserFromParticipants(
-    ChatModel chatModel,
-    UserModel? user,
-  ) {
+  ChatModel _removeCurrentUserFromParticipants(ChatModel chatModel, UserModel? user) {
     final data = List<ChatParticipantModel>.from(
       chatModel.participants ?? <ChatParticipantModel>[],
     );

@@ -14,8 +14,7 @@ class SearchWidget extends StatefulWidget {
   State<SearchWidget> createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends State<SearchWidget>
-    with SingleTickerProviderStateMixin {
+class _SearchWidgetState extends State<SearchWidget> with SingleTickerProviderStateMixin {
   late AppThemeBloc _appThemeBloc;
   late TextEditingController _searchController;
   late AnimationController _animationController;
@@ -33,9 +32,10 @@ class _SearchWidgetState extends State<SearchWidget>
       duration: const Duration(milliseconds: 350),
     );
 
-    _animation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.bounceInOut),
-    );
+    _animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.bounceInOut));
 
     _animationController.forward();
   }

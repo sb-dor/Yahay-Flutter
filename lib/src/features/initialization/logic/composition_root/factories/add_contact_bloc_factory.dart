@@ -30,9 +30,6 @@ final class AddContactBlocFactory extends Factory<AddContactBloc> {
 
     final initialState = AddContactsStates.initial(AddContactStateModel.idle());
 
-    return AddContactBloc(
-      initialState: initialState,
-      iAddContactRepo: addContactRepo,
-    );
+    return AddContactBloc(initialState: initialState, iAddContactRepo: addContactRepo);
   }
 }

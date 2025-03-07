@@ -14,8 +14,7 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
   final RestClientBase _restClientBase;
 
   final String _getChatUrl = "${HttpRoutes.chatsPrefix}/get/chat/on/entrance";
-  final String _deleteTempCreatedChatsUrl =
-      "${HttpRoutes.chatsPrefix}/delete/temp/created/chats";
+  final String _deleteTempCreatedChatsUrl = "${HttpRoutes.chatsPrefix}/delete/temp/created/chats";
 
   @override
   Future<ChatModel?> chat({ChatModel? chat, UserModel? withUser}) async {
@@ -46,10 +45,7 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
     try {
       final body = {"chat_id": chat?.id, "chat_uuid": chat?.uuid};
 
-      final response = await _restClientBase.delete(
-        _deleteTempCreatedChatsUrl,
-        data: body,
-      );
+      final response = await _restClientBase.delete(_deleteTempCreatedChatsUrl, data: body);
 
       debugPrint("coming remove temp created chats: $response");
     } on RestClientException {

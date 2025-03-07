@@ -3,11 +3,7 @@ import 'package:yahay/src/features/initialization/models/dependency_container.da
 
 class DependenciesScope extends InheritedWidget {
   //
-  const DependenciesScope({
-    required this.dependencies,
-    required super.child,
-    super.key,
-  });
+  const DependenciesScope({required this.dependencies, required super.child, super.key});
 
   final DependencyContainer dependencies;
 
@@ -18,10 +14,7 @@ class DependenciesScope extends InheritedWidget {
       assert(result != null, 'No DependenciesScope found in context');
       return result!.dependencies;
     } else {
-      final result =
-          context
-              .getElementForInheritedWidgetOfExactType<DependenciesScope>()
-              ?.widget;
+      final result = context.getElementForInheritedWidgetOfExactType<DependenciesScope>()?.widget;
       final checkDep = result is DependenciesScope;
       assert(checkDep, 'No DependenciesScope found in context');
       return (result as DependenciesScope).dependencies;

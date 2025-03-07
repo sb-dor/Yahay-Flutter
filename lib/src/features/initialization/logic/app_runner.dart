@@ -23,9 +23,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as concurrency;
 class AppRunner with FolderCreator {
   Future<void> initialize() async {
     final Logger logger =
-        AppLoggerFactory(
-          logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
-        ).create();
+        AppLoggerFactory(logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter()).create();
 
     await runZonedGuarded(
       () async {
@@ -51,22 +49,14 @@ class AppRunner with FolderCreator {
             // handles bloc errors, creations, changes, events etc.
             Bloc.observer = BlocObserverManager(logger);
 
-            await Firebase.initializeApp(
-              options: DefaultFirebaseOptions.currentPlatform,
-            );
+            await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
             FlutterError.onError = (errorDetails) {
-              FirebaseCrashlytics.instance.recordFlutterFatalError(
-                errorDetails,
-              );
+              FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
             };
 
             PlatformDispatcher.instance.onError = (error, stack) {
-              FirebaseCrashlytics.instance.recordError(
-                error,
-                stack,
-                fatal: true,
-              );
+              FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
               return true;
             };
 
@@ -81,8 +71,7 @@ class AppRunner with FolderCreator {
 
             if (kDebugMode) {
               await DebugImageCreatorInAppsFolder(
-                sharedPreferHelper:
-                    compositionRoot.dependencies.sharedPreferHelper,
+                sharedPreferHelper: compositionRoot.dependencies.sharedPreferHelper,
               ).createImagesInAppsFolder();
             }
 

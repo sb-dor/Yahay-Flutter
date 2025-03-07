@@ -7,6 +7,5 @@ class GlobalContext {
 
   GlobalContext._();
 
-  final GlobalKey<ScaffoldMessengerState> globalContext =
-      GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> globalContext = GlobalKey<ScaffoldMessengerState>();
 }

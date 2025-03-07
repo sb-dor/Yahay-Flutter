@@ -8,8 +8,7 @@ part 'chat_participant_status_model.g.dart';
 
 @freezed
 class ChatParticipantStatusModel with _$ChatParticipantStatusModel {
-  const factory ChatParticipantStatusModel({int? id, String? status}) =
-      _ChatParticipantStatusModel;
+  const factory ChatParticipantStatusModel({int? id, String? status}) = _ChatParticipantStatusModel;
 
   factory ChatParticipantStatusModel.fromJson(Map<String, Object?> json) =>
       _$ChatParticipantStatusModelFromJson(json);

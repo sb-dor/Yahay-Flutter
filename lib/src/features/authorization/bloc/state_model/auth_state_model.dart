@@ -32,10 +32,7 @@ class AuthStateModel {
 
   @override
   int get hashCode =>
-      user.hashCode ^
-      showPassword.hashCode ^
-      loadingRegister.hashCode ^
-      loadingLogin.hashCode;
+      user.hashCode ^ showPassword.hashCode ^ loadingRegister.hashCode ^ loadingLogin.hashCode;
 
   @override
   String toString() {

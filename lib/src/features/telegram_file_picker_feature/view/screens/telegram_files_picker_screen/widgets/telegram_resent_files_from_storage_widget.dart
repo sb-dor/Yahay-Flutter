@@ -24,10 +24,7 @@ class _TelegramResentFilesFromStorageWidgetState
   void initState() {
     super.initState();
     _telegramFilePickerStateModel =
-        context
-            .read<TelegramFilePickerBloc>()
-            .state
-            .telegramFilePickerStateModel;
+        context.read<TelegramFilePickerBloc>().state.telegramFilePickerStateModel;
     _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
   }
 
@@ -56,9 +53,7 @@ class _TelegramResentFilesFromStorageWidgetState
           const SizedBox(height: 15),
           //
           // here should be the list of only files not images or videos
-          TelegramStorageFileWidget(
-            list: _telegramFilePickerStateModel.recentFilesPagination,
-          ),
+          TelegramStorageFileWidget(list: _telegramFilePickerStateModel.recentFilesPagination),
         ],
       ),
     );

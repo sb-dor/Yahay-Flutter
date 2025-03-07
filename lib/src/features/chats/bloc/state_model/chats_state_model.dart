@@ -10,9 +10,7 @@ class ChatsStateModel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ChatsStateModel &&
-          runtimeType == other.runtimeType &&
-          chats == other.chats);
+      (other is ChatsStateModel && runtimeType == other.runtimeType && chats == other.chats);
 
   @override
   int get hashCode => chats.hashCode;

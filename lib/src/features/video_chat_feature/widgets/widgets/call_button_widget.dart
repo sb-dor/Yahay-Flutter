@@ -36,11 +36,7 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
                   width: 90,
                   height: 90,
                   child: Center(
-                    child: Icon(
-                      CupertinoIcons.phone_down,
-                      size: 35,
-                      color: Colors.white,
-                    ),
+                    child: Icon(CupertinoIcons.phone_down, size: 35, color: Colors.white),
                   ),
                 ),
               ),
@@ -69,8 +65,7 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(50),
                     onTap: () {
-                      if (state.videoChatStateModel.chat?.videoChatRoom !=
-                          null) {
+                      if (state.videoChatStateModel.chat?.videoChatRoom != null) {
                         debugPrint("working22  here");
                         context.read<VideoChatBloc>().add(
                           const VideoChatFeatureEvents.videoChatEntranceEvent(),
@@ -85,17 +80,13 @@ class _CallButtonWidgetState extends State<CallButtonWidget> {
                     child: const SizedBox(
                       width: 90,
                       height: 90,
-                      child: Center(
-                        child: Icon(Icons.call, size: 35, color: Colors.white),
-                      ),
+                      child: Center(child: Icon(Icons.call, size: 35, color: Colors.white)),
                     ),
                   ),
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  state.videoChatStateModel.chat?.videoChatRoom != null
-                      ? "Accept"
-                      : "Call",
+                  state.videoChatStateModel.chat?.videoChatRoom != null ? "Accept" : "Call",
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
