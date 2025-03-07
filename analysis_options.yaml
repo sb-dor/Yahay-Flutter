@@ -1,3 +1,5 @@
+include: package:flutter_lints/flutter.yaml
+
 formatter:
   page_width: 100
 
@@ -8,7 +10,6 @@ analyzer:
     unused_import: warning
     duplicate_import: info
     dead_code: error
-include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
