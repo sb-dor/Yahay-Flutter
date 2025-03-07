@@ -8,8 +8,8 @@ final class ProfileDatasourceImpl implements IProfileDatasource {
   ProfileDatasourceImpl({
     required final Logger logger,
     required final RestClientBase restClientBase,
-  })  : _logger = logger,
-        _restClientBase = restClientBase;
+  }) : _logger = logger,
+       _restClientBase = restClientBase;
 
   final Logger _logger;
   final RestClientBase _restClientBase;

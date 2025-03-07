@@ -18,7 +18,10 @@ class DependenciesScope extends InheritedWidget {
       assert(result != null, 'No DependenciesScope found in context');
       return result!.dependencies;
     } else {
-      final result = context.getElementForInheritedWidgetOfExactType<DependenciesScope>()?.widget;
+      final result =
+          context
+              .getElementForInheritedWidgetOfExactType<DependenciesScope>()
+              ?.widget;
       final checkDep = result is DependenciesScope;
       assert(checkDep, 'No DependenciesScope found in context');
       return (result as DependenciesScope).dependencies;
@@ -26,8 +29,6 @@ class DependenciesScope extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(DependenciesScope oldWidget) => !identical(
-        dependencies,
-        oldWidget.dependencies,
-      );
+  bool updateShouldNotify(DependenciesScope oldWidget) =>
+      !identical(dependencies, oldWidget.dependencies);
 }

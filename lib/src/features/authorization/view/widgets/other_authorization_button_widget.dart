@@ -26,10 +26,7 @@ class OtherAuthorizationButtonWidget extends StatelessWidget {
           children: [
             icon,
             const SizedBox(width: 5),
-            Text(
-              text,
-              style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400),
-            ),
+            Text(text, style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400)),
           ],
         ),
       ),

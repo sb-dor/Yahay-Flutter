@@ -15,23 +15,28 @@ class TelegramGalleryFilePickerScreen extends StatefulWidget {
   });
 
   @override
-  State<TelegramGalleryFilePickerScreen> createState() => _TelegramGalleryFilePickerScreenState();
+  State<TelegramGalleryFilePickerScreen> createState() =>
+      _TelegramGalleryFilePickerScreenState();
 }
 
-class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePickerScreen> {
+class _TelegramGalleryFilePickerScreenState
+    extends State<TelegramGalleryFilePickerScreen> {
   late final TelegramFilePickerBloc _telegramFilePickerBloc;
 
   @override
   void initState() {
     super.initState();
     _telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
-    final currentStateModel = _telegramFilePickerBloc.state.telegramFilePickerStateModel;
+    final currentStateModel =
+        _telegramFilePickerBloc.state.telegramFilePickerStateModel;
     widget.parentScrollController.addListener(() {
       if (widget.parentScrollController.offset ==
               widget.parentScrollController.position.maxScrollExtent &&
           _telegramFilePickerBloc.state is Picker$GalleryFileState) {
         // pagination here
-        _telegramFilePickerBloc.add(const TelegramFilePickerEvents.imagesAndVideoPaginationEvent());
+        _telegramFilePickerBloc.add(
+          const TelegramFilePickerEvents.imagesAndVideoPaginationEvent(),
+        );
 
         // why i wrote ".length -1" -> because of galleryPathPagination's first item is entity with
         // cameraController
@@ -78,7 +83,9 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
             return true;
           },
           child: GridView.builder(
-            physics: const AlwaysScrollableScrollPhysics(parent: ClampingScrollPhysics()),
+            physics: const AlwaysScrollableScrollPhysics(
+              parent: ClampingScrollPhysics(),
+            ),
             padding: const EdgeInsets.all(10),
             controller: widget.parentScrollController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -96,7 +103,8 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
                 return TelegramGalleryFilePickerCameraWidget(
                   cameraController: item.cameraController!,
                 );
-              } else if (item.videoPlayerController != null && item.videoPreview != null) {
+              } else if (item.videoPlayerController != null &&
+                  item.videoPreview != null) {
                 return TelegramGalleryFilePickerVideoPlayerWidget(
                   item: item,
                   telegramFilePickerBloc: _telegramFilePickerBloc,

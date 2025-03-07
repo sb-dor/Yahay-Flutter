@@ -7,16 +7,15 @@ import 'telegram_browse_folder_widget.dart';
 class TelegramBrowseFolderDataScreen extends StatefulWidget {
   final VoidCallback onBackFolder;
 
-  const TelegramBrowseFolderDataScreen({
-    super.key,
-    required this.onBackFolder,
-  });
+  const TelegramBrowseFolderDataScreen({super.key, required this.onBackFolder});
 
   @override
-  State<TelegramBrowseFolderDataScreen> createState() => _TelegramBrowseFolderDataScreenState();
+  State<TelegramBrowseFolderDataScreen> createState() =>
+      _TelegramBrowseFolderDataScreenState();
 }
 
-class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDataScreen> {
+class _TelegramBrowseFolderDataScreenState
+    extends State<TelegramBrowseFolderDataScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -25,15 +24,15 @@ class _TelegramBrowseFolderDataScreenState extends State<TelegramBrowseFolderDat
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         const SizedBox(height: 20),
-        TelegramFolderWidget(
-          onTap: widget.onBackFolder,
-          title: "...",
-        ),
+        TelegramFolderWidget(onTap: widget.onBackFolder, title: "..."),
         const SizedBox(height: 20),
         BlocBuilder<TelegramFilePickerBloc, TelegramFilePickerStates>(
           builder: (context, state) {
             return TelegramStorageFileWidget(
-              list: state.telegramFilePickerStateModel.specificFolderFilesPagination,
+              list:
+                  state
+                      .telegramFilePickerStateModel
+                      .specificFolderFilesPagination,
             );
           },
         ),

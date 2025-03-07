@@ -25,7 +25,8 @@ class TelegramFilePickerStateModel {
 
   const TelegramFilePickerStateModel({
     this.getPathForGettingImagesFrom,
-    this.filePickerScreenSelectedScreen = TelegramFileFolderEnum.recentDownloadsScreen,
+    this.filePickerScreenSelectedScreen =
+        TelegramFileFolderEnum.recentDownloadsScreen,
     this.openBottomSectionButton = true,
     required this.galleryPathFiles,
     required this.galleryPathPagination,
@@ -36,7 +37,8 @@ class TelegramFilePickerStateModel {
     required this.specificFolderFilesPagination,
   });
 
-  factory TelegramFilePickerStateModel.idle() => const TelegramFilePickerStateModel(
+  factory TelegramFilePickerStateModel.idle() =>
+      const TelegramFilePickerStateModel(
         galleryPathFiles: <TelegramFileImageEntity>[],
         galleryPathPagination: <TelegramFileImageEntity>[],
         recentFiles: <TelegramFileImageEntity>[],
@@ -53,7 +55,8 @@ class TelegramFilePickerStateModel {
           runtimeType == other.runtimeType &&
           getPathForGettingImagesFrom == other.getPathForGettingImagesFrom &&
           openBottomSectionButton == other.openBottomSectionButton &&
-          filePickerScreenSelectedScreen == other.filePickerScreenSelectedScreen &&
+          filePickerScreenSelectedScreen ==
+              other.filePickerScreenSelectedScreen &&
           galleryPathFiles == other.galleryPathFiles &&
           galleryPathPagination == other.galleryPathPagination &&
           recentFiles == other.recentFiles &&
@@ -104,16 +107,21 @@ class TelegramFilePickerStateModel {
     List<TelegramFileImageEntity>? specificFolderFilesPagination,
   }) {
     return TelegramFilePickerStateModel(
-      getPathForGettingImagesFrom: getPathForGettingImagesFrom ?? this.getPathForGettingImagesFrom,
-      openBottomSectionButton: openBottomSectionButton ?? this.openBottomSectionButton,
+      getPathForGettingImagesFrom:
+          getPathForGettingImagesFrom ?? this.getPathForGettingImagesFrom,
+      openBottomSectionButton:
+          openBottomSectionButton ?? this.openBottomSectionButton,
       filePickerScreenSelectedScreen:
           filePickerScreenSelectedScreen ?? this.filePickerScreenSelectedScreen,
       galleryPathFiles: galleryPathFiles ?? this.galleryPathFiles,
-      galleryPathPagination: galleryPathPagination ?? this.galleryPathPagination,
+      galleryPathPagination:
+          galleryPathPagination ?? this.galleryPathPagination,
       recentFiles: recentFiles ?? this.recentFiles,
-      recentFilesPagination: recentFilesPagination ?? this.recentFilesPagination,
+      recentFilesPagination:
+          recentFilesPagination ?? this.recentFilesPagination,
       pickedFiles: pickedFiles ?? this.pickedFiles,
-      specificFolderFilesAll: specificFolderFilesAll ?? this.specificFolderFilesAll,
+      specificFolderFilesAll:
+          specificFolderFilesAll ?? this.specificFolderFilesAll,
       specificFolderFilesPagination:
           specificFolderFilesPagination ?? this.specificFolderFilesPagination,
     );

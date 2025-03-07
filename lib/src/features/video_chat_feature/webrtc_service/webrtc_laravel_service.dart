@@ -18,8 +18,8 @@ class WebrtcLaravelService {
   WebrtcLaravelService({
     required final PusherClientService pusherClientService,
     required RestClientBase restClientBase,
-  })  : _pusherClientService = pusherClientService,
-        _restClientBase = restClientBase;
+  }) : _pusherClientService = pusherClientService,
+       _restClientBase = restClientBase;
 
   final RestClientBase _restClientBase;
   final PusherClientService _pusherClientService;
@@ -49,7 +49,7 @@ class WebrtcLaravelService {
           'stun:stun1.l.google.com:19302',
           'stun:stun2.l.google.com:19302',
         ],
-      }
+      },
     ],
   };
 
@@ -70,9 +70,11 @@ class WebrtcLaravelService {
 
   SetStateCallbackSignal? setSetStateCallback;
 
-  StreamSubscription<void>? calleeStreamSubs; // same channel stream but accepts different data
+  StreamSubscription<void>?
+  calleeStreamSubs; // same channel stream but accepts different data
 
-  StreamSubscription<void>? callerStreamSubs; // same channel stream but accepts different data
+  StreamSubscription<void>?
+  callerStreamSubs; // same channel stream but accepts different data
 
   Future<String> createRoom(ChatModel? chat) async {
     try {
@@ -95,10 +97,7 @@ class WebrtcLaravelService {
       // Send offer to backend
       final response = await _restClientBase.post(
         _createRoom,
-        data: {
-          'offer': offer.toMap(),
-          "chat_id": chat?.id,
-        },
+        data: {'offer': offer.toMap(), "chat_id": chat?.id},
       );
 
       final roomId = response?['roomId'];
@@ -123,7 +122,9 @@ class WebrtcLaravelService {
       try {
         final pusherService = await _pusherClientService.subscriptionCreator();
 
-        final channel = pusherService.publicChannel(Constants.webRtcChannelName);
+        final channel = pusherService.publicChannel(
+          Constants.webRtcChannelName,
+        );
 
         calleeStreamSubs = pusherService.onConnectionEstablished.listen((e) {
           channel.subscribeIfNotUnsubscribed();
@@ -140,10 +141,7 @@ class WebrtcLaravelService {
             final String sdp = data['answer']['sdp'] + "\n";
             final String type = data['answer']['type'];
 
-            final answer = RTCSessionDescription(
-              sdp,
-              type,
-            );
+            final answer = RTCSessionDescription(sdp, type);
             // if (peerConnection?.signalingState ==
             //     RTCSignalingState.RTCSignalingStateHaveLocalOffer) {
             if (await peerConnection?.getRemoteDescription() == null) {
@@ -154,10 +152,13 @@ class WebrtcLaravelService {
 
               if (responseCandidates == null) return;
               //
-              final List<dynamic> listOfCandidates = responseCandidates.getNested(['candidates']);
+              final List<dynamic> listOfCandidates = responseCandidates
+                  .getNested(['candidates']);
 
               final List<CandidateModel> candidates =
-                  listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
+                  listOfCandidates
+                      .map((e) => CandidateModel.fromJson(e))
+                      .toList();
 
               for (final each in candidates) {
                 await peerConnection?.addCandidate(
@@ -210,9 +211,7 @@ class WebrtcLaravelService {
       // for getting room configuration
       final responseForRemoteConfig = await _restClientBase.post(
         _joinRoom,
-        data: {
-          'roomId': roomId,
-        },
+        data: {'roomId': roomId},
       );
 
       if (responseForRemoteConfig == null) return;
@@ -249,7 +248,10 @@ class WebrtcLaravelService {
 
       // sdp = sdp.replaceAll("\r\na=extmap-allow-mixed", "");
 
-      final RTCSessionDescription remoteDescription = RTCSessionDescription(sdp, type);
+      final RTCSessionDescription remoteDescription = RTCSessionDescription(
+        sdp,
+        type,
+      );
 
       try {
         await peerConnection?.setRemoteDescription(remoteDescription);
@@ -265,10 +267,7 @@ class WebrtcLaravelService {
 
         final response = await _restClientBase.post(
           _joinRoom,
-          data: {
-            'roomId': roomId,
-            'answer': answer.toMap(),
-          },
+          data: {'roomId': roomId, 'answer': answer.toMap()},
         );
       } catch (e) {
         debugPrint("creating answer error is: $e");
@@ -288,7 +287,9 @@ class WebrtcLaravelService {
       );
 
       //
-      final List<dynamic> listOfCandidates = responseCandidates?.getNested(['candidates']);
+      final List<dynamic> listOfCandidates = responseCandidates?.getNested([
+        'candidates',
+      ]);
 
       final List<CandidateModel> candidates =
           listOfCandidates.map((e) => CandidateModel.fromJson(e)).toList();
@@ -314,9 +315,12 @@ class WebrtcLaravelService {
 
       channel.bind(Constants.webRtcChannelEventName).listen((e) async {
         // code here tomorrow
-        final Map<String, dynamic> data = e.data is String ? jsonDecode(e.toString()) : e.data;
+        final Map<String, dynamic> data =
+            e.data is String ? jsonDecode(e.toString()) : e.data;
 
-        if (data.containsKey("candidate") && data.containsKey("role") && data['role'] == 'caller') {
+        if (data.containsKey("candidate") &&
+            data.containsKey("role") &&
+            data['role'] == 'caller') {
           peerConnection?.addCandidate(
             RTCIceCandidate(
               data['candidate']['candidate'],
@@ -354,10 +358,10 @@ class WebrtcLaravelService {
   }
 
   // close all
-  Future<void> hangUp(
-    RTCVideoRenderer? localVideo,
-  ) async {
-    localVideo?.srcObject?.getTracks().forEach(((track) async => await track.stop()));
+  Future<void> hangUp(RTCVideoRenderer? localVideo) async {
+    localVideo?.srcObject?.getTracks().forEach(
+      ((track) async => await track.stop()),
+    );
 
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) async => await track.stop());
@@ -401,11 +405,7 @@ class WebrtcLaravelService {
   ) async {
     final response = await _restClientBase.post(
       _addIceCandidates,
-      data: {
-        'roomId': roomId,
-        'candidate': candidate.toMap(),
-        'role': role,
-      },
+      data: {'roomId': roomId, 'candidate': candidate.toMap(), 'role': role},
     );
   }
 

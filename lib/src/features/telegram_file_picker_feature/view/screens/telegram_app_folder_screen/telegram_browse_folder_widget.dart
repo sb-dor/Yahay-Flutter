@@ -27,10 +27,7 @@ class TelegramFolderWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: const Center(
-                  child: Icon(
-                    Icons.folder,
-                    color: Colors.white,
-                  ),
+                  child: Icon(Icons.folder, color: Colors.white),
                 ),
               ),
               const SizedBox(width: 10),
@@ -39,18 +36,10 @@ class TelegramFolderWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
+                    Text(title, style: const TextStyle(fontSize: 16)),
                     const Text(
                       "Folder",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),

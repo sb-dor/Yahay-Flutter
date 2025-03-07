@@ -17,7 +17,8 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
 
   final RestClientBase _restClientBase;
 
-  static const String _messageSendUrl = "${HttpRoutes.chatsPrefix}/message/handler";
+  static const String _messageSendUrl =
+      "${HttpRoutes.chatsPrefix}/message/handler";
 
   @override
   Future<void> sendMessage({required ChatMessageModel chatMessage}) async {

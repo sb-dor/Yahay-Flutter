@@ -23,12 +23,8 @@ class _LoadingMessagesWidgetState extends State<LoadingMessagesWidget> {
     _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
 
     final tempWidgets = [
-      _RightWidget(
-        appThemeBloc: _appThemeBloc,
-      ),
-      _LeftWidget(
-        appThemeBloc: _appThemeBloc,
-      ),
+      _RightWidget(appThemeBloc: _appThemeBloc),
+      _LeftWidget(appThemeBloc: _appThemeBloc),
     ];
 
     _widgets = List.generate(15, (index) => tempWidgets[rnd.nextInt(2)]);
@@ -63,7 +59,10 @@ class _RightWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            margin: EdgeInsets.only(left: MediaQuery.of(context).size.width / 4, right: 10),
+            margin: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width / 4,
+              right: 10,
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             decoration: const BoxDecoration(
               color: Colors.blue,
@@ -75,12 +74,7 @@ class _RightWidget extends StatelessWidget {
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: 100,
-                ),
-              ],
+              children: [SizedBox(height: 50, width: 100)],
             ),
           ),
         ],
@@ -104,7 +98,10 @@ class _LeftWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            margin: EdgeInsets.only(right: MediaQuery.of(context).size.width / 4, left: 10),
+            margin: EdgeInsets.only(
+              right: MediaQuery.of(context).size.width / 4,
+              left: 10,
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             decoration: const BoxDecoration(
               color: Colors.blue,
@@ -116,12 +113,7 @@ class _LeftWidget extends StatelessWidget {
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: 100,
-                ),
-              ],
+              children: [SizedBox(height: 50, width: 100)],
             ),
           ),
         ],

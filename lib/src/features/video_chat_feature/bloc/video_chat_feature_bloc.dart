@@ -19,26 +19,33 @@ part 'video_chat_feature_bloc.freezed.dart';
 @immutable
 @freezed
 sealed class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
-  const factory VideoChatFeatureEvents.videoChatInitFeatureEvent(final ChatModel? chat) =
-      _VideoChatInitFeatureEvent;
+  const factory VideoChatFeatureEvents.videoChatInitFeatureEvent(
+    final ChatModel? chat,
+  ) = _VideoChatInitFeatureEvent;
 
-  const factory VideoChatFeatureEvents.startVideoChatEvent() = _StartVideoChatEvent;
+  const factory VideoChatFeatureEvents.startVideoChatEvent() =
+      _StartVideoChatEvent;
 
-  const factory VideoChatFeatureEvents.videoChatEntranceEvent() = _VideoChatEntranceEvent;
+  const factory VideoChatFeatureEvents.videoChatEntranceEvent() =
+      _VideoChatEntranceEvent;
 
   const factory VideoChatFeatureEvents.finishVideoChatEvent({
     required void Function() popScreen,
   }) = _FinishVideoChatEvent;
 
   const factory VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(
-      final MediaStream mediaStream,) = _OnAddRemoteRendererStreamEvent;
+    final MediaStream mediaStream,
+  ) = _OnAddRemoteRendererStreamEvent;
 
-  const factory VideoChatFeatureEvents.switchCameraStreamEvent() = _SwitchCameraStreamEvent;
+  const factory VideoChatFeatureEvents.switchCameraStreamEvent() =
+      _SwitchCameraStreamEvent;
 
-  const factory VideoChatFeatureEvents.turnMicOffAndOnEvent({@Default(true) final bool change}) =
-      _TurnMicOffAndOnEvent;
+  const factory VideoChatFeatureEvents.turnMicOffAndOnEvent({
+    @Default(true) final bool change,
+  }) = _TurnMicOffAndOnEvent;
 
-  const factory VideoChatFeatureEvents.turnCameraOffAndEvent() = _TurnCameraOffAndEvent;
+  const factory VideoChatFeatureEvents.turnCameraOffAndEvent() =
+      _TurnCameraOffAndEvent;
 }
 
 // @immutable
@@ -59,10 +66,12 @@ sealed class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
 @freezed
 class VideoChatFeatureStates with _$VideoChatFeatureStates {
   const factory VideoChatFeatureStates.initial(
-      final VideoChatStateModel videoChatStateModel,) = _VideoChat$InitialState;
+    final VideoChatStateModel videoChatStateModel,
+  ) = _VideoChat$InitialState;
 }
 
-class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates> {
+class VideoChatBloc
+    extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates> {
   StreamSubscription<void>? _channelSubscription;
   PusherChannelsClient? _pusherChannelsClient;
   WebrtcLaravelService? _webrtcLaravelHelper;
@@ -80,22 +89,25 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     required final VideoChatFeatureStates initialState,
     required final Logger logger,
     required final RestClientBase restClientBase,
-  })  : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
-        _currentUser = currentUser,
-        _pusherClientService = pusherClientService,
-        _logger = logger,
-        _restClientBase = restClientBase,
-        super(initialState) {
+  }) : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
+       _currentUser = currentUser,
+       _pusherClientService = pusherClientService,
+       _logger = logger,
+       _restClientBase = restClientBase,
+       super(initialState) {
     //
 
     on<VideoChatFeatureEvents>(
       (event, emit) => event.map(
-        videoChatInitFeatureEvent: (event) => _videoChatInitFeatureEvent(event, emit),
+        videoChatInitFeatureEvent:
+            (event) => _videoChatInitFeatureEvent(event, emit),
         startVideoChatEvent: (event) => _startVideoChatEvent(event, emit),
         videoChatEntranceEvent: (event) => _videoChatEntranceEvent(event, emit),
         finishVideoChatEvent: (event) => _finishVideoChatEvent(event, emit),
-        onAddRemoteRendererStreamEvent: (event) => _onAddRemoteRendererStreamEvent(event, emit),
-        switchCameraStreamEvent: (event) => _switchCameraStreamEvent(event, emit),
+        onAddRemoteRendererStreamEvent:
+            (event) => _onAddRemoteRendererStreamEvent(event, emit),
+        switchCameraStreamEvent:
+            (event) => _switchCameraStreamEvent(event, emit),
         turnMicOffAndOnEvent: (event) => _turnMicOffAndOnEvent(event, emit),
         turnCameraOffAndEvent: (event) => _turnCameraOffAndEvent(event, emit),
       ),
@@ -169,9 +181,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
       chatStarted: resultOfJoining,
     );
 
-    await _webrtcLaravelHelper?.joinRoom(
-      room.id.toString(),
-    );
+    await _webrtcLaravelHelper?.joinRoom(room.id.toString());
 
     Future.delayed(const Duration(milliseconds: 100), () {
       add(const VideoChatFeatureEvents.turnMicOffAndOnEvent(change: false));
@@ -218,7 +228,9 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
       //     await createLocalMediaStream('key${Random().nextInt(100)}');
       videoChatEntity.videoRenderer?.srcObject = event.mediaStream;
 
-      final currentChatEntities = List.of(state.videoChatStateModel.videoChatEntities);
+      final currentChatEntities = List.of(
+        state.videoChatStateModel.videoChatEntities,
+      );
 
       currentChatEntities.add(videoChatEntity);
 
@@ -242,7 +254,8 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     );
 
     Helper.switchCamera(
-      currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0],
+      currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!
+          .getVideoTracks()[0],
       null,
       _webrtcLaravelHelper?.localStream,
     );
@@ -264,7 +277,8 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     Helper.setMicrophoneMute(
       !currentStateModel.hasAudio,
-      currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getAudioTracks()[0],
+      currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!
+          .getAudioTracks()[0],
     );
 
     emit(VideoChatFeatureStates.initial(currentStateModel));
@@ -279,7 +293,8 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     );
 
     final videoTrack =
-        currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!.getVideoTracks()[0];
+        currentStateModel.currentVideoChatEntity!.videoRenderer!.srcObject!
+            .getVideoTracks()[0];
 
     videoTrack.enabled = currentStateModel.hasVideo;
 
@@ -319,7 +334,9 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     await currentVideoChatEntity.videoRenderer?.initialize();
 
     // after video render initialization open the media
-    await _webrtcLaravelHelper?.openUserMedia(currentVideoChatEntity.videoRenderer!);
+    await _webrtcLaravelHelper?.openUserMedia(
+      currentVideoChatEntity.videoRenderer!,
+    );
 
     return currentVideoChatEntity;
   }
@@ -330,7 +347,8 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     _pusherChannelsClient?.dispose();
     _channelSubscription?.cancel();
     state.videoChatStateModel.dispose();
-    if (state.videoChatStateModel.currentVideoChatEntity?.videoRenderer != null) {
+    if (state.videoChatStateModel.currentVideoChatEntity?.videoRenderer !=
+        null) {
       await _webrtcLaravelHelper?.hangUp(
         state.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
       );

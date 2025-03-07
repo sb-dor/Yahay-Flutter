@@ -19,63 +19,51 @@ class TelegramStorageFilePickerDataModel {
 
   static List<TelegramStorageFilePickerDataModel> data(
     TelegramFilePickerBloc telegramFilerPickerBloc,
-  ) =>
-      [
-        TelegramStorageFilePickerDataModel(
-          iconBackgroundColor: Colors.green,
-          icon: const Icon(
-            Icons.storage,
-            color: Colors.white,
-            size: 30,
+  ) => [
+    TelegramStorageFilePickerDataModel(
+      iconBackgroundColor: Colors.green,
+      icon: const Icon(Icons.storage, color: Colors.white, size: 30),
+      title: "Internal Storage",
+      content: "Browse your file system",
+      onTap: () {
+        telegramFilerPickerBloc.add(
+          const TelegramFilePickerEvents.browseInternalStorageAndSelectFilesEvent(),
+        );
+      },
+    ),
+    TelegramStorageFilePickerDataModel(
+      iconBackgroundColor: Colors.blue,
+      icon: const Icon(Icons.folder, color: Colors.white, size: 30),
+      title: "Yahay",
+      content: "Browse the app's folder",
+      onTap: () async {
+        telegramFilerPickerBloc.add(
+          const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
+            TelegramFileFolderEnum.browseTheAppsFolder,
           ),
-          title: "Internal Storage",
-          content: "Browse your file system",
-          onTap: () {
-            telegramFilerPickerBloc
-                .add(const TelegramFilePickerEvents.browseInternalStorageAndSelectFilesEvent());
-          },
-        ),
-        TelegramStorageFilePickerDataModel(
-          iconBackgroundColor: Colors.blue,
-          icon: const Icon(
-            Icons.folder,
-            color: Colors.white,
-            size: 30,
+        );
+      },
+    ),
+    TelegramStorageFilePickerDataModel(
+      iconBackgroundColor: Colors.amber,
+      icon: const Icon(Icons.folder, color: Colors.white, size: 30),
+      title: "Gallery",
+      content: "To send images without compression",
+      onTap: () async {
+        telegramFilerPickerBloc.add(
+          const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
+            TelegramFileFolderEnum.browseTheGalleryFolder,
           ),
-          title: "Yahay",
-          content: "Browse the app's folder",
-          onTap: () async {
-            telegramFilerPickerBloc.add(
-              const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
-                TelegramFileFolderEnum.browseTheAppsFolder,
-              ),
-            );
-          },
-        ),
-        TelegramStorageFilePickerDataModel(
-          iconBackgroundColor: Colors.amber,
-          icon: const Icon(
-            Icons.folder,
-            color: Colors.white,
-            size: 30,
-          ),
-          title: "Gallery",
-          content: "To send images without compression",
-          onTap: () async {
-            telegramFilerPickerBloc.add(
-              const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
-                TelegramFileFolderEnum.browseTheGalleryFolder,
-              ),
-            );
+        );
 
-            Future.delayed(const Duration(milliseconds: 300), () {
-              telegramFilerPickerBloc.add(
-                const TelegramFilePickerEvents.getSpecificFolderDataEvent(
-                  getGalleryData: true,
-                ),
-              );
-            });
-          },
-        ),
-      ];
+        Future.delayed(const Duration(milliseconds: 300), () {
+          telegramFilerPickerBloc.add(
+            const TelegramFilePickerEvents.getSpecificFolderDataEvent(
+              getGalleryData: true,
+            ),
+          );
+        });
+      },
+    ),
+  ];
 }

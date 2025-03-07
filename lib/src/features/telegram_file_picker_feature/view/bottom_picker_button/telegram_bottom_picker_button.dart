@@ -12,10 +12,12 @@ class TelegramBottomPickerButton extends StatefulWidget {
   });
 
   @override
-  State<TelegramBottomPickerButton> createState() => _TelegramBottomPickerButtonState();
+  State<TelegramBottomPickerButton> createState() =>
+      _TelegramBottomPickerButtonState();
 }
 
-class _TelegramBottomPickerButtonState extends State<TelegramBottomPickerButton> {
+class _TelegramBottomPickerButtonState
+    extends State<TelegramBottomPickerButton> {
   late final List<TelegramFilePickerBottomButton> _buttons;
 
   @override

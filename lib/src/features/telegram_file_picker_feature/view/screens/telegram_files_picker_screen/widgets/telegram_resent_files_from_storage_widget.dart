@@ -8,9 +8,7 @@ import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_fi
 import 'package:yahay/src/features/telegram_file_picker_feature/view/reusable_widgets/telegram_storage_file_widget.dart';
 
 class TelegramResentFilesFromStorageWidget extends StatefulWidget {
-  const TelegramResentFilesFromStorageWidget({
-    super.key,
-  });
+  const TelegramResentFilesFromStorageWidget({super.key});
 
   @override
   State<TelegramResentFilesFromStorageWidget> createState() =>
@@ -26,7 +24,10 @@ class _TelegramResentFilesFromStorageWidgetState
   void initState() {
     super.initState();
     _telegramFilePickerStateModel =
-        context.read<TelegramFilePickerBloc>().state.telegramFilePickerStateModel;
+        context
+            .read<TelegramFilePickerBloc>()
+            .state
+            .telegramFilePickerStateModel;
     _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
   }
 
@@ -36,9 +37,10 @@ class _TelegramResentFilesFromStorageWidgetState
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       decoration: BoxDecoration(
-        color: _appThemeBloc.theme.value.brightness == Brightness.dark
-            ? Colors.blueGrey.shade900.withOpacity(0.5)
-            : Colors.white,
+        color:
+            _appThemeBloc.theme.value.brightness == Brightness.dark
+                ? Colors.blueGrey.shade900.withOpacity(0.5)
+                : Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

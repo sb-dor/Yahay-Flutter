@@ -21,13 +21,12 @@ class ChatScreenRepoImpl implements ChatScreenRepo {
     required UserModel? toUser,
     required File file,
     String? message,
-  }) =>
-      _chatScreenMessageDataSource.sendPicture(
-        chat: chat,
-        toUser: toUser,
-        file: file,
-        message: message,
-      );
+  }) => _chatScreenMessageDataSource.sendPicture(
+    chat: chat,
+    toUser: toUser,
+    file: file,
+    message: message,
+  );
 
   @override
   Future<void> sendVideo({
@@ -35,11 +34,10 @@ class ChatScreenRepoImpl implements ChatScreenRepo {
     required UserModel? toUser,
     required File file,
     String? message,
-  }) =>
-      _chatScreenMessageDataSource.sendVideo(
-        chat: chat,
-        toUser: toUser,
-        file: file,
-        message: message,
-      );
+  }) => _chatScreenMessageDataSource.sendVideo(
+    chat: chat,
+    toUser: toUser,
+    file: file,
+    message: message,
+  );
 }

@@ -22,9 +22,15 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _registerForm = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController(text: '');
-  final TextEditingController _passwordController = TextEditingController(text: '');
-  final TextEditingController _userNameController = TextEditingController(text: '');
+  final TextEditingController _emailController = TextEditingController(
+    text: '',
+  );
+  final TextEditingController _passwordController = TextEditingController(
+    text: '',
+  );
+  final TextEditingController _userNameController = TextEditingController(
+    text: '',
+  );
   late final AuthBloc _authBloc;
 
   @override
@@ -45,90 +51,94 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final dependencies = DependenciesScope.of(context, listen: false);
     return BlocConsumer<AuthBloc, AuthStates>(
-        bloc: _authBloc,
-        listener: (context, state) {
-          if (state is Auth$AuthorizedState) {
-            AutoRouter.of(context).replaceAll([const HomeRoute()]);
-          }
-        },
-        builder: (context, state) {
-          final authState = state.authStateModel;
-          return Scaffold(
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Form(
-                  key: _registerForm,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Sign Up",
-                        style: GoogleFonts.aBeeZee(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 20,
+      bloc: _authBloc,
+      listener: (context, state) {
+        if (state is Auth$AuthorizedState) {
+          AutoRouter.of(context).replaceAll([const HomeRoute()]);
+        }
+      },
+      builder: (context, state) {
+        final authState = state.authStateModel;
+        return Scaffold(
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Form(
+                key: _registerForm,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Sign Up",
+                      style: GoogleFonts.aBeeZee(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    AuthorizationInputWidget(
+                      title: Constants.email,
+                      controller: _emailController,
+                      hintText: Constants.enterEmail,
+                    ),
+                    const SizedBox(height: 10),
+                    AuthorizationInputWidget(
+                      title: Constants.username,
+                      controller: _userNameController,
+                      hintText: "@${Constants.username}",
+                    ),
+                    const SizedBox(height: 10),
+                    Stack(
+                      children: [
+                        AuthorizationInputWidget(
+                          title: Constants.password,
+                          controller: _passwordController,
+                          hintText: Constants.enterPassword,
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      AuthorizationInputWidget(
-                        title: Constants.email,
-                        controller: _emailController,
-                        hintText: Constants.enterEmail,
-                      ),
-                      const SizedBox(height: 10),
-                      AuthorizationInputWidget(
-                        title: Constants.username,
-                        controller: _userNameController,
-                        hintText: "@${Constants.username}",
-                      ),
-                      const SizedBox(height: 10),
-                      Stack(
-                        children: [
-                          AuthorizationInputWidget(
-                            title: Constants.password,
-                            controller: _passwordController,
-                            hintText: Constants.enterPassword,
+                        Positioned(
+                          right: 0,
+                          top: 25,
+                          child: IconButton(
+                            onPressed: () => [],
+                            icon: const Icon(Icons.remove_red_eye_outlined),
                           ),
-                          Positioned(
-                            right: 0,
-                            top: 25,
-                            child: IconButton(
-                              onPressed: () => [],
-                              icon: const Icon(
-                                Icons.remove_red_eye_outlined,
-                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 60,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape: WidgetStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 60,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: WidgetStatePropertyAll(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            backgroundColor: const WidgetStatePropertyAll(Colors.blueAccent),
+                          backgroundColor: const WidgetStatePropertyAll(
+                            Colors.blueAccent,
                           ),
-                          onPressed: () => _authBloc.add(
-                            AuthEvents.registerEvent(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                              userName: _userNameController.text,
-                              initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
-                              // initDioOptions: () async {
+                        ),
+                        onPressed:
+                            () => _authBloc.add(
+                              AuthEvents.registerEvent(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                                userName: _userNameController.text,
+                                initDependenciesAfterAuthorization:
+                                    dependencies
+                                        .initDependenciesAfterAuthorization,
+                                // initDioOptions: () async {
                                 // await dependencies.dioSettings.initOptions();
-                              // },
+                                // },
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: (authState.loadingRegister)
-                                ? const SizedBox(
+                        child: Center(
+                          child:
+                              (authState.loadingRegister)
+                                  ? const SizedBox(
                                     width: 15,
                                     height: 15,
                                     child: CircularProgressIndicator(
@@ -136,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       color: Colors.white,
                                     ),
                                   )
-                                : Text(
+                                  : Text(
                                     Constants.signUp,
                                     style: GoogleFonts.aBeeZee(
                                       color: Colors.white,
@@ -144,104 +154,113 @@ class _RegisterPageState extends State<RegisterPage> {
                                       fontSize: 16,
                                     ),
                                   ),
-                          ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Expanded(
-                            child: Divider(
-                              height: 0,
-                              thickness: 0.5,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          Text(
-                            Constants.orSignUpWith,
-                            style: GoogleFonts.aBeeZee(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          const SizedBox(width: 15),
-                          const Expanded(
-                            child: Divider(
-                              height: 0,
-                              thickness: 0.5,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OtherAuthorizationButtonWidget(
-                              icon: const FaIcon(
-                                FontAwesomeIcons.google,
-                              ),
-                              text: 'Google',
-                              onTap: () => _authBloc.add(
-                                AuthEvents.googleAuth(
-                                  initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
-                                  // initDioOptions: () async {
-                                    // await dependencies.dioSettings.initOptions();
-                                  // },
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: OtherAuthorizationButtonWidget(
-                              icon: const FaIcon(
-                                FontAwesomeIcons.facebook,
-                                color: Colors.blue,
-                              ),
-                              text: 'Facebook',
-                              onTap: () => _authBloc.add(
-                                AuthEvents.facebookAuth(
-                                  initDependenciesAfterAuthorization: dependencies.initDependenciesAfterAuthorization,
-                                  // initDioOptions: () async {
-                                    // await dependencies.dioSettings.initOptions();
-                                  // },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      RichText(
-                        text: TextSpan(
-                          style: GoogleFonts.aBeeZee(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Expanded(
+                          child: Divider(
+                            height: 0,
+                            thickness: 0.5,
                             color: Colors.grey,
                           ),
-                          children: [
-                            const TextSpan(text: Constants.haveAnAccount),
-                            const WidgetSpan(child: SizedBox(width: 10)),
-                            TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => AutoRouter.of(context).replace(const LoginRoute()),
-                              text: Constants.signIn,
-                              style: const TextStyle(color: Colors.blue),
-                            ),
-                          ],
                         ),
+                        const SizedBox(width: 15),
+                        Text(
+                          Constants.orSignUpWith,
+                          style: GoogleFonts.aBeeZee(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        const Expanded(
+                          child: Divider(
+                            height: 0,
+                            thickness: 0.5,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OtherAuthorizationButtonWidget(
+                            icon: const FaIcon(FontAwesomeIcons.google),
+                            text: 'Google',
+                            onTap:
+                                () => _authBloc.add(
+                                  AuthEvents.googleAuth(
+                                    initDependenciesAfterAuthorization:
+                                        dependencies
+                                            .initDependenciesAfterAuthorization,
+                                    // initDioOptions: () async {
+                                    // await dependencies.dioSettings.initOptions();
+                                    // },
+                                  ),
+                                ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: OtherAuthorizationButtonWidget(
+                            icon: const FaIcon(
+                              FontAwesomeIcons.facebook,
+                              color: Colors.blue,
+                            ),
+                            text: 'Facebook',
+                            onTap:
+                                () => _authBloc.add(
+                                  AuthEvents.facebookAuth(
+                                    initDependenciesAfterAuthorization:
+                                        dependencies
+                                            .initDependenciesAfterAuthorization,
+                                    // initDioOptions: () async {
+                                    // await dependencies.dioSettings.initOptions();
+                                    // },
+                                  ),
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    RichText(
+                      text: TextSpan(
+                        style: GoogleFonts.aBeeZee(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                        children: [
+                          const TextSpan(text: Constants.haveAnAccount),
+                          const WidgetSpan(child: SizedBox(width: 10)),
+                          TextSpan(
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap =
+                                      () => AutoRouter.of(
+                                        context,
+                                      ).replace(const LoginRoute()),
+                            text: Constants.signIn,
+                            style: const TextStyle(color: Colors.blue),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          );
-        },);
+          ),
+        );
+      },
+    );
   }
 }

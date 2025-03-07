@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 abstract class AppColorsScheme {
   // Theme config for FlexColorScheme version 7.3.x. Make sure you use
-// same or higher package version, but still same major version. If you
-// use a lower package version, some properties may not be supported.
-// In that case remove them after copying this theme to your app.
+  // same or higher package version, but still same major version. If you
+  // use a lower package version, some properties may not be supported.
+  // In that case remove them after copying this theme to your app.
   static final ThemeData light = FlexThemeData.light(
     colors: const FlexSchemeColor(
       primary: Color(0xff004881),

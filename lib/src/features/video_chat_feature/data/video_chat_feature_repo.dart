@@ -13,9 +13,7 @@ abstract interface class VideoChatFeatureRepo {
   Future<bool> leaveTheChat(VideoChatModel videoChatEntity);
 
   // streaming the video data feature
-  Future<void> streamTheVideo({
-    required VideoChatModel videoChatEntity,
-  });
+  Future<void> streamTheVideo({required VideoChatModel videoChatEntity});
 }
 
 class VideoChatFeatureRepoImpl implements VideoChatFeatureRepo {
@@ -36,10 +34,6 @@ class VideoChatFeatureRepoImpl implements VideoChatFeatureRepo {
       _dataSource.leaveTheChat(videoChatEntity);
 
   @override
-  Future<void> streamTheVideo({
-    required VideoChatModel videoChatEntity,
-  }) =>
-      _dataSource.streamTheVideo(
-        videoChatEntity: videoChatEntity,
-      );
+  Future<void> streamTheVideo({required VideoChatModel videoChatEntity}) =>
+      _dataSource.streamTheVideo(videoChatEntity: videoChatEntity);
 }

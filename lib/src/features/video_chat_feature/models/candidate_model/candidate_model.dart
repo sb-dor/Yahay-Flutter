@@ -23,11 +23,13 @@ class CandidateModel with _$CandidateModel {
   const factory CandidateModel({
     required int? id,
     @JsonKey(name: "room_id") required int? roomId,
-    @JsonKey(fromJson: _fromJsonInnerCandidate) required InnerCandidateModel? candidate,
+    @JsonKey(fromJson: _fromJsonInnerCandidate)
+    required InnerCandidateModel? candidate,
     required String? role,
     required DateTime? createdAt,
     required DateTime? updatedAt,
   }) = _CandidateModel;
 
-  factory CandidateModel.fromJson(Map<String, Object?> json) => _$CandidateModelFromJson(json);
+  factory CandidateModel.fromJson(Map<String, Object?> json) =>
+      _$CandidateModelFromJson(json);
 }

@@ -19,9 +19,9 @@ final class CompositionRoot extends AsyncFactory<CompositionResult> {
     required Logger logger,
     required SharedPreferHelper sharedPreferHelper,
     required RestClientBase restClientBase,
-  })  : _logger = logger,
-        _sharedPreferHelper = sharedPreferHelper,
-        _restClientBase = restClientBase;
+  }) : _logger = logger,
+       _sharedPreferHelper = sharedPreferHelper,
+       _restClientBase = restClientBase;
 
   final Logger _logger;
   final SharedPreferHelper _sharedPreferHelper;
@@ -33,11 +33,12 @@ final class CompositionRoot extends AsyncFactory<CompositionResult> {
 
     _logger.log(Level.info, 'Initializing dependencies...');
 
-    final dependencyContainer = await DependencyContainerFactory(
-      logger: _logger,
-      sharedPreferHelper: _sharedPreferHelper,
-      restClientBase: _restClientBase,
-    ).create();
+    final dependencyContainer =
+        await DependencyContainerFactory(
+          logger: _logger,
+          sharedPreferHelper: _sharedPreferHelper,
+          restClientBase: _restClientBase,
+        ).create();
 
     stopWatch.stop();
     _logger.log(
@@ -55,14 +56,15 @@ class CompositionResult {
   CompositionResult(this.dependencies);
 }
 
-final class DependencyContainerFactory extends AsyncFactory<DependencyContainer> {
+final class DependencyContainerFactory
+    extends AsyncFactory<DependencyContainer> {
   DependencyContainerFactory({
     required Logger logger,
     required SharedPreferHelper sharedPreferHelper,
     required RestClientBase restClientBase,
-  })  : _logger = logger,
-        _sharedPreferHelper = sharedPreferHelper,
-        _restClientBase = restClientBase;
+  }) : _logger = logger,
+       _sharedPreferHelper = sharedPreferHelper,
+       _restClientBase = restClientBase;
 
   final Logger _logger;
   final SharedPreferHelper _sharedPreferHelper;
@@ -70,21 +72,23 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
 
   @override
   Future<DependencyContainer> create() async {
-    final authBloc = AuthorizationBlocFactory(
-      googleSignIn: GoogleSignIn(),
-      facebookAuth: FacebookAuth.instance,
-      sharedPreferHelper: _sharedPreferHelper,
-      logger: _logger,
-      restClientBase: _restClientBase,
-    ).create();
+    final authBloc =
+        AuthorizationBlocFactory(
+          googleSignIn: GoogleSignIn(),
+          facebookAuth: FacebookAuth.instance,
+          sharedPreferHelper: _sharedPreferHelper,
+          logger: _logger,
+          restClientBase: _restClientBase,
+        ).create();
 
     final cameraHelperService = CameraHelperService();
     await cameraHelperService.initCameras();
 
-    final addContactBloc = AddContactBlocFactory(
-      logger: _logger,
-      restClientBase: _restClientBase,
-    ).create();
+    final addContactBloc =
+        AddContactBlocFactory(
+          logger: _logger,
+          restClientBase: _restClientBase,
+        ).create();
 
     final pusherClientService = PusherClientService();
 

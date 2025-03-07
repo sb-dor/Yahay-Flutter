@@ -53,7 +53,10 @@ class AddContactUserWidget extends StatelessWidget {
                     ),
                     Text(
                       "Last seen 3000 y.a",
-                      style: GoogleFonts.aBeeZee(fontSize: 12, color: Colors.grey),
+                      style: GoogleFonts.aBeeZee(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 ),
@@ -62,7 +65,9 @@ class AddContactUserWidget extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    AutoRouter.of(context).push(ChatRoute(chat: null, user: user));
+                    AutoRouter.of(
+                      context,
+                    ).push(ChatRoute(chat: null, user: user));
                   },
                   icon: const Icon(CupertinoIcons.chat_bubble_2_fill),
                 )
@@ -74,7 +79,10 @@ class AddContactUserWidget extends StatelessWidget {
                   child: const CircularProgressIndicator(strokeWidth: 2),
                 )
               else
-                IconButton(onPressed: addUser, icon: const Icon(Icons.person_add_alt)),
+                IconButton(
+                  onPressed: addUser,
+                  icon: const Icon(Icons.person_add_alt),
+                ),
             ],
           ),
         ),

@@ -7,10 +7,7 @@ import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 class EmojiPickerHelper extends StatefulWidget {
   final TextEditingController messageController;
 
-  const EmojiPickerHelper({
-    super.key,
-    required this.messageController,
-  });
+  const EmojiPickerHelper({super.key, required this.messageController});
 
   @override
   State<EmojiPickerHelper> createState() => _EmojiPickerHelperState();
@@ -34,7 +31,9 @@ class _EmojiPickerHelperState extends State<EmojiPickerHelper> {
       onBackspacePressed: () {
         // Do something when the user taps the backspace button (optional)
         // Set it to null to hide the Backspace-Button
-        _chatScreenBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
+        _chatScreenBloc.add(
+          const ChatScreenEvents.changeEmojiPicker(value: false),
+        );
       },
       textEditingController: widget.messageController,
       // pass here the same [TextEditingController] that is connected to your input field, usually a [TextFormField]
@@ -43,7 +42,11 @@ class _EmojiPickerHelperState extends State<EmojiPickerHelper> {
         checkPlatformCompatibility: true,
         emojiViewConfig: EmojiViewConfig(
           // Issue: https://github.com/flutter/flutter/issues/28894
-          emojiSizeMax: 28 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.20 : 1.0),
+          emojiSizeMax:
+              28 *
+              (foundation.defaultTargetPlatform == TargetPlatform.iOS
+                  ? 1.20
+                  : 1.0),
         ),
         // viewOrderConfig: ViewOrderConfig(
         //   bottom: EmojiPickerItem.categoryBar,
@@ -56,9 +59,7 @@ class _EmojiPickerHelperState extends State<EmojiPickerHelper> {
           buttonColor: Colors.white,
           buttonIconColor: Colors.grey,
         ),
-        searchViewConfig: const SearchViewConfig(
-          backgroundColor: Colors.white,
-        ),
+        searchViewConfig: const SearchViewConfig(backgroundColor: Colors.white),
       ),
     );
   }

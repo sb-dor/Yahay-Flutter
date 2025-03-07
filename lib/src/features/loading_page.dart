@@ -19,11 +19,9 @@ class _HomePageState extends State<LoadingPage> {
 
   void _onMessage(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -33,7 +31,8 @@ class _HomePageState extends State<LoadingPage> {
     _authBloc = depContainer.authBloc;
     _authBloc.add(
       AuthEvents.checkAuthEvent(
-        initDependenciesAfterAuthorization: depContainer.initDependenciesAfterAuthorization,
+        initDependenciesAfterAuthorization:
+            depContainer.initDependenciesAfterAuthorization,
         onMessage: _onMessage,
       ),
     );
@@ -50,19 +49,13 @@ class _HomePageState extends State<LoadingPage> {
           AutoRouter.of(context).replaceAll([const LoginRoute()]);
         } else if (state is ErrorStateOnAuthStates) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(Constants.somethingWentWrong),
-            ),
+            const SnackBar(content: Text(Constants.somethingWentWrong)),
           );
         } else {
           // TODO something on error state
         }
       },
-      child: const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+      child: const Scaffold(body: Center(child: CircularProgressIndicator())),
     );
   }
 }

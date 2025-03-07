@@ -5,7 +5,8 @@ import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_fi
 import 'package:yahay/src/features/telegram_file_picker_feature/data/repo/telegram_file_picker_repo_impl.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/domain/repo/telegram_file_picker_repo.dart';
 
-final class TelegramFilePickerBlocFactory extends Factory<TelegramFilePickerBloc> {
+final class TelegramFilePickerBlocFactory
+    extends Factory<TelegramFilePickerBloc> {
   final CameraHelperService _cameraHelperService;
 
   TelegramFilePickerBlocFactory({
@@ -15,7 +16,8 @@ final class TelegramFilePickerBlocFactory extends Factory<TelegramFilePickerBloc
   @override
   TelegramFilePickerBloc create() {
     //
-    final TelegramFilePickerRepo telegramFilePickerRepo = TelegramFilePickerRepoImpl();
+    final TelegramFilePickerRepo telegramFilePickerRepo =
+        TelegramFilePickerRepoImpl();
     //
     final initialState = TelegramFilePickerStates.initial(
       TelegramFilePickerStateModel.idle(),

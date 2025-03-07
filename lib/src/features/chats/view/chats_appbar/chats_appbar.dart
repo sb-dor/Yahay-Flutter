@@ -10,27 +10,19 @@ class ChatsAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        "Chats",
-        style: GoogleFonts.aBeeZee(),
-      ),
+      title: Text("Chats", style: GoogleFonts.aBeeZee()),
       centerTitle: true,
       scrolledUnderElevation: 0.0,
       leading: IconButton(
-        onPressed: () => OpenSearchContactsPopup.openSearchContactsPopup(context),
+        onPressed:
+            () => OpenSearchContactsPopup.openSearchContactsPopup(context),
         icon: const Icon(Icons.person_add_alt),
       ),
       actions: [
+        IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.search)),
         IconButton(
           onPressed: () {},
-          icon: const Icon(CupertinoIcons.search),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: const FaIcon(
-            FontAwesomeIcons.gear,
-            size: 20,
-          ),
+          icon: const FaIcon(FontAwesomeIcons.gear, size: 20),
         ),
       ],
     );

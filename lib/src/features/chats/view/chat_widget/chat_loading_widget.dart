@@ -33,10 +33,7 @@ class _ChatLoadingWidgetState extends State<ChatLoadingWidget> {
           return IntrinsicHeight(
             child: Row(
               children: [
-                const CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Colors.white,
-                ),
+                const CircleAvatar(radius: 30, backgroundColor: Colors.white),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(

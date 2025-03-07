@@ -27,41 +27,43 @@ class _TelegramGalleryFilePickerVideoPlayerWidgetState
   @override
   void initState() {
     super.initState();
-    _currentStateModel = widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
+    _currentStateModel =
+        widget.telegramFilePickerBloc.state.telegramFilePickerStateModel;
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedPadding(
       duration: const Duration(milliseconds: 100),
-      padding: _currentStateModel.isFileInsidePickedFiles(widget.item)
-          ? const EdgeInsets.all(10)
-          : EdgeInsets.zero,
+      padding:
+          _currentStateModel.isFileInsidePickedFiles(widget.item)
+              ? const EdgeInsets.all(10)
+              : EdgeInsets.zero,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Stack(
           children: [
             Positioned.fill(
-              child: Image.memory(
-                widget.item.videoPreview!,
-                fit: BoxFit.cover,
-              ),
+              child: Image.memory(widget.item.videoPreview!, fit: BoxFit.cover),
             ),
             Positioned(
               right: 0,
               top: 0,
               child: IconButton(
-                onPressed: () => widget.telegramFilePickerBloc.add(
-                  TelegramFilePickerEvents.selectGalleryFileEvent(
-                    widget.item,
-                  ),
-                ),
-                icon: _currentStateModel.isFileInsidePickedFiles(widget.item)
-                    ? const Icon(Icons.check_circle)
-                    : const Icon(Icons.circle_outlined),
-                color: _currentStateModel.isFileInsidePickedFiles(widget.item)
-                    ? Colors.blue
-                    : Colors.white,
+                onPressed:
+                    () => widget.telegramFilePickerBloc.add(
+                      TelegramFilePickerEvents.selectGalleryFileEvent(
+                        widget.item,
+                      ),
+                    ),
+                icon:
+                    _currentStateModel.isFileInsidePickedFiles(widget.item)
+                        ? const Icon(Icons.check_circle)
+                        : const Icon(Icons.circle_outlined),
+                color:
+                    _currentStateModel.isFileInsidePickedFiles(widget.item)
+                        ? Colors.blue
+                        : Colors.white,
               ),
             ),
             Positioned(
@@ -70,17 +72,12 @@ class _TelegramGalleryFilePickerVideoPlayerWidgetState
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(
-                    alpha: 0.4,
-                  ),
+                  color: Colors.black.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Row(
                   children: [
-                    const Icon(
-                      Icons.play_arrow,
-                      size: 15,
-                    ),
+                    const Icon(Icons.play_arrow, size: 15),
                     const SizedBox(width: 2),
                     Text(
                       ReusableGlobalFunctions.instance.getNormalDuration(

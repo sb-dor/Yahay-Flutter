@@ -30,9 +30,10 @@ class _TelegramGalleryFilePickerImageWidgetState
             Positioned.fill(
               child: AnimatedPadding(
                 duration: const Duration(milliseconds: 100),
-                padding: currentStateModel.isFileInsidePickedFiles(widget.item)
-                    ? const EdgeInsets.all(10)
-                    : EdgeInsets.zero,
+                padding:
+                    currentStateModel.isFileInsidePickedFiles(widget.item)
+                        ? const EdgeInsets.all(10)
+                        : EdgeInsets.zero,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
@@ -51,17 +52,20 @@ class _TelegramGalleryFilePickerImageWidgetState
               right: 0,
               top: 0,
               child: IconButton(
-                onPressed: () => widget.telegramFilePickerBloc.add(
-                  TelegramFilePickerEvents.selectGalleryFileEvent(
-                    widget.item,
-                  ),
-                ),
-                icon: currentStateModel.isFileInsidePickedFiles(widget.item)
-                    ? const Icon(Icons.check_circle)
-                    : const Icon(Icons.circle_outlined),
-                color: currentStateModel.isFileInsidePickedFiles(widget.item)
-                    ? Colors.blue
-                    : Colors.white,
+                onPressed:
+                    () => widget.telegramFilePickerBloc.add(
+                      TelegramFilePickerEvents.selectGalleryFileEvent(
+                        widget.item,
+                      ),
+                    ),
+                icon:
+                    currentStateModel.isFileInsidePickedFiles(widget.item)
+                        ? const Icon(Icons.check_circle)
+                        : const Icon(Icons.circle_outlined),
+                color:
+                    currentStateModel.isFileInsidePickedFiles(widget.item)
+                        ? Colors.blue
+                        : Colors.white,
               ),
             ),
           ],

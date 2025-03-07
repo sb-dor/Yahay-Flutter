@@ -15,10 +15,11 @@ mixin class DownloadsPathFiles {
 
   // final _reusables = snoopy<ReusableGlobalFunctions>();
 
-  Stream<TelegramPathFolderFileModel?> downloadsPathFilesData(//{
-      // String dirType = DownloadDirectoryTypes.downloads,
-      //}
-      ) async* {
+  Stream<TelegramPathFolderFileModel?> downloadsPathFilesData(
+    //{
+    // String dirType = DownloadDirectoryTypes.downloads,
+    //}
+  ) async* {
     try {
       // final externalStoragePermission = await _permissions.manageExternalStoragePermission();
       //
@@ -73,7 +74,10 @@ mixin class DownloadsPathFiles {
     final reusables = ReusableGlobalFunctions.instance;
 
     final directoryPath = await getTemporaryDirectory();
-    await for (final entity in directory.list(recursive: false, followLinks: false)) {
+    await for (final entity in directory.list(
+      recursive: false,
+      followLinks: false,
+    )) {
       if (FileSystemEntity.isDirectorySync(entity.path)) {
         await _fileFinder([receivingPort, entity.path, rootIsolateToken]);
       }

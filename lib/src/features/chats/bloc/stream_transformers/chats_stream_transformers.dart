@@ -5,7 +5,8 @@ import 'package:dart_pusher_channels/dart_pusher_channels.dart';
 import 'package:logger/logger.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 
-class ChatsStreamTransformers extends StreamTransformerBase<ChannelReadEvent, ChatModel> {
+class ChatsStreamTransformers
+    extends StreamTransformerBase<ChannelReadEvent, ChatModel> {
   //
   ChatsStreamTransformers({required final Logger logger}) : _logger = logger;
 
@@ -24,14 +25,12 @@ class ChatsStreamTransformers extends StreamTransformerBase<ChannelReadEvent, Ch
       (event) {
         final data = event?.data;
 
-        _logger.log(
-          Level.debug,
-          "$data",
-        );
+        _logger.log(Level.debug, "$data");
 
-        final Map<String, dynamic> json = data is String
-            ? jsonDecode(data)
-            : data is Map
+        final Map<String, dynamic> json =
+            data is String
+                ? jsonDecode(data)
+                : data is Map
                 ? data
                 : {};
 

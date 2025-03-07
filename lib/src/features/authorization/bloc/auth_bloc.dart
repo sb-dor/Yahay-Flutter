@@ -41,7 +41,8 @@ sealed class AuthEvents with _$AuthEvents {
     required void Function(String message) onMessage,
   }) = _CheckAuthEventOnAuthEvents;
 
-  const factory AuthEvents.changePasswordVisibility() = _ChangePasswordVisibilityEvent;
+  const factory AuthEvents.changePasswordVisibility() =
+      _ChangePasswordVisibilityEvent;
 
   const factory AuthEvents.logOutEvent() = _LogOutEvent;
 }
@@ -49,17 +50,20 @@ sealed class AuthEvents with _$AuthEvents {
 @immutable
 @freezed
 sealed class AuthStates with _$AuthStates {
-  const factory AuthStates.initial(final AuthStateModel authStateModel) = Auth$InitialState;
+  const factory AuthStates.initial(final AuthStateModel authStateModel) =
+      Auth$InitialState;
 
   const factory AuthStates.inProgress(final AuthStateModel authStateModel) =
       AuthStates$InProgressState;
 
-  const factory AuthStates.authorized(final AuthStateModel authStateModel) = Auth$AuthorizedState;
+  const factory AuthStates.authorized(final AuthStateModel authStateModel) =
+      Auth$AuthorizedState;
 
   const factory AuthStates.unAuthorized(final AuthStateModel authStateModel) =
       Auth$UnAuthorizedState;
 
-  const factory AuthStates.error(final AuthStateModel authStateModel) = ErrorStateOnAuthStates;
+  const factory AuthStates.error(final AuthStateModel authStateModel) =
+      ErrorStateOnAuthStates;
 }
 
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {
@@ -70,9 +74,9 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     required AuthorizationRepo authorizationRepo,
     required OtherAuthorizationRepo otherAuthorizationRepo,
     required AuthStates initialState,
-  })  : _iAuthorizationRepo = authorizationRepo,
-        _iOtherAuthorizationRepo = otherAuthorizationRepo,
-        super(initialState) {
+  }) : _iAuthorizationRepo = authorizationRepo,
+       _iOtherAuthorizationRepo = otherAuthorizationRepo,
+       super(initialState) {
     //
     //
     on<AuthEvents>(
@@ -82,7 +86,8 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         registerEvent: (event) => _registerEvent(event, emit),
         loginEvent: (event) => _loginEvent(event, emit),
         checkAuthEvent: (event) => _checkAuthEvent(event, emit),
-        changePasswordVisibility: (event) => _changePasswordVisibility(event, emit),
+        changePasswordVisibility:
+            (event) => _changePasswordVisibility(event, emit),
         logOutEvent: (event) => _logOutEvent(event, emit),
       ),
     );
@@ -102,9 +107,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         return;
       }
 
-      currentStateModel = currentStateModel.copyWith(
-        user: user,
-      );
+      currentStateModel = currentStateModel.copyWith(user: user);
 
       // await event.initDioOptions();
 
@@ -130,9 +133,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         return;
       }
 
-      currentStateModel = currentStateModel.copyWith(
-        user: user,
-      );
+      currentStateModel = currentStateModel.copyWith(user: user);
 
       // await event.initDioOptions();
 
@@ -151,9 +152,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
   ) async {
     var currentStateModel = state.authStateModel.copyWith();
     try {
-      currentStateModel = currentStateModel.copyWith(
-        loadingRegister: true,
-      );
+      currentStateModel = currentStateModel.copyWith(loadingRegister: true);
 
       _emitter(currentStateModel, emit);
 
@@ -163,18 +162,14 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         userName: event.userName.trim(),
       );
 
-      currentStateModel = currentStateModel.copyWith(
-        loadingRegister: false,
-      );
+      currentStateModel = currentStateModel.copyWith(loadingRegister: false);
 
       if (user == null) {
         emit(AuthStates.unAuthorized(currentStateModel));
         return;
       }
 
-      currentStateModel = currentStateModel.copyWith(
-        user: user,
-      );
+      currentStateModel = currentStateModel.copyWith(user: user);
 
       // await event.initDioOptions();
       emit(AuthStates.authorized(currentStateModel));
@@ -202,18 +197,14 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         password: event.password.trim(),
       );
 
-      currentStateModel = currentStateModel.copyWith(
-        loadingLogin: false,
-      );
+      currentStateModel = currentStateModel.copyWith(loadingLogin: false);
 
       if (user == null) {
         emit(AuthStates.unAuthorized(currentStateModel));
         return;
       }
 
-      currentStateModel = currentStateModel.copyWith(
-        user: user,
-      );
+      currentStateModel = currentStateModel.copyWith(user: user);
 
       // await event.initDioOptions();
 
@@ -241,9 +232,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
         return;
       }
 
-      currentStateModel = currentStateModel.copyWith(
-        user: user,
-      );
+      currentStateModel = currentStateModel.copyWith(user: user);
 
       emit(AuthStates.authorized(currentStateModel));
 
@@ -273,10 +262,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     _emitter(currentStateModel, emit);
   }
 
-  void _logOutEvent(
-    _LogOutEvent event,
-    Emitter<AuthStates> emit,
-  ) async {
+  void _logOutEvent(_LogOutEvent event, Emitter<AuthStates> emit) async {
     var currentStateModel = state.authStateModel.copyWith();
     try {
       final loggedOut = await _iAuthorizationRepo.logout();
@@ -294,10 +280,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     }
   }
 
-  void _emitter(
-    AuthStateModel authStateModel,
-    Emitter<AuthStates> emit,
-  ) {
+  void _emitter(AuthStateModel authStateModel, Emitter<AuthStates> emit) {
     switch (state) {
       case Auth$InitialState():
         emit(AuthStates.initial(authStateModel));

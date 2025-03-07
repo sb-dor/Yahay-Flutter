@@ -14,11 +14,11 @@ class AuthStateModel {
   });
 
   factory AuthStateModel.idle() => const AuthStateModel(
-        user: null,
-        showPassword: true,
-        loadingRegister: false,
-        loadingLogin: false,
-      );
+    user: null,
+    showPassword: true,
+    loadingRegister: false,
+    loadingLogin: false,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -32,7 +32,10 @@ class AuthStateModel {
 
   @override
   int get hashCode =>
-      user.hashCode ^ showPassword.hashCode ^ loadingRegister.hashCode ^ loadingLogin.hashCode;
+      user.hashCode ^
+      showPassword.hashCode ^
+      loadingRegister.hashCode ^
+      loadingLogin.hashCode;
 
   @override
   String toString() {

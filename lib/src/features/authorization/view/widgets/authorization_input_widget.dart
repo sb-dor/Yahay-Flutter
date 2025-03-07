@@ -17,7 +17,8 @@ class AuthorizationInputWidget extends StatefulWidget {
   });
 
   @override
-  State<AuthorizationInputWidget> createState() => _AuthorizationInputWidgetState();
+  State<AuthorizationInputWidget> createState() =>
+      _AuthorizationInputWidgetState();
 }
 
 class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
@@ -30,9 +31,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
       children: [
         Text(
           widget.title,
-          style: GoogleFonts.aBeeZee(
-            fontWeight: FontWeight.w400,
-          ),
+          style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400),
         ),
         const SizedBox(height: 5),
         ClipRRect(
@@ -45,9 +44,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
             },
             onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
             controller: widget.controller,
-            style: GoogleFonts.aBeeZee(
-              fontWeight: FontWeight.w500,
-            ),
+            style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w500),
             decoration: InputDecoration(
               fillColor: Colors.white,
               hintText: widget.hintText,

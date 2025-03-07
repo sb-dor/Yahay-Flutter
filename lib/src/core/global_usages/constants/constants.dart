@@ -44,7 +44,8 @@ abstract class Constants {
   //
   static const String killIsolate = "kill_isolate";
 
-  static const String somethingWentWrong = "Something went wrong, please, try later";
+  static const String somethingWentWrong =
+      "Something went wrong, please, try later";
 
   static const double minimumHeightForShowingRiveTextFieldAnim = 650;
 }

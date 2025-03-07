@@ -32,9 +32,10 @@ mixin class FolderCreator {
 
   List<String> get foldersName => _foldersName;
 
-  Future<Directory?> getApplicationDir() async => defaultTargetPlatform == TargetPlatform.iOS
-      ? await getApplicationSupportDirectory()
-      : await getExternalStorageDirectory();
+  Future<Directory?> getApplicationDir() async =>
+      defaultTargetPlatform == TargetPlatform.iOS
+          ? await getApplicationSupportDirectory()
+          : await getExternalStorageDirectory();
 
   static Future<Directory?> getApplicationDirStatic() async =>
       defaultTargetPlatform == TargetPlatform.iOS

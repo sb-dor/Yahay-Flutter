@@ -30,23 +30,23 @@ mixin class RecentGalleyFileMixin {
       // debugPrint("storage $storagePermission | external: $externalStoragePermission");
 
       if (
-          // !externalStoragePermission ||
-          !storagePermission) {
+      // !externalStoragePermission ||
+      !storagePermission) {
         return;
       }
 
-      final List<TelegramFileImageAssetEntity> toEncodeList = await _RecentFilesHelper(
-        options: options,
-      ).getAssets();
+      final List<TelegramFileImageAssetEntity> toEncodeList =
+          await _RecentFilesHelper(options: options).getAssets();
 
       final ReceivePort receivePort = ReceivePort();
 
       final rootIsolateToken = RootIsolateToken.instance!;
 
       final Map<String, dynamic> toIsolateImages = {
-        "list": toEncodeList.map((e) {
-          return e.toJson();
-        }).toList(),
+        "list":
+            toEncodeList.map((e) {
+              return e.toJson();
+            }).toList(),
       };
 
       debugPrint("type of isolate image: $toIsolateImages");
@@ -126,26 +126,26 @@ mixin class RecentGalleyFileMixin {
     sendPort.send(Constants.killIsolate);
   }
 
-// Future<File?> _compressedFile(File? file) async {
-//   if (file == null) return null;
-//
-//   final tempDir = await getTemporaryDirectory();
-//   final filePath = file.absolute.path;
-//   final fileName = path.basename(filePath);
-//   final outPath = path.join(tempDir.path, 'compressed_$fileName');
-//
-//   final res = await FlutterImageCompress.compressAndGetFile(
-//     file.path,
-//     outPath,
-//     quality: 30,
-//   );
-//
-//   final fileFromCompressedImage = File(res?.path ?? '');
-//
-//   if (!fileFromCompressedImage.existsSync()) return null;
-//
-//   return fileFromCompressedImage;
-// }
+  // Future<File?> _compressedFile(File? file) async {
+  //   if (file == null) return null;
+  //
+  //   final tempDir = await getTemporaryDirectory();
+  //   final filePath = file.absolute.path;
+  //   final fileName = path.basename(filePath);
+  //   final outPath = path.join(tempDir.path, 'compressed_$fileName');
+  //
+  //   final res = await FlutterImageCompress.compressAndGetFile(
+  //     file.path,
+  //     outPath,
+  //     quality: 30,
+  //   );
+  //
+  //   final fileFromCompressedImage = File(res?.path ?? '');
+  //
+  //   if (!fileFromCompressedImage.existsSync()) return null;
+  //
+  //   return fileFromCompressedImage;
+  // }
 }
 
 class RecentFilesOptions {
@@ -159,16 +159,11 @@ class RecentFilesOptions {
 abstract interface class _RecentFilesHelper {
   Future<List<TelegramFileImageAssetEntity>> getAssets();
 
-  factory _RecentFilesHelper({
-    RecentFilesOptions? options,
-  }) {
+  factory _RecentFilesHelper({RecentFilesOptions? options}) {
     switch (options?.getAll) {
       case null:
       case false:
-        return _GetRangedAssetFiles(
-          start: options?.start,
-          end: options?.end,
-        );
+        return _GetRangedAssetFiles(start: options?.start, end: options?.end);
       case true:
         return _GetAllAssetFiles();
     }

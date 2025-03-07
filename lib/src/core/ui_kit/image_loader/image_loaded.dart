@@ -70,14 +70,15 @@ class ImageLoaderWidget extends StatelessWidget {
               );
             }
           },
-          errorWidget: (context, url, error) =>
-              errorWidget ??
-              Image.asset(
-                errorImageUrl ?? Constants.userErrorImage,
-                height: height,
-                width: width,
-                fit: boxFit ?? BoxFit.scaleDown,
-              ),
+          errorWidget:
+              (context, url, error) =>
+                  errorWidget ??
+                  Image.asset(
+                    errorImageUrl ?? Constants.userErrorImage,
+                    height: height,
+                    width: width,
+                    fit: boxFit ?? BoxFit.scaleDown,
+                  ),
         );
       },
     );

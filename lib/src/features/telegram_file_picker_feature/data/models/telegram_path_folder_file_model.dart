@@ -21,20 +21,17 @@ final class TelegramPathFolderFileModel extends TelegramPathFolderFile {
     bool? isVideo,
     String? fileExtension,
     String? fileName,
-  }) =>
-      TelegramPathFolderFileModel(
-        file ?? this.file,
-        originalPath: originalPath ?? this.originalPath,
-        isFolder: isFolder ?? this.isFolder,
-        isImage: isImage ?? this.isImage,
-        isVideo: isVideo ?? this.isVideo,
-        fileExtension: fileExtension ?? this.fileExtension,
-        fileName: fileName ?? this.fileName,
-      );
+  }) => TelegramPathFolderFileModel(
+    file ?? this.file,
+    originalPath: originalPath ?? this.originalPath,
+    isFolder: isFolder ?? this.isFolder,
+    isImage: isImage ?? this.isImage,
+    isVideo: isVideo ?? this.isVideo,
+    fileExtension: fileExtension ?? this.fileExtension,
+    fileName: fileName ?? this.fileName,
+  );
 
-  TelegramPathFolderFileModel? fromEntity(
-    TelegramPathFolderFile? entity,
-  ) {
+  TelegramPathFolderFileModel? fromEntity(TelegramPathFolderFile? entity) {
     if (entity == null) return null;
     return TelegramPathFolderFileModel(
       entity.file,

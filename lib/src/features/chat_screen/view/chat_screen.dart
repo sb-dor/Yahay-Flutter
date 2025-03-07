@@ -23,22 +23,21 @@ class ChatScreen extends StatelessWidget {
   final ChatModel? chat;
   final UserModel? user; // temp for creating temp chat if chat does not exist
 
-  const ChatScreen({
-    super.key,
-    required this.chat,
-    required this.user,
-  });
+  const ChatScreen({super.key, required this.chat, required this.user});
 
   @override
   Widget build(BuildContext context) {
     final dependencyContainer = DependenciesScope.of(context, listen: false);
     return BlocProvider<ChatScreenBloc>(
-      create: (context) => ChatScreenBlocFactory(
-        user: dependencyContainer.authBloc.state.authStateModel.user,
-        channelsOptions: dependencyContainer.pusherClientService.options,
-        restClientBase: dependencyContainer.restClientBase,
-        logger: dependencyContainer.logger,
-      ).create(),
+      create:
+          (context) =>
+              ChatScreenBlocFactory(
+                user: dependencyContainer.authBloc.state.authStateModel.user,
+                channelsOptions:
+                    dependencyContainer.pusherClientService.options,
+                restClientBase: dependencyContainer.restClientBase,
+                logger: dependencyContainer.logger,
+              ).create(),
       child: _ChatScreenUI(chat: chat, user: user),
     );
   }
@@ -48,10 +47,7 @@ class _ChatScreenUI extends StatefulWidget {
   final ChatModel? chat;
   final UserModel? user; // temp for creating temp chat if chat does not exist
 
-  const _ChatScreenUI({
-    required this.chat,
-    required this.user,
-  });
+  const _ChatScreenUI({required this.chat, required this.user});
 
   @override
   State<_ChatScreenUI> createState() => _ChatScreenUIState();
@@ -89,7 +85,9 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
 
   void _emojiClearHelper(ChatScreenStateModel currentStateModel) {
     if (currentStateModel.showEmojiPicker) {
-      _chatScreenBloc.add(const ChatScreenEvents.changeEmojiPicker(value: false));
+      _chatScreenBloc.add(
+        const ChatScreenEvents.changeEmojiPicker(value: false),
+      );
     }
   }
 
@@ -104,21 +102,23 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
           case ChatScreen$InProgressState():
             return const LoadingMessagesWidget();
           case ErrorChatScreenState():
-            return const Center(
-              child: Text(Constants.somethingWentWrong),
-            );
+            return const Center(child: Text(Constants.somethingWentWrong));
           case ChatScreen$SuccessfulState():
             final currentStateModel = state.chatScreenStateModel;
             return PopScope(
               canPop: !currentStateModel.showEmojiPicker,
-              onPopInvokedWithResult: (v, _) => _emojiClearHelper(currentStateModel),
+              onPopInvokedWithResult:
+                  (v, _) => _emojiClearHelper(currentStateModel),
               child: GestureDetector(
                 onTap: () {
                   _emojiClearHelper(currentStateModel);
                 },
                 child: Scaffold(
                   appBar: PreferredSize(
-                    preferredSize: Size(MediaQuery.of(context).size.width, kToolbarHeight),
+                    preferredSize: Size(
+                      MediaQuery.of(context).size.width,
+                      kToolbarHeight,
+                    ),
                     child: ChatScreenAppBar(
                       themeData: _appThemeBloc.theme.value,
                       chat: widget.chat,
@@ -134,12 +134,15 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                             reverse: true,
                             children: [
                               ListView.separated(
-                                separatorBuilder: (context, index) => const SizedBox(height: 10),
+                                separatorBuilder:
+                                    (context, index) =>
+                                        const SizedBox(height: 10),
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemCount: currentStateModel.messages.length,
                                 itemBuilder: (context, index) {
-                                  final message = currentStateModel.messages[index];
+                                  final message =
+                                      currentStateModel.messages[index];
                                   return MessageWidget(
                                     message: message,
                                     currentUser: currentUser,
@@ -149,9 +152,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                             ],
                           ),
                         ),
-                        BottomChatWidget(
-                          messageController: _messageController,
-                        ),
+                        BottomChatWidget(messageController: _messageController),
                         if (currentStateModel.showEmojiPicker)
                           EmojiPickerHelper(
                             messageController: _messageController,

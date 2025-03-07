@@ -13,9 +13,9 @@ final class RestClientDio extends RestClientBase {
     required final SharedPreferHelper sharedPrefer,
     required final Logger logger,
     Dio? dio,
-  })  : _dio = dio ?? Dio(),
-        _sharedPreferHelper = sharedPrefer,
-        _logger = logger;
+  }) : _dio = dio ?? Dio(),
+       _sharedPreferHelper = sharedPrefer,
+       _logger = logger;
 
   final Dio _dio;
   final SharedPreferHelper _sharedPreferHelper;
@@ -68,16 +68,11 @@ final class RestClientDio extends RestClientBase {
       }
 
       final serverError = await decodeResponse(
-        BytesResponseBody(
-          body: error.response?.data,
-        ),
+        BytesResponseBody(body: error.response?.data),
       );
 
       Error.throwWithStackTrace(
-        DioExceptionHandler(
-          dioException: error,
-          serverError: "$serverError",
-        ),
+        DioExceptionHandler(dioException: error, serverError: "$serverError"),
         stackTrace,
       );
       //
@@ -88,7 +83,8 @@ final class RestClientDio extends RestClientBase {
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Accept': 'application/json',
-      'Authorization': 'Bearer ${_sharedPreferHelper.getStringByKey(key: 'token')}',
+      'Authorization':
+          'Bearer ${_sharedPreferHelper.getStringByKey(key: 'token')}',
     };
   }
 }

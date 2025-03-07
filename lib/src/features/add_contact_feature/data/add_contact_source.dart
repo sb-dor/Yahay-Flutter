@@ -15,8 +15,8 @@ class AddContactSourceImpl implements AddContactSource {
   AddContactSourceImpl({
     required final Logger logger,
     required final RestClientBase restClientBase,
-  })  : _logger = logger,
-        _restClientBase = restClientBase;
+  }) : _logger = logger,
+       _restClientBase = restClientBase;
 
   final Logger _logger;
 
@@ -31,10 +31,7 @@ class AddContactSourceImpl implements AddContactSource {
     try {
       final response = await _restClientBase.get(
         _searchContactUrl,
-        queryParams: {
-          "value": value.trim(),
-          "page": page.toString(),
-        },
+        queryParams: {"value": value.trim(), "page": page.toString()},
       );
 
       if (response == null) return <UserModel>[];
@@ -58,9 +55,7 @@ class AddContactSourceImpl implements AddContactSource {
   @override
   Future<bool> addContact(UserModel? user) async {
     try {
-      final body = {
-        "contact_id": user?.id,
-      };
+      final body = {"contact_id": user?.id};
 
       final response = await _restClientBase.put(_addContactUrl, data: body);
 

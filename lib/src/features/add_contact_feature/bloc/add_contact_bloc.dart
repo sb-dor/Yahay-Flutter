@@ -10,7 +10,8 @@ part 'add_contact_bloc.freezed.dart';
 @immutable
 @freezed
 sealed class AddContactsEvents with _$AddContactsEvents {
-  const factory AddContactsEvents.searchContact(final String value) = _SearchContactEvent;
+  const factory AddContactsEvents.searchContact(final String value) =
+      _SearchContactEvent;
 
   const factory AddContactsEvents.addContactEvent(final UserModel? user) =
       _AddContactEventOnAddContactsEvent;
@@ -21,8 +22,9 @@ sealed class AddContactsEvents with _$AddContactsEvents {
 @immutable
 @freezed
 sealed class AddContactsStates with _$AddContactsStates {
-  const factory AddContactsStates.initial(final AddContactStateModel addContactStateModel) =
-      InitialAddConstactsState;
+  const factory AddContactsStates.initial(
+    final AddContactStateModel addContactStateModel,
+  ) = InitialAddConstactsState;
 
   const factory AddContactsStates.loadingAddContactsState(
     final AddContactStateModel addContactStateModel,
@@ -43,8 +45,8 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
   AddContactBloc({
     required AddContactsStates initialState,
     required AddContactRepo iAddContactRepo,
-  })  : _iAddContactRepo = iAddContactRepo,
-        super(initialState) {
+  }) : _iAddContactRepo = iAddContactRepo,
+       super(initialState) {
     on<AddContactsEvents>(
       (event, emit) => event.map(
         searchContact: (event) => _searchContactEvent(event, emit),
@@ -78,7 +80,9 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
       );
       //
 
-      final List<UserModel> currentUsers = List<UserModel>.from(currentStateModel.users);
+      final List<UserModel> currentUsers = List<UserModel>.from(
+        currentStateModel.users,
+      );
 
       currentUsers.addAll(data);
 
@@ -105,9 +109,13 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
       loadingForAddingToContacts: true,
     );
 
-    final List<UserModel> tempUsersList = List<UserModel>.from(currentStateModel.users);
+    final List<UserModel> tempUsersList = List<UserModel>.from(
+      currentStateModel.users,
+    );
 
-    final foundIndex = tempUsersList.indexWhere((el) => el.id == event.user?.id);
+    final foundIndex = tempUsersList.indexWhere(
+      (el) => el.id == event.user?.id,
+    );
 
     if (foundIndex != -1) {
       tempUsersList[foundIndex] = event.user!;
@@ -117,9 +125,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
 
     debugPrint("reponse value: $responseValue");
 
-    changingModel = changingModel?.copyWith(
-      loadingForAddingToContacts: false,
-    );
+    changingModel = changingModel?.copyWith(loadingForAddingToContacts: false);
 
     if (foundIndex != -1) {
       tempUsersList[foundIndex] = event.user!;

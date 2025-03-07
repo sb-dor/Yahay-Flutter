@@ -14,12 +14,13 @@ abstract final class ImageCompressor {
     final String imagePath =
         '$directoryPath/${basenameWithoutExtension(file.path)}_temp.${format.name}';
 
-    final XFile? compressedImage = await FlutterImageCompress.compressAndGetFile(
-      file.path,
-      imagePath,
-      quality: quality,
-      format: format,
-    );
+    final XFile? compressedImage =
+        await FlutterImageCompress.compressAndGetFile(
+          file.path,
+          imagePath,
+          quality: quality,
+          format: format,
+        );
 
     if (compressedImage == null) {
       throw ("Failed to compress the image");

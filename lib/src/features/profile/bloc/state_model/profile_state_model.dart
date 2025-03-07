@@ -3,9 +3,7 @@ import 'package:yahay/src/core/models/user_model/user_model.dart';
 class ProfileStateModel {
   final UserModel? userModel;
 
-  const ProfileStateModel({
-    this.userModel,
-  });
+  const ProfileStateModel({this.userModel});
 
   @override
   bool operator ==(Object other) =>
@@ -19,14 +17,12 @@ class ProfileStateModel {
 
   @override
   String toString() {
-    return 'ProfileStateModel{' ' userModel: $userModel,' '}';
+    return 'ProfileStateModel{'
+        ' userModel: $userModel,'
+        '}';
   }
 
-  ProfileStateModel copyWith({
-    UserModel? userModel,
-  }) {
-    return ProfileStateModel(
-      userModel: userModel ?? this.userModel,
-    );
+  ProfileStateModel copyWith({UserModel? userModel}) {
+    return ProfileStateModel(userModel: userModel ?? this.userModel);
   }
 }

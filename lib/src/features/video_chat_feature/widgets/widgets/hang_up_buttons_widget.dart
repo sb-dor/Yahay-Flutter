@@ -22,9 +22,9 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
           child: InkWell(
             borderRadius: BorderRadius.circular(50),
             onTap: () async {
-              context
-                  .read<VideoChatBloc>()
-                  .add(const VideoChatFeatureEvents.switchCameraStreamEvent());
+              context.read<VideoChatBloc>().add(
+                const VideoChatFeatureEvents.switchCameraStreamEvent(),
+              );
             },
             child: const SizedBox(
               width: 60,
@@ -47,9 +47,9 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () {
-                  context
-                      .read<VideoChatBloc>()
-                      .add(const VideoChatFeatureEvents.turnCameraOffAndEvent());
+                  context.read<VideoChatBloc>().add(
+                    const VideoChatFeatureEvents.turnCameraOffAndEvent(),
+                  );
                 },
                 child: Stack(
                   children: [
@@ -91,9 +91,9 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () {
-                  context
-                      .read<VideoChatBloc>()
-                      .add(const VideoChatFeatureEvents.turnMicOffAndOnEvent());
+                  context.read<VideoChatBloc>().add(
+                    const VideoChatFeatureEvents.turnMicOffAndOnEvent(),
+                  );
                 },
                 child: SizedBox(
                   width: 60,

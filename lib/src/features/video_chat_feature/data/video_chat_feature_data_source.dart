@@ -16,23 +16,24 @@ abstract interface class VideoChatFeatureDataSource {
   Future<bool> leaveTheChat(VideoChatModel videoChatEntity);
 
   // streaming the video data feature
-  Future<void> streamTheVideo({
-    required VideoChatModel videoChatEntity,
-  });
+  Future<void> streamTheVideo({required VideoChatModel videoChatEntity});
 }
 
 class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   //
-  VideoChatFeatureDataSourceImpl({
-    required RestClientBase restClientBase,
-  }) : _restClientBase = restClientBase;
+  VideoChatFeatureDataSourceImpl({required RestClientBase restClientBase})
+    : _restClientBase = restClientBase;
 
   final RestClientBase _restClientBase;
 
-  final _joinChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
-  final _startVideoChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/start/videochat";
-  final _leaveVideoChatPath = "${HttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
-  final _steamTheVideoPath = "${HttpRoutes.chatsVideoStreamPrefix}/video/stream";
+  final _joinChatPath =
+      "${HttpRoutes.chatsVideoStreamPrefix}/videochat/entrance";
+  final _startVideoChatPath =
+      "${HttpRoutes.chatsVideoStreamPrefix}/start/videochat";
+  final _leaveVideoChatPath =
+      "${HttpRoutes.chatsVideoStreamPrefix}/leave/videochat";
+  final _steamTheVideoPath =
+      "${HttpRoutes.chatsVideoStreamPrefix}/video/stream";
 
   @override
   Future<bool> startVideoChat(VideoChatModel videoChatEntity) async {
@@ -96,9 +97,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   }
 
   @override
-  Future<void> streamTheVideo({
-    required VideoChatModel videoChatEntity,
-  }) async {
+  Future<void> streamTheVideo({required VideoChatModel videoChatEntity}) async {
     try {
       final jsonBody = videoChatEntity.toJson();
       log("sending uint8list data: $jsonBody");

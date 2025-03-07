@@ -14,10 +14,10 @@ final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
     required final PusherClientService pusherClientService,
     required final Logger logger,
     required final RestClientBase restClientBase,
-  })  : _user = user,
-        _pusherClientService = pusherClientService,
-        _logger = logger,
-        _restClientBase = restClientBase;
+  }) : _user = user,
+       _pusherClientService = pusherClientService,
+       _logger = logger,
+       _restClientBase = restClientBase;
 
   final UserModel? _user;
   final PusherClientService _pusherClientService;
@@ -28,15 +28,16 @@ final class VideoChatBlocFactory extends Factory<VideoChatBloc> {
   VideoChatBloc create() {
     //
 
-    final VideoChatFeatureDataSource videoChatFeatureDataSource = VideoChatFeatureDataSourceImpl(
-      restClientBase: _restClientBase,
-    );
+    final VideoChatFeatureDataSource videoChatFeatureDataSource =
+        VideoChatFeatureDataSourceImpl(restClientBase: _restClientBase);
 
     final VideoChatFeatureRepo videoChatFeatureRepo = VideoChatFeatureRepoImpl(
       videoChatFeatureDataSource,
     );
 
-    final initialState = VideoChatFeatureStates.initial(VideoChatStateModel.idle());
+    final initialState = VideoChatFeatureStates.initial(
+      VideoChatStateModel.idle(),
+    );
 
     return VideoChatBloc(
       iVideoChatFeatureRepo: videoChatFeatureRepo,

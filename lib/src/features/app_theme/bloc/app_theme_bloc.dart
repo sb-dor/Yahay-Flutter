@@ -30,13 +30,17 @@ class AppThemeBloc {
 
     _currentState = AppColorsScheme.light;
 
-    final themeData = eventBehavior.map<ThemeData>((appThemeDataEvent) {
-      final ThemeData theme = _appThemeChangerEvent(appThemeDataEvent as AppThemeChangerEvent);
-      return theme;
-    }).startWith(_currentState);
+    final themeData = eventBehavior
+        .map<ThemeData>((appThemeDataEvent) {
+          final ThemeData theme = _appThemeChangerEvent(
+            appThemeDataEvent as AppThemeChangerEvent,
+          );
+          return theme;
+        })
+        .startWith(_currentState);
 
-    final BehaviorSubject<ThemeData> themeDataStream = BehaviorSubject<ThemeData>()
-      ..addStream(themeData);
+    final BehaviorSubject<ThemeData> themeDataStream =
+        BehaviorSubject<ThemeData>()..addStream(themeData);
 
     return AppThemeBloc._(events: eventBehavior.sink, theme: themeDataStream);
   }

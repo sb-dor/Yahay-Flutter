@@ -8,15 +8,15 @@ class TelegramFilePickerRepoImpl
     with RecentGalleyFileMixin, DownloadsPathFiles, AppStorageFileMixin
     implements TelegramFilePickerRepo {
   @override
-  Stream<TelegramPathFolderFileModel?> getRecentImagesAndVideos({RecentFilesOptions? options}) =>
-      getAllImagesAndVideos(options: options);
+  Stream<TelegramPathFolderFileModel?> getRecentImagesAndVideos({
+    RecentFilesOptions? options,
+  }) => getAllImagesAndVideos(options: options);
 
   @override
-  Stream<TelegramPathFolderFileModel?> getRecentFiles() => downloadsPathFilesData();
+  Stream<TelegramPathFolderFileModel?> getRecentFiles() =>
+      downloadsPathFilesData();
 
   @override
-  Stream<TelegramPathFolderFileModel?> getSpecificFolderData(
-    String path,
-  ) =>
+  Stream<TelegramPathFolderFileModel?> getSpecificFolderData(String path) =>
       getSpecificFolderDataStream(path);
 }

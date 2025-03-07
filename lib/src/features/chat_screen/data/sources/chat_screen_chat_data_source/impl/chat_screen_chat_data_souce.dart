@@ -8,22 +8,19 @@ import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_chat_dat
 
 class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
   //
-  ChatScreenChatDataSourceImpl({
-    required final RestClientBase restClientBase,
-  }) : _restClientBase = restClientBase;
+  ChatScreenChatDataSourceImpl({required final RestClientBase restClientBase})
+    : _restClientBase = restClientBase;
 
   final RestClientBase _restClientBase;
 
   final String _getChatUrl = "${HttpRoutes.chatsPrefix}/get/chat/on/entrance";
-  final String _deleteTempCreatedChatsUrl = "${HttpRoutes.chatsPrefix}/delete/temp/created/chats";
+  final String _deleteTempCreatedChatsUrl =
+      "${HttpRoutes.chatsPrefix}/delete/temp/created/chats";
 
   @override
   Future<ChatModel?> chat({ChatModel? chat, UserModel? withUser}) async {
     try {
-      final body = {
-        "chat_uuid": chat?.uuid,
-        'with_user_id': withUser?.id,
-      };
+      final body = {"chat_uuid": chat?.uuid, 'with_user_id': withUser?.id};
 
       final response = await _restClientBase.post(_getChatUrl, data: body);
 
@@ -31,16 +28,13 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
 
       if (!response.containsKey("chat")) return null;
 
-      final gettingChat = ChatModel.fromJson(
-        response.getNested(
-          ['chat'],
-        ),
-      );
+      final gettingChat = ChatModel.fromJson(response.getNested(['chat']));
 
       return gettingChat.copyWith(
-        messages: gettingChat.messages?.map((e) {
-          return e.copyWith(messageSent: true);
-        }).toList(),
+        messages:
+            gettingChat.messages?.map((e) {
+              return e.copyWith(messageSent: true);
+            }).toList(),
       );
     } on RestClientException {
       rethrow;
@@ -52,7 +46,10 @@ class ChatScreenChatDataSourceImpl implements ChatScreenChatDataSource {
     try {
       final body = {"chat_id": chat?.id, "chat_uuid": chat?.uuid};
 
-      final response = await _restClientBase.delete(_deleteTempCreatedChatsUrl, data: body);
+      final response = await _restClientBase.delete(
+        _deleteTempCreatedChatsUrl,
+        data: body,
+      );
 
       debugPrint("coming remove temp created chats: $response");
     } on RestClientException {

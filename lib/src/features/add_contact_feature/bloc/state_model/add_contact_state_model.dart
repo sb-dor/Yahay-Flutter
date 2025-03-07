@@ -25,7 +25,11 @@ final class AddContactStateModel {
           timerForSearch == other.timerForSearch);
 
   @override
-  int get hashCode => users.hashCode ^ page.hashCode ^ hasMore.hashCode ^ timerForSearch.hashCode;
+  int get hashCode =>
+      users.hashCode ^
+      page.hashCode ^
+      hasMore.hashCode ^
+      timerForSearch.hashCode;
 
   @override
   String toString() {
@@ -34,11 +38,8 @@ final class AddContactStateModel {
   }
 
   /// Factory constructor for the initial state
-  factory AddContactStateModel.idle() => const AddContactStateModel(
-        users: <UserModel>[],
-        page: 1,
-        hasMore: true,
-      );
+  factory AddContactStateModel.idle() =>
+      const AddContactStateModel(users: <UserModel>[], page: 1, hasMore: true);
 
   /// Copy constructor with optional overrides
   AddContactStateModel copyWith({

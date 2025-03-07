@@ -45,55 +45,59 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
             },
             icon: const Icon(CupertinoIcons.back),
           ),
-          title: state is ChatScreen$InProgressState
-              ? ShimmerLoader(
-                  isLoading: true,
-                  mode: widget.themeData,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 2,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              : _ChatAppBarTitle(
-                  chat: currentStateModel.currentChat,
-                ),
-          actions: state is ChatScreen$InProgressState
-              ? [
-                  ShimmerLoader(
+          title:
+              state is ChatScreen$InProgressState
+                  ? ShimmerLoader(
                     isLoading: true,
                     mode: widget.themeData,
                     child: Container(
-                      width: 25,
-                      height: 25,
+                      width: MediaQuery.of(context).size.width / 2,
+                      height: 20,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                ]
-              : [
-                  IconButton(
-                    onPressed: () {
-                      AutoRouter.of(context).push(
-                        VideoChatFeatureRoute(
-                          chat: currentStateModel.currentChat,
+                  )
+                  : _ChatAppBarTitle(chat: currentStateModel.currentChat),
+          actions:
+              state is ChatScreen$InProgressState
+                  ? [
+                    ShimmerLoader(
+                      isLoading: true,
+                      mode: widget.themeData,
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
                         ),
-                      );
-                    },
-                    icon: Icon(
-                      CupertinoIcons.videocam,
-                      color: (currentStateModel.currentChat?.videoChatStreaming ?? false)
-                          ? Colors.green
-                          : null,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 10),
+                  ]
+                  : [
+                    IconButton(
+                      onPressed: () {
+                        AutoRouter.of(context).push(
+                          VideoChatFeatureRoute(
+                            chat: currentStateModel.currentChat,
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        CupertinoIcons.videocam,
+                        color:
+                            (currentStateModel
+                                        .currentChat
+                                        ?.videoChatStreaming ??
+                                    false)
+                                ? Colors.green
+                                : null,
+                      ),
+                    ),
+                  ],
         );
       },
     );
@@ -103,9 +107,7 @@ class _ChatScreenAppBarState extends State<ChatScreenAppBar> {
 class _ChatAppBarTitle extends StatelessWidget {
   final ChatModel? chat;
 
-  const _ChatAppBarTitle({
-    required this.chat,
-  });
+  const _ChatAppBarTitle({required this.chat});
 
   @override
   Widget build(BuildContext context) {

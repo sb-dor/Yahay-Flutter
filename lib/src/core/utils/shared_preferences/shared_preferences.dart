@@ -7,7 +7,10 @@ class SharedPreferHelper {
     _sharedPrefer = await SharedPreferences.getInstance();
   }
 
-  Future<void> setStringByKey({required String key, required String value}) async {
+  Future<void> setStringByKey({
+    required String key,
+    required String value,
+  }) async {
     await _sharedPrefer.setString(key, value);
   }
 
@@ -15,7 +18,10 @@ class SharedPreferHelper {
     await _sharedPrefer.setInt(key, value);
   }
 
-  Future<void> setDoubleByKey({required String key, required double value}) async {
+  Future<void> setDoubleByKey({
+    required String key,
+    required double value,
+  }) async {
     await _sharedPrefer.setDouble(key, value);
   }
 

@@ -8,17 +8,14 @@ class SearchWidget extends StatefulWidget {
   final ValueChanged<String> value;
   final VoidCallback onDispose;
 
-  const SearchWidget({
-    super.key,
-    required this.value,
-    required this.onDispose,
-  });
+  const SearchWidget({super.key, required this.value, required this.onDispose});
 
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
 }
 
-class _SearchWidgetState extends State<SearchWidget> with SingleTickerProviderStateMixin {
+class _SearchWidgetState extends State<SearchWidget>
+    with SingleTickerProviderStateMixin {
   late AppThemeBloc _appThemeBloc;
   late TextEditingController _searchController;
   late AnimationController _animationController;

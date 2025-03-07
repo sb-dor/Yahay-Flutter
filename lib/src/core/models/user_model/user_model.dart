@@ -19,14 +19,13 @@ class UserModel with _$UserModel {
     @JsonKey(name: "image_url") String? imageUrl,
     @JsonKey(name: "created_at") String? createdAt,
     @JsonKey(includeFromJson: false, includeToJson: false)
-    @Default(
-      false,
-    )
+    @Default(false)
     bool? loadingForAddingToContacts,
     @JsonKey(name: "user_contact") UserModel? contact,
   }) = _UserModel;
 
-  factory UserModel.fromJson(Map<String, Object?> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, Object?> json) =>
+      _$UserModelFromJson(json);
 
   String getFirstAndLastLetterOfName() {
     if ((name ?? '').isEmpty) return "";

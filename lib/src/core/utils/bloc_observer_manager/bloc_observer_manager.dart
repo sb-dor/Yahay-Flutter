@@ -12,39 +12,38 @@ class BlocObserverManager extends BlocObserver {
     Bloc<Object?, Object?> bloc,
     Transition<Object?, Object?> transition,
   ) {
-    final logMessage = StringBuffer()
-      ..writeln('Bloc: ${bloc.runtimeType}')
-      ..writeln('Event: ${transition.event.runtimeType}')
-      ..writeln('Transition: ${transition.currentState.runtimeType} => '
-          '${transition.nextState.runtimeType}')
-      ..write('New State: ${transition.nextState?.toString().limit(100)}');
+    final logMessage =
+        StringBuffer()
+          ..writeln('Bloc: ${bloc.runtimeType}')
+          ..writeln('Event: ${transition.event.runtimeType}')
+          ..writeln(
+            'Transition: ${transition.currentState.runtimeType} => '
+            '${transition.nextState.runtimeType}',
+          )
+          ..write('New State: ${transition.nextState?.toString().limit(100)}');
 
-    logger.log(
-      Level.info,
-      logMessage.toString(),
-    );
+    logger.log(Level.info, logMessage.toString());
     super.onTransition(bloc, transition);
   }
 
   @override
   void onEvent(Bloc<Object?, Object?> bloc, Object? event) {
-    final logMessage = StringBuffer()
-      ..writeln('Bloc: ${bloc.runtimeType}')
-      ..writeln('Event: ${event.runtimeType}')
-      ..write('Details: ${event?.toString().limit(200)}');
+    final logMessage =
+        StringBuffer()
+          ..writeln('Bloc: ${bloc.runtimeType}')
+          ..writeln('Event: ${event.runtimeType}')
+          ..write('Details: ${event?.toString().limit(200)}');
 
-    logger.log(
-      Level.info,
-      logMessage.toString(),
-    );
+    logger.log(Level.info, logMessage.toString());
     super.onEvent(bloc, event);
   }
 
   @override
   void onError(BlocBase<Object?> bloc, Object error, StackTrace stackTrace) {
-    final logMessage = StringBuffer()
-      ..writeln('Error from bloc: ${bloc.runtimeType}')
-      ..writeln(error.toString());
+    final logMessage =
+        StringBuffer()
+          ..writeln('Error from bloc: ${bloc.runtimeType}')
+          ..writeln(error.toString());
 
     // you can also send bloc errors to server here
 
@@ -62,23 +61,19 @@ class BlocObserverManager extends BlocObserver {
 
   @override
   void onClose(BlocBase bloc) {
-    final logMessage = StringBuffer()..writeln('Closed Bloc: ${bloc.runtimeType}');
+    final logMessage =
+        StringBuffer()..writeln('Closed Bloc: ${bloc.runtimeType}');
 
-    logger.log(
-      Level.info,
-      logMessage.toString(),
-    );
+    logger.log(Level.info, logMessage.toString());
     super.onClose(bloc);
   }
 
   @override
   void onCreate(BlocBase bloc) {
-    final logMessage = StringBuffer()..writeln('Opened Bloc: ${bloc.runtimeType}');
+    final logMessage =
+        StringBuffer()..writeln('Opened Bloc: ${bloc.runtimeType}');
 
-    logger.log(
-      Level.info,
-      logMessage.toString(),
-    );
+    logger.log(Level.info, logMessage.toString());
     super.onCreate(bloc);
   }
 }

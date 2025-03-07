@@ -29,5 +29,6 @@ class ChatMessageModel with _$ChatMessageModel {
     @JsonKey(includeToJson: false, includeFromJson: false) bool? messageSent,
   }) = _ChatMessageModel;
 
-  factory ChatMessageModel.fromJson(Map<String, Object?> json) => _$ChatMessageModelFromJson(json);
+  factory ChatMessageModel.fromJson(Map<String, Object?> json) =>
+      _$ChatMessageModelFromJson(json);
 }

@@ -23,11 +23,11 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
     required final SharedPreferHelper sharedPreferHelper,
     required final Logger logger,
     required final RestClientBase restClientBase,
-  })  : _googleSignIn = googleSignIn,
-        _facebookAuth = facebookAuth,
-        _sharedPreferHelper = sharedPreferHelper,
-        _logger = logger,
-        _restClientBase = restClientBase;
+  }) : _googleSignIn = googleSignIn,
+       _facebookAuth = facebookAuth,
+       _sharedPreferHelper = sharedPreferHelper,
+       _logger = logger,
+       _restClientBase = restClientBase;
 
   final GoogleSignIn _googleSignIn;
   final FacebookAuth _facebookAuth;
@@ -37,25 +37,28 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
 
   @override
   AuthBloc create() {
-    final LaravelAuthDataSource laravelAuthDataSource = LaravelAuthDataSourceImpl(
-      sharedPreferences: _sharedPreferHelper,
-      restClientBase: _restClientBase,
-      screenMessaging: ScreenMessaging.instance,
-      logger: _logger,
+    final LaravelAuthDataSource laravelAuthDataSource =
+        LaravelAuthDataSourceImpl(
+          sharedPreferences: _sharedPreferHelper,
+          restClientBase: _restClientBase,
+          screenMessaging: ScreenMessaging.instance,
+          logger: _logger,
+        );
+
+    final OtherAuthorizationDatasource otherAuthorizationDatasource =
+        OtherAuthorizationImpl(
+          googleSignIn: _googleSignIn,
+          facebookAuth: _facebookAuth,
+          sharedPreferHelper: _sharedPreferHelper,
+          restClientBase: _restClientBase,
+        );
+
+    final AuthorizationRepo authorizationRepo = AuthorizationRepoImpl(
+      laravelAuthDataSource,
     );
 
-    final OtherAuthorizationDatasource otherAuthorizationDatasource = OtherAuthorizationImpl(
-      googleSignIn: _googleSignIn,
-      facebookAuth: _facebookAuth,
-      sharedPreferHelper: _sharedPreferHelper,
-      restClientBase: _restClientBase,
-    );
-
-    final AuthorizationRepo authorizationRepo = AuthorizationRepoImpl(laravelAuthDataSource);
-
-    final OtherAuthorizationRepo otherAuthorizationRepo = OtherAuthorizationRepoImpl(
-      otherAuthorizationDatasource,
-    );
+    final OtherAuthorizationRepo otherAuthorizationRepo =
+        OtherAuthorizationRepoImpl(otherAuthorizationDatasource);
 
     final initialState = AuthStates.initial(AuthStateModel.idle());
 

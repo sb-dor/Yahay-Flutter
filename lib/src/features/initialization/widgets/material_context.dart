@@ -18,10 +18,7 @@ class MaterialContext extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           locale: const Locale("en"),
-          supportedLocales: const [
-            Locale("ru"),
-            Locale("en"),
-          ],
+          supportedLocales: const [Locale("ru"), Locale("en")],
           debugShowCheckedModeBanner: false,
           theme: themeStates.data,
           // if you will use the auto_route package in order to navigate between screens without context

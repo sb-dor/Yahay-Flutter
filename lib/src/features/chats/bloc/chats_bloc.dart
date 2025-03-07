@@ -17,24 +17,30 @@ part 'chats_bloc.freezed.dart';
 @immutable
 @freezed
 sealed class ChatsEvents with _$ChatsEvents {
-  const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) = _Chats$GetUserEvent;
+  const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) =
+      _Chats$GetUserEvent;
 
-  const factory ChatsEvents.chatListenerInitialEvent() = _Chats$ListenerInitialEvent;
+  const factory ChatsEvents.chatListenerInitialEvent() =
+      _Chats$ListenerInitialEvent;
 
-  const factory ChatsEvents.chatListenerEvent(final ChatModel? chatModel) = _Chat$ListenerEvent;
+  const factory ChatsEvents.chatListenerEvent(final ChatModel? chatModel) =
+      _Chat$ListenerEvent;
 
-  const factory ChatsEvents.changeToLoadingState() = _Chats$ChangeToLoadingStateEvent;
+  const factory ChatsEvents.changeToLoadingState() =
+      _Chats$ChangeToLoadingStateEvent;
 }
 
 @immutable
 @freezed
 sealed class ChatsStates with _$ChatsStates {
-  const factory ChatsStates.initial(final ChatsStateModel chatsStateModel) = Chats$InitialState;
+  const factory ChatsStates.initial(final ChatsStateModel chatsStateModel) =
+      Chats$InitialState;
 
   const factory ChatsStates.inProgress(final ChatsStateModel chatsStateModel) =
       Chats$InProgressState;
 
-  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) = Chats$ErrorState;
+  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) =
+      Chats$ErrorState;
 
   const factory ChatsStates.successful(final ChatsStateModel chatsStateModel) =
       Chats$SuccessfulState;
@@ -58,16 +64,17 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     required final PusherChannelsOptions pusherChannelsOptions,
     required final Logger logger,
     required ChatsStates initialState,
-  })  : _chatsRepo = chatsRepo,
-        _currentUser = currentUser,
-        _pusherChannelsOptions = pusherChannelsOptions,
-        _logger = logger,
-        super(initialState) {
+  }) : _chatsRepo = chatsRepo,
+       _currentUser = currentUser,
+       _pusherChannelsOptions = pusherChannelsOptions,
+       _logger = logger,
+       super(initialState) {
     //
     on<ChatsEvents>(
       (event, emit) => event.map(
         getUserChatsEvent: (event) => _getUserChatsEvent(event, emit),
-        chatListenerInitialEvent: (event) => _chatListenerInitialEvent(event, emit),
+        chatListenerInitialEvent:
+            (event) => _chatListenerInitialEvent(event, emit),
         chatListenerEvent: (event) => _chatListenerEvent(event, emit),
         changeToLoadingState: (event) => _changeToLoadingState(event, emit),
       ),
@@ -87,7 +94,10 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
         chats: await _chatsRepo.chats(),
       );
 
-      _logger.log(Level.debug, "chat length is: ${currentStateModel.chats.length}");
+      _logger.log(
+        Level.debug,
+        "chat length is: ${currentStateModel.chats.length}",
+      );
 
       emit(ChatsStates.successful(currentStateModel));
     } catch (e) {
@@ -103,7 +113,8 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     try {
       if (_channelSubscription != null) return;
 
-      final channelName = "${Constants.channelNotifyOfUserName}${_currentUser?.id}";
+      final channelName =
+          "${Constants.channelNotifyOfUserName}${_currentUser?.id}";
 
       _logger.log(Level.debug, "current whole channel listeners: $channelName");
 
@@ -114,20 +125,20 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
       final chatChannel = _pusherClientService?.publicChannel(channelName);
 
-      _channelSubscriptionInformation = _pusherClientService?.onConnectionEstablished.listen((e) {
-        chatChannel?.subscribeIfNotUnsubscribed();
-      });
+      _channelSubscriptionInformation = _pusherClientService
+          ?.onConnectionEstablished
+          .listen((e) {
+            chatChannel?.subscribeIfNotUnsubscribed();
+          });
 
       await _pusherClientService?.connect();
 
       _channelSubscription = chatChannel
           ?.bind(Constants.channelNotifyOfUserEventName)
           .transform(ChatsStreamTransformers(logger: _logger))
-          .listen(
-        (chatModel) {
-          add(ChatsEvents.chatListenerEvent(chatModel));
-        },
-      );
+          .listen((chatModel) {
+            add(ChatsEvents.chatListenerEvent(chatModel));
+          });
     } catch (e) {
       _logger.log(Level.debug, "current whole channel listeners error is: $e");
     }
@@ -138,10 +149,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     Emitter<ChatsStates> emit,
   ) async {
     try {
-      _logger.log(
-        Level.debug,
-        "${event.chatModel}",
-      );
+      _logger.log(Level.debug, "${event.chatModel}");
 
       // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
@@ -197,13 +205,12 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
     final List<ChatModel> resultChats = List.of(currentChats);
 
-    final convertedToModelChat = _removeCurrentUserFromParticipants(
-      chat,
-      user,
-    );
+    final convertedToModelChat = _removeCurrentUserFromParticipants(chat, user);
 
     final chatIndex = resultChats.indexWhere(
-      (e) => e.id == convertedToModelChat.id && e.uuid == convertedToModelChat.uuid,
+      (e) =>
+          e.id == convertedToModelChat.id &&
+          e.uuid == convertedToModelChat.uuid,
     );
 
     if (chatIndex != -1) {
@@ -217,7 +224,10 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     return resultChats;
   }
 
-  ChatModel _removeCurrentUserFromParticipants(ChatModel chatModel, UserModel? user) {
+  ChatModel _removeCurrentUserFromParticipants(
+    ChatModel chatModel,
+    UserModel? user,
+  ) {
     final data = List<ChatParticipantModel>.from(
       chatModel.participants ?? <ChatParticipantModel>[],
     );

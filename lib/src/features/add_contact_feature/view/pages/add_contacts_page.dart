@@ -22,14 +22,18 @@ class _AddContactsPageState extends State<AddContactsPage> {
   void initState() {
     super.initState();
     _controller = DraggableScrollableController();
-    _addContactBloc = DependenciesScope.of(context, listen: false).addContactBloc;
+    _addContactBloc =
+        DependenciesScope.of(context, listen: false).addContactBloc;
     _addContactBloc.add(const AddContactsEvents.clearDataEvent());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       const maxHeight = 0.96;
       final screenHeight = MediaQuery.of(context).size.height * maxHeight;
       final screenHeightWithAppBar = screenHeight - kToolbarHeight;
       initialChildSize =
-          ((screenHeightWithAppBar * maxHeight) / screenHeight).roundIt()?.toDouble() ?? maxHeight;
+          ((screenHeightWithAppBar * maxHeight) / screenHeight)
+              .roundIt()
+              ?.toDouble() ??
+          maxHeight;
       setState(() {});
     });
   }
@@ -59,12 +63,22 @@ class _AddContactsPageState extends State<AddContactsPage> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: TextField(
-                      onChanged: (v) => _addContactBloc.add(AddContactsEvents.searchContact(v)),
-                      onSubmitted: (v) => _addContactBloc.add(AddContactsEvents.searchContact(v)),
-                      onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
+                      onChanged:
+                          (v) => _addContactBloc.add(
+                            AddContactsEvents.searchContact(v),
+                          ),
+                      onSubmitted:
+                          (v) => _addContactBloc.add(
+                            AddContactsEvents.searchContact(v),
+                          ),
+                      onTapOutside:
+                          (v) => FocusManager.instance.primaryFocus?.unfocus(),
                       style: GoogleFonts.aBeeZee(fontSize: 14),
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 15.0,
+                          horizontal: 5,
+                        ),
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
@@ -77,7 +91,9 @@ class _AddContactsPageState extends State<AddContactsPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _addContactBloc.add(const AddContactsEvents.clearDataEvent());
+                    _addContactBloc.add(
+                      const AddContactsEvents.clearDataEvent(),
+                    );
                     Navigator.pop(context);
                   },
                   child: const Text("Cancel"),
@@ -97,7 +113,8 @@ class _AddContactsPageState extends State<AddContactsPage> {
                   case AddContacts$SuccessfulState():
                     final currentStateModel = states.addContactStateModel;
                     return ListView.separated(
-                      separatorBuilder: (context, index) => const SizedBox(height: 10),
+                      separatorBuilder:
+                          (context, index) => const SizedBox(height: 10),
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: currentStateModel.users.length,
@@ -105,8 +122,10 @@ class _AddContactsPageState extends State<AddContactsPage> {
                         final user = currentStateModel.users[index];
                         return AddContactUserWidget(
                           user: user,
-                          addUser: () =>
-                              _addContactBloc.add(AddContactsEvents.addContactEvent(user)),
+                          addUser:
+                              () => _addContactBloc.add(
+                                AddContactsEvents.addContactEvent(user),
+                              ),
                         );
                       },
                     );

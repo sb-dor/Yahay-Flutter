@@ -31,14 +31,13 @@ abstract base class RestClientBase implements RestClient {
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
     bool log = false,
-  }) =>
-      send(
-        path: path,
-        method: DioMethod.get,
-        headers: headers,
-        queryParams: queryParams,
-        log: log,
-      );
+  }) => send(
+    path: path,
+    method: DioMethod.get,
+    headers: headers,
+    queryParams: queryParams,
+    log: log,
+  );
 
   @override
   Future<Map<String, Object?>?> post(
@@ -48,16 +47,15 @@ abstract base class RestClientBase implements RestClient {
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
     bool log = false,
-  }) =>
-      send(
-        path: path,
-        method: DioMethod.post,
-        data: data,
-        formData: formData,
-        headers: headers,
-        queryParams: queryParams,
-        log: log,
-      );
+  }) => send(
+    path: path,
+    method: DioMethod.post,
+    data: data,
+    formData: formData,
+    headers: headers,
+    queryParams: queryParams,
+    log: log,
+  );
 
   @override
   Future<Map<String, Object?>?> put(
@@ -67,16 +65,15 @@ abstract base class RestClientBase implements RestClient {
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
     bool log = false,
-  }) =>
-      send(
-        path: path,
-        method: DioMethod.put,
-        data: data,
-        formData: formData,
-        headers: headers,
-        queryParams: queryParams,
-        log: log,
-      );
+  }) => send(
+    path: path,
+    method: DioMethod.put,
+    data: data,
+    formData: formData,
+    headers: headers,
+    queryParams: queryParams,
+    log: log,
+  );
 
   @override
   Future<Map<String, Object?>?> delete(
@@ -86,22 +83,19 @@ abstract base class RestClientBase implements RestClient {
     Map<String, String>? headers,
     Map<String, String?>? queryParams,
     bool log = false,
-  }) =>
-      send(
-        path: path,
-        method: DioMethod.delete,
-        data: data,
-        formData: formData,
-        headers: headers,
-        queryParams: queryParams,
-        log: log,
-      );
+  }) => send(
+    path: path,
+    method: DioMethod.delete,
+    data: data,
+    formData: formData,
+    headers: headers,
+    queryParams: queryParams,
+    log: log,
+  );
 
-  Uri buildUri({
-    required String path,
-    Map<String, String?>? queryParams,
-  }) {
-    final String finalPath = Uri.parse("${_baseURL.path}/api$path").normalizePath().toString();
+  Uri buildUri({required String path, Map<String, String?>? queryParams}) {
+    final String finalPath =
+        Uri.parse("${_baseURL.path}/api$path").normalizePath().toString();
 
     final Map<String, Object?> params = Map.of(_baseURL.queryParameters);
 
@@ -122,8 +116,12 @@ abstract base class RestClientBase implements RestClient {
   }) async {
     try {
       final decodedResponse = switch (data) {
-        StringResponseBody(body: final String body) => await _decodeString(body),
-        BytesResponseBody(body: final List<int> bytes) => await _decodeBytes(bytes),
+        StringResponseBody(body: final String body) => await _decodeString(
+          body,
+        ),
+        BytesResponseBody(body: final List<int> bytes) => await _decodeBytes(
+          bytes,
+        ),
         MapResponseBody(body: final Map<String, dynamic> map) => map,
         _ => <String, dynamic>{},
       };

@@ -26,8 +26,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _loginForm = GlobalKey<FormState>();
-  final TextEditingController _emailOrUserNameController = TextEditingController(text: '');
-  final TextEditingController _passwordController = TextEditingController(text: '');
+  final TextEditingController _emailOrUserNameController =
+      TextEditingController(text: '');
+  final TextEditingController _passwordController = TextEditingController(
+    text: '',
+  );
   late final AuthBloc _authBloc;
 
   // final AnimatedLoginCharacter _animatedLoginCharacter = AnimatedLoginCharacter();
@@ -117,8 +120,10 @@ class _LoginPageState extends State<LoginPage> {
                           right: 0,
                           top: 25,
                           child: IconButton(
-                            onPressed: () =>
-                                _authBloc.add(const AuthEvents.changePasswordVisibility()),
+                            onPressed:
+                                () => _authBloc.add(
+                                  const AuthEvents.changePasswordVisibility(),
+                                ),
                             icon: Icon(
                               (authStateModel.showPassword)
                                   ? CupertinoIcons.eye
@@ -138,37 +143,43 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
-                          backgroundColor: const WidgetStatePropertyAll(Colors.blueAccent),
-                        ),
-                        onPressed: () => _authBloc.add(
-                          AuthEvents.loginEvent(
-                            emailOrUserName: _emailOrUserNameController.text,
-                            password: _passwordController.text,
-                            initDependenciesAfterAuthorization:
-                                dependencies.initDependenciesAfterAuthorization,
-                            // initDioOptions: () async {
-                            // await dependencies.restClientBase.initOptions();
-                            // },
+                          backgroundColor: const WidgetStatePropertyAll(
+                            Colors.blueAccent,
                           ),
                         ),
+                        onPressed:
+                            () => _authBloc.add(
+                              AuthEvents.loginEvent(
+                                emailOrUserName:
+                                    _emailOrUserNameController.text,
+                                password: _passwordController.text,
+                                initDependenciesAfterAuthorization:
+                                    dependencies
+                                        .initDependenciesAfterAuthorization,
+                                // initDioOptions: () async {
+                                // await dependencies.restClientBase.initOptions();
+                                // },
+                              ),
+                            ),
                         child: Center(
-                          child: (authStateModel.loadingLogin)
-                              ? const SizedBox(
-                                  width: 15,
-                                  height: 15,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: Colors.white,
+                          child:
+                              (authStateModel.loadingLogin)
+                                  ? const SizedBox(
+                                    width: 15,
+                                    height: 15,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                  : Text(
+                                    Constants.signIn,
+                                    style: GoogleFonts.aBeeZee(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
-                                )
-                              : Text(
-                                  Constants.signIn,
-                                  style: GoogleFonts.aBeeZee(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
                         ),
                       ),
                     ),
@@ -207,19 +218,19 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Expanded(
                           child: OtherAuthorizationButtonWidget(
-                            icon: const FaIcon(
-                              FontAwesomeIcons.google,
-                            ),
+                            icon: const FaIcon(FontAwesomeIcons.google),
                             text: 'Google',
-                            onTap: () => _authBloc.add(
-                              AuthEvents.googleAuth(
-                                initDependenciesAfterAuthorization:
-                                    dependencies.initDependenciesAfterAuthorization,
-                                // initDioOptions: () async {
-                                // await dependencies.dioSettings.initOptions();
-                                // },
-                              ),
-                            ),
+                            onTap:
+                                () => _authBloc.add(
+                                  AuthEvents.googleAuth(
+                                    initDependenciesAfterAuthorization:
+                                        dependencies
+                                            .initDependenciesAfterAuthorization,
+                                    // initDioOptions: () async {
+                                    // await dependencies.dioSettings.initOptions();
+                                    // },
+                                  ),
+                                ),
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -230,15 +241,17 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.blue,
                             ),
                             text: 'Facebook',
-                            onTap: () => _authBloc.add(
-                              AuthEvents.facebookAuth(
-                                initDependenciesAfterAuthorization:
-                                    dependencies.initDependenciesAfterAuthorization,
-                                // initDioOptions: () async {
-                                // await dependencies.dioSettings.initOptions();
-                                // },
-                              ),
-                            ),
+                            onTap:
+                                () => _authBloc.add(
+                                  AuthEvents.facebookAuth(
+                                    initDependenciesAfterAuthorization:
+                                        dependencies
+                                            .initDependenciesAfterAuthorization,
+                                    // initDioOptions: () async {
+                                    // await dependencies.dioSettings.initOptions();
+                                    // },
+                                  ),
+                                ),
                           ),
                         ),
                       ],
@@ -255,8 +268,12 @@ class _LoginPageState extends State<LoginPage> {
                           const TextSpan(text: Constants.doNotHaveAnAccount),
                           const WidgetSpan(child: SizedBox(width: 10)),
                           TextSpan(
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => AutoRouter.of(context).replace(const RegisterRoute()),
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap =
+                                      () => AutoRouter.of(
+                                        context,
+                                      ).replace(const RegisterRoute()),
                             text: Constants.signUp,
                             style: const TextStyle(color: Colors.blue),
                           ),

@@ -13,10 +13,10 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     required final Logger logger,
     required final RestClientBase restClientBase,
     required final ScreenMessaging screenMessaging,
-  })  : _sharedPreferences = sharedPreferences,
-        _logger = logger,
-        _restClientBase = restClientBase,
-        _screenMessaging = screenMessaging;
+  }) : _sharedPreferences = sharedPreferences,
+       _logger = logger,
+       _restClientBase = restClientBase,
+       _screenMessaging = screenMessaging;
 
   final SharedPreferHelper _sharedPreferences;
   final Logger _logger;
@@ -64,7 +64,10 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
     if (response == null) return null;
 
-    _logger.log(Level.debug, "login response: $response | ${response.runtimeType}");
+    _logger.log(
+      Level.debug,
+      "login response: $response | ${response.runtimeType}",
+    );
 
     if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
       return null;
@@ -75,7 +78,10 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       return null;
     }
 
-    await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
+    await _sharedPreferences.setStringByKey(
+      key: "token",
+      value: response.getNested(['token']),
+    );
 
     return UserModel.fromJson(response.getNested(['user']));
   }
@@ -109,7 +115,10 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
       return null;
     }
 
-    await _sharedPreferences.setStringByKey(key: "token", value: response.getNested(['token']));
+    await _sharedPreferences.setStringByKey(
+      key: "token",
+      value: response.getNested(['token']),
+    );
 
     return UserModel.fromJson(response.getNested(['user']));
   }
@@ -125,7 +134,9 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       _logger.log(Level.debug, "logout response: $response");
 
-      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) return false;
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
+        return false;
+      }
 
       if (response[HttpServerResponses.serverSuccessResponse] == true) {
         return true;

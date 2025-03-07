@@ -7,25 +7,22 @@ import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_fi
 import 'package:yahay/src/features/telegram_file_picker_feature/data/models/data_models/telegram_storage_file_picker_data_model.dart';
 
 class TelegramFilesFromStoragesWidget extends StatefulWidget {
-  const TelegramFilesFromStoragesWidget({
-    super.key,
-  });
+  const TelegramFilesFromStoragesWidget({super.key});
 
   @override
-  State<TelegramFilesFromStoragesWidget> createState() => _TelegramFilesFromStoragesWidgetState();
+  State<TelegramFilesFromStoragesWidget> createState() =>
+      _TelegramFilesFromStoragesWidgetState();
 }
 
-class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStoragesWidget> {
+class _TelegramFilesFromStoragesWidgetState
+    extends State<TelegramFilesFromStoragesWidget> {
   late AppThemeBloc _appThemeBloc;
   late List<TelegramStorageFilePickerDataModel> telegramStorageFileDataModels;
 
   @override
   void initState() {
     super.initState();
-    _appThemeBloc = DependenciesScope.of(
-      context,
-      listen: false,
-    ).appThemeBloc;
+    _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
     telegramStorageFileDataModels = TelegramStorageFilePickerDataModel.data(
       context.read<TelegramFilePickerBloc>(),
     );
@@ -36,9 +33,10 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
-        color: _appThemeBloc.theme.value.brightness == Brightness.dark
-            ? Colors.blueGrey.shade900.withOpacity(0.5)
-            : Colors.white,
+        color:
+            _appThemeBloc.theme.value.brightness == Brightness.dark
+                ? Colors.blueGrey.shade900.withOpacity(0.5)
+                : Colors.white,
       ),
       child: Column(
         children: [
@@ -63,9 +61,7 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
                             borderRadius: BorderRadius.circular(100),
                             color: item.iconBackgroundColor,
                           ),
-                          child: Center(
-                            child: item.icon,
-                          ),
+                          child: Center(child: item.icon),
                         ),
                         const SizedBox(width: 15),
                         Expanded(

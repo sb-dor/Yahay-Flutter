@@ -29,25 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
         leadingWidth: 0.0,
         title: const Text("Profile"),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.qr_code,
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.more_vert,
-            ),
-          ),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.qr_code)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
         ],
       ),
-      body: const CustomScrollView(
-        slivers: [
-
-        ],
-      ),
+      body: const CustomScrollView(slivers: []),
     );
   }
 }

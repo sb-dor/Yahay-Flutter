@@ -49,17 +49,19 @@ class DependencyContainer {
   });
 
   void initDependenciesAfterAuthorization() {
-    chatsBloc = ChatsBlocFactory(
-      currentUser: authBloc.state.authStateModel.user,
-      pusherChannelsOption: pusherClientService.options,
-      logger: logger,
-      restClientBase: restClientBase,
-    ).create();
+    chatsBloc =
+        ChatsBlocFactory(
+          currentUser: authBloc.state.authStateModel.user,
+          pusherChannelsOption: pusherClientService.options,
+          logger: logger,
+          restClientBase: restClientBase,
+        ).create();
 
-    profileBloc = ProfileBlocFactory(
-      logger: logger,
-      restClientBase: restClientBase,
-    ).create();
+    profileBloc =
+        ProfileBlocFactory(
+          logger: logger,
+          restClientBase: restClientBase,
+        ).create();
   }
 }
 

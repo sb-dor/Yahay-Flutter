@@ -23,17 +23,21 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
                 Expanded(
                   child: RTCVideoView(
                     objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                    state.videoChatStateModel.videoChatEntities.first.videoRenderer!,
+                    state
+                        .videoChatStateModel
+                        .videoChatEntities
+                        .first
+                        .videoRenderer!,
                   ),
                 ),
-                const Divider(
-                  height: 0,
-                  color: Colors.black12,
-                ),
+                const Divider(height: 0, color: Colors.black12),
                 Expanded(
                   child: RTCVideoView(
                     objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                    state.videoChatStateModel.currentVideoChatEntity!.videoRenderer!,
+                    state
+                        .videoChatStateModel
+                        .currentVideoChatEntity!
+                        .videoRenderer!,
                     mirror: !state.videoChatStateModel.cameraSwitched,
                   ),
                 ),

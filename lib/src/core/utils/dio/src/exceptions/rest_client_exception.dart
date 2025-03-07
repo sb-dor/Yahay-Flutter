@@ -27,7 +27,8 @@ final class StructuredBackendException extends RestClientException {
   final Map<String, Object?> error;
 
   @override
-  String toString() => 'StructuredBackendException('
+  String toString() =>
+      'StructuredBackendException('
       'message:, $message'
       'cause: $cause, '
       'statusCode: $statusCode, '
@@ -42,7 +43,8 @@ final class ClientException extends RestClientException {
   });
 
   @override
-  String toString() => 'ClientException('
+  String toString() =>
+      'ClientException('
       'message: $message, '
       'statusCode: $statusCode, '
       'cause: $cause'
@@ -54,13 +56,14 @@ final class UnauthenticatedException extends RestClientException {
     required DioException exception,
     super.statusCode,
     super.cause,
-  })  : _dioException = exception,
-        super(message: "User is Unauthenticated");
+  }) : _dioException = exception,
+       super(message: "User is Unauthenticated");
 
   final DioException _dioException;
 
   @override
-  String toString() => 'StructuredBackendException('
+  String toString() =>
+      'StructuredBackendException('
       'message: $message | SERVER_ERROR: ${_dioException.response?.data}'
       ' | ERROR: ${_dioException.error}, '
       'cause: $cause, '

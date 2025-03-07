@@ -43,16 +43,11 @@ class _TelegramDraggableScrollableBottomSheetUIState
     telegramFilePickerBloc.add(
       const TelegramFilePickerEvents.initAllPicturesEvent(true),
     );
-    Future.delayed(
-      const Duration(milliseconds: 350),
-      () {
-        telegramFilePickerBloc.add(
-          const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-            true,
-          ),
-        );
-      },
-    );
+    Future.delayed(const Duration(milliseconds: 350), () {
+      telegramFilePickerBloc.add(
+        const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(true),
+      );
+    });
     // _telegramFilePickerBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
   }
 
@@ -79,12 +74,13 @@ class _TelegramDraggableScrollableBottomSheetUIState
                 children: [
                   switch (state) {
                     Picker$InitialState() => const SizedBox(),
-                    Picker$GalleryFileState() => TelegramGalleryFilePickerScreen(
+                    Picker$GalleryFileState() =>
+                      TelegramGalleryFilePickerScreen(
                         parentScrollController: scrollController,
                       ),
                     Picker$FilesState() => TelegramFilesPickerScreen(
-                        parentScrollController: scrollController,
-                      ),
+                      parentScrollController: scrollController,
+                    ),
                     Picker$AudioFilesState() => const SizedBox(),
                   },
                   AnimatedPositioned(
@@ -98,14 +94,16 @@ class _TelegramDraggableScrollableBottomSheetUIState
                   AnimatedPositioned(
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 1000),
-                    bottom: (currentStateModel.openBottomSectionButton &&
-                            currentStateModel.pickedFiles.isEmpty)
-                        ? 0
-                        : -200,
+                    bottom:
+                        (currentStateModel.openBottomSectionButton &&
+                                currentStateModel.pickedFiles.isEmpty)
+                            ? 0
+                            : -200,
                     right: 0,
                     left: 0,
                     child: TelegramBottomPickerButton(
-                      draggableScrollableController: _draggableScrollableController,
+                      draggableScrollableController:
+                          _draggableScrollableController,
                     ),
                   ),
                 ],

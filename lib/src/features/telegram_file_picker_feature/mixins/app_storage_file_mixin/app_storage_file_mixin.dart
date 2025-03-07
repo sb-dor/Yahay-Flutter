@@ -19,11 +19,7 @@ mixin class AppStorageFileMixin {
 
     final rootIsolateToken = RootIsolateToken.instance!;
 
-    Isolate.spawn(_isolateHelper, [
-      rootIsolateToken,
-      mainPort.sendPort,
-      path,
-    ]);
+    Isolate.spawn(_isolateHelper, [rootIsolateToken, mainPort.sendPort, path]);
 
     await for (final each in mainPort) {
       if (each is TelegramPathFolderFileModel) {
@@ -72,8 +68,7 @@ mixin class AppStorageFileMixin {
           model = (await ImageCompressor.compressedImageFile(
             file: model.file,
             directoryPath: tempPath.path,
-          ))
-              ?.clone(
+          ))?.clone(
             fileExtension: model.fileExtension,
             fileName: model.fileName,
           );
@@ -86,5 +81,6 @@ mixin class AppStorageFileMixin {
 
     sendPort.send(Constants.killIsolate);
   }
-//
+
+  //
 }

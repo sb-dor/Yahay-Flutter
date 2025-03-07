@@ -21,9 +21,7 @@ class TelegramGalleryFilePickerCameraWidget extends StatelessWidget {
               fit: BoxFit.cover,
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: CameraPreview(
-                  cameraController,
-                ),
+                child: CameraPreview(cameraController),
               ),
             ),
           ),

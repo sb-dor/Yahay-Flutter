@@ -22,9 +22,10 @@ import 'package:bloc_concurrency/bloc_concurrency.dart' as concurrency;
 
 class AppRunner with FolderCreator {
   Future<void> initialize() async {
-    final Logger logger = AppLoggerFactory(
-      logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
-    ).create();
+    final Logger logger =
+        AppLoggerFactory(
+          logFilter: kReleaseMode ? NoOpLogFilter() : DevelopmentFilter(),
+        ).create();
 
     await runZonedGuarded(
       () async {
@@ -55,33 +56,37 @@ class AppRunner with FolderCreator {
             );
 
             FlutterError.onError = (errorDetails) {
-              FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+              FirebaseCrashlytics.instance.recordFlutterFatalError(
+                errorDetails,
+              );
             };
 
             PlatformDispatcher.instance.onError = (error, stack) {
-              FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+              FirebaseCrashlytics.instance.recordError(
+                error,
+                stack,
+                fatal: true,
+              );
               return true;
             };
 
             await createFolders(sharedPreferences);
 
-            final compositionRoot = await CompositionRoot(
-              logger: logger,
-              sharedPreferHelper: sharedPreferences,
-              restClientBase: restClientBase,
-            ).create();
+            final compositionRoot =
+                await CompositionRoot(
+                  logger: logger,
+                  sharedPreferHelper: sharedPreferences,
+                  restClientBase: restClientBase,
+                ).create();
 
             if (kDebugMode) {
               await DebugImageCreatorInAppsFolder(
-                sharedPreferHelper: compositionRoot.dependencies.sharedPreferHelper,
+                sharedPreferHelper:
+                    compositionRoot.dependencies.sharedPreferHelper,
               ).createImagesInAppsFolder();
             }
 
-            runApp(
-              RootContext(
-                compositionResult: compositionRoot,
-              ),
-            );
+            runApp(RootContext(compositionResult: compositionRoot));
           } catch (error) {
             //
           } finally {
@@ -92,19 +97,15 @@ class AppRunner with FolderCreator {
         await init();
       },
       (error, trace) async {
-        logger.log(
-          Level.error,
-          "Zone error",
-          error: error,
-          stackTrace: trace,
-        );
-        final IErrorReporter errorReporter = kReleaseMode
-            ? FirebaseErrorReporter(
-                exception: error,
-                stackTrace: trace,
-                firebaseCrashlytics: FirebaseCrashlytics.instance,
-              )
-            : NoOpErrorReporter();
+        logger.log(Level.error, "Zone error", error: error, stackTrace: trace);
+        final IErrorReporter errorReporter =
+            kReleaseMode
+                ? FirebaseErrorReporter(
+                  exception: error,
+                  stackTrace: trace,
+                  firebaseCrashlytics: FirebaseCrashlytics.instance,
+                )
+                : NoOpErrorReporter();
 
         await errorReporter.report();
       },
