@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
-import 'package:yahay/env/env.dart';
 import 'package:yahay/src/core/utils/bloc_observer_manager/bloc_observer_manager.dart';
 import 'package:yahay/src/core/utils/debug_image_creator_in_apps_folder/debug_image_creator_in_apps_folder.dart';
 import 'package:yahay/src/core/utils/dio/src/rest_client_base.dart';
@@ -15,6 +14,7 @@ import 'package:yahay/src/core/utils/error_reporter/i_error_reporter.dart';
 import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/composition_root.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/app_logger_factory.dart';
+import 'package:yahay/src/features/initialization/models/application_config.dart';
 import 'package:yahay/src/features/initialization/widgets/root_context.dart';
 import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_creator/folder_creator.dart';
 import 'package:yahay/firebase_options.dart';
@@ -35,9 +35,11 @@ class AppRunner with FolderCreator {
 
           final sharedPreferences = SharedPreferHelper();
           await sharedPreferences.initSharedPrefer();
+          final applicationConfig = ApplicationConfig();
+          logger.log(Level.debug, "from env main url: ${applicationConfig.mainUrl}");
 
           final RestClientBase restClientBase = RestClientDio(
-            baseURL: Env.mainUrl,
+            baseURL: applicationConfig.mainUrl,
             sharedPrefer: sharedPreferences,
             logger: logger,
           );
@@ -67,6 +69,7 @@ class AppRunner with FolderCreator {
                   logger: logger,
                   sharedPreferHelper: sharedPreferences,
                   restClientBase: restClientBase,
+                  applicationConfig: applicationConfig,
                 ).create();
 
             if (kDebugMode) {

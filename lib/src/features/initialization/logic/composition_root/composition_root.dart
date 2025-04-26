@@ -10,38 +10,40 @@ import 'package:yahay/src/core/utils/shared_preferences/shared_preferences.dart'
 import 'package:yahay/src/features/app_theme/bloc/app_theme_bloc.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/add_contact_bloc_factory.dart';
 import 'package:yahay/src/features/initialization/logic/composition_root/factories/authorization_bloc_factory.dart';
+import 'package:yahay/src/features/initialization/models/application_config.dart';
 import 'package:yahay/src/features/initialization/models/dependency_container.dart';
 
 final class CompositionRoot extends AsyncFactory<CompositionResult> {
   //
 
   CompositionRoot({
-    required Logger logger,
-    required SharedPreferHelper sharedPreferHelper,
-    required RestClientBase restClientBase,
-  }) : _logger = logger,
-       _sharedPreferHelper = sharedPreferHelper,
-       _restClientBase = restClientBase;
+    required this.logger,
+    required this.sharedPreferHelper,
+    required this.restClientBase,
+    required this.applicationConfig,
+  });
 
-  final Logger _logger;
-  final SharedPreferHelper _sharedPreferHelper;
-  final RestClientBase _restClientBase;
+  final Logger logger;
+  final SharedPreferHelper sharedPreferHelper;
+  final RestClientBase restClientBase;
+  final ApplicationConfig applicationConfig;
 
   @override
   Future<CompositionResult> create() async {
     final stopWatch = clock.stopwatch()..start();
 
-    _logger.log(Level.info, 'Initializing dependencies...');
+    logger.log(Level.info, 'Initializing dependencies...');
 
     final dependencyContainer =
         await DependencyContainerFactory(
-          logger: _logger,
-          sharedPreferHelper: _sharedPreferHelper,
-          restClientBase: _restClientBase,
+          logger: logger,
+          sharedPreferHelper: sharedPreferHelper,
+          restClientBase: restClientBase,
+          applicationConfig: applicationConfig,
         ).create();
 
     stopWatch.stop();
-    _logger.log(
+    logger.log(
       Level.info,
       'Dependencies initialized successfully in ${stopWatch.elapsedMilliseconds} ms.',
     );
@@ -58,16 +60,16 @@ class CompositionResult {
 
 final class DependencyContainerFactory extends AsyncFactory<DependencyContainer> {
   DependencyContainerFactory({
-    required Logger logger,
-    required SharedPreferHelper sharedPreferHelper,
-    required RestClientBase restClientBase,
-  }) : _logger = logger,
-       _sharedPreferHelper = sharedPreferHelper,
-       _restClientBase = restClientBase;
+    required this.logger,
+    required this.sharedPreferHelper,
+    required this.restClientBase,
+    required this.applicationConfig,
+  });
 
-  final Logger _logger;
-  final SharedPreferHelper _sharedPreferHelper;
-  final RestClientBase _restClientBase;
+  final Logger logger;
+  final SharedPreferHelper sharedPreferHelper;
+  final RestClientBase restClientBase;
+  final ApplicationConfig applicationConfig;
 
   @override
   Future<DependencyContainer> create() async {
@@ -75,29 +77,30 @@ final class DependencyContainerFactory extends AsyncFactory<DependencyContainer>
         AuthorizationBlocFactory(
           googleSignIn: GoogleSignIn(),
           facebookAuth: FacebookAuth.instance,
-          sharedPreferHelper: _sharedPreferHelper,
-          logger: _logger,
-          restClientBase: _restClientBase,
+          sharedPreferHelper: sharedPreferHelper,
+          logger: logger,
+          restClientBase: restClientBase,
         ).create();
 
     final cameraHelperService = CameraHelperService();
     await cameraHelperService.initCameras();
 
     final addContactBloc =
-        AddContactBlocFactory(logger: _logger, restClientBase: _restClientBase).create();
+        AddContactBlocFactory(logger: logger, restClientBase: restClientBase).create();
 
-    final pusherClientService = PusherClientService();
+    final pusherClientService = PusherClientService(applicationConfig);
 
     await pusherClientService.init();
 
     return DependencyContainer(
-      logger: _logger,
-      sharedPreferHelper: _sharedPreferHelper,
-      restClientBase: _restClientBase,
+      logger: logger,
+      sharedPreferHelper: sharedPreferHelper,
+      restClientBase: restClientBase,
       appThemeBloc: AppThemeBloc(),
       authBloc: authBloc,
       addContactBloc: addContactBloc,
       appRouter: AppRouter(),
+      applicationConfig: applicationConfig,
       pusherClientService: pusherClientService,
       cameraHelperService: cameraHelperService,
     );
