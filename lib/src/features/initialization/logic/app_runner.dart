@@ -37,6 +37,7 @@ class AppRunner with FolderCreator {
           await sharedPreferences.initSharedPrefer();
           final applicationConfig = ApplicationConfig();
           logger.log(Level.debug, "from env main url: ${applicationConfig.mainUrl}");
+          logger.log(Level.debug, "type of env: ${applicationConfig.environment}");
 
           final RestClientBase restClientBase = RestClientDio(
             baseURL: applicationConfig.mainUrl,

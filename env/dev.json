@@ -1,4 +1,5 @@
 {
+  "ENVIRONMENT": "DEV",
   "MAIN_URL": "",
   "PUSHER_APP_ID": "",
   "PUSHER_APP_KEY": "",
