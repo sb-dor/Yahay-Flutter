@@ -9,10 +9,7 @@ import 'package:yahay/src/features/telegram_file_picker_feature/view/telegram_dr
 class BottomChatWidget extends StatefulWidget {
   final TextEditingController messageController;
 
-  const BottomChatWidget({
-    super.key,
-    required this.messageController,
-  });
+  const BottomChatWidget({super.key, required this.messageController});
 
   @override
   State<BottomChatWidget> createState() => _BottomChatWidgetState();
@@ -44,9 +41,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                   child: GestureDetector(
                     onTap: _focusNode.requestFocus,
                     child: Container(
-                      constraints: const BoxConstraints(
-                        maxHeight: 100,
-                      ),
+                      constraints: const BoxConstraints(maxHeight: 100),
                       color: Theme.of(context).inputDecorationTheme.fillColor,
                       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 35),
                       width: MediaQuery.of(context).size.width,
@@ -94,9 +89,10 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                     },
                     icon: Icon(
                       Icons.emoji_emotions_outlined,
-                      color: _chatsBloc.state.chatScreenStateModel.showEmojiPicker
-                          ? Colors.blue
-                          : null,
+                      color:
+                          _chatsBloc.state.chatScreenStateModel.showEmojiPicker
+                              ? Colors.blue
+                              : null,
                     ),
                   ),
                 ),
@@ -107,13 +103,11 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                     right: 0,
                     child: IconButton(
                       onPressed: () {
-                        final dependencies = DependenciesScope.of(
-                          context,
-                          listen: false,
-                        );
-                        final telegramFilePickerBloc = TelegramFilePickerBlocFactory(
-                          cameraHelperService: dependencies.cameraHelperService,
-                        ).create();
+                        final dependencies = DependenciesScope.of(context, listen: false);
+                        final telegramFilePickerBloc =
+                            TelegramFilePickerBlocFactory(
+                              cameraHelperService: dependencies.cameraHelperService,
+                            ).create();
                         showModalBottomSheet(
                           isScrollControlled: true,
                           context: context,
@@ -122,9 +116,7 @@ class _BottomChatWidgetState extends State<BottomChatWidget> {
                               telegramFilePickerBloc: telegramFilePickerBloc,
                             );
                           },
-                        ).whenComplete(
-                          telegramFilePickerBloc.close,
-                        ).ignore();
+                        ).whenComplete(telegramFilePickerBloc.close).ignore();
                       },
                       icon: const FaIcon(FontAwesomeIcons.paste),
                     ),

@@ -6,9 +6,8 @@ import 'package:yahay/src/features/chats/data/sources/chats_data_source/chats_da
 
 class ChatsDataSourceImpl implements ChatsDataSource {
   //
-  ChatsDataSourceImpl({
-    required final RestClientBase restClientBase,
-  }) : _restClientBase = restClientBase;
+  ChatsDataSourceImpl({required final RestClientBase restClientBase})
+    : _restClientBase = restClientBase;
 
   final RestClientBase _restClientBase;
 
@@ -21,7 +20,9 @@ class ChatsDataSourceImpl implements ChatsDataSource {
 
       if (response == null) return <ChatModel>[];
 
-      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) return <ChatModel>[];
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
+        return <ChatModel>[];
+      }
 
       final List<dynamic> listD = response.getNested(['chats']);
 

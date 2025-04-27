@@ -15,21 +15,20 @@ import 'widgets/hang_up_buttons_widget.dart';
 class VideoChatFeaturePage extends StatelessWidget {
   final ChatModel? chat;
 
-  const VideoChatFeaturePage({
-    super.key,
-    required this.chat,
-  });
+  const VideoChatFeaturePage({super.key, required this.chat});
 
   @override
   Widget build(BuildContext context) {
     final depContainer = DependenciesScope.of(context, listen: false);
     return BlocProvider(
-      create: (_) => VideoChatBlocFactory(
-        user: depContainer.authBloc.state.authStateModel.user,
-        pusherClientService: depContainer.pusherClientService,
-        logger: depContainer.logger,
-        restClientBase: depContainer.restClientBase,
-      ).create(),
+      create:
+          (_) =>
+              VideoChatBlocFactory(
+                user: depContainer.authBloc.state.authStateModel.user,
+                pusherClientService: depContainer.pusherClientService,
+                logger: depContainer.logger,
+                restClientBase: depContainer.restClientBase,
+              ).create(),
       child: _VideoChatFeaturePageUI(chat: chat),
     );
   }
@@ -49,10 +48,8 @@ class _VideoChatFeaturePageUIState extends State<_VideoChatFeaturePageUI> {
   void initState() {
     super.initState();
     context.read<VideoChatBloc>().add(
-          VideoChatFeatureEvents.videoChatInitFeatureEvent(
-            widget.chat,
-          ),
-        );
+      VideoChatFeatureEvents.videoChatInitFeatureEvent(widget.chat),
+    );
   }
 
   @override
@@ -77,9 +74,10 @@ class _VideoChatFeaturePageUIState extends State<_VideoChatFeaturePageUI> {
                   left: 0,
                   right: 0,
                   child: Center(
-                    child: currentStateModel.chatStarted
-                        ? const HangUpButtonsWidget()
-                        : const CallButtonWidget(),
+                    child:
+                        currentStateModel.chatStarted
+                            ? const HangUpButtonsWidget()
+                            : const CallButtonWidget(),
                   ),
                 ),
               ],

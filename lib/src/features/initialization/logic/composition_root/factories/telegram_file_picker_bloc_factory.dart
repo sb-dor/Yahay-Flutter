@@ -8,18 +8,15 @@ import 'package:yahay/src/features/telegram_file_picker_feature/domain/repo/tele
 final class TelegramFilePickerBlocFactory extends Factory<TelegramFilePickerBloc> {
   final CameraHelperService _cameraHelperService;
 
-  TelegramFilePickerBlocFactory({
-    required CameraHelperService cameraHelperService,
-  }) : _cameraHelperService = cameraHelperService;
+  TelegramFilePickerBlocFactory({required CameraHelperService cameraHelperService})
+    : _cameraHelperService = cameraHelperService;
 
   @override
   TelegramFilePickerBloc create() {
     //
     final TelegramFilePickerRepo telegramFilePickerRepo = TelegramFilePickerRepoImpl();
     //
-    final initialState = TelegramFilePickerStates.initial(
-      TelegramFilePickerStateModel.idle(),
-    );
+    final initialState = TelegramFilePickerStates.initial(TelegramFilePickerStateModel.idle());
 
     return TelegramFilePickerBloc(
       telegramFilePickerRepo: telegramFilePickerRepo,

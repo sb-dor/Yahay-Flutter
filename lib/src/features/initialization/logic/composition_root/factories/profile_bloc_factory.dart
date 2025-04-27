@@ -8,11 +8,9 @@ import 'package:yahay/src/features/profile/data/profile_repository.dart';
 
 final class ProfileBlocFactory extends Factory<ProfileBloc> {
   //
-  ProfileBlocFactory({
-    required final Logger logger,
-    required final RestClientBase restClientBase,
-  })  : _logger = logger,
-        _restClientBase = restClientBase;
+  ProfileBlocFactory({required final Logger logger, required final RestClientBase restClientBase})
+    : _logger = logger,
+      _restClientBase = restClientBase;
 
   final Logger _logger;
   final RestClientBase _restClientBase;
@@ -27,11 +25,8 @@ final class ProfileBlocFactory extends Factory<ProfileBloc> {
     final IProfileRepository profileRepository = ProfileRepositoryImpl(profileDatasource);
 
     //
-    final initialState = ProfileStates.initial(ProfileStateModel());
+    const initialState = ProfileStates.initial(ProfileStateModel());
 
-    return ProfileBloc(
-      initialState: initialState,
-      iProfileRepository: profileRepository,
-    );
+    return ProfileBloc(initialState: initialState, iProfileRepository: profileRepository);
   }
 }

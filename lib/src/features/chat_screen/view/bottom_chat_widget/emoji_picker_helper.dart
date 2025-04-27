@@ -7,10 +7,7 @@ import 'package:yahay/src/features/chat_screen/bloc/chat_screen_bloc.dart';
 class EmojiPickerHelper extends StatefulWidget {
   final TextEditingController messageController;
 
-  const EmojiPickerHelper({
-    super.key,
-    required this.messageController,
-  });
+  const EmojiPickerHelper({super.key, required this.messageController});
 
   @override
   State<EmojiPickerHelper> createState() => _EmojiPickerHelperState();
@@ -56,9 +53,7 @@ class _EmojiPickerHelperState extends State<EmojiPickerHelper> {
           buttonColor: Colors.white,
           buttonIconColor: Colors.grey,
         ),
-        searchViewConfig: const SearchViewConfig(
-          backgroundColor: Colors.white,
-        ),
+        searchViewConfig: const SearchViewConfig(backgroundColor: Colors.white),
       ),
     );
   }

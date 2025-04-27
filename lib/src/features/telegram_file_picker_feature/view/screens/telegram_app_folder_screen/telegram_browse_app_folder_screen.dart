@@ -6,9 +6,7 @@ import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_cr
 import 'telegram_browse_folder_widget.dart';
 
 class TelegramBrowseAppFolderScreen extends StatefulWidget {
-  const TelegramBrowseAppFolderScreen({
-    super.key,
-  });
+  const TelegramBrowseAppFolderScreen({super.key});
 
   @override
   State<TelegramBrowseAppFolderScreen> createState() => _TelegramBrowseAppFolderScreenState();
@@ -27,14 +25,14 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
         TelegramFolderWidget(
           onTap: () {
             context.read<TelegramFilePickerBloc>().add(
-                  const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
-                    TelegramFileFolderEnum.recentDownloadsScreen,
-                  ),
-                );
+              const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
+                TelegramFileFolderEnum.recentDownloadsScreen,
+              ),
+            );
             Future.delayed(const Duration(milliseconds: 300), () {
-              context
-                  .read<TelegramFilePickerBloc>()
-                  .add(const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
+              context.read<TelegramFilePickerBloc>().add(
+                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),
+              );
             });
           },
           title: "...",
@@ -50,20 +48,18 @@ class _TelegramBrowseAppFolderScreenState extends State<TelegramBrowseAppFolderS
               onTap: () async {
                 //
                 context.read<TelegramFilePickerBloc>().add(
-                      const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
-                        TelegramFileFolderEnum.browseTheFolder,
-                      ),
-                    );
+                  const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
+                    TelegramFileFolderEnum.browseTheFolder,
+                  ),
+                );
 
                 final dir = "${(await getApplicationDir())?.path}/${foldersName[index]}";
 
                 debugPrint("clicking path: $dir");
                 // init here for folder data
                 context.read<TelegramFilePickerBloc>().add(
-                      TelegramFilePickerEvents.setSpecificFolderPathInOrderToGetDataFromThereEvent(
-                        dir,
-                      ),
-                    );
+                  TelegramFilePickerEvents.setSpecificFolderPathInOrderToGetDataFromThereEvent(dir),
+                );
               },
               title: foldersName[index],
             );

@@ -9,10 +9,7 @@ import 'screens/telegram_gallery_file_picker_screen/telegram_gallery_file_picker
 class TelegramDraggableScrollableBottomSheet extends StatelessWidget {
   final TelegramFilePickerBloc telegramFilePickerBloc;
 
-  const TelegramDraggableScrollableBottomSheet({
-    super.key,
-    required this.telegramFilePickerBloc,
-  });
+  const TelegramDraggableScrollableBottomSheet({super.key, required this.telegramFilePickerBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +37,12 @@ class _TelegramDraggableScrollableBottomSheetUIState
   void initState() {
     super.initState();
     final telegramFilePickerBloc = context.read<TelegramFilePickerBloc>();
-    telegramFilePickerBloc.add(
-      const TelegramFilePickerEvents.initAllPicturesEvent(true),
-    );
-    Future.delayed(
-      const Duration(milliseconds: 350),
-      () {
-        telegramFilePickerBloc.add(
-          const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-            true,
-          ),
-        );
-      },
-    );
+    telegramFilePickerBloc.add(const TelegramFilePickerEvents.initAllPicturesEvent(true));
+    Future.delayed(const Duration(milliseconds: 350), () {
+      telegramFilePickerBloc.add(
+        const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(true),
+      );
+    });
     // _telegramFilePickerBloc.events.add(const InitAllFilesEvent(initFilePickerState: false));
   }
 
@@ -80,11 +70,11 @@ class _TelegramDraggableScrollableBottomSheetUIState
                   switch (state) {
                     Picker$InitialState() => const SizedBox(),
                     Picker$GalleryFileState() => TelegramGalleryFilePickerScreen(
-                        parentScrollController: scrollController,
-                      ),
+                      parentScrollController: scrollController,
+                    ),
                     Picker$FilesState() => TelegramFilesPickerScreen(
-                        parentScrollController: scrollController,
-                      ),
+                      parentScrollController: scrollController,
+                    ),
                     Picker$AudioFilesState() => const SizedBox(),
                   },
                   AnimatedPositioned(
@@ -98,10 +88,11 @@ class _TelegramDraggableScrollableBottomSheetUIState
                   AnimatedPositioned(
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 1000),
-                    bottom: (currentStateModel.openBottomSectionButton &&
-                            currentStateModel.pickedFiles.isEmpty)
-                        ? 0
-                        : -200,
+                    bottom:
+                        (currentStateModel.openBottomSectionButton &&
+                                currentStateModel.pickedFiles.isEmpty)
+                            ? 0
+                            : -200,
                     right: 0,
                     left: 0,
                     child: TelegramBottomPickerButton(

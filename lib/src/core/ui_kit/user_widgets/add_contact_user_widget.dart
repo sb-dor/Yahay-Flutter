@@ -10,17 +10,13 @@ class AddContactUserWidget extends StatelessWidget {
   final UserModel user;
   final VoidCallback addUser;
 
-  const AddContactUserWidget({
-    super.key,
-    required this.user,
-    required this.addUser,
-  });
+  const AddContactUserWidget({super.key, required this.user, required this.addUser});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => [],
-      child: Container(
+      child: ColoredBox(
         color: Colors.transparent,
         child: IntrinsicHeight(
           child: Row(
@@ -47,10 +43,7 @@ class AddContactUserWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      user.name ?? user.email ?? '-',
-                      style: GoogleFonts.aBeeZee(fontSize: 15),
-                    ),
+                    Text(user.name ?? user.email ?? '-', style: GoogleFonts.aBeeZee(fontSize: 15)),
                     Text(
                       "Last seen 3000 y.a",
                       style: GoogleFonts.aBeeZee(fontSize: 12, color: Colors.grey),

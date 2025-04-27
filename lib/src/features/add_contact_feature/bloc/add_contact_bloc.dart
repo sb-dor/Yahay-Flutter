@@ -9,7 +9,7 @@ part 'add_contact_bloc.freezed.dart';
 
 @immutable
 @freezed
-class AddContactsEvents with _$AddContactsEvents {
+sealed class AddContactsEvents with _$AddContactsEvents {
   const factory AddContactsEvents.searchContact(final String value) = _SearchContactEvent;
 
   const factory AddContactsEvents.addContactEvent(final UserModel? user) =
@@ -25,23 +25,24 @@ sealed class AddContactsStates with _$AddContactsStates {
       InitialAddConstactsState;
 
   const factory AddContactsStates.loadingAddContactsState(
-      final AddContactStateModel addContactStateModel,) = AddContacts$InProgressState;
+    final AddContactStateModel addContactStateModel,
+  ) = AddContacts$InProgressState;
 
   const factory AddContactsStates.errorAddContactsState(
-      final AddContactStateModel addContactStateModel,) = AddContacts$ErrorState;
+    final AddContactStateModel addContactStateModel,
+  ) = AddContacts$ErrorState;
 
   const factory AddContactsStates.loadedAddContactsState(
-      final AddContactStateModel addContactStateModel,) = AddContacts$SuccessfulState;
+    final AddContactStateModel addContactStateModel,
+  ) = AddContacts$SuccessfulState;
 }
 
 class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
   final AddContactRepo _iAddContactRepo;
 
-  AddContactBloc({
-    required AddContactsStates initialState,
-    required AddContactRepo iAddContactRepo,
-  })  : _iAddContactRepo = iAddContactRepo,
-        super(initialState) {
+  AddContactBloc({required AddContactsStates initialState, required AddContactRepo iAddContactRepo})
+    : _iAddContactRepo = iAddContactRepo,
+      super(initialState) {
     on<AddContactsEvents>(
       (event, emit) => event.map(
         searchContact: (event) => _searchContactEvent(event, emit),
@@ -56,10 +57,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
     );
   }
 
-  void _searchContactEvent(
-    _SearchContactEvent event,
-    Emitter<AddContactsStates> emit,
-  ) async {
+  void _searchContactEvent(_SearchContactEvent event, Emitter<AddContactsStates> emit) async {
     var currentStateModel = state.addContactStateModel.copyWith();
 
     try {
@@ -69,10 +67,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
       //
       emit(AddContactsStates.loadingAddContactsState(currentStateModel));
       //
-      final data = await _iAddContactRepo.searchContact(
-        event.value,
-        currentStateModel.page,
-      );
+      final data = await _iAddContactRepo.searchContact(event.value, currentStateModel.page);
       //
 
       final List<UserModel> currentUsers = List<UserModel>.from(currentStateModel.users);
@@ -98,9 +93,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
     // try {
     if (event.user == null) return;
 
-    UserModel? changingModel = event.user?.copyWith(
-      loadingForAddingToContacts: true,
-    );
+    UserModel? changingModel = event.user?.copyWith(loadingForAddingToContacts: true);
 
     final List<UserModel> tempUsersList = List<UserModel>.from(currentStateModel.users);
 
@@ -114,9 +107,7 @@ class AddContactBloc extends Bloc<AddContactsEvents, AddContactsStates> {
 
     debugPrint("reponse value: $responseValue");
 
-    changingModel = changingModel?.copyWith(
-      loadingForAddingToContacts: false,
-    );
+    changingModel = changingModel?.copyWith(loadingForAddingToContacts: false);
 
     if (foundIndex != -1) {
       tempUsersList[foundIndex] = event.user!;

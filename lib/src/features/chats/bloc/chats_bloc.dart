@@ -16,7 +16,7 @@ part 'chats_bloc.freezed.dart';
 
 @immutable
 @freezed
-class ChatsEvents with _$ChatsEvents {
+sealed class ChatsEvents with _$ChatsEvents {
   const factory ChatsEvents.getUserChatsEvent({@Default(false) bool refresh}) = _Chats$GetUserEvent;
 
   const factory ChatsEvents.chatListenerInitialEvent() = _Chats$ListenerInitialEvent;
@@ -34,8 +34,7 @@ sealed class ChatsStates with _$ChatsStates {
   const factory ChatsStates.inProgress(final ChatsStateModel chatsStateModel) =
       Chats$InProgressState;
 
-  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) =
-      Chats$ErrorState;
+  const factory ChatsStates.error(final ChatsStateModel chatsStateModel) = Chats$ErrorState;
 
   const factory ChatsStates.successful(final ChatsStateModel chatsStateModel) =
       Chats$SuccessfulState;
@@ -59,11 +58,11 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     required final PusherChannelsOptions pusherChannelsOptions,
     required final Logger logger,
     required ChatsStates initialState,
-  })  : _chatsRepo = chatsRepo,
-        _currentUser = currentUser,
-        _pusherChannelsOptions = pusherChannelsOptions,
-        _logger = logger,
-        super(initialState) {
+  }) : _chatsRepo = chatsRepo,
+       _currentUser = currentUser,
+       _pusherChannelsOptions = pusherChannelsOptions,
+       _logger = logger,
+       super(initialState) {
     //
     on<ChatsEvents>(
       (event, emit) => event.map(
@@ -75,18 +74,13 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     );
   }
 
-  void _getUserChatsEvent(
-    _Chats$GetUserEvent event,
-    Emitter<ChatsStates> emit,
-  ) async {
+  void _getUserChatsEvent(_Chats$GetUserEvent event, Emitter<ChatsStates> emit) async {
     try {
       if (state is Chats$SuccessfulState && !event.refresh) return;
 
       emit(ChatsStates.inProgress(state.chatsStateModel));
 
-      final currentStateModel = state.chatsStateModel.copyWith(
-        chats: await _chatsRepo.chats(),
-      );
+      final currentStateModel = state.chatsStateModel.copyWith(chats: await _chatsRepo.chats());
 
       _logger.log(Level.debug, "chat length is: ${currentStateModel.chats.length}");
 
@@ -124,34 +118,23 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
       _channelSubscription = chatChannel
           ?.bind(Constants.channelNotifyOfUserEventName)
           .transform(ChatsStreamTransformers(logger: _logger))
-          .listen(
-        (chatModel) {
-          add(ChatsEvents.chatListenerEvent(chatModel));
-        },
-      );
+          .listen((chatModel) {
+            add(ChatsEvents.chatListenerEvent(chatModel));
+          });
     } catch (e) {
       _logger.log(Level.debug, "current whole channel listeners error is: $e");
     }
   }
 
-  void _chatListenerEvent(
-    _Chat$ListenerEvent event,
-    Emitter<ChatsStates> emit,
-  ) async {
+  void _chatListenerEvent(_Chat$ListenerEvent event, Emitter<ChatsStates> emit) async {
     try {
-      _logger.log(
-        Level.debug,
-        "${event.chatModel}",
-      );
+      _logger.log(Level.debug, "${event.chatModel}");
 
       // debugPrint("chat room decoded data: ${jsonDecode(chat.videoChatRoom?.offer ?? '')}");
 
       if (event.chatModel != null) {
         final currentStateModel = state.chatsStateModel.copyWith(
-          chats: addChat(
-            chat: event.chatModel,
-            currentChats: state.chatsStateModel.chats,
-          ),
+          chats: _addChat(chat: event.chatModel, currentChats: state.chatsStateModel.chats),
         );
 
         _emitter(currentStateModel: currentStateModel, emit: emit);
@@ -169,10 +152,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     _emitter(currentStateModel: currentState, emit: emit);
   }
 
-  void _emitter({
-    required ChatsStateModel currentStateModel,
-    required Emitter<ChatsStates> emit,
-  }) {
+  void _emitter({required ChatsStateModel currentStateModel, required Emitter<ChatsStates> emit}) {
     switch (state) {
       case Chats$InitialState():
         emit(ChatsStates.initial(currentStateModel));
@@ -189,7 +169,7 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
     }
   }
 
-  List<ChatModel> addChat({
+  List<ChatModel> _addChat({
     required ChatModel? chat,
     required List<ChatModel> currentChats,
     UserModel? user,
@@ -198,19 +178,14 @@ class ChatsBloc extends Bloc<ChatsEvents, ChatsStates> {
 
     final List<ChatModel> resultChats = List.of(currentChats);
 
-    final convertedToModelChat = _removeCurrentUserFromParticipants(
-      chat,
-      user,
-    );
+    final convertedToModelChat = _removeCurrentUserFromParticipants(chat, user);
 
     final chatIndex = resultChats.indexWhere(
       (e) => e.id == convertedToModelChat.id && e.uuid == convertedToModelChat.uuid,
     );
 
     if (chatIndex != -1) {
-      resultChats[chatIndex] = convertedToModelChat.copyWith(
-        lastMessage: chat.lastMessage,
-      );
+      resultChats[chatIndex] = convertedToModelChat.copyWith(lastMessage: chat.lastMessage);
     } else {
       resultChats.add(convertedToModelChat);
     }

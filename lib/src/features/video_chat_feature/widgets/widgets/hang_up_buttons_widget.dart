@@ -11,8 +11,6 @@ class HangUpButtonsWidget extends StatefulWidget {
 }
 
 class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
-
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -24,19 +22,15 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
           child: InkWell(
             borderRadius: BorderRadius.circular(50),
             onTap: () async {
-              context
-                  .read<VideoChatBloc>()
-                  .add(const VideoChatFeatureEvents.switchCameraStreamEvent());
+              context.read<VideoChatBloc>().add(
+                const VideoChatFeatureEvents.switchCameraStreamEvent(),
+              );
             },
             child: const SizedBox(
               width: 60,
               height: 60,
               child: Center(
-                child: Icon(
-                  CupertinoIcons.switch_camera,
-                  size: 35,
-                  color: Colors.black,
-                ),
+                child: Icon(CupertinoIcons.switch_camera, size: 35, color: Colors.black),
               ),
             ),
           ),
@@ -49,9 +43,9 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () {
-                  context
-                      .read<VideoChatBloc>()
-                      .add(const VideoChatFeatureEvents.turnCameraOffAndEvent());
+                  context.read<VideoChatBloc>().add(
+                    const VideoChatFeatureEvents.turnCameraOffAndEvent(),
+                  );
                 },
                 child: Stack(
                   children: [
@@ -59,11 +53,7 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
                       width: 60,
                       height: 60,
                       child: Center(
-                        child: Icon(
-                          CupertinoIcons.video_camera,
-                          size: 35,
-                          color: Colors.white,
-                        ),
+                        child: Icon(CupertinoIcons.video_camera, size: 35, color: Colors.white),
                       ),
                     ),
                     if (!state.videoChatStateModel.hasVideo)
@@ -71,11 +61,7 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
                         child: Center(
                           child: RotationTransition(
                             turns: AlwaysStoppedAnimation(45 / 360),
-                            child: Icon(
-                              Icons.remove,
-                              color: Colors.white,
-                              size: 60,
-                            ),
+                            child: Icon(Icons.remove, color: Colors.white, size: 60),
                           ),
                         ),
                       ),
@@ -93,9 +79,9 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
               child: InkWell(
                 borderRadius: BorderRadius.circular(50),
                 onTap: () {
-                  context
-                      .read<VideoChatBloc>()
-                      .add(const VideoChatFeatureEvents.turnMicOffAndOnEvent());
+                  context.read<VideoChatBloc>().add(
+                    const VideoChatFeatureEvents.turnMicOffAndOnEvent(),
+                  );
                 },
                 child: SizedBox(
                   width: 60,
@@ -139,11 +125,7 @@ class _HangUpButtonsWidgetState extends State<HangUpButtonsWidget> {
                   width: 60,
                   height: 60,
                   child: Center(
-                    child: Icon(
-                      CupertinoIcons.phone_down,
-                      size: 35,
-                      color: Colors.white,
-                    ),
+                    child: Icon(CupertinoIcons.phone_down, size: 35, color: Colors.white),
                   ),
                 ),
               ),

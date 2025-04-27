@@ -8,11 +8,9 @@ import 'package:yahay/src/features/telegram_file_picker_feature/mixins/folder_cr
 class DebugImageCreatorInAppsFolder with FolderCreator {
   //
 
-  DebugImageCreatorInAppsFolder({
-    required final SharedPreferHelper sharedPreferHelper,
-    Dio? dio,
-  })  : _sharedPreferHelper = sharedPreferHelper,
-        _dio = dio ?? Dio();
+  DebugImageCreatorInAppsFolder({required final SharedPreferHelper sharedPreferHelper, Dio? dio})
+    : _sharedPreferHelper = sharedPreferHelper,
+      _dio = dio ?? Dio();
 
   final SharedPreferHelper _sharedPreferHelper;
 

@@ -20,26 +20,27 @@ part 'chat_screen_bloc.freezed.dart';
 
 @immutable
 @freezed
-abstract class ChatScreenEvents with _$ChatScreenEvents {
+sealed class ChatScreenEvents with _$ChatScreenEvents {
   // init chat on entering to the screen (if chat was already created)
   const factory ChatScreenEvents.initChatScreenEvent({
     final ChatModel? chat,
     final UserModel? user, // temp for creating temp chat if chat does not exist
   }) = _ChatScreen$InitEvent;
 
-  const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() = _ChatsScreen$RemoveAllTempCreatedEvent;
+  const factory ChatScreenEvents.removeAllTempCreatedChatsEvent() =
+      _ChatsScreen$RemoveAllTempCreatedEvent;
 
   const factory ChatScreenEvents.handleChatMessageEvent(
-      ChatMessageStreamTransformerRecord chatMessageTransformer,) = _Chat$HandleMessageEvent;
+    ChatMessageStreamTransformerRecord chatMessageTransformer,
+  ) = _Chat$HandleMessageEvent;
 
   const factory ChatScreenEvents.sendMessageEvent({
     required final String message,
     required void Function() clearMessage,
   }) = _Chat$SendMessageEvent;
 
-  const factory ChatScreenEvents.changeEmojiPicker({
-    final bool? value,
-  }) = _Chat$ChangeEmojiPickerEvent;
+  const factory ChatScreenEvents.changeEmojiPicker({final bool? value}) =
+      _Chat$ChangeEmojiPickerEvent;
 }
 
 @immutable
@@ -78,12 +79,12 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     required PusherChannelsOptions options,
     required ChatScreenStates initialState,
     required Logger logger,
-  })  : _iChatScreenRepo = chatScreenRepo,
-        _iChatScreenChatRepo = chatScreenChatRepo,
-        _currentUser = currentUser,
-        _options = options,
-        _logger = logger,
-        super(initialState) {
+  }) : _iChatScreenRepo = chatScreenRepo,
+       _iChatScreenChatRepo = chatScreenChatRepo,
+       _currentUser = currentUser,
+       _options = options,
+       _logger = logger,
+       super(initialState) {
     //
     on<ChatScreenEvents>(
       (event, emit) => event.map(
@@ -97,10 +98,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     //
   }
 
-  void _initChatScreenEvent(
-    _ChatScreen$InitEvent event,
-    Emitter<ChatScreenStates> emit,
-  ) async {
+  void _initChatScreenEvent(_ChatScreen$InitEvent event, Emitter<ChatScreenStates> emit) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
 
     emit(ChatScreenStates.inProgress(currentStateModel));
@@ -137,28 +135,22 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
 
     final channel = _pusherChannelsClient?.publicChannel(channelName);
 
-    _channelInformationSubscription = _pusherChannelsClient?.onConnectionEstablished.listen(
-      (e) {
-        channel?.subscribeIfNotUnsubscribed();
-      },
-    );
+    _channelInformationSubscription = _pusherChannelsClient?.onConnectionEstablished.listen((e) {
+      channel?.subscribeIfNotUnsubscribed();
+    });
 
     await _pusherChannelsClient?.connect();
 
     _channelSubscription = channel
         ?.bind(Constants.chatChannelEventName)
-        .transform(
-          ChatMessageStreamTransformer(
-            logger: _logger,
-          ),
-        )
+        .transform(ChatMessageStreamTransformer(logger: _logger))
         .listen(
-      (pusherEvent) {
-        add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
-      },
-      onError: (error, stackTrace) => Error.throwWithStackTrace(error, stackTrace),
-      onDone: () => _channelSubscription?.cancel(),
-    );
+          (pusherEvent) {
+            add(ChatScreenEvents.handleChatMessageEvent(pusherEvent));
+          },
+          onError: (error, stackTrace) => Error.throwWithStackTrace(error, stackTrace),
+          onDone: () => _channelSubscription?.cancel(),
+        );
 
     emit(ChatScreenStates.successful(currentStateModel));
 
@@ -169,9 +161,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     _ChatsScreen$RemoveAllTempCreatedEvent event,
     Emitter<ChatScreenStates> emit,
   ) async {
-    _iChatScreenChatRepo.removeAllTempCreatedChats(
-      chat: state.chatScreenStateModel.currentChat,
-    );
+    _iChatScreenChatRepo.removeAllTempCreatedChats(chat: state.chatScreenStateModel.currentChat);
   }
 
   void _handleChatMessageEvent(
@@ -205,10 +195,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     _emitter(emit: emit, currentStateModel: currentStateModel);
   }
 
-  void _sendMessageEvent(
-    _Chat$SendMessageEvent event,
-    Emitter<ChatScreenStates> emit,
-  ) async {
+  void _sendMessageEvent(_Chat$SendMessageEvent event, Emitter<ChatScreenStates> emit) async {
     var currentStateModel = state.chatScreenStateModel.copyWith();
     // if (currentStateModel.pickedFile == null) {
     //   return;
@@ -225,18 +212,13 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
       messageSent: false,
     );
 
-    currentStateModel = _addMessage(
-      message: chatMessage,
-      currentStateModel: currentStateModel,
-    );
+    currentStateModel = _addMessage(message: chatMessage, currentStateModel: currentStateModel);
 
     event.clearMessage();
 
     _emitter(emit: emit, currentStateModel: currentStateModel);
 
-    await _iChatScreenRepo.sendMessage(
-      chatMessage: chatMessage,
-    );
+    await _iChatScreenRepo.sendMessage(chatMessage: chatMessage);
   }
 
   void _changeEmojiPicker(
@@ -257,38 +239,35 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     bool setChatMessages = true,
   }) {
     if (chat == null) return currentStateModel;
-    currentStateModel = currentStateModel.copyWith(
-      currentChat: chat,
-    );
+    currentStateModel = currentStateModel.copyWith(currentChat: chat);
     if (setChatMessages) {
       final List<ChatMessageModel> chatMessages = List.from(currentStateModel.messages);
       chatMessages.addAll((chat.messages ?? []).reversed.toList());
-      currentStateModel = currentStateModel.copyWith(
-        messages: chatMessages,
-      );
+      currentStateModel = currentStateModel.copyWith(messages: chatMessages);
     }
     return currentStateModel;
   }
 
-//
-// void setToFile(File? file) => _pickedFile = file;
-//
-// void setToRelatedUser(UserModel? user) => _relatedUser = user;
-//
-// void setToCurrentUser(UserModel? user) => _currentUser = user;
-//
+  //
+  // void setToFile(File? file) => _pickedFile = file;
+  //
+  // void setToRelatedUser(UserModel? user) => _relatedUser = user;
+  //
+  // void setToCurrentUser(UserModel? user) => _currentUser = user;
+  //
   ChatScreenStateModel _addMessage({
     required ChatMessageModel message,
     required ChatScreenStateModel currentStateModel,
   }) {
     final listOfMessages = List<ChatMessageModel>.from(currentStateModel.messages);
 
-    final findMessage =
-        listOfMessages.firstWhereOrNull((e) => e.chatMessageUUID == message.chatMessageUUID);
+    final findMessage = listOfMessages.firstWhereOrNull(
+      (e) => e.chatMessageUUID == message.chatMessageUUID,
+    );
     if (findMessage != null) {
-      listOfMessages[
-              listOfMessages.indexWhere((e) => e.chatMessageUUID == message.chatMessageUUID)] =
-          findMessage.copyWith(messageSent: true);
+      listOfMessages[listOfMessages.indexWhere(
+        (e) => e.chatMessageUUID == message.chatMessageUUID,
+      )] = findMessage.copyWith(messageSent: true);
     } else {
       listOfMessages.add(message);
     }
@@ -298,9 +277,9 @@ class ChatScreenBloc extends Bloc<ChatScreenEvents, ChatScreenStates> {
     return currentStateModel;
   }
 
-//
-// void clearMessage() => _messageController.clear();
-//
+  //
+  // void clearMessage() => _messageController.clear();
+  //
   ChatScreenStateModel _changeEmojiPickerHelper({
     required ChatScreenStateModel currentStateModel,
     bool? value,

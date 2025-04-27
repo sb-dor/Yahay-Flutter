@@ -6,10 +6,8 @@ import 'package:logger/logger.dart';
 import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart';
 import 'package:yahay/src/core/models/chats_model/chat_model.dart';
 
-typedef ChatMessageStreamTransformerRecord = ({
-  ChatModel? chatModel,
-  ChatMessageModel? chageMessageModel
-});
+typedef ChatMessageStreamTransformerRecord =
+    ({ChatModel? chatModel, ChatMessageModel? chageMessageModel});
 
 // I know that I could create a class that holds chatModel and message
 // but in order to improve records i had to write

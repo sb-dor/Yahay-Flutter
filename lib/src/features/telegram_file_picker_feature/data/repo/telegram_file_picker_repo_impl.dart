@@ -15,8 +15,6 @@ class TelegramFilePickerRepoImpl
   Stream<TelegramPathFolderFileModel?> getRecentFiles() => downloadsPathFilesData();
 
   @override
-  Stream<TelegramPathFolderFileModel?> getSpecificFolderData(
-    String path,
-  ) =>
+  Stream<TelegramPathFolderFileModel?> getSpecificFolderData(String path) =>
       getSpecificFolderDataStream(path);
 }

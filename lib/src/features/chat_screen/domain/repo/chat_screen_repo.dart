@@ -5,9 +5,7 @@ import 'package:yahay/src/core/models/chat_message_model/chat_message_model.dart
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 abstract class ChatScreenRepo {
-  Future<void> sendMessage({
-    required ChatMessageModel chatMessage,
-  });
+  Future<void> sendMessage({required ChatMessageModel chatMessage});
 
   Future<void> sendPicture({
     required ChatModel? chat,

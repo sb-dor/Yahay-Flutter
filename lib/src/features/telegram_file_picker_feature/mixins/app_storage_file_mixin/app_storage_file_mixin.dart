@@ -10,20 +10,14 @@ import 'package:path/path.dart' as p;
 
 mixin class AppStorageFileMixin {
   //
-  Stream<TelegramPathFolderFileModel?> getSpecificFolderDataStream(
-    String path,
-  ) async* {
+  Stream<TelegramPathFolderFileModel?> getSpecificFolderDataStream(String path) async* {
     //
 
     final ReceivePort mainPort = ReceivePort();
 
     final rootIsolateToken = RootIsolateToken.instance!;
 
-    Isolate.spawn(_isolateHelper, [
-      rootIsolateToken,
-      mainPort.sendPort,
-      path,
-    ]);
+    Isolate.spawn(_isolateHelper, [rootIsolateToken, mainPort.sendPort, path]);
 
     await for (final each in mainPort) {
       if (each is TelegramPathFolderFileModel) {
@@ -72,11 +66,7 @@ mixin class AppStorageFileMixin {
           model = (await ImageCompressor.compressedImageFile(
             file: model.file,
             directoryPath: tempPath.path,
-          ))
-              ?.clone(
-            fileExtension: model.fileExtension,
-            fileName: model.fileName,
-          );
+          ))?.clone(fileExtension: model.fileExtension, fileName: model.fileName);
         } else if (reusables.isVideoFile(each.path)) {
           model.isVideo = true;
         }
@@ -86,5 +76,6 @@ mixin class AppStorageFileMixin {
 
     sendPort.send(Constants.killIsolate);
   }
-//
+
+  //
 }

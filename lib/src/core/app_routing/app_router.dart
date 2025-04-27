@@ -16,33 +16,12 @@ part 'app_router.gr.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(
-          page: LoadingRoute.page,
-          path: '/',
-        ),
-        AutoRoute(
-          page: LoginRoute.page,
-          path: '/login',
-        ),
-        AutoRoute(
-          page: RegisterRoute.page,
-          path: '/register',
-        ),
-        AutoRoute(
-          page: ChatsRoute.page,
-          path: '/chats',
-        ),
-        AutoRoute(
-          page: HomeRoute.page,
-          path: '/homepage',
-        ),
-        AutoRoute(
-          page: ChatRoute.page,
-          path: "/homepage/chat/screen",
-        ),
-        AutoRoute(
-          page: VideoChatFeatureRoute.page,
-          path: '/videochat',
-        ),
-      ];
+    AutoRoute(page: LoadingRoute.page, path: '/'),
+    AutoRoute(page: LoginRoute.page, path: '/login'),
+    AutoRoute(page: RegisterRoute.page, path: '/register'),
+    AutoRoute(page: ChatsRoute.page, path: '/chats'),
+    AutoRoute(page: HomeRoute.page, path: '/homepage'),
+    AutoRoute(page: ChatRoute.page, path: "/homepage/chat/screen"),
+    AutoRoute(page: VideoChatFeatureRoute.page, path: '/videochat'),
+  ];
 }

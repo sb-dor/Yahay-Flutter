@@ -1,7 +1,11 @@
 import 'package:dart_pusher_channels/dart_pusher_channels.dart';
-import 'package:yahay/env/env.dart';
+import 'package:yahay/src/features/initialization/models/application_config.dart';
 
 class PusherClientService {
+  PusherClientService(this.applicationConfig);
+
+  final ApplicationConfig applicationConfig;
+
   late final PusherChannelsOptions _options;
 
   PusherChannelsOptions get options => _options;
@@ -10,11 +14,11 @@ class PusherClientService {
     // just for showing logs
     PusherChannelsPackageLogger.enableLogs();
 
-    _options = const PusherChannelsOptions.fromHost(
-      scheme: Env.pusherScheme, // should be -> ws
-      host: Env.pusherHost,
-      port: Env.pusherPort,
-      key: Env.pusherAppKey,
+    _options =  PusherChannelsOptions.fromHost(
+      scheme: applicationConfig.pusherScheme, // should be -> ws
+      host: applicationConfig.pusherHost,
+      port: applicationConfig.pusherPort,
+      key: applicationConfig.pusherAppKey,
     );
   }
 

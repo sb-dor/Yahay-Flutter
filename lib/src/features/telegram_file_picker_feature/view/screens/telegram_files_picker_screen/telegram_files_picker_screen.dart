@@ -13,10 +13,7 @@ import 'widgets/telegram_resent_files_from_storage_widget.dart';
 class TelegramFilesPickerScreen extends StatefulWidget {
   final ScrollController parentScrollController;
 
-  const TelegramFilesPickerScreen({
-    super.key,
-    required this.parentScrollController,
-  });
+  const TelegramFilesPickerScreen({super.key, required this.parentScrollController});
 
   @override
   State<TelegramFilesPickerScreen> createState() => _TelegramFilesPickerScreenState();
@@ -40,8 +37,9 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                 TelegramFileFolderEnum.browseTheGalleryFolder ||
             _telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                 TelegramFileFolderEnum.browseTheFolder) {
-          _telegramFilePickerBloc
-              .add(const TelegramFilePickerEvents.paginateSpecificFolderDataEvent());
+          _telegramFilePickerBloc.add(
+            const TelegramFilePickerEvents.paginateSpecificFolderDataEvent(),
+          );
         } else {
           // pagination here
           _telegramFilePickerBloc.add(const TelegramFilePickerEvents.recentFilesPaginationEvent());
@@ -66,15 +64,11 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
         debugPrint("listening data: ${notification.direction}");
         if (notification.direction == ScrollDirection.forward) {
           _telegramFilePickerBloc.add(
-            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-              true,
-            ),
+            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(true),
           );
         } else if (notification.direction == ScrollDirection.reverse) {
           _telegramFilePickerBloc.add(
-            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-              false,
-            ),
+            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(false),
           );
         }
         return true;
@@ -85,22 +79,25 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
             controller: widget.parentScrollController,
             children: [
               Visibility(
-                visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                visible:
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.recentDownloadsScreen,
                 maintainAnimation: true,
                 maintainState: true,
                 child: AnimatedSlide(
                   curve: Curves.fastOutSlowIn,
                   duration: const Duration(milliseconds: 300),
-                  offset: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                          TelegramFileFolderEnum.recentDownloadsScreen
-                      ? Offset.zero
-                      : const Offset(1, 0),
+                  offset:
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                              TelegramFileFolderEnum.recentDownloadsScreen
+                          ? Offset.zero
+                          : const Offset(1, 0),
                   child: AnimatedOpacity(
-                    opacity: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                            TelegramFileFolderEnum.recentDownloadsScreen
-                        ? 1
-                        : 0,
+                    opacity:
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                TelegramFileFolderEnum.recentDownloadsScreen
+                            ? 1
+                            : 0,
                     duration: const Duration(seconds: 1),
                     child: ListView(
                       shrinkWrap: true,
@@ -118,13 +115,15 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
               Visibility(
                 maintainAnimation: true,
                 maintainState: true,
-                visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                visible:
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.browseTheAppsFolder,
                 child: PopScope(
-                  canPop: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                          TelegramFileFolderEnum.browseTheAppsFolder
-                      ? false
-                      : true,
+                  canPop:
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                              TelegramFileFolderEnum.browseTheAppsFolder
+                          ? false
+                          : true,
                   onPopInvokedWithResult: (v, r) {
                     _telegramFilePickerBloc.add(
                       const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
@@ -135,33 +134,36 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                   child: AnimatedSlide(
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 300),
-                    offset: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                            TelegramFileFolderEnum.browseTheAppsFolder
-                        ? Offset.zero
-                        : const Offset(1, 0),
+                    offset:
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                TelegramFileFolderEnum.browseTheAppsFolder
+                            ? Offset.zero
+                            : const Offset(1, 0),
                     child: AnimatedOpacity(
-                      opacity: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                              TelegramFileFolderEnum.browseTheAppsFolder
-                          ? 1
-                          : 0,
+                      opacity:
+                          state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                  TelegramFileFolderEnum.browseTheAppsFolder
+                              ? 1
+                              : 0,
                       duration: const Duration(seconds: 1),
-                      child: const TelegramBrowseAppFolderScreen(
-                      ),
+                      child: const TelegramBrowseAppFolderScreen(),
                     ),
                   ),
                 ),
               ),
 
               Visibility(
-                visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                visible:
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.browseTheFolder,
                 maintainAnimation: true,
                 maintainState: true,
                 child: PopScope(
-                  canPop: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                          TelegramFileFolderEnum.browseTheFolder
-                      ? false
-                      : true,
+                  canPop:
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                              TelegramFileFolderEnum.browseTheFolder
+                          ? false
+                          : true,
                   onPopInvokedWithResult: (v, r) {
                     _telegramFilePickerBloc.add(
                       const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
@@ -169,22 +171,25 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                       ),
                     );
                     Future.delayed(const Duration(milliseconds: 300), () {
-                      _telegramFilePickerBloc
-                          .add(const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
+                      _telegramFilePickerBloc.add(
+                        const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),
+                      );
                     });
                   },
                   child: AnimatedSlide(
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 300),
-                    offset: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                            TelegramFileFolderEnum.browseTheFolder
-                        ? Offset.zero
-                        : const Offset(1, 0),
+                    offset:
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                TelegramFileFolderEnum.browseTheFolder
+                            ? Offset.zero
+                            : const Offset(1, 0),
                     child: AnimatedOpacity(
-                      opacity: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                              TelegramFileFolderEnum.browseTheFolder
-                          ? 1
-                          : 0,
+                      opacity:
+                          state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                  TelegramFileFolderEnum.browseTheFolder
+                              ? 1
+                              : 0,
                       duration: const Duration(seconds: 1),
                       child: TelegramBrowseFolderDataScreen(
                         onBackFolder: () async {
@@ -195,7 +200,8 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                           );
                           Future.delayed(const Duration(milliseconds: 300), () {
                             _telegramFilePickerBloc.add(
-                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),);
+                              const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),
+                            );
                           });
                         },
                       ),
@@ -206,15 +212,17 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
 
               // gallery folder data
               Visibility(
-                visible: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                visible:
+                    state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
                     TelegramFileFolderEnum.browseTheGalleryFolder,
                 maintainAnimation: true,
                 maintainState: true,
                 child: PopScope(
-                  canPop: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                          TelegramFileFolderEnum.browseTheGalleryFolder
-                      ? false
-                      : true,
+                  canPop:
+                      state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                              TelegramFileFolderEnum.browseTheGalleryFolder
+                          ? false
+                          : true,
                   onPopInvokedWithResult: (v, r) {
                     _telegramFilePickerBloc.add(
                       const TelegramFilePickerEvents.selectScreenForFilesPickerScreenEvent(
@@ -223,22 +231,25 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
                     );
 
                     Future.delayed(const Duration(milliseconds: 300), () {
-                      _telegramFilePickerBloc
-                          .add(const TelegramFilePickerEvents.clearSelectedGalleryFileEvent());
+                      _telegramFilePickerBloc.add(
+                        const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),
+                      );
                     });
                   },
                   child: AnimatedSlide(
                     curve: Curves.fastOutSlowIn,
                     duration: const Duration(milliseconds: 300),
-                    offset: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                            TelegramFileFolderEnum.browseTheGalleryFolder
-                        ? Offset.zero
-                        : const Offset(1, 0),
+                    offset:
+                        state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                TelegramFileFolderEnum.browseTheGalleryFolder
+                            ? Offset.zero
+                            : const Offset(1, 0),
                     child: AnimatedOpacity(
-                      opacity: state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
-                              TelegramFileFolderEnum.browseTheGalleryFolder
-                          ? 1
-                          : 0,
+                      opacity:
+                          state.telegramFilePickerStateModel.filePickerScreenSelectedScreen ==
+                                  TelegramFileFolderEnum.browseTheGalleryFolder
+                              ? 1
+                              : 0,
                       duration: const Duration(seconds: 1),
                       child: TelegramBrowseFolderDataScreen(
                         onBackFolder: () async {
@@ -250,7 +261,8 @@ class _TelegramFilesPickerScreenState extends State<TelegramFilesPickerScreen> w
 
                           Future.delayed(const Duration(milliseconds: 300), () {
                             _telegramFilePickerBloc.add(
-                                const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),);
+                              const TelegramFilePickerEvents.clearSelectedGalleryFileEvent(),
+                            );
                           });
                         },
                       ),

@@ -24,14 +24,12 @@ class ChatsStreamTransformers extends StreamTransformerBase<ChannelReadEvent, Ch
       (event) {
         final data = event?.data;
 
-        _logger.log(
-          Level.debug,
-          "$data",
-        );
+        _logger.log(Level.debug, "$data");
 
-        final Map<String, dynamic> json = data is String
-            ? jsonDecode(data)
-            : data is Map
+        final Map<String, dynamic> json =
+            data is String
+                ? jsonDecode(data)
+                : data is Map
                 ? data
                 : {};
 

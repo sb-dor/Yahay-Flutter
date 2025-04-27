@@ -8,6 +8,4 @@ final class ProfileRepositoryImpl implements IProfileRepository {
   ProfileRepositoryImpl(this._iProfileDatasource);
 
   final IProfileDatasource _iProfileDatasource;
-
-
 }

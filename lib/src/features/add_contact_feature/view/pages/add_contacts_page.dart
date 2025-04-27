@@ -64,13 +64,14 @@ class _AddContactsPageState extends State<AddContactsPage> {
                       onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
                       style: GoogleFonts.aBeeZee(fontSize: 14),
                       decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          isDense: true,
-                          hintText: "Search",
-                          prefixIcon: Icon(Icons.search),),
+                        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 5),
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        isDense: true,
+                        hintText: "Search",
+                        prefixIcon: Icon(Icons.search),
+                      ),
                     ),
                   ),
                 ),
@@ -104,8 +105,8 @@ class _AddContactsPageState extends State<AddContactsPage> {
                         final user = currentStateModel.users[index];
                         return AddContactUserWidget(
                           user: user,
-                          addUser: () =>
-                              _addContactBloc.add(AddContactsEvents.addContactEvent(user)),
+                          addUser:
+                              () => _addContactBloc.add(AddContactsEvents.addContactEvent(user)),
                         );
                       },
                     );

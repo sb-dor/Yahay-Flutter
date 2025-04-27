@@ -32,9 +32,10 @@ mixin class FolderCreator {
 
   List<String> get foldersName => _foldersName;
 
-  Future<Directory?> getApplicationDir() async => defaultTargetPlatform == TargetPlatform.iOS
-      ? await getApplicationSupportDirectory()
-      : await getExternalStorageDirectory();
+  Future<Directory?> getApplicationDir() async =>
+      defaultTargetPlatform == TargetPlatform.iOS
+          ? await getApplicationSupportDirectory()
+          : await getExternalStorageDirectory();
 
   static Future<Directory?> getApplicationDirStatic() async =>
       defaultTargetPlatform == TargetPlatform.iOS
@@ -42,9 +43,7 @@ mixin class FolderCreator {
           : await getExternalStorageDirectory();
 
   Future<void> createFolders(SharedPreferHelper sharedPreferHelper) async {
-    final isFoldersAlreadyCreated = sharedPreferHelper.getBoolByKey(
-      key: "is_folders_created",
-    );
+    final isFoldersAlreadyCreated = sharedPreferHelper.getBoolByKey(key: "is_folders_created");
 
     final dir = await getApplicationDir();
 
@@ -55,9 +54,6 @@ mixin class FolderCreator {
       folderCreator(path: path);
     }
 
-    await sharedPreferHelper.setBoolByKey(
-      key: "is_folders_created",
-      value: true,
-    );
+    await sharedPreferHelper.setBoolByKey(key: "is_folders_created", value: true);
   }
 }

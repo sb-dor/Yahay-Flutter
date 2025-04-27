@@ -23,22 +23,20 @@ class ChatScreen extends StatelessWidget {
   final ChatModel? chat;
   final UserModel? user; // temp for creating temp chat if chat does not exist
 
-  const ChatScreen({
-    super.key,
-    required this.chat,
-    required this.user,
-  });
+  const ChatScreen({super.key, required this.chat, required this.user});
 
   @override
   Widget build(BuildContext context) {
     final dependencyContainer = DependenciesScope.of(context, listen: false);
     return BlocProvider<ChatScreenBloc>(
-      create: (context) => ChatScreenBlocFactory(
-        user: dependencyContainer.authBloc.state.authStateModel.user,
-        channelsOptions: dependencyContainer.pusherClientService.options,
-        restClientBase: dependencyContainer.restClientBase,
-        logger: dependencyContainer.logger,
-      ).create(),
+      create:
+          (context) =>
+              ChatScreenBlocFactory(
+                user: dependencyContainer.authBloc.state.authStateModel.user,
+                channelsOptions: dependencyContainer.pusherClientService.options,
+                restClientBase: dependencyContainer.restClientBase,
+                logger: dependencyContainer.logger,
+              ).create(),
       child: _ChatScreenUI(chat: chat, user: user),
     );
   }
@@ -48,10 +46,7 @@ class _ChatScreenUI extends StatefulWidget {
   final ChatModel? chat;
   final UserModel? user; // temp for creating temp chat if chat does not exist
 
-  const _ChatScreenUI({
-    required this.chat,
-    required this.user,
-  });
+  const _ChatScreenUI({required this.chat, required this.user});
 
   @override
   State<_ChatScreenUI> createState() => _ChatScreenUIState();
@@ -73,12 +68,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
     _appThemeBloc = dependencyContainer.appThemeBloc;
     //
     //
-    _chatScreenBloc.add(
-      ChatScreenEvents.initChatScreenEvent(
-        chat: widget.chat,
-        user: widget.user,
-      ),
-    );
+    _chatScreenBloc.add(ChatScreenEvents.initChatScreenEvent(chat: widget.chat, user: widget.user));
   }
 
   @override
@@ -104,9 +94,7 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
           case ChatScreen$InProgressState():
             return const LoadingMessagesWidget();
           case ErrorChatScreenState():
-            return const Center(
-              child: Text(Constants.somethingWentWrong),
-            );
+            return const Center(child: Text(Constants.somethingWentWrong));
           case ChatScreen$SuccessfulState():
             final currentStateModel = state.chatScreenStateModel;
             return PopScope(
@@ -140,22 +128,15 @@ class _ChatScreenUIState extends State<_ChatScreenUI> {
                                 itemCount: currentStateModel.messages.length,
                                 itemBuilder: (context, index) {
                                   final message = currentStateModel.messages[index];
-                                  return MessageWidget(
-                                    message: message,
-                                    currentUser: currentUser,
-                                  );
+                                  return MessageWidget(message: message, currentUser: currentUser);
                                 },
                               ),
                             ],
                           ),
                         ),
-                        BottomChatWidget(
-                          messageController: _messageController,
-                        ),
+                        BottomChatWidget(messageController: _messageController),
                         if (currentStateModel.showEmojiPicker)
-                          EmojiPickerHelper(
-                            messageController: _messageController,
-                          ),
+                          EmojiPickerHelper(messageController: _messageController),
                       ],
                     ),
                   ),

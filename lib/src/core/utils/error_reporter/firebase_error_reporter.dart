@@ -14,9 +14,6 @@ final class FirebaseErrorReporter implements IErrorReporter {
   final FirebaseCrashlytics firebaseCrashlytics;
 
   @override
-  Future<void> report() async => await firebaseCrashlytics.recordError(
-        exception,
-        stackTrace,
-        fatal: true,
-      );
+  Future<void> report() async =>
+      await firebaseCrashlytics.recordError(exception, stackTrace, fatal: true);
 }

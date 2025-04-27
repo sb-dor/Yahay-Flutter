@@ -28,12 +28,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.title,
-          style: GoogleFonts.aBeeZee(
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        Text(widget.title, style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w400)),
         const SizedBox(height: 5),
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -45,9 +40,7 @@ class _AuthorizationInputWidgetState extends State<AuthorizationInputWidget> {
             },
             onTapOutside: (v) => FocusManager.instance.primaryFocus?.unfocus(),
             controller: widget.controller,
-            style: GoogleFonts.aBeeZee(
-              fontWeight: FontWeight.w500,
-            ),
+            style: GoogleFonts.aBeeZee(fontWeight: FontWeight.w500),
             decoration: InputDecoration(
               fillColor: Colors.white,
               hintText: widget.hintText,

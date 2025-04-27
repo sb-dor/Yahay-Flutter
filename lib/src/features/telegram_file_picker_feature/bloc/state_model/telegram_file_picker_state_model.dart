@@ -23,7 +23,6 @@ class TelegramFilePickerStateModel {
 
   final List<TelegramFileImageEntity> specificFolderFilesPagination;
 
-//<editor-fold desc="Data Methods">
   const TelegramFilePickerStateModel({
     this.getPathForGettingImagesFrom,
     this.filePickerScreenSelectedScreen = TelegramFileFolderEnum.recentDownloadsScreen,
@@ -38,14 +37,14 @@ class TelegramFilePickerStateModel {
   });
 
   factory TelegramFilePickerStateModel.idle() => const TelegramFilePickerStateModel(
-        galleryPathFiles: <TelegramFileImageEntity>[],
-        galleryPathPagination: <TelegramFileImageEntity>[],
-        recentFiles: <TelegramFileImageEntity>[],
-        recentFilesPagination: <TelegramFileImageEntity>[],
-        pickedFiles: <TelegramFileImageEntity>[],
-        specificFolderFilesAll: <TelegramFileImageEntity>[],
-        specificFolderFilesPagination: <TelegramFileImageEntity>[],
-      );
+    galleryPathFiles: <TelegramFileImageEntity>[],
+    galleryPathPagination: <TelegramFileImageEntity>[],
+    recentFiles: <TelegramFileImageEntity>[],
+    recentFilesPagination: <TelegramFileImageEntity>[],
+    pickedFiles: <TelegramFileImageEntity>[],
+    specificFolderFilesAll: <TelegramFileImageEntity>[],
+    specificFolderFilesPagination: <TelegramFileImageEntity>[],
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -78,7 +77,18 @@ class TelegramFilePickerStateModel {
 
   @override
   String toString() {
-    return 'TelegramFilePickerStateModel{' ' getPathForGettingImagesFrom: $getPathForGettingImagesFrom,' ' openBottomSectionButton: $openBottomSectionButton,' ' filePickerScreenSelectedScreen: $filePickerScreenSelectedScreen,' ' galleryPathFiles: $galleryPathFiles,' ' galleryPathPagination: $galleryPathPagination,' ' recentFiles: $recentFiles,' ' recentFilesPagination: $recentFilesPagination,' ' pickedFiles: $pickedFiles,' ' specificFolderFilesAll: $specificFolderFilesAll,' ' specificFolderFilesPagination: $specificFolderFilesPagination,' '}';
+    return 'TelegramFilePickerStateModel{'
+        ' getPathForGettingImagesFrom: $getPathForGettingImagesFrom,'
+        ' openBottomSectionButton: $openBottomSectionButton,'
+        ' filePickerScreenSelectedScreen: $filePickerScreenSelectedScreen,'
+        ' galleryPathFiles: $galleryPathFiles,'
+        ' galleryPathPagination: $galleryPathPagination,'
+        ' recentFiles: $recentFiles,'
+        ' recentFilesPagination: $recentFilesPagination,'
+        ' pickedFiles: $pickedFiles,'
+        ' specificFolderFilesAll: $specificFolderFilesAll,'
+        ' specificFolderFilesPagination: $specificFolderFilesPagination,'
+        '}';
   }
 
   TelegramFilePickerStateModel copyWith({

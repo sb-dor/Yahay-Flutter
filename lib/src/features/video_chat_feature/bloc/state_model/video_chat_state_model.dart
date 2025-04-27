@@ -3,6 +3,18 @@ import 'package:yahay/src/core/models/user_model/user_model.dart';
 import 'package:yahay/src/features/video_chat_feature/models/video_chat_model.dart';
 
 class VideoChatStateModel {
+  //
+  const VideoChatStateModel({
+    required this.chatStarted,
+    required this.hasAudio,
+    required this.hasVideo,
+    required this.cameraSwitched,
+    required this.videoChatEntities,
+    this.chat,
+    this.currentUser,
+    this.currentVideoChatEntity,
+  });
+
   final bool chatStarted;
 
   final bool hasAudio;
@@ -19,25 +31,14 @@ class VideoChatStateModel {
 
   final List<VideoChatModel> videoChatEntities;
 
-  const VideoChatStateModel({
-    required this.chatStarted,
-    required this.hasAudio,
-    required this.hasVideo,
-    required this.cameraSwitched,
-    required this.videoChatEntities,
-    this.chat,
-    this.currentUser,
-    this.currentVideoChatEntity,
-  });
-
   factory VideoChatStateModel.idle() => const VideoChatStateModel(
-        chatStarted: false,
-        hasAudio: true,
-        hasVideo: true,
-        cameraSwitched: false,
-        currentVideoChatEntity: null,
-        videoChatEntities: <VideoChatModel>[],
-      );
+    chatStarted: false,
+    hasAudio: true,
+    hasVideo: true,
+    cameraSwitched: false,
+    currentVideoChatEntity: null,
+    videoChatEntities: <VideoChatModel>[],
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -66,7 +67,16 @@ class VideoChatStateModel {
 
   @override
   String toString() {
-    return 'VideoChatStateModel{' ' chatStarted: $chatStarted,' ' hasAudio: $hasAudio,' ' hasVideo: $hasVideo,' ' cameraSwitched: $cameraSwitched,' ' chat: $chat,' ' currentUser: $currentUser,' ' _currentVideoChatEntity: $currentVideoChatEntity,' ' _videoChatEntities: $videoChatEntities,' '}';
+    return 'VideoChatStateModel{'
+        ' chatStarted: $chatStarted,'
+        ' hasAudio: $hasAudio,'
+        ' hasVideo: $hasVideo,'
+        ' cameraSwitched: $cameraSwitched,'
+        ' chat: $chat,'
+        ' currentUser: $currentUser,'
+        ' _currentVideoChatEntity: $currentVideoChatEntity,'
+        ' _videoChatEntities: $videoChatEntities,'
+        '}';
   }
 
   VideoChatStateModel copyWith({

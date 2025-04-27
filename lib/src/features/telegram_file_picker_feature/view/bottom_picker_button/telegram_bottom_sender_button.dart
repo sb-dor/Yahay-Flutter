@@ -18,15 +18,10 @@ class _TelegramBottomSenderButtonState extends State<TelegramBottomSenderButton>
         children: [
           Row(
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.emoji_emotions_outlined,
-                ),
-              ),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.emoji_emotions_outlined)),
               const SizedBox(width: 10),
               Expanded(
-                child: Container(
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor, //Theme.of(context).cardColor
                   ),
@@ -58,12 +53,7 @@ class _TelegramBottomSenderButtonState extends State<TelegramBottomSenderButton>
               ),
               width: 50,
               height: 50,
-              child: const Center(
-                child: Icon(
-                  Icons.send,
-                  color: Colors.white,
-                ),
-              ),
+              child: const Center(child: Icon(Icons.send, color: Colors.white)),
             ),
           ),
         ],

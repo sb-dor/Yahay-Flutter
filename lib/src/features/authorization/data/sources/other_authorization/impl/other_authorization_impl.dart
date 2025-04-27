@@ -15,10 +15,10 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
     required final FacebookAuth facebookAuth,
     required final SharedPreferHelper sharedPreferHelper,
     required final RestClientBase restClientBase,
-  })  : _googleSignIn = googleSignIn,
-        _facebookAuth = facebookAuth,
-        _sharedPreferHelper = sharedPreferHelper,
-        _restClientBase = restClientBase;
+  }) : _googleSignIn = googleSignIn,
+       _facebookAuth = facebookAuth,
+       _sharedPreferHelper = sharedPreferHelper,
+       _restClientBase = restClientBase;
 
   final GoogleSignIn _googleSignIn;
   final FacebookAuth _facebookAuth;
@@ -54,12 +54,7 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
       return null;
     }
 
-    await _sharedPreferHelper.setStringByKey(
-      key: "token",
-      value: response.getNested(
-        ['token'],
-      ),
-    );
+    await _sharedPreferHelper.setStringByKey(key: "token", value: response.getNested(['token']));
 
     return UserModel.fromJson(response.getNested(['user']));
   }
@@ -87,17 +82,8 @@ class OtherAuthorizationImpl implements OtherAuthorizationDatasource {
       return null;
     }
 
-    await _sharedPreferHelper.setStringByKey(
-      key: "token",
-      value: response.getNested(
-        ['token'],
-      ),
-    );
+    await _sharedPreferHelper.setStringByKey(key: "token", value: response.getNested(['token']));
 
-    return UserModel.fromJson(
-      response.getNested(
-        ['user'],
-      ),
-    );
+    return UserModel.fromJson(response.getNested(['user']));
   }
 }

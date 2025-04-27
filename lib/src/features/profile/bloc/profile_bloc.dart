@@ -9,7 +9,7 @@ part 'profile_bloc.freezed.dart';
 
 @immutable
 @freezed
-class ProfileEvents with _$ProfileEvents {
+sealed class ProfileEvents with _$ProfileEvents {
   const factory ProfileEvents.profileLogoutEvent(final void Function() logoutEvent) =
       _Profile$LogoutEvent;
 }
@@ -37,17 +37,12 @@ class ProfileBloc extends Bloc<ProfileEvents, ProfileStates> {
   ProfileBloc({
     required final IProfileRepository iProfileRepository,
     required final ProfileStates initialState,
-  })  : _iProfileRepository = iProfileRepository,
-        super(initialState) {
+  }) : _iProfileRepository = iProfileRepository,
+       super(initialState) {
     on<ProfileEvents>(
-      (event, emit) => event.map(
-        profileLogoutEvent: (event) => _profileLogoutEvent(event, emit),
-      ),
+      (event, emit) => event.map(profileLogoutEvent: (event) => _profileLogoutEvent(event, emit)),
     );
   }
 
-  void _profileLogoutEvent(
-    _Profile$LogoutEvent event,
-    Emitter<ProfileStates> emit,
-  ) async {}
+  void _profileLogoutEvent(_Profile$LogoutEvent event, Emitter<ProfileStates> emit) async {}
 }

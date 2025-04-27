@@ -7,9 +7,7 @@ import 'package:yahay/src/features/telegram_file_picker_feature/bloc/telegram_fi
 import 'package:yahay/src/features/telegram_file_picker_feature/data/models/data_models/telegram_storage_file_picker_data_model.dart';
 
 class TelegramFilesFromStoragesWidget extends StatefulWidget {
-  const TelegramFilesFromStoragesWidget({
-    super.key,
-  });
+  const TelegramFilesFromStoragesWidget({super.key});
 
   @override
   State<TelegramFilesFromStoragesWidget> createState() => _TelegramFilesFromStoragesWidgetState();
@@ -22,10 +20,7 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
   @override
   void initState() {
     super.initState();
-    _appThemeBloc = DependenciesScope.of(
-      context,
-      listen: false,
-    ).appThemeBloc;
+    _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
     telegramStorageFileDataModels = TelegramStorageFilePickerDataModel.data(
       context.read<TelegramFilePickerBloc>(),
     );
@@ -36,9 +31,10 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
-        color: _appThemeBloc.theme.value.brightness == Brightness.dark
-            ? Colors.blueGrey.shade900.withOpacity(0.5)
-            : Colors.white,
+        color:
+            _appThemeBloc.theme.value.brightness == Brightness.dark
+                ? Colors.blueGrey.shade900.withOpacity(0.5)
+                : Colors.white,
       ),
       child: Column(
         children: [
@@ -52,7 +48,7 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
               return IntrinsicHeight(
                 child: GestureDetector(
                   onTap: item.onTap,
-                  child: Container(
+                  child: ColoredBox(
                     color: Colors.transparent,
                     child: Row(
                       children: [
@@ -63,9 +59,7 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
                             borderRadius: BorderRadius.circular(100),
                             color: item.iconBackgroundColor,
                           ),
-                          child: Center(
-                            child: item.icon,
-                          ),
+                          child: Center(child: item.icon),
                         ),
                         const SizedBox(width: 15),
                         Expanded(
@@ -82,10 +76,7 @@ class _TelegramFilesFromStoragesWidgetState extends State<TelegramFilesFromStora
                               ),
                               Text(
                                 item.content,
-                                style: GoogleFonts.aBeeZee(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
+                                style: GoogleFonts.aBeeZee(fontSize: 16, color: Colors.grey),
                               ),
                             ],
                           ),

@@ -46,10 +46,13 @@ class ChatScreenStateModel {
   @override
   String toString() {
     return 'ChatScreenStateModel{'
-            ' messages: $messages,'
-            ' currentChat: $currentChat,'
-            ' pickedFile: $pickedFile,'
-            ' currentUser: $currentUser,' ' relatedUser: $relatedUser,' ' showEmojiPicker: $showEmojiPicker,' '}';
+        ' messages: $messages,'
+        ' currentChat: $currentChat,'
+        ' pickedFile: $pickedFile,'
+        ' currentUser: $currentUser,'
+        ' relatedUser: $relatedUser,'
+        ' showEmojiPicker: $showEmojiPicker,'
+        '}';
   }
 
   ChatScreenStateModel copyWith({

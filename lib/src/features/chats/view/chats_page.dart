@@ -39,10 +39,7 @@ class _ChatsPageState extends State<ChatsPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(8),
           children: [
-            SearchWidget(
-              value: (String value) {},
-              onDispose: () {},
-            ),
+            SearchWidget(value: (String value) {}, onDispose: () {}),
             BlocBuilder<ChatsBloc, ChatsStates>(
               bloc: _chatsBloc,
               builder: (context, state) {

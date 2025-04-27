@@ -4,12 +4,10 @@ import 'package:yahay/src/features/initialization/widgets/dependencies_scope.dar
 import 'package:yahay/src/features/initialization/widgets/material_context.dart';
 
 class RootContext extends StatelessWidget {
-  final CompositionResult compositionResult;
+  //
+  const RootContext({super.key, required this.compositionResult});
 
-  const RootContext({
-    super.key,
-    required this.compositionResult,
-  });
+  final CompositionResult compositionResult;
 
   @override
   Widget build(BuildContext context) {

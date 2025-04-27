@@ -9,10 +9,7 @@ import 'widgets/telegram_gallery_file_picker_video_player_widget.dart';
 class TelegramGalleryFilePickerScreen extends StatefulWidget {
   final ScrollController parentScrollController;
 
-  const TelegramGalleryFilePickerScreen({
-    super.key,
-    required this.parentScrollController,
-  });
+  const TelegramGalleryFilePickerScreen({super.key, required this.parentScrollController});
 
   @override
   State<TelegramGalleryFilePickerScreen> createState() => _TelegramGalleryFilePickerScreenState();
@@ -38,9 +35,7 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
         if (currentStateModel.galleryPathPagination.length - 1 ==
             currentStateModel.galleryPathFiles.length) {
           _telegramFilePickerBloc.add(
-            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-              false,
-            ),
+            const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(false),
           );
         }
       }
@@ -64,15 +59,11 @@ class _TelegramGalleryFilePickerScreenState extends State<TelegramGalleryFilePic
             debugPrint("listening data: ${notification.direction}");
             if (notification.direction == ScrollDirection.forward) {
               _telegramFilePickerBloc.add(
-                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-                  true,
-                ),
+                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(true),
               );
             } else if (notification.direction == ScrollDirection.reverse) {
               _telegramFilePickerBloc.add(
-                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(
-                  false,
-                ),
+                const TelegramFilePickerEvents.openHideBottomTelegramButtonEvent(false),
               );
             }
             return true;

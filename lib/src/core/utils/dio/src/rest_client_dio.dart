@@ -13,9 +13,9 @@ final class RestClientDio extends RestClientBase {
     required final SharedPreferHelper sharedPrefer,
     required final Logger logger,
     Dio? dio,
-  })  : _dio = dio ?? Dio(),
-        _sharedPreferHelper = sharedPrefer,
-        _logger = logger;
+  }) : _dio = dio ?? Dio(),
+       _sharedPreferHelper = sharedPrefer,
+       _logger = logger;
 
   final Dio _dio;
   final SharedPreferHelper _sharedPreferHelper;
@@ -50,10 +50,7 @@ final class RestClientDio extends RestClientBase {
 
       // link
       // https://github.com/hawkkiller/sizzle_starter/blob/main/packages/rest_client/lib/src/rest_client_base.dart
-      return decodeResponse(
-        BytesResponseBody(body: request.data),
-        statusCode: request.statusCode,
-      );
+      return decodeResponse(BytesResponseBody(body: request.data), statusCode: request.statusCode);
     } on RestClientException {
       //
       // rethrow also throws error and stacktrace
@@ -61,23 +58,13 @@ final class RestClientDio extends RestClientBase {
     } on DioException catch (error, stackTrace) {
       _logger.log(Level.error, error);
       if (error.response?.statusCode == HttpStatus.unauthorized) {
-        throw UnauthenticatedException(
-          exception: error,
-          statusCode: HttpStatus.unauthorized,
-        );
+        throw UnauthenticatedException(exception: error, statusCode: HttpStatus.unauthorized);
       }
 
-      final serverError = await decodeResponse(
-        BytesResponseBody(
-          body: error.response?.data,
-        ),
-      );
+      final serverError = await decodeResponse(BytesResponseBody(body: error.response?.data));
 
       Error.throwWithStackTrace(
-        DioExceptionHandler(
-          dioException: error,
-          serverError: "$serverError",
-        ),
+        DioExceptionHandler(dioException: error, serverError: "$serverError"),
         stackTrace,
       );
       //

@@ -34,11 +34,8 @@ final class AddContactStateModel {
   }
 
   /// Factory constructor for the initial state
-  factory AddContactStateModel.idle() => const AddContactStateModel(
-        users: <UserModel>[],
-        page: 1,
-        hasMore: true,
-      );
+  factory AddContactStateModel.idle() =>
+      const AddContactStateModel(users: <UserModel>[], page: 1, hasMore: true);
 
   /// Copy constructor with optional overrides
   AddContactStateModel copyWith({
@@ -73,6 +70,4 @@ final class AddContactStateModel {
   AddContactStateModel clearData() {
     return copyWith(users: [], page: 1, hasMore: false);
   }
-
-
 }

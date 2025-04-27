@@ -10,10 +10,8 @@ class ChatScreenChatRepoImpl implements ChatScreenChatRepo {
   ChatScreenChatRepoImpl(this._chatScreenChatDataSource);
 
   @override
-  Future<ChatModel?> chat({ChatModel? chat, UserModel? withUser}) => _chatScreenChatDataSource.chat(
-        chat: chat,
-        withUser: withUser,
-      );
+  Future<ChatModel?> chat({ChatModel? chat, UserModel? withUser}) =>
+      _chatScreenChatDataSource.chat(chat: chat, withUser: withUser);
 
   @override
   Future<void> removeAllTempCreatedChats({required ChatModel? chat}) =>

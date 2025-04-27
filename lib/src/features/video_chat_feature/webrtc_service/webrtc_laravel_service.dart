@@ -18,8 +18,8 @@ class WebrtcLaravelService {
   WebrtcLaravelService({
     required final PusherClientService pusherClientService,
     required RestClientBase restClientBase,
-  })  : _pusherClientService = pusherClientService,
-        _restClientBase = restClientBase;
+  }) : _pusherClientService = pusherClientService,
+       _restClientBase = restClientBase;
 
   final RestClientBase _restClientBase;
   final PusherClientService _pusherClientService;
@@ -45,11 +45,8 @@ class WebrtcLaravelService {
   Map<String, dynamic> configuration = {
     'iceServers': [
       {
-        'urls': [
-          'stun:stun1.l.google.com:19302',
-          'stun:stun2.l.google.com:19302',
-        ],
-      }
+        'urls': ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302'],
+      },
     ],
   };
 
@@ -95,10 +92,7 @@ class WebrtcLaravelService {
       // Send offer to backend
       final response = await _restClientBase.post(
         _createRoom,
-        data: {
-          'offer': offer.toMap(),
-          "chat_id": chat?.id,
-        },
+        data: {'offer': offer.toMap(), "chat_id": chat?.id},
       );
 
       final roomId = response?['roomId'];
@@ -140,10 +134,7 @@ class WebrtcLaravelService {
             final String sdp = data['answer']['sdp'] + "\n";
             final String type = data['answer']['type'];
 
-            final answer = RTCSessionDescription(
-              sdp,
-              type,
-            );
+            final answer = RTCSessionDescription(sdp, type);
             // if (peerConnection?.signalingState ==
             //     RTCSignalingState.RTCSignalingStateHaveLocalOffer) {
             if (await peerConnection?.getRemoteDescription() == null) {
@@ -210,9 +201,7 @@ class WebrtcLaravelService {
       // for getting room configuration
       final responseForRemoteConfig = await _restClientBase.post(
         _joinRoom,
-        data: {
-          'roomId': roomId,
-        },
+        data: {'roomId': roomId},
       );
 
       if (responseForRemoteConfig == null) return;
@@ -265,10 +254,7 @@ class WebrtcLaravelService {
 
         final response = await _restClientBase.post(
           _joinRoom,
-          data: {
-            'roomId': roomId,
-            'answer': answer.toMap(),
-          },
+          data: {'roomId': roomId, 'answer': answer.toMap()},
         );
       } catch (e) {
         debugPrint("creating answer error is: $e");
@@ -283,9 +269,7 @@ class WebrtcLaravelService {
       ///
 
       // get candidates data before listening them
-      final responseCandidates = await _restClientBase.get(
-        "/get-ice-candidates/$roomId/caller",
-      );
+      final responseCandidates = await _restClientBase.get("/get-ice-candidates/$roomId/caller");
 
       //
       final List<dynamic> listOfCandidates = responseCandidates?.getNested(['candidates']);
@@ -354,9 +338,7 @@ class WebrtcLaravelService {
   }
 
   // close all
-  Future<void> hangUp(
-    RTCVideoRenderer? localVideo,
-  ) async {
+  Future<void> hangUp(RTCVideoRenderer? localVideo) async {
     localVideo?.srcObject?.getTracks().forEach(((track) async => await track.stop()));
 
     if (remoteStream != null) {
@@ -394,25 +376,15 @@ class WebrtcLaravelService {
     localVideo = null;
   }
 
-  void addIceCandidate(
-    RTCIceCandidate candidate,
-    String roomId,
-    String role,
-  ) async {
+  void addIceCandidate(RTCIceCandidate candidate, String roomId, String role) async {
     final response = await _restClientBase.post(
       _addIceCandidates,
-      data: {
-        'roomId': roomId,
-        'candidate': candidate.toMap(),
-        'role': role,
-      },
+      data: {'roomId': roomId, 'candidate': candidate.toMap(), 'role': role},
     );
   }
 
   Future<void> getIceCandidates(String roomId, String role) async {
-    final response = await _restClientBase.get(
-      '$_apiGetIceCandidates$roomId/$role',
-    );
+    final response = await _restClientBase.get('$_apiGetIceCandidates$roomId/$role');
 
     final candidates = response?.getNested(['candidates']) as List;
 

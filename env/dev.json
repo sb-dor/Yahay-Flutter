@@ -1,0 +1,10 @@
+{
+  "ENVIRONMENT": "DEV",
+  "MAIN_URL": "",
+  "PUSHER_APP_ID": "",
+  "PUSHER_APP_KEY": "",
+  "PUSHER_APP_SECRET": "",
+  "PUSHER_HOST": "192.168.100.3",
+  "PUSHER_PORT": 6001,
+  "PUSHER_SCHEME": "ws"
+}

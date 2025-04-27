@@ -20,10 +20,10 @@ final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
     required final PusherChannelsOptions channelsOptions,
     required final RestClientBase restClientBase,
     required final Logger logger,
-  })  : _user = user,
-        _channelsOptions = channelsOptions,
-        _restClientBase = restClientBase,
-        _logger = logger;
+  }) : _user = user,
+       _channelsOptions = channelsOptions,
+       _restClientBase = restClientBase,
+       _logger = logger;
 
   final UserModel? _user;
   final PusherChannelsOptions _channelsOptions;
@@ -42,9 +42,7 @@ final class ChatScreenBlocFactory extends Factory<ChatScreenBloc> {
 
     final ChatScreenRepo chatScreenRepo = ChatScreenRepoImpl(messageDataSource);
 
-    final ChatScreenChatRepo chatScreenChatRepo = ChatScreenChatRepoImpl(
-      chatScreenChatDataSource,
-    );
+    final ChatScreenChatRepo chatScreenChatRepo = ChatScreenChatRepoImpl(chatScreenChatDataSource);
 
     const initialState = ChatScreenStates.initial(ChatScreenStateModel());
 

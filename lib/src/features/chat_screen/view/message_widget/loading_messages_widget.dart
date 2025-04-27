@@ -23,12 +23,8 @@ class _LoadingMessagesWidgetState extends State<LoadingMessagesWidget> {
     _appThemeBloc = DependenciesScope.of(context, listen: false).appThemeBloc;
 
     final tempWidgets = [
-      _RightWidget(
-        appThemeBloc: _appThemeBloc,
-      ),
-      _LeftWidget(
-        appThemeBloc: _appThemeBloc,
-      ),
+      _RightWidget(appThemeBloc: _appThemeBloc),
+      _LeftWidget(appThemeBloc: _appThemeBloc),
     ];
 
     _widgets = List.generate(15, (index) => tempWidgets[rnd.nextInt(2)]);
@@ -75,12 +71,7 @@ class _RightWidget extends StatelessWidget {
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: 100,
-                ),
-              ],
+              children: [SizedBox(height: 50, width: 100)],
             ),
           ),
         ],
@@ -116,12 +107,7 @@ class _LeftWidget extends StatelessWidget {
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: 100,
-                ),
-              ],
+              children: [SizedBox(height: 50, width: 100)],
             ),
           ),
         ],

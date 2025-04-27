@@ -11,8 +11,6 @@ class DoubleCameraViewScreen extends StatefulWidget {
 }
 
 class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoChatBloc, VideoChatFeatureStates>(
@@ -28,10 +26,7 @@ class _DoubleCameraViewScreenState extends State<DoubleCameraViewScreen> {
                     state.videoChatStateModel.videoChatEntities.first.videoRenderer!,
                   ),
                 ),
-                const Divider(
-                  height: 0,
-                  color: Colors.black12,
-                ),
+                const Divider(height: 0, color: Colors.black12),
                 Expanded(
                   child: RTCVideoView(
                     objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,

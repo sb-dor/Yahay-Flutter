@@ -3,11 +3,7 @@ import 'package:yahay/src/features/initialization/models/dependency_container.da
 
 class DependenciesScope extends InheritedWidget {
   //
-  const DependenciesScope({
-    required this.dependencies,
-    required super.child,
-    super.key,
-  });
+  const DependenciesScope({required this.dependencies, required super.child, super.key});
 
   final DependencyContainer dependencies;
 
@@ -26,8 +22,6 @@ class DependenciesScope extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(DependenciesScope oldWidget) => !identical(
-        dependencies,
-        oldWidget.dependencies,
-      );
+  bool updateShouldNotify(DependenciesScope oldWidget) =>
+      !identical(dependencies, oldWidget.dependencies);
 }

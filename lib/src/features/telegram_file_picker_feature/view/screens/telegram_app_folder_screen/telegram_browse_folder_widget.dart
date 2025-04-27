@@ -4,17 +4,13 @@ class TelegramFolderWidget extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
 
-  const TelegramFolderWidget({
-    super.key,
-    required this.onTap,
-    required this.title,
-  });
+  const TelegramFolderWidget({super.key, required this.onTap, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: ColoredBox(
         color: Colors.transparent,
         child: IntrinsicHeight(
           child: Row(
@@ -26,12 +22,7 @@ class TelegramFolderWidget extends StatelessWidget {
                   color: Colors.blueAccent,
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: const Center(
-                  child: Icon(
-                    Icons.folder,
-                    color: Colors.white,
-                  ),
-                ),
+                child: const Center(child: Icon(Icons.folder, color: Colors.white)),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -39,19 +30,8 @@ class TelegramFolderWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    const Text(
-                      "Folder",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    Text(title, style: const TextStyle(fontSize: 16)),
+                    const Text("Folder", style: TextStyle(fontSize: 12, color: Colors.grey)),
                   ],
                 ),
               ),

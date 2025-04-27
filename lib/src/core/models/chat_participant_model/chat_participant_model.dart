@@ -10,7 +10,7 @@ part 'chat_participant_model.freezed.dart';
 part 'chat_participant_model.g.dart';
 
 @freezed
-class ChatParticipantModel  with _$ChatParticipantModel {
+class ChatParticipantModel with _$ChatParticipantModel {
   const factory ChatParticipantModel({
     final int? id,
     final UserModel? user,
@@ -22,6 +22,4 @@ class ChatParticipantModel  with _$ChatParticipantModel {
 
   factory ChatParticipantModel.fromJson(Map<String, Object?> json) =>
       _$ChatParticipantModelFromJson(json);
-
-
 }

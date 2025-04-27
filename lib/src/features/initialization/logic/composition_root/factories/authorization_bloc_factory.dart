@@ -23,11 +23,11 @@ final class AuthorizationBlocFactory extends Factory<AuthBloc> {
     required final SharedPreferHelper sharedPreferHelper,
     required final Logger logger,
     required final RestClientBase restClientBase,
-  })  : _googleSignIn = googleSignIn,
-        _facebookAuth = facebookAuth,
-        _sharedPreferHelper = sharedPreferHelper,
-        _logger = logger,
-        _restClientBase = restClientBase;
+  }) : _googleSignIn = googleSignIn,
+       _facebookAuth = facebookAuth,
+       _sharedPreferHelper = sharedPreferHelper,
+       _logger = logger,
+       _restClientBase = restClientBase;
 
   final GoogleSignIn _googleSignIn;
   final FacebookAuth _facebookAuth;

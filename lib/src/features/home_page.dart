@@ -41,26 +41,17 @@ class _HomePageState extends State<HomePage> {
     _screens = [
       const BottomNavbarItem(
         screen: ContactsPage(),
-        icon: Icon(
-          Icons.people_outline,
-          size: 28,
-        ),
+        icon: Icon(Icons.people_outline, size: 28),
         label: Constants.contacts,
       ),
       const BottomNavbarItem(
         screen: ChatsPage(),
-        icon: Icon(
-          CupertinoIcons.chat_bubble_2,
-          size: 28,
-        ),
+        icon: Icon(CupertinoIcons.chat_bubble_2, size: 28),
         label: Constants.chats,
       ),
       const BottomNavbarItem(
         screen: ProfilePage(),
-        icon: Icon(
-          Icons.person,
-          size: 28,
-        ),
+        icon: Icon(Icons.person, size: 28),
         label: Constants.profile,
       ),
     ];
@@ -89,12 +80,8 @@ class _HomePageState extends State<HomePage> {
             onTap: (int index) => setState(() => _index = index),
             unselectedLabelStyle: GoogleFonts.aBeeZee(),
             selectedLabelStyle: GoogleFonts.aBeeZee(),
-            items: _screens
-                .map((e) => BottomNavigationBarItem(
-                      icon: e.icon,
-                      label: e.label,
-                    ),)
-                .toList(),
+            items:
+                _screens.map((e) => BottomNavigationBarItem(icon: e.icon, label: e.label)).toList(),
           ),
           body: _screens[_index].screen,
         );

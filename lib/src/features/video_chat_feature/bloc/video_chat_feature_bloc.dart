@@ -18,7 +18,7 @@ part 'video_chat_feature_bloc.freezed.dart';
 
 @immutable
 @freezed
-class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
+sealed class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
   const factory VideoChatFeatureEvents.videoChatInitFeatureEvent(final ChatModel? chat) =
       _VideoChatInitFeatureEvent;
 
@@ -26,12 +26,12 @@ class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
 
   const factory VideoChatFeatureEvents.videoChatEntranceEvent() = _VideoChatEntranceEvent;
 
-  const factory VideoChatFeatureEvents.finishVideoChatEvent({
-    required void Function() popScreen,
-  }) = _FinishVideoChatEvent;
+  const factory VideoChatFeatureEvents.finishVideoChatEvent({required void Function() popScreen}) =
+      _FinishVideoChatEvent;
 
   const factory VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(
-      final MediaStream mediaStream,) = _OnAddRemoteRendererStreamEvent;
+    final MediaStream mediaStream,
+  ) = _OnAddRemoteRendererStreamEvent;
 
   const factory VideoChatFeatureEvents.switchCameraStreamEvent() = _SwitchCameraStreamEvent;
 
@@ -58,8 +58,8 @@ class VideoChatFeatureEvents with _$VideoChatFeatureEvents {
 @immutable
 @freezed
 class VideoChatFeatureStates with _$VideoChatFeatureStates {
-  const factory VideoChatFeatureStates.initial(
-      final VideoChatStateModel videoChatStateModel,) = _VideoChat$InitialState;
+  const factory VideoChatFeatureStates.initial(final VideoChatStateModel videoChatStateModel) =
+      _VideoChat$InitialState;
 }
 
 class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates> {
@@ -80,12 +80,12 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     required final VideoChatFeatureStates initialState,
     required final Logger logger,
     required final RestClientBase restClientBase,
-  })  : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
-        _currentUser = currentUser,
-        _pusherClientService = pusherClientService,
-        _logger = logger,
-        _restClientBase = restClientBase,
-        super(initialState) {
+  }) : _iVideoChatFeatureRepo = iVideoChatFeatureRepo,
+       _currentUser = currentUser,
+       _pusherClientService = pusherClientService,
+       _logger = logger,
+       _restClientBase = restClientBase,
+       super(initialState) {
     //
 
     on<VideoChatFeatureEvents>(
@@ -119,9 +119,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     final currentChatVideoEntity = await _initLocalRenderer();
 
-    currentStateModel = currentStateModel.copyWith(
-      currentVideoChatEntity: currentChatVideoEntity,
-    );
+    currentStateModel = currentStateModel.copyWith(currentVideoChatEntity: currentChatVideoEntity);
     // in order to listen that someone from other side connected to your data
     _webrtcLaravelHelper?.onAddRemoteStream = ((stream) async {
       add(VideoChatFeatureEvents.onAddRemoteRendererStreamEvent(stream));
@@ -140,9 +138,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     if (!initResponse) return;
 
-    final roomId = await _webrtcLaravelHelper?.createRoom(
-      state.videoChatStateModel.chat,
-    );
+    final roomId = await _webrtcLaravelHelper?.createRoom(state.videoChatStateModel.chat);
 
     debugPrint("creating room id: $roomId");
     // -------------------------------------------------
@@ -165,13 +161,9 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     _logger.log(Level.debug, "entrance to the chat: $resultOfJoining");
 
-    final currentStateModel = state.videoChatStateModel.copyWith(
-      chatStarted: resultOfJoining,
-    );
+    final currentStateModel = state.videoChatStateModel.copyWith(chatStarted: resultOfJoining);
 
-    await _webrtcLaravelHelper?.joinRoom(
-      room.id.toString(),
-    );
+    await _webrtcLaravelHelper?.joinRoom(room.id.toString());
 
     Future.delayed(const Duration(milliseconds: 100), () {
       add(const VideoChatFeatureEvents.turnMicOffAndOnEvent(change: false));
@@ -257,9 +249,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
     var currentStateModel = state.videoChatStateModel;
 
     if (event.change) {
-      currentStateModel = currentStateModel.copyWith(
-        hasAudio: !currentStateModel.hasAudio,
-      );
+      currentStateModel = currentStateModel.copyWith(hasAudio: !currentStateModel.hasAudio);
     }
 
     Helper.setMicrophoneMute(
@@ -293,9 +283,7 @@ class VideoChatBloc extends Bloc<VideoChatFeatureEvents, VideoChatFeatureStates>
 
     if (!resultOfStart) return false;
 
-    final currentStateModel = state.videoChatStateModel.copyWith(
-      chatStarted: resultOfStart,
-    );
+    final currentStateModel = state.videoChatStateModel.copyWith(chatStarted: resultOfStart);
 
     emit(VideoChatFeatureStates.initial(currentStateModel));
 

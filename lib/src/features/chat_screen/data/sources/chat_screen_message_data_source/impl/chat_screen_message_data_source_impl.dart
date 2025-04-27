@@ -11,9 +11,8 @@ import 'package:yahay/src/features/chat_screen/data/sources/chat_screen_message_
 
 class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
   //
-  ChatScreenMessageDataSourceImpl({
-    required final RestClientBase restClientBase,
-  }) : _restClientBase = restClientBase;
+  ChatScreenMessageDataSourceImpl({required final RestClientBase restClientBase})
+    : _restClientBase = restClientBase;
 
   final RestClientBase _restClientBase;
 
@@ -45,10 +44,7 @@ class ChatScreenMessageDataSourceImpl extends ChatScreenMessageDataSource {
 
       final formData = FormData.fromMap(toJson);
 
-      final response = await _restClientBase.post(
-        _messageSendUrl,
-        formData: formData,
-      );
+      final response = await _restClientBase.post(_messageSendUrl, formData: formData);
 
       debugPrint("reponseddata: $response");
     } on RestClientException {

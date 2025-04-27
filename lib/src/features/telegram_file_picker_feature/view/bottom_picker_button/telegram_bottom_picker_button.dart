@@ -6,10 +6,7 @@ import 'package:yahay/src/features/telegram_file_picker_feature/data/models/data
 class TelegramBottomPickerButton extends StatefulWidget {
   final DraggableScrollableController draggableScrollableController;
 
-  const TelegramBottomPickerButton({
-    super.key,
-    required this.draggableScrollableController,
-  });
+  const TelegramBottomPickerButton({super.key, required this.draggableScrollableController});
 
   @override
   State<TelegramBottomPickerButton> createState() => _TelegramBottomPickerButtonState();

@@ -8,11 +8,7 @@ class ScreenMessaging {
 
   ScreenMessaging._();
 
-  void toast(
-    String message, {
-    bool error = false,
-    Color textColor = Colors.white,
-  }) {
+  void toast(String message, {bool error = false, Color textColor = Colors.white}) {
     Fluttertoast.cancel();
     Fluttertoast.showToast(
       msg: message,

@@ -24,18 +24,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => _profileBloc?.add(
-            ProfileEvents.profileLogoutEvent(
-              () {
-                _authBloc.add(const AuthEvents.logOutEvent());
-              },
-            ),
-          ),
-          child: const Icon(Icons.logout),
-        ),
+      appBar: AppBar(
+        leading: const SizedBox.shrink(),
+        leadingWidth: 0.0,
+        title: const Text("Profile"),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.qr_code)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+        ],
       ),
+      body: const CustomScrollView(slivers: []),
     );
   }
 }

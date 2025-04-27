@@ -11,7 +11,8 @@ abstract final class ImageCompressor {
     int quality = 60,
     CompressFormat format = CompressFormat.jpeg,
   }) async {
-    final String imagePath = '$directoryPath/${basenameWithoutExtension(file.path)}_temp.${format.name}';
+    final String imagePath =
+        '$directoryPath/${basenameWithoutExtension(file.path)}_temp.${format.name}';
 
     final XFile? compressedImage = await FlutterImageCompress.compressAndGetFile(
       file.path,

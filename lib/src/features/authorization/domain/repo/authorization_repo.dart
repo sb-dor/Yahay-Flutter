@@ -7,10 +7,7 @@ abstract class AuthorizationRepo {
     required final String userName,
   });
 
-  Future<UserModel?> login({
-    required final String emailOrUserName,
-    required final String password,
-  });
+  Future<UserModel?> login({required final String emailOrUserName, required final String password});
 
   Future<UserModel?> checkAuth();
 

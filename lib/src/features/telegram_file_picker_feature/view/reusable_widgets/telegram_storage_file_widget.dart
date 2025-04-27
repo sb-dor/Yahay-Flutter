@@ -10,10 +10,7 @@ import 'package:path/path.dart' as path;
 class TelegramStorageFileWidget extends StatefulWidget {
   final List<TelegramFileImageEntity> list;
 
-  const TelegramStorageFileWidget({
-    super.key,
-    required this.list,
-  });
+  const TelegramStorageFileWidget({super.key, required this.list});
 
   @override
   State<TelegramStorageFileWidget> createState() => _TelegramStorageFileWidgetState();
@@ -32,8 +29,8 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
           borderRadius: BorderRadius.circular(10),
           onTap: () {
             context.read<TelegramFilePickerBloc>().add(
-                  TelegramFilePickerEvents.selectGalleryFileEvent(item),
-                );
+              TelegramFilePickerEvents.selectGalleryFileEvent(item),
+            );
           },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 3),
@@ -56,11 +53,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                           child: SizedBox(
                             width: 50,
                             height: 50,
-                            child: Image.file(
-                              item.file!,
-                              fit: BoxFit.cover,
-                              gaplessPlayback: true,
-                            ),
+                            child: Image.file(item.file!, fit: BoxFit.cover, gaplessPlayback: true),
                           ),
                         )
                       else if (item.file != null)
@@ -71,11 +64,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                             color: Colors.amber,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Center(
-                            child: Text(
-                              path.extension(item.file?.path ?? ''),
-                            ),
-                          ),
+                          child: Center(child: Text(path.extension(item.file?.path ?? ''))),
                         )
                       else
                         Container(
@@ -94,25 +83,23 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                             right: 0,
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 150),
-                              opacity: telegramFilePickerStateModel.isFileInsidePickedFiles(item)
-                                  ? 1
-                                  : 0,
+                              opacity:
+                                  telegramFilePickerStateModel.isFileInsidePickedFiles(item)
+                                      ? 1
+                                      : 0,
                               child: AnimatedScale(
-                                scale: telegramFilePickerStateModel.isFileInsidePickedFiles(item)
-                                    ? 1
-                                    : 0,
+                                scale:
+                                    telegramFilePickerStateModel.isFileInsidePickedFiles(item)
+                                        ? 1
+                                        : 0,
                                 duration: const Duration(milliseconds: 150),
-                                child: Container(
+                                child: DecoratedBox(
                                   decoration: BoxDecoration(
                                     color: Colors.green,
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: const Center(
-                                    child: Icon(
-                                      Icons.check,
-                                      size: 18,
-                                      color: Colors.white,
-                                    ),
+                                    child: Icon(Icons.check, size: 18, color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -135,10 +122,7 @@ class _TelegramStorageFileWidgetState extends State<TelegramStorageFileWidget> {
                       children: [
                         Text(
                           item.fileName ?? '-',
-                          style: GoogleFonts.aBeeZee(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: GoogleFonts.aBeeZee(fontSize: 14, fontWeight: FontWeight.w400),
                         ),
                         Text(
                           TelegramFileImageModel.fromEntity(item)?.fileSize() ?? '',
@@ -171,26 +155,17 @@ class _VideoItem extends StatelessWidget {
     return Container(
       width: 50,
       height: 50,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
       child: Stack(
         children: [
+          Positioned.fill(child: Image.memory(fit: BoxFit.cover, item.videoPreview!)),
           Positioned.fill(
-            child: Image.memory(
-              fit: BoxFit.cover,
-              item.videoPreview!,
-            ),
-          ),
-          Positioned.fill(
-            child: Container(
+            child: DecoratedBox(
               decoration: BoxDecoration(
                 color: Colors.black87.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Center(
-                child: Icon(Icons.play_arrow),
-              ),
+              child: const Center(child: Icon(Icons.play_arrow)),
             ),
           ),
         ],

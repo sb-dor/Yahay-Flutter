@@ -15,10 +15,11 @@ mixin class DownloadsPathFiles {
 
   // final _reusables = snoopy<ReusableGlobalFunctions>();
 
-  Stream<TelegramPathFolderFileModel?> downloadsPathFilesData(//{
-      // String dirType = DownloadDirectoryTypes.downloads,
-      //}
-      ) async* {
+  Stream<TelegramPathFolderFileModel?> downloadsPathFilesData(
+    //{
+    // String dirType = DownloadDirectoryTypes.downloads,
+    //}
+  ) async* {
     try {
       // final externalStoragePermission = await _permissions.manageExternalStoragePermission();
       //
@@ -36,11 +37,7 @@ mixin class DownloadsPathFiles {
 
       final rootIsolateToken = RootIsolateToken.instance!;
 
-      final sendingList = [
-        sendingPort.sendPort,
-        downloadsDirectory.path,
-        rootIsolateToken,
-      ];
+      final sendingList = [sendingPort.sendPort, downloadsDirectory.path, rootIsolateToken];
 
       debugPrint("sending list length is: $sendingList");
 

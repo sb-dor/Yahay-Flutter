@@ -13,10 +13,10 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
     required final Logger logger,
     required final RestClientBase restClientBase,
     required final ScreenMessaging screenMessaging,
-  })  : _sharedPreferences = sharedPreferences,
-        _logger = logger,
-        _restClientBase = restClientBase,
-        _screenMessaging = screenMessaging;
+  }) : _sharedPreferences = sharedPreferences,
+       _logger = logger,
+       _restClientBase = restClientBase,
+       _screenMessaging = screenMessaging;
 
   final SharedPreferHelper _sharedPreferences;
   final Logger _logger;
@@ -55,10 +55,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   }) async {
     final url = "${HttpRoutes.authPrefix}$_login";
 
-    final Map<String, dynamic> body = {
-      "email_or_username": emailOrUserName,
-      "password": password,
-    };
+    final Map<String, dynamic> body = {"email_or_username": emailOrUserName, "password": password};
 
     final response = await _restClientBase.post(url, data: body);
 
@@ -88,11 +85,7 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
   }) async {
     final url = "${HttpRoutes.authPrefix}$_register";
 
-    final Map<String, dynamic> body = {
-      "email": email,
-      "password": password,
-      "user_name": userName,
-    };
+    final Map<String, dynamic> body = {"email": email, "password": password, "user_name": userName};
 
     final response = await _restClientBase.post(url, data: body);
 
@@ -125,7 +118,9 @@ class LaravelAuthDataSourceImpl implements LaravelAuthDataSource {
 
       _logger.log(Level.debug, "logout response: $response");
 
-      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) return false;
+      if (!response.containsKey(HttpServerResponses.serverSuccessResponse)) {
+        return false;
+      }
 
       if (response[HttpServerResponses.serverSuccessResponse] == true) {
         return true;

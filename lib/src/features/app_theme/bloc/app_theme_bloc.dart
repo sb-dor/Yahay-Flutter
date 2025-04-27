@@ -8,7 +8,7 @@ abstract class AppThemeEvents {
 }
 
 @immutable
-class AppThemeChangerEvent extends AppThemeEvents {
+sealed class AppThemeChangerEvent extends AppThemeEvents {
   const AppThemeChangerEvent();
 }
 
@@ -20,23 +20,23 @@ class AppThemeBloc {
 
   BehaviorSubject<ThemeData> get theme => _theme;
 
-  const AppThemeBloc._({
-    required this.events,
-    required BehaviorSubject<ThemeData> theme,
-  }) : _theme = theme;
+  const AppThemeBloc._({required this.events, required BehaviorSubject<ThemeData> theme})
+    : _theme = theme;
 
   factory AppThemeBloc() {
     final eventBehavior = BehaviorSubject<AppThemeEvents>();
 
     _currentState = AppColorsScheme.light;
 
-    final themeData = eventBehavior.map<ThemeData>((appThemeDataEvent) {
-      final ThemeData theme = _appThemeChangerEvent(appThemeDataEvent as AppThemeChangerEvent);
-      return theme;
-    }).startWith(_currentState);
+    final themeData = eventBehavior
+        .map<ThemeData>((appThemeDataEvent) {
+          final ThemeData theme = _appThemeChangerEvent(appThemeDataEvent as AppThemeChangerEvent);
+          return theme;
+        })
+        .startWith(_currentState);
 
-    final BehaviorSubject<ThemeData> themeDataStream = BehaviorSubject<ThemeData>()
-      ..addStream(themeData);
+    final BehaviorSubject<ThemeData> themeDataStream =
+        BehaviorSubject<ThemeData>()..addStream(themeData);
 
     return AppThemeBloc._(events: eventBehavior.sink, theme: themeDataStream);
   }
@@ -47,6 +47,6 @@ class AppThemeBloc {
         return AppColorsScheme.light;
       case Brightness.light:
         return AppColorsScheme.dark;
-      }
+    }
   }
 }

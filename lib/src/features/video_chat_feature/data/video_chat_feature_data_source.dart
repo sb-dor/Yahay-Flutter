@@ -16,16 +16,13 @@ abstract interface class VideoChatFeatureDataSource {
   Future<bool> leaveTheChat(VideoChatModel videoChatEntity);
 
   // streaming the video data feature
-  Future<void> streamTheVideo({
-    required VideoChatModel videoChatEntity,
-  });
+  Future<void> streamTheVideo({required VideoChatModel videoChatEntity});
 }
 
 class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   //
-  VideoChatFeatureDataSourceImpl({
-    required RestClientBase restClientBase,
-  }) : _restClientBase = restClientBase;
+  VideoChatFeatureDataSourceImpl({required RestClientBase restClientBase})
+    : _restClientBase = restClientBase;
 
   final RestClientBase _restClientBase;
 
@@ -58,10 +55,7 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   @override
   Future<bool> videoChatEntrance(VideoChatModel videoChatEntity) async {
     try {
-      final response = await _restClientBase.put(
-        _joinChatPath,
-        data: videoChatEntity.toJson(),
-      );
+      final response = await _restClientBase.put(_joinChatPath, data: videoChatEntity.toJson());
 
       if (response == null) return false;
 
@@ -96,17 +90,12 @@ class VideoChatFeatureDataSourceImpl implements VideoChatFeatureDataSource {
   }
 
   @override
-  Future<void> streamTheVideo({
-    required VideoChatModel videoChatEntity,
-  }) async {
+  Future<void> streamTheVideo({required VideoChatModel videoChatEntity}) async {
     try {
       final jsonBody = videoChatEntity.toJson();
       log("sending uint8list data: $jsonBody");
 
-      final response = await _restClientBase.put(
-        _steamTheVideoPath,
-        data: jsonBody,
-      );
+      final response = await _restClientBase.put(_steamTheVideoPath, data: jsonBody);
 
       debugPrint("coming response from stream video: $response");
     } on RestClientException {

@@ -8,11 +8,7 @@ class SearchWidget extends StatefulWidget {
   final ValueChanged<String> value;
   final VoidCallback onDispose;
 
-  const SearchWidget({
-    super.key,
-    required this.value,
-    required this.onDispose,
-  });
+  const SearchWidget({super.key, required this.value, required this.onDispose});
 
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
@@ -36,9 +32,10 @@ class _SearchWidgetState extends State<SearchWidget> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 350),
     );
 
-    _animation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.bounceInOut),
-    );
+    _animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.bounceInOut));
 
     _animationController.forward();
   }
@@ -96,12 +93,13 @@ class _SearchWidgetState extends State<SearchWidget> with SingleTickerProviderSt
               ),
               if (_searchController.text.isNotEmpty)
                 IconButton(
-                    onPressed: () {
-                      _searchController.clear();
-                      setState(() {});
-                      widget.onDispose();
-                    },
-                    icon: const Icon(Icons.close),),
+                  onPressed: () {
+                    _searchController.clear();
+                    setState(() {});
+                    widget.onDispose();
+                  },
+                  icon: const Icon(Icons.close),
+                ),
             ],
           ),
         );

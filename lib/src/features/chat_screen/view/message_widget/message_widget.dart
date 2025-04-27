@@ -9,11 +9,7 @@ class MessageWidget extends StatefulWidget {
   final UserModel? currentUser;
   final ChatMessageModel? message;
 
-  const MessageWidget({
-    super.key,
-    required this.message,
-    required this.currentUser,
-  });
+  const MessageWidget({super.key, required this.message, required this.currentUser});
 
   @override
   State<MessageWidget> createState() => _MessageWidgetState();
@@ -63,10 +59,7 @@ class _LeftSide extends StatelessWidget {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              _MessageTime(
-                message: message,
-                showSeen: false,
-              ),
+              _MessageTime(message: message, showSeen: false),
             ],
           ),
         ),
@@ -102,10 +95,7 @@ class _RightSide extends StatelessWidget {
             children: [
               Text(
                 "${message?.message}",
-                style: GoogleFonts.aBeeZee(
-                  fontSize: 13,
-                  color: Colors.white,
-                ),
+                style: GoogleFonts.aBeeZee(fontSize: 13, color: Colors.white),
               ),
               _MessageTime(message: message),
             ],
@@ -120,10 +110,7 @@ class _MessageTime extends StatelessWidget {
   final bool showSeen;
   final ChatMessageModel? message;
 
-  const _MessageTime({
-    required this.message,
-    this.showSeen = true,
-  });
+  const _MessageTime({required this.message, this.showSeen = true});
 
   @override
   Widget build(BuildContext context) {
@@ -147,29 +134,17 @@ class _MessageTime extends StatelessWidget {
               child: Stack(
                 fit: StackFit.passthrough,
                 children: [
-                  const Icon(
-                    Icons.check,
-                    size: 13,
-                    color: Colors.white,
-                  ),
+                  const Icon(Icons.check, size: 13, color: Colors.white),
                   if (message?.messageSeenAt != null)
                     const Positioned(
                       left: 5,
-                      child: Icon(
-                        Icons.check,
-                        size: 13,
-                        color: Colors.white,
-                      ),
+                      child: Icon(Icons.check, size: 13, color: Colors.white),
                     ),
                 ],
               ),
             )
           else
-            const Icon(
-              Icons.access_time_outlined,
-              size: 13,
-              color: Colors.white,
-            ),
+            const Icon(Icons.access_time_outlined, size: 13, color: Colors.white),
       ],
     );
   }

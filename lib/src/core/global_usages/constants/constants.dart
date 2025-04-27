@@ -47,5 +47,4 @@ abstract class Constants {
   static const String somethingWentWrong = "Something went wrong, please, try later";
 
   static const double minimumHeightForShowingRiveTextFieldAnim = 650;
-
 }

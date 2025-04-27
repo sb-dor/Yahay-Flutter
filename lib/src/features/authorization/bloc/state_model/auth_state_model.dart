@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:yahay/src/core/models/user_model/user_model.dart';
 
 class AuthStateModel {
-
   final UserModel? user;
   final bool showPassword, loadingRegister, loadingLogin;
 
   const AuthStateModel({
-
     required this.user,
     required this.showPassword,
     required this.loadingRegister,
@@ -16,19 +14,17 @@ class AuthStateModel {
   });
 
   factory AuthStateModel.idle() => const AuthStateModel(
-
-        user: null,
-        showPassword: true,
-        loadingRegister: false,
-        loadingLogin: false,
-      );
+    user: null,
+    showPassword: true,
+    loadingRegister: false,
+    loadingLogin: false,
+  );
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AuthStateModel &&
           runtimeType == other.runtimeType &&
-
           user == other.user &&
           showPassword == other.showPassword &&
           loadingRegister == other.loadingRegister &&
@@ -36,11 +32,7 @@ class AuthStateModel {
 
   @override
   int get hashCode =>
-
-      user.hashCode ^
-      showPassword.hashCode ^
-      loadingRegister.hashCode ^
-      loadingLogin.hashCode;
+      user.hashCode ^ showPassword.hashCode ^ loadingRegister.hashCode ^ loadingLogin.hashCode;
 
   @override
   String toString() {
