@@ -47,3 +47,8 @@ Run the following commands in the backend project:
 Add host by adding --host if you want:
 
     --host HOST --port PORT_NUMBERS
+
+After configuring project setup your env folder in main folder
+then run:
+
+    flutter run --dart-define-from-file=env/prod.json
