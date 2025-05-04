@@ -10,6 +10,8 @@ class MaterialContext extends StatelessWidget {
     return StreamBuilder<ThemeData>(
       stream: DependenciesScope.of(context).appThemeBloc.theme,
       builder: (context, themeStates) {
+        final mediaQueryData = MediaQuery.of(context);
+
         return MaterialApp.router(
           // scaffoldMessengerKey: snoopy<GlobalContext>().globalContext,
           localizationsDelegates: const [
@@ -17,6 +19,13 @@ class MaterialContext extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          builder:
+              (context, child) => MediaQuery(
+                data: mediaQueryData.copyWith(
+                  textScaler: TextScaler.linear(mediaQueryData.textScaler.scale(1).clamp(0.5, 2)),
+                ),
+                child: child!,
+              ),
           locale: const Locale("en"),
           supportedLocales: const [Locale("ru"), Locale("en")],
           debugShowCheckedModeBanner: false,
